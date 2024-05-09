@@ -1,5 +1,6 @@
 import {motion} from "framer-motion";
 import React from "react";
+import {useRouter, usePathname} from "next/navigation";
 
 
 
@@ -16,32 +17,64 @@ const draw = {
             opacity: 1,
             stroke: "#ff921f",
             fill: "#ff921f",
+            color: "#fff",
+
             transition: {
-                pathLength: { type: "spring", duration: 1.5, bounce: 0 },
+                pathLength: { type: "spring", duration: 2, bounce: 0 },
                 opacity: { duration: 0.01 },
                 fill: { duration: 0.2 },
                 stroke: { duration: 1 },
+                color: { duration: 1 },
             }
         };
     }
 };
+
+const color = {
+    rest: {
+        color: "rgb(75 85 99)",
+    },
+    hover: (i: number) => {
+        return {
+            color: "#fff",
+            transition: {
+                color: { duration: 0.1 },
+            }
+        };
+    }
+};
+
+
 export const DrawerItem = (
     {
         label,
         id,
         Icon,
+        isActive
     }:
         {
             label: string;
             id: string;
             Icon: React.ElementType;
+            isActive: boolean
         }
 ) => {
+    const router = useRouter()
+    const pathname = usePathname()
+    const m = pathname.split("/")
+
     return (
+
         <motion.li
             key={id}
-            initial="rest" whileHover="hover" animate="rest"
-            className="group active:scale-90 cursor-pointer hover:text-white relative h-11 gap-3 transition-all duration-300 text-gray-600 flex items-center"
+            initial={isActive ? "hover" : "rest"} whileHover="hover" animate={isActive ? "hover" : "rest"}
+            variants={color}
+            className="group active:scale-90 shrink cursor-pointer transition-all relative h-11 gap-3 flex items-center"
+            onClick={() => {
+                if(m.length === 3) m.push(id)
+                else m[3] = id
+                router.push(m.join("/"))
+            }}
         >
             <motion.svg
                 width="220"

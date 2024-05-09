@@ -1,11 +1,8 @@
-"use client"
-
 
 export default function Page() {
     return (
         <div>
-            <h1>Admin</h1>
-
+            <h2>ادمین آنلاین</h2>
         </div>
-    );
+    )
 }
