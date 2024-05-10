@@ -1,1 +1,1 @@
-export { UserMenu } from "./UserMenu";
+export { DrawerUserMenu } from "./DrawerUserMenu";
