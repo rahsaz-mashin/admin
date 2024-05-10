@@ -1,5 +1,5 @@
 import { OutlinedCustomizationIcon } from "@/stories/Icons";
-import {DrawerUserMenu} from "@/stories/RahsazAdmin/Drawer/UserMenu/UserMenu";
+import {DrawerUserMenu} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
 
 export default {
   title: "RahsazAdmin/Drawer/UserMenu",

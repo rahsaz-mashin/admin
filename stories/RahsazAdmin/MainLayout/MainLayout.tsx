@@ -6,7 +6,7 @@ import {Loading} from "@/stories/RahsazAdmin/Loading";
 import {DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
 import {DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
 import {usePathname} from "next/navigation";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/UserMenu";
+import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
 
 
 export const MainLayout = (

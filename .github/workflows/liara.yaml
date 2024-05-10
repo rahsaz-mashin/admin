@@ -17,4 +17,3 @@ jobs:
         run: |
           npm i -g @liara/cli@3
           liara deploy --api-token="$LIARA_TOKEN" --detach
-
