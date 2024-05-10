@@ -138,8 +138,10 @@ const mainMenu = [
         logo: RahsazStoreLogo
     },
 ]
-const MainLayout = ({children}: { children: React.ReactNode }) => {
 
+
+
+const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <RahsazAdmin.MainLayout
             mainMenu={mainMenu}

@@ -20,7 +20,7 @@ import {usePathname, useRouter} from 'next/navigation'
 
 
 
-export type MainMenu = {
+export type MainMenuType = {
     id: string;
     label: string;
     logo: ({size}: { size?: number | undefined; }) => React.JSX.Element
@@ -44,7 +44,7 @@ export const Drawer = (
         :
         {
             isOpenSideBar: boolean,
-            mainMenu: MainMenu[],
+            mainMenu: MainMenuType[],
             subMenu: SubMenuType[],
             activeMainMenu: string,
             activeSubMenu: string,
