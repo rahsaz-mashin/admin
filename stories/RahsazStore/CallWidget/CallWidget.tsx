@@ -13,7 +13,6 @@ import {
   PopoverTrigger,
 } from "@nextui-org/react";
 import { AnimatePresence, motion, useMotionValue } from "framer-motion";
-// import i18n from "../../../lib/i18n";
 
 const MotionCardBody = motion(CardBody);
 

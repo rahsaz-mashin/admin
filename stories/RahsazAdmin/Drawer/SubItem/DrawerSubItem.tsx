@@ -1,7 +1,13 @@
 import {motion} from "framer-motion";
 import React from "react";
-import {useRouter, usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 
+export type DrawerSubItemProps = {
+    id: string;
+    label: string;
+    icon: React.ElementType;
+    isActive?: boolean;
+}
 
 
 const draw = {
@@ -17,14 +23,11 @@ const draw = {
             opacity: 1,
             stroke: "#ff921f",
             fill: "#ff921f",
-            color: "#fff",
-
             transition: {
-                pathLength: { type: "spring", duration: 2, bounce: 0 },
-                opacity: { duration: 0.01 },
-                fill: { duration: 0.2 },
-                stroke: { duration: 1 },
-                color: { duration: 1 },
+                pathLength: {type: "spring", duration: 2, bounce: 0},
+                opacity: {duration: 0.01},
+                stroke: {duration: 1},
+                fill: {duration: 0.2},
             }
         };
     }
@@ -38,40 +41,33 @@ const color = {
         return {
             color: "#fff",
             transition: {
-                color: { duration: 0.1 },
+                color: {duration: 0.1},
             }
         };
     }
 };
 
 
-export const DrawerItem = (
+export const DrawerSubItem = (
     {
         label,
         id,
-        Icon,
+        icon: Icon,
         isActive
-    }:
-        {
-            label: string;
-            id: string;
-            Icon: React.ElementType;
-            isActive: boolean
-        }
+    }: DrawerSubItemProps
 ) => {
     const router = useRouter()
     const pathname = usePathname()
     const m = pathname.split("/")
 
     return (
-
         <motion.li
             key={id}
             initial={isActive ? "hover" : "rest"} whileHover="hover" animate={isActive ? "hover" : "rest"}
             variants={color}
-            className="group active:scale-90 shrink cursor-pointer transition-all relative h-11 gap-3 flex items-center"
+            className="group active:scale-90 shrink select-none cursor-pointer transition-all relative h-11 gap-3 flex items-center"
             onClick={() => {
-                if(m.length === 3) m.push(id)
+                if (m.length === 3) m.push(id)
                 else m[3] = id
                 router.push(m.join("/"))
             }}
@@ -95,7 +91,7 @@ export const DrawerItem = (
             </motion.svg>
             <div
                 className="bg-white z-10 flex justify-center shadow-[-4px_0px_2px_#00000025] transition-all duration-1000 text-gray-600 group-hover:text-black rounded-full w-9 h-9 p-1.5 mr-1 ">
-                <Icon/>
+                <Icon />
             </div>
             <span className="z-10">{label}</span>
         </motion.li>

@@ -2,106 +2,98 @@
 
 import React from "react";
 import {RahsazAdmin} from "@/stories"
-import {SubMenuType} from "@/stories/RahsazAdmin/Drawer/Drawer";
-import {OutlinedCustomizationIcon} from "@/stories/Icons";
 import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
+import {DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
+import {DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
+import {OutlinedCustomizationIcon} from "@/stories/Icons";
+import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/UserMenu";
 
 
-const subMenu: SubMenuType[] = [
+const subMenu: DrawerSubItemProps[] = [
     {
-        id: "products",
-        label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
-    },
-    {
-        id: "orders",
-        label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
-    },
-    {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
+        id: "customers",
+        label: "مشتریان",
+        icon: OutlinedCustomizationIcon,
     },
     {
         id: "products",
         label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
         id: "orders",
         label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
+        id: "wallet",
+        label: "کیف پول",
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "products",
+        id: "customers1",
+        label: "مشتریان",
+        icon: OutlinedCustomizationIcon,
+    },
+    {
+        id: "products1",
         label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "orders",
+        id: "orders1",
         label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
+        id: "wallet1",
+        label: "کیف پول",
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "products",
+        id: "customers2",
+        label: "مشتریان",
+        icon: OutlinedCustomizationIcon,
+    },
+    {
+        id: "products2",
         label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "orders",
+        id: "orders2",
         label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
+        id: "wallet2",
+        label: "کیف پول",
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "products",
+        id: "customers3",
+        label: "مشتریان",
+        icon: OutlinedCustomizationIcon,
+    },
+    {
+        id: "products3",
         label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "orders",
+        id: "orders3",
         label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
+        icon: OutlinedCustomizationIcon,
     },
     {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
-    },
-    {
-        id: "products",
-        label: "محصولات",
-        icon: <OutlinedCustomizationIcon/>
-    },
-    {
-        id: "orders",
-        label: "سفارشات",
-        icon: <OutlinedCustomizationIcon/>
-    },
-    {
-        id: "settings",
-        label: "تنظیمات",
-        icon: <OutlinedCustomizationIcon/>
+        id: "wallet3",
+        label: "کیف پول",
+        icon: OutlinedCustomizationIcon,
     },
 ]
 
 
-const mainMenu = [
+const mainMenu: DrawerMainItemProps[] = [
     {
         id: "gate",
         label: "راهساز گیت",
@@ -140,12 +132,28 @@ const mainMenu = [
 ]
 
 
+const userMenu: DrawerUserMenuItemType[] = [
+        {
+            id: "edit-profile",
+            label: "ویرایش پروفایل"
+        },
+        {
+            id: "notifications",
+            label: "اعلانات"
+        },
+        {
+            id: "logout",
+            label: "خروج از حساب کاربری"
+        }
+    ]
+
 
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <RahsazAdmin.MainLayout
             mainMenu={mainMenu}
             subMenu={subMenu}
+            userMenu={userMenu}
         >
             {children}
         </RahsazAdmin.MainLayout>

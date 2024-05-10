@@ -1,9 +1,9 @@
 import React from "react";
 
-export const AccountName = () => {
+export const AccountName = ({name}: {name: string}) => {
   return (
-    <div className="block">
-      <span className="font-bold">مسعود مومن</span>
+    <div className="block w-full relative">
+      <span className="font-bold truncate">{name}</span>
     </div>
   );
 };
