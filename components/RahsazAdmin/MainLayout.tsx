@@ -6,7 +6,7 @@ import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
 import {DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
 import {DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
 import {OutlinedCustomizationIcon} from "@/stories/Icons";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/UserMenu";
+import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
 
 
 const subMenu: DrawerSubItemProps[] = [
