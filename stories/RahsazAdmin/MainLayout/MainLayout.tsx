@@ -35,11 +35,9 @@ export const MainLayout = (
     const m = pathname.split("/")
 
 
-    useEffect(()=>{
-        setTimeout(() => setLoading(false), 3000)
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 1000)
     }, [])
-
-
 
 
     return (

@@ -2,14 +2,55 @@
 
 import React from "react";
 import {RahsazAdmin} from "@/stories"
-import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
-import {DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
-import {DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
 import {OutlinedCustomizationIcon} from "@/stories/Icons";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
+import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
+import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
+import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
+import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 
 
-const subMenu: DrawerSubItemProps[] = [
+
+
+
+const workspaceItems: DrawerWorkspaceItemProps[] = [
+    {
+        id: "gate",
+        label: "راهساز گیت",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "store",
+        label: "راهساز استور",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "info",
+        label: "راهساز اینفو",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "online",
+        label: "راهساز آنلاین",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "mag",
+        label: "راهساز مگ",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "support",
+        label: "راهساز ساپورت",
+        logo: RahsazStoreLogo
+    },
+    {
+        id: "pro",
+        label: "راهساز پرو",
+        logo: RahsazStoreLogo
+    },
+]
+
+const menuItems: DrawerMenuItemProps[] = [
     {
         id: "customers",
         label: "مشتریان",
@@ -92,47 +133,7 @@ const subMenu: DrawerSubItemProps[] = [
     },
 ]
 
-
-const mainMenu: DrawerMainItemProps[] = [
-    {
-        id: "gate",
-        label: "راهساز گیت",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "store",
-        label: "راهساز استور",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "info",
-        label: "راهساز اینفو",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "online",
-        label: "راهساز آنلاین",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "mag",
-        label: "راهساز مگ",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "support",
-        label: "راهساز ساپورت",
-        logo: RahsazStoreLogo
-    },
-    {
-        id: "pro",
-        label: "راهساز پرو",
-        logo: RahsazStoreLogo
-    },
-]
-
-
-const userMenu: DrawerUserMenuItemType[] = [
+const userMenuItems: DrawerUserMenuItemType[] = [
     {
         id: "edit-profile",
         label: "ویرایش پروفایل"
@@ -146,6 +147,9 @@ const userMenu: DrawerUserMenuItemType[] = [
         label: "خروج از حساب کاربری"
     }
 ]
+
+
+
 
 
 const headerProps = {
@@ -175,9 +179,9 @@ const headerProps = {
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <RahsazAdmin.MainLayout
-            mainMenu={mainMenu}
-            subMenu={subMenu}
-            userMenu={userMenu}
+            workspaceItems={workspaceItems}
+            menuItems={menuItems}
+            userMenuItems={userMenuItems}
             headerProps={headerProps}
         >
             {children}

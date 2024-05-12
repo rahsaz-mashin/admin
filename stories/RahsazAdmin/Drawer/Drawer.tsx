@@ -133,10 +133,10 @@ export const Drawer = (
                                         <ScrollShadow
                                             hideScrollBar
                                             size={25}
-                                            className="flex flex-row h-full "
+                                            className="flex relative flex-row h-full "
                                             style={{height: `${sidebarHeight - 125}px`}}
                                         >
-                                            <div className="absolute h-full top-2">
+                                            <div className="absolute top-2">
                                                 <svg
                                                     width="8" height="37" viewBox="0 0 8 37" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -234,8 +234,7 @@ export const Drawer = (
                     </linearGradient>
                 </defs>
             </svg>
-            <div
-                className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
+            <div className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
                 <AccountName name={accountName}/>
                 {!!userMenuItems?.length && (<DrawerUserMenu items={userMenuItems}/>)}
             </div>
