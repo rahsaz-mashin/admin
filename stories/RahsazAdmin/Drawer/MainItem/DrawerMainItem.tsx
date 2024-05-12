@@ -38,7 +38,7 @@ export const DrawerMainItem = (
                     if (m.length === 4) m[3] = ""
                     router.push(m.join("/"))
                 }}
-                className={`cursor-pointer h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}>
+                className={`cursor-pointer min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}>
                 <Logo size={36}/>
             </li>
         </Tooltip>

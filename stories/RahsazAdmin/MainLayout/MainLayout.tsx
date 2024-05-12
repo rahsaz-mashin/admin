@@ -1,4 +1,4 @@
-import React, {ReactNode, Suspense, useState} from "react";
+import React, {ReactNode, Suspense, useEffect, useState} from "react";
 import {Container} from "@/stories/RahsazAdmin//Container";
 import {Drawer} from "@/stories/RahsazAdmin/Drawer";
 import {Loading} from "@/stories/RahsazAdmin/Loading";
@@ -29,9 +29,17 @@ export const MainLayout = (
     }: MainLayoutProps
 ) => {
     const [isOpenDrawer, setOpenDrawer] = useState(false);
+    const [isLoading, setLoading] = useState(true);
 
     const pathname = usePathname()
     const m = pathname.split("/")
+
+
+    useEffect(()=>{
+        setTimeout(() => setLoading(false), 3000)
+    }, [])
+
+
 
 
     return (
@@ -59,7 +67,7 @@ export const MainLayout = (
                 <Container headerProps={{...headerProps, setOpenDrawer: () => setOpenDrawer(true)}}>
                     {children}
                 </Container>
-                {/*<Loading/>*/}
+                <Loading isLoading={isLoading}/>
             </Suspense>
         </main>
     );
