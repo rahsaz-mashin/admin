@@ -133,19 +133,42 @@ const mainMenu: DrawerMainItemProps[] = [
 
 
 const userMenu: DrawerUserMenuItemType[] = [
+    {
+        id: "edit-profile",
+        label: "ویرایش پروفایل"
+    },
+    {
+        id: "notifications",
+        label: "اعلانات"
+    },
+    {
+        id: "logout",
+        label: "خروج از حساب کاربری"
+    }
+]
+
+
+const headerProps = {
+    workspaceName: "راهساز استور",
+    steps: [
         {
-            id: "edit-profile",
-            label: "ویرایش پروفایل"
+            id: "products",
+            label: "محصولات",
+            url: "/admin/store/products",
         },
         {
-            id: "notifications",
-            label: "اعلانات"
+            id: "list",
+            label: "لیست محصولات",
+            url: "/admin/store/products/list",
         },
         {
-            id: "logout",
-            label: "خروج از حساب کاربری"
-        }
-    ]
+            id: "47856",
+            label: "موتور دوپا",
+            url: "/admin/store/products/list/47856",
+        },
+    ],
+}
+
 
 
 const MainLayout = ({children}: { children: React.ReactNode }) => {
@@ -154,6 +177,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
             mainMenu={mainMenu}
             subMenu={subMenu}
             userMenu={userMenu}
+            headerProps={headerProps}
         >
             {children}
         </RahsazAdmin.MainLayout>
