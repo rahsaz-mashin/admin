@@ -2,17 +2,17 @@ import React, {ReactNode, Suspense, useEffect, useState} from "react";
 import {Container} from "@/stories/RahsazAdmin//Container";
 import {Drawer} from "@/stories/RahsazAdmin/Drawer";
 import {Loading} from "@/stories/RahsazAdmin/Loading";
-import {DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
-import {DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
+import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
+import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
+import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 import {usePathname} from "next/navigation";
 import {HeaderProps} from "@/stories/RahsazAdmin/Header/Header";
 
 
 export type MainLayoutProps = {
-    mainMenu: DrawerMainItemProps[],
-    subMenu: DrawerSubItemProps[],
-    userMenu: DrawerUserMenuItemType[],
+    workspaceItems: DrawerWorkspaceItemProps[],
+    menuItems: DrawerMenuItemProps[],
+    userMenuItems: DrawerUserMenuItemType[],
     headerProps: HeaderProps,
     children: ReactNode
 }
@@ -20,9 +20,9 @@ export type MainLayoutProps = {
 
 export const MainLayout = (
     {
-        mainMenu,
-        subMenu,
-        userMenu,
+        workspaceItems,
+        menuItems,
+        userMenuItems,
         headerProps,
 
         children,
@@ -46,13 +46,13 @@ export const MainLayout = (
         <main className="flex w-full h-full">
             <Suspense fallback={<Loading isLoading/>}>
                 <Drawer
-                    isOpenSideBar={isOpenDrawer}
-                    subMenu={subMenu}
-                    mainMenu={mainMenu}
-                    userMenu={userMenu}
+                    isOpenDrawer={isOpenDrawer}
+                    workspaceItems={workspaceItems}
+                    menuItems={menuItems}
+                    userMenuItems={userMenuItems}
 
-                    activeMainMenu={m[2]}
-                    activeSubMenu={m[3]}
+                    activeWorkspace={m[2]}
+                    activeMenu={m[3]}
                     accountName="عباسقلی میرزا"
                 />
                 {isOpenDrawer && (

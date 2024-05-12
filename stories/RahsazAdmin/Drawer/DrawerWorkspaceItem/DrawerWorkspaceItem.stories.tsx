@@ -1,9 +1,9 @@
-import { DrawerMainItem } from "./DrawerMainItem";
+import { DrawerWorkspaceItem } from "./DrawerWorkspaceItem";
 import {Logo} from "@/stories/RahsazStore";
 
 export default {
-  title: "RahsazAdmin/Drawer/MainItem",
-  component: DrawerMainItem,
+  title: "RahsazAdmin/Drawer/DrawerWorkspaceItem",
+  component: DrawerWorkspaceItem,
 };
 
 export const Default = {

@@ -1,8 +1,7 @@
-import { OutlinedCustomizationIcon } from "@/stories/Icons";
-import {DrawerUserMenu} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
+import {DrawerUserMenu} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 
 export default {
-  title: "RahsazAdmin/Drawer/UserMenu",
+  title: "RahsazAdmin/Drawer/DrawerUserMenu",
   component: DrawerUserMenu,
 };
 

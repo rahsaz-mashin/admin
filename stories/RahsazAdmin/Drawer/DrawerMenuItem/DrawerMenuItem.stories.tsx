@@ -1,9 +1,9 @@
-import { DrawerSubItem } from "./DrawerSubItem";
+import { DrawerMenuItem } from "./DrawerMenuItem";
 import { OutlinedCustomizationIcon } from "@/stories/Icons";
 
 export default {
-  title: "RahsazAdmin/Drawer/SubItem",
-  component: DrawerSubItem,
+  title: "RahsazAdmin/Drawer/DrawerMenuItem",
+  component: DrawerMenuItem,
 };
 
 export const Default = {

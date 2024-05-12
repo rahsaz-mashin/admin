@@ -2,7 +2,7 @@ import React from "react";
 import {Tooltip} from "@nextui-org/tooltip";
 import {usePathname, useRouter} from "next/navigation";
 
-export type DrawerMainItemProps = {
+export type DrawerWorkspaceItemProps = {
     id: string;
     label: string;
     logo: React.ElementType;
@@ -10,13 +10,13 @@ export type DrawerMainItemProps = {
 }
 
 
-export const DrawerMainItem = (
+export const DrawerWorkspaceItem = (
     {
-        label,
         id,
+        label,
         logo: Logo,
         isActive
-    }: DrawerMainItemProps
+    }: DrawerWorkspaceItemProps
 ) => {
     const router = useRouter()
     const pathname = usePathname()

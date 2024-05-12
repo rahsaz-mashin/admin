@@ -9,8 +9,8 @@ export default {
 
 export const Default = {
     args: {
-        isOpenSideBar: true,
-        mainMenu: [
+        isOpenDrawer: true,
+        workspaceItems: [
             {
                 id: "gate",
                 label: "راهساز گیت",
@@ -47,7 +47,7 @@ export const Default = {
                 logo: RahsazStoreLogo
             },
         ],
-        subMenu: [
+        menuItems: [
             {
                 id: "customers",
                 label: "مشتریان",
@@ -129,9 +129,7 @@ export const Default = {
                 icon: OutlinedCustomizationIcon,
             },
         ],
-        activeMainMenu: "store",
-        activeSubMenu: "products",
-        userMenu: [
+        userMenuItems: [
             {
                 id: "edit-profile",
                 label: "ویرایش پروفایل"
@@ -145,6 +143,10 @@ export const Default = {
                 label: "خروج از حساب کاربری"
             }
         ],
+
+        activeWorkspace: "store",
+        activeMenu: "products",
+
         accountName: "عباس قلی",
         accountAvatar: ""
     },

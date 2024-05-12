@@ -1,1 +1,0 @@
-export { DrawerUserMenu } from "./DrawerUserMenu";

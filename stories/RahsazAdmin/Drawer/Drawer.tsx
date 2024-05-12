@@ -1,44 +1,36 @@
-import React, {CSSProperties, ElementType, ReactNode, useCallback, useEffect, useState} from "react";
+import React, {CSSProperties, useCallback, useState} from "react";
+import {ScrollShadow} from "@nextui-org/react";
 import {Logo} from "@/stories/General";
 import {AccountAvatar} from "@/stories/RahsazAdmin/AccountAvatar";
 import {AccountName} from "@/stories/RahsazAdmin/AccountName";
-
-import {
-    OutlinedCustomizationIcon,
-    OutlinedMoreIcon,
-} from "@/stories/Icons";
-import {
-    Button,
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownTrigger, ScrollShadow,
-} from "@nextui-org/react";
-import {DrawerMainItem, DrawerMainItemProps} from "@/stories/RahsazAdmin/Drawer/MainItem/DrawerMainItem";
-import {DrawerSubItem, DrawerSubItemProps} from "@/stories/RahsazAdmin/Drawer/SubItem/DrawerSubItem";
-import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/UserMenu/DrawerUserMenu";
-import {Spinner} from "@nextui-org/spinner";
+import {OutlinedCustomizationIcon} from "@/stories/Icons";
+import {DrawerWorkspaceItem, DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
+import {DrawerMenuItemProps, DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
+import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 
 
 export type DrawerProps = {
-    isOpenSideBar: boolean,
-    mainMenu: DrawerMainItemProps[],
-    subMenu: DrawerSubItemProps[],
-    userMenu: DrawerUserMenuItemType[],
-    activeMainMenu: string,
-    activeSubMenu: string,
+    isOpenDrawer: boolean,
+    workspaceItems: DrawerWorkspaceItemProps[],
+    menuItems: DrawerMenuItemProps[],
+    userMenuItems: DrawerUserMenuItemType[],
+    activeWorkspace: string,
+    activeMenu: string,
     accountName: string,
     accountAvatar?: string,
 }
 
 export const Drawer = (
     {
-        isOpenSideBar,
-        mainMenu,
-        subMenu,
-        activeMainMenu,
-        activeSubMenu,
-        userMenu,
+        isOpenDrawer,
+
+        workspaceItems,
+        menuItems,
+        userMenuItems,
+
+        activeWorkspace,
+        activeMenu,
+
         accountName,
         accountAvatar
     }: DrawerProps
@@ -64,7 +56,7 @@ export const Drawer = (
         <nav
             className={
                 "h-full z-20 select-none w-80 md:translate-x-0 shadow-2xl fixed transition-transform duration-1000" +
-                (isOpenSideBar ? " translate-x-0" : " translate-x-96")
+                (isOpenDrawer ? " translate-x-0" : " translate-x-96")
             }
         >
             <div className="bg-white overflow-hidden h-full w-full relative rounded-tl-3xl flex">
@@ -137,7 +129,7 @@ export const Drawer = (
                                     </defs>
                                 </svg>
                                 <div className="flex-1 relative overflow-hidden z-10 mt-36 mr-2.5">
-                                    {!!mainMenu?.length && (
+                                    {!!workspaceItems?.length && (
                                         <ScrollShadow
                                             hideScrollBar
                                             size={25}
@@ -149,7 +141,7 @@ export const Drawer = (
                                                     width="8" height="37" viewBox="0 0 8 37" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     className="transition-all transform"
-                                                    style={{"--tw-translate-y": `${(mainMenu?.findIndex(({id}) => (id === activeMainMenu)) * 56) || 0}px`} as CSSProperties}
+                                                    style={{"--tw-translate-y": `${(workspaceItems?.findIndex(({id}) => (id === activeWorkspace)) * 56) || 0}px`} as CSSProperties}
                                                 >
                                                     <mask id="path-1-inside-1_794_12086" fill="white">
                                                         <path
@@ -178,13 +170,13 @@ export const Drawer = (
                                                 </svg>
                                             </div>
                                             <ul className="flex flex-col w-full items-center h-full gap-0">
-                                                {mainMenu?.map(({id, label, logo: Logo}) => {
-                                                    return <DrawerMainItem
+                                                {workspaceItems?.map(({id, label, logo: Logo}) => {
+                                                    return <DrawerWorkspaceItem
                                                         key={id}
                                                         id={id}
                                                         label={label}
                                                         logo={Logo}
-                                                        isActive={activeMainMenu === id}
+                                                        isActive={activeWorkspace === id}
                                                     />
                                                 })}
                                             </ul>
@@ -207,16 +199,16 @@ export const Drawer = (
                 {/*<div className="flex flex-1 justify-center items-center">*/}
                 {/*    <span className="text-gray-500">آیتمی یافت نشد :(</span>*/}
                 {/*</div>*/}
-                {!!subMenu?.length && (
+                {!!menuItems?.length && (
                     <ScrollShadow hideScrollBar size={75} className="flex-1 h-[calc(100%-130px)]">
                         <ul className="flex flex-col p-3 gap-3 z-50">
-                            {subMenu?.map(({id, label, icon}) => {
-                                return <DrawerSubItem
+                            {menuItems?.map(({id, label, icon}) => {
+                                return <DrawerMenuItem
                                     key={id}
                                     label={label}
                                     id={id}
                                     icon={OutlinedCustomizationIcon}
-                                    isActive={activeSubMenu === id}
+                                    isActive={activeMenu === id}
                                 />
                             })}
                         </ul>
@@ -245,7 +237,7 @@ export const Drawer = (
             <div
                 className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
                 <AccountName name={accountName}/>
-                {!!userMenu?.length && (<DrawerUserMenu items={userMenu}/>)}
+                {!!userMenuItems?.length && (<DrawerUserMenu items={userMenuItems}/>)}
             </div>
         </nav>
     );

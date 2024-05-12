@@ -2,7 +2,7 @@ import {motion} from "framer-motion";
 import React from "react";
 import {usePathname, useRouter} from "next/navigation";
 
-export type DrawerSubItemProps = {
+export type DrawerMenuItemProps = {
     id: string;
     label: string;
     icon: React.ElementType;
@@ -48,13 +48,13 @@ const color = {
 };
 
 
-export const DrawerSubItem = (
+export const DrawerMenuItem = (
     {
         label,
         id,
         icon: Icon,
         isActive
-    }: DrawerSubItemProps
+    }: DrawerMenuItemProps
 ) => {
     const router = useRouter()
     const pathname = usePathname()

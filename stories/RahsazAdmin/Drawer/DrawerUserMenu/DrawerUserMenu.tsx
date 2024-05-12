@@ -14,14 +14,7 @@ export type DrawerUserMenuProps = {
 }
 
 
-
-export const DrawerUserMenu = (
-    {
-        items
-    }: DrawerUserMenuProps
-) => {
-
-
+export const DrawerUserMenu = ({items}: DrawerUserMenuProps) => {
     return (
         <Dropdown backdrop="blur">
             <DropdownTrigger>

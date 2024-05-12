@@ -29,7 +29,7 @@ export const Default = {
         },
       ],
     },
-    mainMenu: [
+    workspaceItems: [
       {
         id: "gate",
         label: "راهساز گیت",
@@ -66,7 +66,7 @@ export const Default = {
         logo: RahsazStoreLogo
       },
     ],
-    subMenu: [
+    menuItems: [
       {
         id: "customers",
         label: "مشتریان",
@@ -148,7 +148,7 @@ export const Default = {
         icon: OutlinedCustomizationIcon,
       },
     ],
-    userMenu: [
+    userMenuItems: [
       {
         id: "edit-profile",
         label: "ویرایش پروفایل"
