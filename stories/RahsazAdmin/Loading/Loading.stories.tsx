@@ -6,5 +6,7 @@ export default {
 };
 
 export const Default = {
-  args: {},
+  args: {
+    isLoading: true
+  },
 };
