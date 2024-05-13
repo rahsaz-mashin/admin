@@ -16,7 +16,7 @@ export default function Page() {
                         مدیریت دسته بندی محصول
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -42,7 +42,7 @@ export default function Page() {
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -104,7 +104,7 @@ export default function Page() {
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -139,7 +139,7 @@ export default function Page() {
                         گزارشات کالاها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -183,7 +183,7 @@ export default function Page() {
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -218,7 +218,7 @@ export default function Page() {
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"
@@ -271,7 +271,7 @@ export default function Page() {
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
-                        className="grid pb-4 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
+                        className="grid pt-1 pb-6 grid-cols-1 us:grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 4xl:grid-cols-8 5xl:grid-cols-10 8xl:grid-cols-12 gap-4">
                         <SubMenuItem
                             id="add"
                             label="ایجاد دسته جدید"

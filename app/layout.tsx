@@ -3,6 +3,8 @@ import {Metadata, Viewport} from "next";
 import {rootConfig} from "@/config/root";
 import {IRANSansX} from "@/lib/font";
 import {Providers} from "./providers";
+
+
 import React from "react";
 
 export const metadata: Metadata = {
@@ -33,6 +35,7 @@ export default function RootLayout({children, params: {locale}}: {
 }) {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
+
         <body
             className={
                 [
@@ -47,6 +50,7 @@ export default function RootLayout({children, params: {locale}}: {
             </main>
         </Providers>
         </body>
+
         </html>
     );
 }
