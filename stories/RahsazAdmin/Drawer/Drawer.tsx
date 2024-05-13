@@ -51,6 +51,7 @@ export const Drawer = (
 
     const sidebarHeight = height ? (height > 630 ? 530 : height < 300 ? 200 : (height - 100)) : 200
 
+    const workspace = "store"
 
     return (
         <nav
@@ -204,6 +205,7 @@ export const Drawer = (
                         <ul className="flex flex-col p-3 gap-3 z-50">
                             {menuItems?.map(({id, label, icon}) => {
                                 return <DrawerMenuItem
+                                    workspace={workspace}
                                     key={id}
                                     label={label}
                                     id={id}

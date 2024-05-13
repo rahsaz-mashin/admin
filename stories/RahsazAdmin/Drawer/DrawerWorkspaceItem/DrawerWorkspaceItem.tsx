@@ -1,6 +1,7 @@
 import React from "react";
 import {Tooltip} from "@nextui-org/tooltip";
 import {usePathname, useRouter} from "next/navigation";
+import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerWorkspaceItemProps = {
     id: string;
@@ -18,9 +19,10 @@ export const DrawerWorkspaceItem = (
         isActive
     }: DrawerWorkspaceItemProps
 ) => {
-    const router = useRouter()
-    const pathname = usePathname()
-    const m = pathname.split("/")
+
+    const workspace = id
+    const section = ""
+    const router = useRouteManager(workspace, section)
 
     return (
         <Tooltip
@@ -33,12 +35,9 @@ export const DrawerWorkspaceItem = (
             radius="sm"
         >
             <li
-                onClick={() => {
-                    m[2] = id
-                    if (m.length === 4) m[3] = ""
-                    router.push(m.join("/"))
-                }}
-                className={`cursor-pointer min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}>
+                onClick={() => router.push()}
+                className={`cursor-pointer min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}
+            >
                 <Logo size={36}/>
             </li>
         </Tooltip>

@@ -1,10 +1,12 @@
 import {motion} from "framer-motion";
 import React from "react";
 import {usePathname, useRouter} from "next/navigation";
+import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerMenuItemProps = {
     id: string;
     label: string;
+    workspace: string;
     icon: React.ElementType;
     isActive?: boolean;
 }
@@ -51,14 +53,15 @@ const color = {
 export const DrawerMenuItem = (
     {
         label,
+        workspace,
         id,
         icon: Icon,
         isActive
     }: DrawerMenuItemProps
 ) => {
-    const router = useRouter()
-    const pathname = usePathname()
-    const m = pathname.split("/")
+
+    const section = id
+    const router = useRouteManager(workspace, section)
 
     return (
         <motion.li
@@ -67,9 +70,7 @@ export const DrawerMenuItem = (
             variants={color}
             className="group active:scale-90 shrink select-none cursor-pointer transition-all relative h-11 gap-3 flex items-center"
             onClick={() => {
-                if (m.length === 3) m.push(id)
-                else m[3] = id
-                router.push(m.join("/"))
+                router.push()
             }}
         >
             <motion.svg

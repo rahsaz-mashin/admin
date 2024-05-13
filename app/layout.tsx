@@ -27,11 +27,19 @@ export const viewport: Viewport = {
     userScalable: false,
 }
 
-export default function RootLayout({children, params: {locale}}: { children: React.ReactNode, params: {locale: string} }) {
+export default function RootLayout({children, params: {locale}}: {
+    children: React.ReactNode,
+    params: { locale: string }
+}) {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
         <body
-            className={["min-h-screen bg-background antialiased scroll-smooth", IRANSansX.className].join(" ")}
+            className={
+                [
+                    "min-h-screen bg-background antialiased scroll-smooth overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-scrollthumb scrollbar-track-scrolltrack",
+                    IRANSansX.className
+                ].join(" ")
+            }
         >
         <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
             <main className="relative flex flex-col">

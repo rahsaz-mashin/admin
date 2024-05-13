@@ -52,84 +52,100 @@ const workspaceItems: DrawerWorkspaceItemProps[] = [
 
 const menuItems: DrawerMenuItemProps[] = [
     {
-        id: "customers",
+        id: "customer",
         label: "مشتریان",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
-        id: "products",
+        id: "product",
         label: "محصولات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
-        id: "orders",
+        id: "order",
         label: "سفارشات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "wallet",
         label: "کیف پول",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "customers1",
         label: "مشتریان",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "products1",
         label: "محصولات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "orders1",
         label: "سفارشات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "wallet1",
         label: "کیف پول",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "customers2",
         label: "مشتریان",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "products2",
         label: "محصولات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "orders2",
         label: "سفارشات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "wallet2",
         label: "کیف پول",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "customers3",
         label: "مشتریان",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "products3",
         label: "محصولات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "orders3",
         label: "سفارشات",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
     {
         id: "wallet3",
         label: "کیف پول",
         icon: OutlinedCustomizationIcon,
+        workspace: "store",
     },
 ]
 
