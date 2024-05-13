@@ -35,7 +35,6 @@ export default function RootLayout({children, params: {locale}}: {
 }) {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
-
         <body
             className={
                 [
@@ -50,7 +49,6 @@ export default function RootLayout({children, params: {locale}}: {
             </main>
         </Providers>
         </body>
-
         </html>
     );
 }
