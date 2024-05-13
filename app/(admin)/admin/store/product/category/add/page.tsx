@@ -3,7 +3,7 @@
 import {
     Button,
     Card,
-    CardBody,
+    CardBody, Pagination,
     Table,
     TableBody,
     TableCell,
@@ -22,7 +22,7 @@ export default function Page() {
     return (
         <>
             <section className="grid grid-cols-6 gap-4 py-4">
-                <Card className="col-span-2">
+                <Card className="col-span-full lg:col-span-2">
                     <CardBody>
                         <div className="grid gap-4">
                             <Input
@@ -41,13 +41,29 @@ export default function Page() {
                     </CardBody>
                 </Card>
 
-                <Card className="col-span-4">
+                <Card className="col-span-full lg:col-span-4">
                     <CardBody>
                         <Table
                             selectionMode="multiple"
                             defaultSelectedKeys={["2", "3"]}
-                            color="warning"
-                            removeWrapper dir="rtl" aria-label="Example static collection table">
+                            color="primary"
+                            removeWrapper
+                            dir="rtl"
+                            aria-label="Example static collection table"
+                            bottomContent={
+                                <div className="flex w-full justify-center">
+                                    <Pagination
+
+
+
+                                        color="primary"
+                                        // page={1}
+                                        total={10}
+                                        // onChange={(page) => setPage(page)}
+                                    />
+                                </div>
+                            }
+                        >
                             <TableHeader>
                                 <TableColumn>عنوان</TableColumn>
                                 <TableColumn>شناسه یکتا</TableColumn>
@@ -57,111 +73,133 @@ export default function Page() {
                             <TableBody>
                                 <TableRow key="1" dir="rtl" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="2" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="3" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="4" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="5" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="6" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="7" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="8" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="9" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="10" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
                                 <TableRow key="11" className="text-start">
                                     <TableCell>موتور</TableCell>
-                                    <TableCell>موتور</TableCell>
+                                    <TableCell>
+                                        <Chip dir="ltr" variant="light" color="secondary">/engine</Chip>
+                                    </TableCell>
                                     <TableCell>این دسته موتور هست</TableCell>
                                     <TableCell>
-                                        <Chip className="capitalize" color={"danger"} size="sm" variant="flat">
-                                            غیرفعال
+                                        <Chip className="capitalize" color="success" size="sm" variant="flat">
+                                            فعال
                                         </Chip>
                                     </TableCell>
                                 </TableRow>
