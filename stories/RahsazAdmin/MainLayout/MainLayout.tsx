@@ -40,7 +40,7 @@ export const MainLayout = (
 
 
     return (
-        <main className="flex w-full h-full">
+        <main className="flex w-full h-max">
             <Suspense fallback={<Loading isLoading/>}>
                 <Drawer
                     isOpenDrawer={isOpenDrawer}

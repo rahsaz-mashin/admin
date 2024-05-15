@@ -7,9 +7,7 @@ import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
 import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
 import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
-
-
-
+import {Scrollbars} from 'react-custom-scrollbars';
 
 
 const workspaceItems: DrawerWorkspaceItemProps[] = [
@@ -164,10 +162,6 @@ const userMenuItems: DrawerUserMenuItemType[] = [
     }
 ]
 
-
-
-
-
 const headerProps = {
     workspaceName: "راهساز استور",
     steps: [
@@ -190,18 +184,45 @@ const headerProps = {
 }
 
 
-
-
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
-        <RahsazAdmin.MainLayout
-            workspaceItems={workspaceItems}
-            menuItems={menuItems}
-            userMenuItems={userMenuItems}
-            headerProps={headerProps}
-        >
-            {children}
-        </RahsazAdmin.MainLayout>
+        <>
+            <Scrollbars
+                style={{height: "100vh"}}
+                renderView={(props: any) => (<div {...props} style={{...props.style, marginRight: 0, marginBottom: "-17px", marginLeft: "-17px"}}/>)}
+                renderTrackVertical={(props: any) => (
+                    <div
+                        {...props}
+                        style={{
+                            ...props.style,
+                            width: "6px",
+                            left: "0px",
+                            bottom: "0px",
+                            top: "0px",
+                            borderRadius: "0"
+                        }}
+                        className="bg-scrolltrack flex justify-center"
+                    />
+                )}
+                renderThumbVertical={(props: any) => (
+                    <div {...props}
+                         style={{...props.style, width: "6px", borderRadius: "4px"}}
+                         className="bg-scrollthumb"/>
+                )}
+                hideTracksWhenNotNeeded={false}
+                universal
+            >
+
+                <RahsazAdmin.MainLayout
+                    workspaceItems={workspaceItems}
+                    menuItems={menuItems}
+                    userMenuItems={userMenuItems}
+                    headerProps={headerProps}
+                >
+                    {children}
+                </RahsazAdmin.MainLayout>
+            </Scrollbars>
+        </>
     )
 }
 

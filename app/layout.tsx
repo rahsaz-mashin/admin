@@ -35,20 +35,14 @@ export default function RootLayout({children, params: {locale}}: {
 }) {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
-        <body
-            className={
-                [
-                    "min-h-screen bg-background antialiased scroll-smooth overflow-x-hidden scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-scrollthumb scrollbar-track-scrolltrack",
-                    IRANSansX.className
-                ].join(" ")
-            }
-        >
-        <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
-            <main className="relative flex flex-col">
-                {children}
-            </main>
-        </Providers>
-        </body>
+            <body
+                className={["min-h-screen bg-background antialiased scroll-smooth overflow-hidden", IRANSansX.className].join(" ")}>
+                <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
+                    <main className="relative flex flex-col">
+                        {children}
+                    </main>
+                </Providers>
+            </body>
         </html>
     );
 }

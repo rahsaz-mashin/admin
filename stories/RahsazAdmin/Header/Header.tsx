@@ -86,7 +86,7 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                     </defs>
                 </svg>
             </div>
-            <div className="flex flex-col w-full md:px-4 py-1">
+            <div className="flex flex-col w-full md:px-4 py-2">
                 <div className="flex items-center gap-2">
                     <Button
                         onPress={() => router.back()}
