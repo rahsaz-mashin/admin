@@ -12,7 +12,7 @@ export default function Page() {
         <>
             <div className="grid transition-all grid-cols-2">
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت دسته بندی محصول
                     </h3>
                     <div
@@ -38,7 +38,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
@@ -100,7 +100,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
@@ -135,7 +135,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         گزارشات کالاها
                     </h3>
                     <div
@@ -179,7 +179,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
@@ -214,7 +214,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت لیست قیمت ها
                     </h3>
                     <div
@@ -267,7 +267,7 @@ export default function Page() {
                     </div>
                 </section>
                 <section className="transition-all col-span-full">
-                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[4.5rem] z-20 py-3 text-gray-600">
+                    <h3 className="-mx-4 truncate text-sm font-medium sm:text-md md:font-semibold lg:font-bold lg:text-lg px-4 bg-background sticky top-[5rem] z-20 py-3 text-gray-600">
                         مدیریت لیست قیمت ها
                     </h3>
                     <div

@@ -4,7 +4,7 @@ import React, {useRef, useState} from "react";
 import {Button, Card, CardBody, CardFooter} from "@nextui-org/react";
 import {Tooltip} from "@nextui-org/tooltip";
 import {CardHeader} from "@nextui-org/card";
-import {HelpOutlineIcon} from "@/stories/Icons";
+import {CloseIcon, HelpOutlineIcon} from "@/stories/Icons";
 import {usePathname, useRouter} from "next/navigation";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
@@ -25,12 +25,10 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
 
     const mouseEnter = () => {
         iconRef.current?.play()
-        // setShowHelp(true)
     }
 
     const mouseLeave = () => {
         iconRef.current?.stop()
-        // setShowHelp(false)
     }
 
     const [showHelp, setShowHelp] = useState(false)
@@ -47,7 +45,16 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
             }
             color="foreground"
             placement="bottom"
-            // isOpen={showHelp}
+            isOpen={showHelp ? true : undefined}
+            isKeyboardDismissDisabled
+            isDismissable
+            onOpenChange={() => {
+                if (showHelp) {
+                    setTimeout(() => {
+                        setShowHelp(false)
+                    }, 1000)
+                }
+            }}
             showArrow
         >
             <Card
@@ -67,8 +74,16 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                     <b className="truncate">{label}</b>
-                    <Button as="div" isIconOnly size="sm" color="secondary" radius="full" variant="light">
-                        <HelpOutlineIcon size={24}/>
+                    <Button
+                        as="div"
+                        isIconOnly
+                        size="sm"
+                        color="secondary"
+                        radius="full"
+                        variant="light"
+                        onPress={() => setShowHelp(!showHelp)}
+                    >
+                        {showHelp ? <CloseIcon size={24}/> : <HelpOutlineIcon size={24}/>}
                     </Button>
                 </CardFooter>
             </Card>

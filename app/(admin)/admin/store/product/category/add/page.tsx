@@ -21,7 +21,7 @@ export default function Page() {
 
     return (
         <>
-            <section className="grid grid-cols-6 gap-4 py-4">
+            <section className="grid grid-cols-6 gap-4 my-4">
                 <Card className="col-span-full lg:col-span-2">
                     <CardBody>
                         <div className="grid gap-4">
