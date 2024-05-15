@@ -38,6 +38,10 @@ export const MainLayout = (
         setTimeout(() => setLoading(false), 1000)
     }, [])
 
+    useEffect(() => {
+        if (pathname.split("/").length >= 4) setOpenDrawer(false)
+    }, [pathname]);
+
 
     return (
         <main className="flex w-full h-max">

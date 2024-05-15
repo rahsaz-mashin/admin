@@ -7,6 +7,7 @@ import {OutlinedCustomizationIcon} from "@/stories/Icons";
 import {DrawerWorkspaceItem, DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
 import {DrawerMenuItemProps, DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
+import {Clock} from "@/stories/RahsazAdmin/Clock";
 
 
 export type DrawerProps = {
@@ -52,6 +53,7 @@ export const Drawer = (
     const sidebarHeight = height ? (height > 630 ? 530 : height < 300 ? 200 : (height - 100)) : 200
 
     const workspace = "store"
+    const [clockShowing, setClockShowing] = useState(false)
 
     return (
         <nav
@@ -64,8 +66,14 @@ export const Drawer = (
                 <div className="w-[76px] h-full overflow-hidden bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
                     <div className="relative w-full h-full flex items-center flex-col justify-between">
                         {/* logo */}
-                        <div className="flex items-center justify-center cursor-pointer z-20 w-full py-3 px-3">
-                            <Logo/>
+                        <div className="flex items-center justify-center cursor-pointer z-20 w-full py-3 px-3"
+                             onDoubleClick={() => {
+                                 setClockShowing(true)
+                                 setTimeout(() => {
+                                     setClockShowing(false)
+                                 }, 3000)
+                             }}>
+                            {clockShowing ? <Clock/> : <Logo/>}
                         </div>
                         {/* sections items */}
                         <div className="absolute pb-[150px] min-h-[278px] h-full flex flex-col z-10 w-full">
@@ -236,7 +244,8 @@ export const Drawer = (
                     </linearGradient>
                 </defs>
             </svg>
-            <div className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
+            <div
+                className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
                 <AccountName name={accountName}/>
                 {!!userMenuItems?.length && (<DrawerUserMenu items={userMenuItems}/>)}
             </div>
