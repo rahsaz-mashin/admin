@@ -201,7 +201,60 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
             {/*    // hideTracksWhenNotNeeded={false}*/}
             {/*    universal*/}
             {/*>*/}
-            <Scrollbar className="!h-screen">
+            <Scrollbar
+                wrapperProps={{
+                    renderer: (props) => {
+                        const { elementRef, style, ...restProps } = props;
+                        return (
+                            <div
+                                {...restProps}
+                                ref={elementRef}
+                                style={{...style, inset: "0px 0px 0px 6px"}}
+                            />
+                        );
+                    },
+                }}
+                trackXProps={{
+                    renderer: (props) => {
+                        const {elementRef, style, ...restProps} = props;
+                        return (
+                            <div
+                                {...restProps}
+                                ref={elementRef}
+                                className="!bg-scrolltrack"
+                                style={{...style, height: "6px", left: 0, width: "100%", borderRadius: 0}}
+                            />
+                        );
+                    },
+                }}
+                thumbXProps={{
+                    renderer: (props) => {
+                        const {elementRef, style, ...restProps} = props;
+                        return <div {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                    },
+                }}
+                // ========================
+                trackYProps={{
+                    renderer: (props) => {
+                        const {elementRef, style, ...restProps} = props;
+                        return (
+                            <div
+                                {...restProps}
+                                ref={elementRef}
+                                className="!bg-scrolltrack"
+                                style={{...style, width: "6px", top: 0, height: "100%", borderRadius: 0}}
+                            />
+                        );
+                    },
+                }}
+                thumbYProps={{
+                    renderer: (props) => {
+                        const {elementRef, style, ...restProps} = props;
+                        return <div {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                    },
+                }}
+                className="!h-screen"
+            >
                 <RahsazAdmin.MainLayout
                     workspaceItems={workspaceItems}
                     menuItems={menuItems}

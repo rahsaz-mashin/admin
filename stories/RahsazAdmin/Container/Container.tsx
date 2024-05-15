@@ -17,7 +17,7 @@ export const Container = (
     return (
         <aside className="h-full z-0 pr-0 md:pr-80 flex-1 px-0">
             <Header {...headerProps}/>
-            <div className="px-4">{children}</div>
+            <div className="p-4">{children}</div>
         </aside>
     );
 };

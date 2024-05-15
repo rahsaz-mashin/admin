@@ -1,7 +1,7 @@
 import React from "react";
 import {BreadcrumbItem, Breadcrumbs, Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
-import {SeparatorIcon} from "@/stories/Icons";
+import {BackIcon, RefreshIcon, SeparatorIcon} from "@/stories/Icons";
 
 
 export type StepItemType = {
@@ -86,26 +86,29 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                     </defs>
                 </svg>
             </div>
-            <div className="flex flex-col w-full md:px-4 py-2">
-                <div className="flex items-center gap-2">
+            <div className="flex flex-col w-full ps-0 pe-4 md:ps-4 py-2">
+                <div className="flex justify-between">
+                    <div className="flex items-center gap-2">
+                        <Button
+                            onPress={() => router.back()}
+                            isIconOnly
+                            radius="full"
+                            variant="light"
+                            color="primary"
+                        >
+                            <BackIcon size={24}/>
+                        </Button>
+                        <h1 className="font-bold text-primary text-lg truncate">{workspaceName}</h1>
+                    </div>
                     <Button
-                        onPress={() => router.back()}
+                        onPress={() => router.refresh()}
                         isIconOnly
                         radius="full"
-                        variant="light"
+                        variant="flat"
+                        color="success"
                     >
-                        <svg
-                            width="36"
-                            height="36"
-                            viewBox="0 0 30 30"
-                            className="fill-primary"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                d="M16.8371 10.6629C16.471 10.2968 16.471 9.7032 16.8371 9.33709C17.2032 8.97097 17.7968 8.97097 18.1629 9.33709L23.1629 14.3371C23.529 14.7032 23.529 15.2968 23.1629 15.6629L18.1629 20.6629C17.7968 21.029 17.2032 21.029 16.8371 20.6629C16.471 20.2968 16.471 19.7032 16.8371 19.3371L20.2367 15.9375H8.125C7.60723 15.9375 7.1875 15.5178 7.1875 15C7.1875 14.4822 7.60723 14.0625 8.125 14.0625H20.2367L16.8371 10.6629Z"/>
-                        </svg>
+                        <RefreshIcon size={24}/>
                     </Button>
-                    <h1 className="font-bold text-primary text-lg truncate">{workspaceName}</h1>
                 </div>
                 {!!steps?.length &&
                     (
