@@ -204,12 +204,12 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
             <Scrollbar
                 wrapperProps={{
                     renderer: (props) => {
-                        const { elementRef, style, ...restProps } = props;
+                        const {elementRef, style, ...restProps} = props;
                         return (
                             <div
                                 {...restProps}
                                 ref={elementRef}
-                                style={{...style, inset: "0px 0px 0px 6px"}}
+                                style={{overflow: "hidden", position: "absolute", inset: "0px 0px 0px 0px"}}
                             />
                         );
                     },
