@@ -189,26 +189,14 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
         <>
             <Scrollbars
                 style={{height: "100vh"}}
-                renderView={(props: any) => (<div {...props} style={{...props.style, marginRight: 0, marginBottom: "-17px", marginLeft: "-17px"}}/>)}
-                renderTrackVertical={(props: any) => (
-                    <div
-                        {...props}
-                        style={{
-                            ...props.style,
-                            width: "6px",
-                            left: "0px",
-                            bottom: "0px",
-                            top: "0px",
-                            borderRadius: "0"
-                        }}
-                        className="bg-scrolltrack flex justify-center"
-                    />
-                )}
-                renderThumbVertical={(props: any) => (
-                    <div {...props}
-                         style={{...props.style, width: "6px", borderRadius: "4px"}}
-                         className="bg-scrollthumb"/>
-                )}
+                renderView={(props: any) => (<div {...props} className="!mr-0 !mb-0 !ml-0 !mt-0"/>)}
+
+                renderTrackVertical={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center w-1.5 end-0 top-0 bottom-0 rounded-none"/>)}
+                renderThumbVertical={(props: any) => (<div {...props} className="bg-scrollthumb rounded w-1.5"/>)}
+
+                renderTrackHorizontal={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center h-1.5 end-0 start-0 bottom-0 rounded-none flex-col"/>)}
+                renderThumbHorizontal={(props: any) => (<div {...props} className="bg-scrollthumb rounded h-1.5"/>)}
+
                 hideTracksWhenNotNeeded={false}
                 universal
             >
