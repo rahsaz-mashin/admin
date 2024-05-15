@@ -8,7 +8,8 @@ import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorks
 import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 import {Scrollbars} from 'react-custom-scrollbars';
-
+import Scrollbar from "react-scrollbars-custom";
+//
 
 const workspaceItems: DrawerWorkspaceItemProps[] = [
     {
@@ -187,20 +188,20 @@ const headerProps = {
 const MainLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <>
-            <Scrollbars
-                style={{height: "100vh"}}
-                renderView={(props: any) => (<div {...props} className="!mr-0 !mb-0 !ml-0 !mt-0"/>)}
-
-                renderTrackVertical={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center w-1.5 end-0 top-0 bottom-0 rounded-none"/>)}
-                renderThumbVertical={(props: any) => (<div {...props} className="bg-scrollthumb rounded w-1.5"/>)}
-
-                renderTrackHorizontal={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center h-1.5 end-0 start-0 bottom-0 rounded-none flex-col"/>)}
-                renderThumbHorizontal={(props: any) => (<div {...props} className="bg-scrollthumb rounded h-1.5"/>)}
-
-                hideTracksWhenNotNeeded={false}
-                universal
-            >
-
+            {/*<Scrollbars*/}
+            {/*    style={{height: "100%"}}*/}
+            {/*    // renderView={(props: any) => (<div {...props} className="!mr-0 !mb-0 !ml-0 !mt-0"/>)}*/}
+            {/*    //*/}
+            {/*    // renderTrackVertical={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center w-1.5 end-0 top-0 bottom-0 rounded-none"/>)}*/}
+            {/*    // renderThumbVertical={(props: any) => (<div {...props} className="bg-scrollthumb rounded w-1.5"/>)}*/}
+            {/*    //*/}
+            {/*    // renderTrackHorizontal={(props: any) => (<div {...props} className="bg-scrolltrack flex justify-center h-1.5 end-0 start-0 bottom-0 rounded-none flex-col"/>)}*/}
+            {/*    // renderThumbHorizontal={(props: any) => (<div {...props} className="bg-scrollthumb rounded h-1.5"/>)}*/}
+            {/*    //*/}
+            {/*    // hideTracksWhenNotNeeded={false}*/}
+            {/*    universal*/}
+            {/*>*/}
+            <Scrollbar className="!h-screen">
                 <RahsazAdmin.MainLayout
                     workspaceItems={workspaceItems}
                     menuItems={menuItems}
@@ -209,7 +210,8 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                 >
                     {children}
                 </RahsazAdmin.MainLayout>
-            </Scrollbars>
+            </Scrollbar>
+            {/*</Scrollbars>*/}
         </>
     )
 }

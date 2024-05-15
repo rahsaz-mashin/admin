@@ -49,6 +49,7 @@
     "react": "18.2.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "18.2.0",
+    "react-scrollbars-custom": "^4.1.1",
     "storybook-addon-i18n": "^5.1.13",
     "storybook-addon-rtl": "^1.0.0",
     "tailwind-variants": "^0.1.20",

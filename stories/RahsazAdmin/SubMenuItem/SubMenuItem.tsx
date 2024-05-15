@@ -35,27 +35,20 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
 
     const router = useRouteManager(workspace, section)
 
+    const tooltipContent = (
+        <div className="px-1 py-2 max-w-52">
+            <div className="text-sm font-bold">{label}</div>
+            {!!description && <div className="text-tiny text-justify">{description}</div>}
+        </div>
+    )
+
     return (
         <Tooltip
-            content={
-                <div className="px-1 py-2">
-                    <div className="text-sm font-bold">{label}</div>
-                    {!!description && <div className="text-tiny">{description}</div>}
-                </div>
-            }
+            content={tooltipContent}
             color="foreground"
             placement="bottom"
-            isOpen={showHelp ? true : undefined}
             isKeyboardDismissDisabled
             isDismissable
-            onOpenChange={() => {
-                if (showHelp) {
-                    setTimeout(() => {
-                        setShowHelp(false)
-                    }, 1000)
-                }
-            }}
-            showArrow
         >
             <Card
                 shadow="sm"
@@ -64,6 +57,7 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
                 isHoverable
                 isPressable
                 onPress={() => router.push(...path)}
+                className="select-none"
             >
                 <CardBody className="overflow-visible p-0 flex items-center">
                     <div className="w-20 h-20">
@@ -74,17 +68,31 @@ export const SubMenuItem = ({id, label, description, workspace, section, path, i
                 </CardBody>
                 <CardFooter className="text-small justify-between">
                     <b className="truncate">{label}</b>
-                    <Button
-                        as="div"
-                        isIconOnly
-                        size="sm"
-                        color="secondary"
-                        radius="full"
-                        variant="light"
-                        onPress={() => setShowHelp(!showHelp)}
+                    <Tooltip
+                        content={tooltipContent}
+                        color="foreground"
+                        placement="bottom"
+                        isOpen={showHelp}
+                        isKeyboardDismissDisabled
+                        isDismissable
                     >
-                        {showHelp ? <CloseIcon size={24}/> : <HelpOutlineIcon size={24}/>}
-                    </Button>
+                        <Button
+                            as="div"
+                            isIconOnly
+                            size="sm"
+                            color="secondary"
+                            radius="full"
+                            variant="light"
+                            onPress={() => {
+                                setShowHelp(true)
+                                setTimeout(() => {
+                                    setShowHelp(false)
+                                }, 1000)
+                            }}
+                        >
+                            <HelpOutlineIcon size={24}/>
+                        </Button>
+                    </Tooltip>
                 </CardFooter>
             </Card>
         </Tooltip>
