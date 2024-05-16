@@ -199,6 +199,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                                 {...restProps}
                                 ref={elementRef}
                                 style={{overflow: "hidden", position: "absolute", inset: "0px 0px 0px 0px"}}
+                                key="scrollbarWrapper"
                             />
                         );
                     },
@@ -212,6 +213,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
                                 style={{...style, height: "6px", left: 0, width: "100%", borderRadius: 0}}
+                                key="scrollbarTrackX"
                             />
                         );
                     },
@@ -219,7 +221,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                 thumbXProps={{
                     renderer: (props) => {
                         const {elementRef, style, ...restProps} = props;
-                        return <div {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                        return <div key="scrollbarThumbX" {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
                     },
                 }}
                 // ========================
@@ -228,6 +230,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                         const {elementRef, style, ...restProps} = props;
                         return (
                             <div
+                                key="scrollbarTrackY"
                                 {...restProps}
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
@@ -239,10 +242,10 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                 thumbYProps={{
                     renderer: (props) => {
                         const {elementRef, style, ...restProps} = props;
-                        return <div {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                        return <div key="scrollbarThumbY" {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
                     },
                 }}
-                className="!h-screen"
+                className="!h-[calc(100vh-env(safe-area-inset-bottom)-env(safe-area-inset-top))]"
             >
                 <RahsazAdmin.MainLayout
                     workspaceItems={workspaceItems}
