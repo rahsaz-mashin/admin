@@ -1,4 +1,4 @@
-import React, {CSSProperties, useCallback, useState} from "react";
+import React, {CSSProperties, useCallback, useEffect, useRef, useState} from "react";
 import {ScrollShadow} from "@nextui-org/react";
 import {Logo} from "@/stories/General";
 import {AccountAvatar} from "@/stories/RahsazAdmin/AccountAvatar";
@@ -8,6 +8,7 @@ import {DrawerWorkspaceItem, DrawerWorkspaceItemProps} from "@/stories/RahsazAdm
 import {DrawerMenuItemProps, DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 import {Clock} from "@/stories/RahsazAdmin/Clock";
+import {Tooltip} from "@nextui-org/tooltip";
 
 
 export type DrawerProps = {
@@ -55,6 +56,8 @@ export const Drawer = (
     const workspace = "store"
     const [clockShowing, setClockShowing] = useState(false)
 
+    const timeoutClock = useRef<ReturnType<typeof setTimeout>>();
+
     return (
         <nav
             className={
@@ -66,13 +69,25 @@ export const Drawer = (
                 <div className="w-[76px] h-full overflow-hidden bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
                     <div className="relative w-full h-full flex items-center flex-col justify-between">
                         {/* logo */}
-                        <div className="flex items-center justify-center cursor-pointer z-20 w-full py-3 px-3"
-                             onDoubleClick={() => {
-                                 setClockShowing(true)
-                                 setTimeout(() => {
-                                     setClockShowing(false)
-                                 }, 3000)
-                             }}>
+
+                        <div
+                            className="flex items-center justify-center cursor-pointer z-20 w-full py-3 px-3"
+                            onClick={() => {
+                                setClockShowing(true)
+                            }}
+                            onMouseLeave={() => {
+                                if (clockShowing) {
+                                    timeoutClock.current = setTimeout(() => {
+                                        setClockShowing(false)
+                                    }, 5000)
+                                }
+                            }}
+                            onMouseEnter={() => {
+                                if (timeoutClock.current) {
+                                    clearTimeout(timeoutClock.current)
+                                }
+                            }}
+                        >
                             {clockShowing ? <Clock/> : <Logo/>}
                         </div>
                         {/* sections items */}
