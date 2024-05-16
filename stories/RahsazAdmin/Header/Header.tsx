@@ -104,7 +104,7 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                         <h1 className="font-bold text-primary text-lg truncate">{workspaceName}</h1>
                     </div>
                     <Button
-                        onPress={() => router.refresh()}
+                        onPress={() => location.reload()}
                         isIconOnly
                         radius="full"
                         variant="flat"
