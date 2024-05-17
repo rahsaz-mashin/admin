@@ -15,8 +15,8 @@ const Loading = () => <div className="animate-bounce font-bold text-white">
 const SafariIOS = dynamic(() => import("./Guide/SafariIOS"), {loading: () => <Loading/>});
 const FirefoxIOS = dynamic(() => import("./Guide/FirefoxIOS"), {loading: () => <Loading/>});
 const ChromeIOS = dynamic(() => import("./Guide/ChromeIOS"), {loading: () => <Loading/>});
-const Chrome = dynamic(() => import("./Guide/ChromeAndroid"), {loading: () => <Loading/>});
-const Firefox = dynamic(() => import("./Guide/FirefoxAndroid"), {loading: () => <Loading/>});
+const ChromeAndroid = dynamic(() => import("./Guide/ChromeAndroid"), {loading: () => <Loading/>});
+const FirefoxAndroid = dynamic(() => import("./Guide/FirefoxAndroid"), {loading: () => <Loading/>});
 const OtherBrowser = dynamic(() => import("./Guide/OtherBrowser"), {loading: () => <Loading/>});
 
 
@@ -112,8 +112,8 @@ export const InstallAppModal = () => {
                     firefoxIOS: <FirefoxIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
                     chromeIOS: <ChromeIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
 
-                    chromeAndroid: <Chrome closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
-                    firefoxAndroid: <Firefox closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+                    chromeAndroid: <ChromeAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+                    firefoxAndroid: <FirefoxAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
 
                     other: <OtherBrowser closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
                 }[installGuidePrompt]
