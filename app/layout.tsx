@@ -6,6 +6,7 @@ import {Providers} from "./providers";
 
 
 import React from "react";
+import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
 
 export const metadata: Metadata = {
     title: {
@@ -16,13 +17,39 @@ export const metadata: Metadata = {
     icons: {
         icon: "/favicon.ico",
     },
-    manifest: "/manifest.json"
+    manifest: "/manifest.json",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "default",
+        title: rootConfig.name,
+        // startUpImage: [],
+    },
+    formatDetection: {
+        telephone: false,
+    },
+    openGraph: {
+        type: "website",
+        siteName: rootConfig.name,
+        title: {
+            default:  rootConfig.name,
+            template: `${rootConfig.name} | %s`,
+        },
+        description: rootConfig.description,
+    },
+    twitter: {
+        card: "summary",
+        title: {
+            default:  rootConfig.name,
+            template: `${rootConfig.name} | %s`,
+        },
+        description: rootConfig.description,
+    },
 };
 
 export const viewport: Viewport = {
     themeColor: [
-        {media: "(prefers-color-scheme: light)", color: "white"},
-        {media: "(prefers-color-scheme: dark)", color: "black"},
+        {media: "(prefers-color-scheme: light)", color: "#FF921F"},
+        {media: "(prefers-color-scheme: dark)", color: "#FF921F"},
     ],
     width: "device-width",
     initialScale: 1,
@@ -41,6 +68,7 @@ export default function RootLayout({children, params: {locale}}: {
                 <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
                     <main className="relative flex flex-col h-full w-full">
                         {children}
+                        <InstallAppModal />
                     </main>
                 </Providers>
             </body>
