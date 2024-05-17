@@ -9,7 +9,7 @@ import {Spinner} from "@nextui-org/spinner";
 import {rootConfig} from "@/config/root";
 
 const Loading = () => <div className="animate-bounce font-bold text-white">
-    <Spinner/>
+    {/*<Spinner/>*/}
 </div>;
 
 const SafariIOS = dynamic(() => import("./Guide/SafariIOS"), {loading: () => <Loading/>});
@@ -42,16 +42,19 @@ export const InstallAppModal = () => {
         </>
     )
 
-    const [installGuidePrompt, setInstallGuidePrompt] = useState<InstallAppModalPromptType>("other");
-    const [showModal, setShowModal] = useState<boolean>(false);
+    const [showGuideModal, setShowGuideModal] = useState<boolean>(false);
+    const [canInstall, setCanInstall] = useState<boolean>(false);
+    const [showInstallModal, setShowInstallModal] = useState<boolean>(false);
     const closeModal = () => {
-        setShowModal(false);
+        setShowInstallModal(false);
+        setShowGuideModal(false);
     }
     const doNotShowAgain = () => {
         const date = new Date();
         date.setMonth(date.getMonth() + 1);
         setCookie(COOKIE_NAME, "NOT_YET", {expires: date});
-        setShowModal(false);
+        setShowInstallModal(false);
+        setShowGuideModal(false);
     }
 
     const handleInstall = () => {
@@ -65,7 +68,7 @@ export const InstallAppModal = () => {
                 }
             })
             setPrompt(null)
-            setShowModal(false)
+            setShowInstallModal(false)
         }
     }
 
@@ -73,61 +76,52 @@ export const InstallAppModal = () => {
 
     useEffect(() => {
         const handleBeforeInstallPrompt = (event: any) => {
-            console.log("Handle")
             event.preventDefault()
             setPrompt(event)
-            setShowModal(true)
+            setShowInstallModal(true)
+            setShowGuideModal(false)
+            setCanInstall(true)
         }
-
         if (getCookie(COOKIE_NAME) !== "NOT_YET" && !isStandalone) {
             if (!!userAgent && !["Safari", "Firefox", "FirefoxiOS"].includes(userAgent)) {
                 window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
                 return () => {
                     window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
                 }
-            } else {
-                if (isMobile && isIOS && userAgent === "Safari") {
-                    setInstallGuidePrompt("safariIOS");
-                } else if (isMobile && isIOS && userAgent === "FirefoxiOS") {
-                    setInstallGuidePrompt("firefoxIOS");
-                } else if (isMobile && isIOS && userAgent === "ChromeiOS") {
-                    setInstallGuidePrompt("chromeIOS");
-                } else if (isMobile && userAgent === "Chrome") {
-                    setInstallGuidePrompt("chromeAndroid");
-                } else if (isMobile && userAgent === "Firefox") {
-                    setInstallGuidePrompt("firefoxAndroid");
-                } else {
-                    setInstallGuidePrompt("other");
-                }
             }
         }
-    }, [isStandalone]);
+    }, [isStandalone, userAgent]);
 
 
-    const Prompt = () => (
-        <>
-            {
-                {
-                    safariIOS: <SafariIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
-                    firefoxIOS: <FirefoxIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
-                    chromeIOS: <ChromeIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+    useEffect(() => {
+        setTimeout(() => {
+            setShowGuideModal(true)
+        }, 3000)
+    }, [canInstall]);
 
-                    chromeAndroid: <ChromeAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
-                    firefoxAndroid: <FirefoxAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
 
-                    other: <OtherBrowser closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
-                }[installGuidePrompt]
-            }
-        </>
-    );
-    if (!!installGuidePrompt) return <Prompt/>;
+    if(getCookie(COOKIE_NAME) !== "NOT_YET" && !isStandalone && !canInstall && showGuideModal) {
+        if (isMobile && isIOS && userAgent === "Safari") {
+            return <SafariIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        } else if (isMobile && isIOS && userAgent === "FirefoxiOS") {
+            return <FirefoxIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        } else if (isMobile && isIOS && userAgent === "ChromeiOS") {
+            return <ChromeIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        } else if (isMobile && userAgent === "Chrome") {
+            return <ChromeAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        } else if (isMobile && userAgent === "Firefox") {
+            return <FirefoxAndroid closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        } else {
+            return <OtherBrowser closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+        }
+    }
 
 
     return <>
         <Modal
             //
             backdrop="blur"
-            isOpen={showModal}
+            isOpen={showInstallModal}
             onClose={closeModal}
             className="z-[102]"
             dir="rtl"
