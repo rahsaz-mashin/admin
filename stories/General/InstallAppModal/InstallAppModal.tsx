@@ -86,15 +86,15 @@ export const InstallAppModal = () => {
                     window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
                 }
             } else {
-                if (isIOS && userAgent === "Safari") {
+                if (isMobile && isIOS && userAgent === "Safari") {
                     setInstallGuidePrompt("safariIOS");
-                } else if (isIOS && userAgent === "FirefoxiOS") {
+                } else if (isMobile && isIOS && userAgent === "FirefoxiOS") {
                     setInstallGuidePrompt("firefoxIOS");
-                } else if (isIOS && userAgent === "ChromeiOS") {
+                } else if (isMobile && isIOS && userAgent === "ChromeiOS") {
                     setInstallGuidePrompt("chromeIOS");
-                } else if (userAgent === "Chrome") {
+                } else if (isMobile && userAgent === "Chrome") {
                     setInstallGuidePrompt("chromeAndroid");
-                } else if (userAgent === "Firefox") {
+                } else if (isMobile && userAgent === "Firefox") {
                     setInstallGuidePrompt("firefoxAndroid");
                 } else {
                     setInstallGuidePrompt("other");
