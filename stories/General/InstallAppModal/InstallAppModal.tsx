@@ -26,8 +26,7 @@ type InstallAppModalPromptType =
     | "chromeIOS"
     | "chromeAndroid"
     | "firefoxAndroid"
-    | "other"
-    | "";
+    | "other";
 const COOKIE_NAME = "show-install-app-prompt";
 
 export const InstallAppModal = () => {
@@ -43,7 +42,7 @@ export const InstallAppModal = () => {
         </>
     )
 
-
+    const [installGuidePrompt, setInstallGuidePrompt] = useState<InstallAppModalPromptType>("other");
     const [showModal, setShowModal] = useState<boolean>(false);
     const closeModal = () => {
         setShowModal(false);
@@ -59,7 +58,7 @@ export const InstallAppModal = () => {
         if (!!prompt) {
             prompt.prompt()
             prompt.userChoice.then((result: any) => {
-                if(result.outcome === "accepted") {
+                if (result.outcome === "accepted") {
                     console.log("Accepted")
                 } else {
                     console.log("Canceled")
@@ -77,17 +76,51 @@ export const InstallAppModal = () => {
             console.log("Handle")
             event.preventDefault()
             setPrompt(event)
-            if (getCookie(COOKIE_NAME) !== "NOT_YET") {
-                if (!isStandalone) {
-                    setShowModal(true)
+            setShowModal(true)
+        }
+
+        if (getCookie(COOKIE_NAME) !== "NOT_YET" && !isStandalone) {
+            if (!!userAgent && !["Safari", "Firefox", "FirefoxiOS"].includes(userAgent)) {
+                window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+                return () => {
+                    window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+                }
+            } else {
+                if (isIOS && userAgent === "Safari") {
+                    setInstallGuidePrompt("safariIOS");
+                } else if (isIOS && userAgent === "FirefoxiOS") {
+                    setInstallGuidePrompt("firefoxIOS");
+                } else if (isIOS && userAgent === "ChromeiOS") {
+                    setInstallGuidePrompt("chromeIOS");
+                } else if (userAgent === "Chrome") {
+                    setInstallGuidePrompt("chromeAndroid");
+                } else if (userAgent === "Firefox") {
+                    setInstallGuidePrompt("firefoxAndroid");
+                } else {
+                    setInstallGuidePrompt("other");
                 }
             }
         }
-        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-        return () => {
-            window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-        }
     }, [isStandalone]);
+
+
+    const Prompt = () => (
+        <>
+            {
+                {
+                    safariIOS: <SafariIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+                    firefoxIOS: <FirefoxIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+                    chromeIOS: <ChromeIOS closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+
+                    chromeAndroid: <Chrome closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+                    firefoxAndroid: <Firefox closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>,
+
+                    other: <OtherBrowser closePrompt={closeModal} doNotShowAgain={doNotShowAgain}/>
+                }[installGuidePrompt]
+            }
+        </>
+    );
+    if (!!installGuidePrompt) return <Prompt/>;
 
 
     return <>
@@ -109,29 +142,11 @@ export const InstallAppModal = () => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" variant="shadow" onPress={handleInstall}>نصب می کنم</Button>
-                    {/*<Button onClick={doNotShowAgain}>آموزش نصب</Button>*/}
                     <Button onPress={doNotShowAgain}>تمایلی ندارم</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
     </>
 
-    // const Prompt = () => (
-    //     <>
-    //         {
-    //             {
-    //                 safariIOS: <SafariIOS closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //                 firefoxIOS: <FirefoxIOS closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //                 chromeIOS: <ChromeIOS closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //
-    //                 chromeAndroid: <Chrome closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //                 firefoxAndroid: <Firefox closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //
-    //                 other: <OtherBrowser closePrompt={closePrompt} doNotShowAgain={doNotShowAgain}/>,
-    //                 "": "HelloWorld",
-    //             }[displayPrompt]
-    //         }
-    //     </>
-    // );
-    // return displayPrompt !== "" ? <Prompt/> : null;
+
 }
