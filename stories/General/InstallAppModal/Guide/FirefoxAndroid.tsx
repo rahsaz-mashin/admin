@@ -28,6 +28,8 @@ export default function FirefoxAndroid(props: Props) {
             className="z-[102]"
             dir="rtl"
             placement="center"
+            isDismissable={false}
+            hideCloseButton
             classNames={{wrapper: "z-[102]", backdrop: "z-[102]", closeButton: "right-auto left-1"}}
             title={header}
         >
