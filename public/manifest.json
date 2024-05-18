@@ -5,6 +5,7 @@
     "display": "standalone",
     "display_override": ["standalone", "window-controls-overlay"],
     "start_url": "/",
+    "scope": ".",
     "name":  "راهساز ماشین",
     "short_name": "راهساز ماشین",
     "description" : "اولین وبسایت حرفه ای در زمینه ماشین های راهسازی در ایران",

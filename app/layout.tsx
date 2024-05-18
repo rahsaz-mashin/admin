@@ -6,7 +6,7 @@ import {IRANSansX} from "@/lib/font";
 import {Providers} from "./providers";
 import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
 // @ts-ignore
-import * as sw from "/sw"
+import * as sw from "@/public/sw"
 
 
 export const metadata: Metadata = {
