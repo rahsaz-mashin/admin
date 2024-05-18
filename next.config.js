@@ -3,7 +3,7 @@ const defaultRuntimeCaching = require("next-pwa/cache");
 
 
 const nextConfig = {
-    // reactStrictMode: false,
+    reactStrictMode: false,
     output: 'standalone'
 }
 
