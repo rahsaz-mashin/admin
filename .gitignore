@@ -42,9 +42,11 @@ next-env.d.ts
 
 # PWA files
 **/public/sw.js
-**/public/workbox-*.js
-**/public/worker-*.js
 **/public/sw.js.map
+**/public/service-worker.js
+**/public/service-worker.map
+**/public/workbox-*.js
 **/public/workbox-*.js.map
+**/public/worker-*.js
 **/public/worker-*.js.map
 **/public/fallback-*.js

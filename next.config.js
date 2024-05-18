@@ -1,17 +1,14 @@
 /** @type {import('next').NextConfig} */
 const defaultRuntimeCaching = require("next-pwa/cache");
+const withPWA = require('next-pwa')
 
 
-const nextConfig = {
-    reactStrictMode: false,
-    output: 'standalone'
-}
-
-const withPWA = require('next-pwa')({
+const pwaOptions = {
     dest: 'public',
     register: true,
-    skipWaiting: true,
-    scope: ".",
+    skipWaiting: false,
+    sw: "service-worker.js",
+    // aggressiveFrontEndNavCaching: true,
     runtimeCaching: [
         // {
         //     urlPattern: /\/~offline/,
@@ -29,13 +26,21 @@ const withPWA = require('next-pwa')({
     ],
     cacheOnFrontEndNav: true,
     reloadOnOnline: true,
-    fallbacks: {
-        //image: "/static/images/fallback.png",
-        document: "/~offline",
-        // font: '/static/font/fallback.woff2',
-        // audio: ...,
-        // video: ...,
-    },
-})
+    // fallbacks: {
+    //     //image: "/static/images/fallback.png",
+    //     document: "/~offline",
+    //     // font: '/static/font/fallback.woff2',
+    //     // audio: ...,
+    //     // video: ...,
+    // },
+}
 
-module.exports = withPWA(nextConfig)
+
+const nextConfig = {
+    reactStrictMode: false,
+    output: 'standalone',
+    swcMinify: true
+}
+
+
+module.exports = withPWA(pwaOptions)(nextConfig)
