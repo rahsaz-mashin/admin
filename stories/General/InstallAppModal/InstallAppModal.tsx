@@ -76,6 +76,7 @@ export const InstallAppModal = () => {
 
     useEffect(() => {
         const handleBeforeInstallPrompt = (event: any) => {
+            console.log("bfpmt")
             event.preventDefault()
             setPrompt(event)
             setShowInstallModal(true)
@@ -83,21 +84,21 @@ export const InstallAppModal = () => {
             setCanInstall(true)
         }
         if (getCookie(COOKIE_NAME) !== "NOT_YET" && !isStandalone) {
-            if (!!userAgent && !["Safari", "Firefox", "FirefoxiOS"].includes(userAgent)) {
-                window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-                return () => {
-                    window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
-                }
+            console.log("bbbbb", isStandalone)
+            console.log({userAgent, isMobile, isStandalone, isIOS})
+            window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+            return () => {
+                window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
             }
         }
-    }, [isStandalone, userAgent]);
+    }, [isStandalone]);
 
 
     useEffect(() => {
         setTimeout(() => {
             setShowGuideModal(true)
-        }, 3000)
-    }, [canInstall]);
+        }, 5000)
+    }, []);
 
 
     if(getCookie(COOKIE_NAME) !== "NOT_YET" && !isStandalone && !canInstall && showGuideModal) {

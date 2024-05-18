@@ -49,6 +49,8 @@ export function useUserAgent() {
             // Check if app is installed (if it's installed we wont show the prompt)
             if (window.matchMedia('(display-mode: standalone)').matches) {
                 setIsStandalone(true);
+            } else {
+                setIsStandalone(false);
             }
         }
     }, []);
