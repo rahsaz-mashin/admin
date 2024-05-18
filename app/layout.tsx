@@ -1,12 +1,13 @@
+import React from "react";
 import "@/styles/globals.css";
 import {Metadata, Viewport} from "next";
 import {rootConfig} from "@/config/root";
 import {IRANSansX} from "@/lib/font";
 import {Providers} from "./providers";
-
-
-import React from "react";
 import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
+// @ts-ignore
+import * as sw from "/sw"
+
 
 export const metadata: Metadata = {
     title: {
