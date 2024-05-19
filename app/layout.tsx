@@ -5,8 +5,6 @@ import {rootConfig} from "@/config/root";
 import {IRANSansX} from "@/lib/font";
 import {Providers} from "./providers";
 import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
-// @ts-ignore
-import * as sw from "/service-worker.js"
 
 
 export const metadata: Metadata = {
@@ -32,7 +30,7 @@ export const metadata: Metadata = {
         type: "website",
         siteName: rootConfig.name,
         title: {
-            default:  rootConfig.name,
+            default: rootConfig.name,
             template: `${rootConfig.name} | %s`,
         },
         description: rootConfig.description,
@@ -40,7 +38,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary",
         title: {
-            default:  rootConfig.name,
+            default: rootConfig.name,
             template: `${rootConfig.name} | %s`,
         },
         description: rootConfig.description,
@@ -64,15 +62,16 @@ export default function RootLayout({children, params: {locale}}: {
 }) {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
-            <body
-                className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth", IRANSansX.className].join(" ")}>
-                <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
-                    <main className="relative flex flex-col h-full w-full">
-                        {children}
-                        <InstallAppModal />
-                    </main>
-                </Providers>
-            </body>
+        <body
+            className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth", IRANSansX.className].join(" ")}
+        >
+        <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
+            <main className="relative flex flex-col h-full w-full">
+                {children}
+            </main>
+            <InstallAppModal/>
+        </Providers>
+        </body>
         </html>
     );
 }
