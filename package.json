@@ -75,6 +75,7 @@
     "@storybook/react": "^8.0.10",
     "@storybook/test": "^8.0.10",
     "@types/react-custom-scrollbars": "^4.0.13",
+    "@types/three": "^0.164.0",
     "eslint-plugin-storybook": "^0.8.0",
     "storybook": "^8.0.10",
     "storybook-dark-mode": "^4.0.1",
