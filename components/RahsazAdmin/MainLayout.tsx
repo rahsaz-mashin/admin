@@ -245,7 +245,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                         return <div key="scrollbarThumbY" {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
                     },
                 }}
-                className="!h-[calc(100vh-env(safe-area-inset-bottom)-env(safe-area-inset-top))]"
+                className="!fixed !h-full"
             >
                 <RahsazAdmin.MainLayout
                     workspaceItems={workspaceItems}
