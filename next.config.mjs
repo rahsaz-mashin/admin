@@ -5,16 +5,7 @@ const withPWA = withPWAInit({
     register: true,
     skipWaiting: true,
     cacheOnFrontEndNav: true,
-    reloadOnOnline: true,
-    // runtimeCaching: true,
-    // workboxOptions: {
-    //     runtimeCaching: [
-    //         // Your runtimeCaching array
-    //     ],
-    // },
-    // fallbacks: {
-    //     document: "/~offline",
-    // }
+    reloadOnOnline: true
 });
 
 export default withPWA({

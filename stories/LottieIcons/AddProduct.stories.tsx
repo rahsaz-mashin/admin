@@ -7,18 +7,21 @@ const animationData = `{"v":"5.12.2","fr":60,"ip":0,"op":75,"w":48,"h":48,"nm":"
 
 export default {
     title: "LottieIcons/AddProduct",
-    component: ({iconRef}: { iconRef: React.MutableRefObject<any> }) => {
+    component: ({iconRef, loop, autoplay}: { iconRef?: React.MutableRefObject<any>, loop?: boolean, autoplay?: boolean }) => {
         return (
             <Lottie
                 lottieRef={iconRef}
                 animationData={JSON.parse(animationData)}
-                loop={true}
-                autoplay={false}
+                loop={loop}
+                autoplay={autoplay}
             />
         );
     },
 };
 
 export const Icon = {
-    args: {},
+    args: {
+        loop: true,
+        autoplay: true
+    },
 };
