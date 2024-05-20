@@ -77,7 +77,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                 />
             </div>
             <main className="flex w-full min-h-screen flex-col h-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
-                <nav className="w-32 fixed flex flex-col h-full">
+                <nav className="hidden w-32 fixed md:flex flex-col h-full">
                     <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
                         <Logo size={60}/>
                     </Link>
@@ -86,11 +86,12 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                     />
                 </nav>
                 <aside className="flex-1 flex flex-col md:pr-32 h-full">
-                    <header className="h-20 w-full flex items-center">
+                    <header className="h-20 w-full hidden md:flex items-center">
                         header
                     </header>
                     <section
-                        className="flex-[1_1_0] bg-white overflow-x-hidden max-h-fit m-3  rounded-3xl shadow-2xl mr-0 ">
+                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit m-0 md:m-3 md:mr-0 rounded-none md:rounded-3xl shadow-2xl  "
+                    >
                         <Scrollbar
                             wrapperProps={{
                                 renderer: (props) => {
@@ -178,7 +179,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             </div>
                         </Scrollbar>
                     </section>
-                    <footer className="h-16 flex items-center">
+                    <footer className="h-16 items-center hidden md:flex">
                         footer
                     </footer>
                 </aside>
