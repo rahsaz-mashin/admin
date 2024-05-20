@@ -63,12 +63,13 @@ export default function RootLayout({children, params: {locale}}: {
     return (
         <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
         <body
-            className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth", IRANSansX.className].join(" ")}
+            className={["min-h-screen bg-background overflow-hidden select-none antialiased scroll-smooth", IRANSansX.className].join(" ")}
         >
         <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
             <main className="relative flex flex-col h-full w-full">
                 {children}
             </main>
+
             <InstallAppModal/>
         </Providers>
         </body>

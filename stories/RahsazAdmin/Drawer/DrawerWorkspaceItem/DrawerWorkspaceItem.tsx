@@ -1,6 +1,5 @@
 import React from "react";
 import {Tooltip} from "@nextui-org/tooltip";
-import {usePathname, useRouter} from "next/navigation";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerWorkspaceItemProps = {

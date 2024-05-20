@@ -187,7 +187,7 @@ const headerProps = {
 
 
 
-const MainLayout = ({children}: { children: React.ReactNode }) => {
+const RahsazAdminMainLayout = ({children}: { children: React.ReactNode }) => {
     return (
         <>
             <Scrollbar
@@ -212,7 +212,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                                 {...restProps}
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
-                                style={{...style, height: "6px", left: 0, width: "100%", borderRadius: 0}}
+                                style={{...style, height: "4px", left: 0, width: "100%", borderRadius: 0}}
                                 key="scrollbarTrackX"
                             />
                         );
@@ -234,7 +234,7 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
                                 {...restProps}
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
-                                style={{...style, width: "6px", top: 0, height: "100%", borderRadius: 0}}
+                                style={{...style, width: "4px", top: 0, height: "100%", borderRadius: 0}}
                             />
                         );
                     },
@@ -261,4 +261,4 @@ const MainLayout = ({children}: { children: React.ReactNode }) => {
 }
 
 
-export default MainLayout
+export default RahsazAdminMainLayout

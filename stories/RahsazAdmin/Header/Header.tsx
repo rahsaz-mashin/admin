@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {BreadcrumbItem, Breadcrumbs, Button} from "@nextui-org/react";
-import {useRouter} from "next/navigation";
+import {useRouter} from "next-nprogress-bar";
 import {BackIcon, RefreshIcon, SeparatorIcon} from "@/stories/Icons";
 
 

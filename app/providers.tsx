@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import {NextUIProvider} from "@nextui-org/react";
-import {useRouter} from 'next/navigation'
+import {useRouter} from 'next-nprogress-bar'
 import {ThemeProvider as NextThemesProvider} from "next-themes";
 import {ThemeProviderProps} from "next-themes/dist/types";
+import {AppProgressBar as ProgressBar} from "next-nprogress-bar";
 
 
 
@@ -20,6 +21,14 @@ export function Providers({children, themeProps}: ProvidersProps) {
         <NextUIProvider navigate={router.push}>
             <NextThemesProvider {...themeProps}>
                 {children}
+                <ProgressBar
+                    height="3px"
+                    color="#FF921F"
+                    options={{ showSpinner: true }}
+                    shallowRouting
+                    stopDelay={500}
+                    disableSameURL={false}
+                />
             </NextThemesProvider>
         </NextUIProvider>
     );

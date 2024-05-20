@@ -1,6 +1,5 @@
 import {motion} from "framer-motion";
 import React from "react";
-import {usePathname, useRouter} from "next/navigation";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerMenuItemProps = {

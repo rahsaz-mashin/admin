@@ -3,9 +3,7 @@
 import React, {useRef, useState} from "react";
 import {Button, Card, CardBody, CardFooter} from "@nextui-org/react";
 import {Tooltip} from "@nextui-org/tooltip";
-import {CardHeader} from "@nextui-org/card";
-import {CloseIcon, HelpOutlineIcon} from "@/stories/Icons";
-import {usePathname, useRouter} from "next/navigation";
+import { HelpOutlineIcon} from "@/stories/Icons";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
 

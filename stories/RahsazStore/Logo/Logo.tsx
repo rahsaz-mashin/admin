@@ -2,7 +2,7 @@ import React from "react";
 
 export const Logo = ({size = 80}: { size?: number }) => {
     return (
-        <div className={`transition duration-1000 hover:scale-110 active:scale-80`} style={{width: `${size}px`}}>
+        <div className="transition duration-1000 hover:scale-110 active:scale-80" style={{width: `${size}px`}}>
             <svg viewBox="0 0 33 36" fill="none" xmlns="http://www.w3.org/2000/svg" height={size} width={size}>
                 <g clipPath="url(#clip0_663_9268)">
                     <path

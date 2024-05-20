@@ -1,4 +1,4 @@
-import {useRouter} from "next/navigation";
+import {useRouter} from "next-nprogress-bar";
 
 export const useRouteManager = (workspace: string, section: string) => {
     const router = useRouter();

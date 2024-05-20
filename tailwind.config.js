@@ -8,9 +8,13 @@ module.exports = {
         './app/**/*.{js,ts,jsx,tsx,mdx}',
         './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
     ],
-    theme: {
 
+theme: {
         extend: {
+            backgroundImage: {
+                'store-navigation-up': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M0 0.5V30.5H30C13.4315 30.5 0 17.0685 0 0.5Z' /></svg>")`,
+                'store-navigation-down': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M0 30V0H30C13.4315 0 0 13.4315 0 30Z' /></svg>")`,
+            },
             colors: {
                 transparent: 'transparent',
                 current: 'currentColor',

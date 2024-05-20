@@ -1,6 +1,6 @@
 import {Metadata} from "next"
 import React from "react"
-import MainLayout from "@/components/RahsazAdmin/MainLayout";
+import RahsazAdminMainLayout from "@/components/RahsazAdminMainLayout";
 
 export const metadata: Metadata = {
     title: "پنل مدیریت",
@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function Layout({children}: { children: React.ReactNode }) {
     return (
-        <MainLayout>
+        <RahsazAdminMainLayout>
             {children}
-        </MainLayout>
+        </RahsazAdminMainLayout>
     );
 }

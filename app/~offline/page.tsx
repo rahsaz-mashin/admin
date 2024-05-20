@@ -4,7 +4,7 @@ import React from "react";
 import {ErrorIcon} from "@/stories/LottieIcons";
 import {Button} from "@nextui-org/react";
 import {Home, Refresh} from "@mui/icons-material";
-import {useRouter} from "next/navigation";
+import {useRouter} from "next-nprogress-bar";
 
 export default function Page() {
     const router = useRouter()
