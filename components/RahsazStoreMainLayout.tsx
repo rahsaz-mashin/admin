@@ -9,6 +9,12 @@ import {Logo} from "@/stories/General";
 import Link from "next/link";
 import {Navigation} from "@/stories/RahsazStore/Navigation";
 import {HomeIcon} from "@/stories/Icons";
+import {CallWidget} from "@/stories/RahsazStore";
+import {TopShortcut} from "@/stories/RahsazStore/TopShortcut";
+import {MyWalletButton} from "@/stories/RahsazStore/MyWalletButton";
+import {MyCartButton} from "@/stories/RahsazStore/MyCartButton";
+import {NotificationsButton} from "@/stories/RahsazStore/NotificationsButton";
+import {UserButton} from "@/stories/RahsazStore/UserButton";
 
 
 const menuItems = [
@@ -85,12 +91,19 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         menuItems={menuItems}
                     />
                 </nav>
-                <aside className="flex-1 flex flex-col md:pr-32 h-full">
-                    <header className="h-20 w-full hidden md:flex items-center">
-                        header
+                <aside className="flex-1 flex flex-col gap-0 md:pr-32 h-full">
+                    <header className="w-full hidden py-4 h-28 md:flex items-center">
+                        <div className="flex gap-4">
+                            <CallWidget />
+                            <TopShortcut />
+                            <MyWalletButton />
+                            <MyCartButton />
+                            <NotificationsButton />
+                            <UserButton />
+                        </div>
                     </header>
                     <section
-                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit m-0 md:m-3 md:mr-0 rounded-none md:rounded-3xl shadow-2xl  "
+                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit m-0 md:me-3 rounded-none md:rounded-3xl shadow-2xl  "
                     >
                         <Scrollbar
                             wrapperProps={{

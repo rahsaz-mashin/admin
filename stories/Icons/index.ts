@@ -7,6 +7,10 @@ import HelpOutline from "@/stories/Icons/HelpOutline.stories";
 import Back from "@/stories/Icons/Back.stories";
 import Refresh from "@/stories/Icons/Refresh.stories";
 import Home from "@/stories/Icons/Home.stories";
+import MyWallet from "@/stories/Icons/MyWallet.stories";
+import MyCart from "@/stories/Icons/MyCart.stories";
+import Notifications from "@/stories/Icons/Notifications.stories";
+import User from "@/stories/Icons/User.stories";
 
 export const OutlinedCustomizationIcon = OutlinedCustomization.component;
 export const OutlinedArrowDownIcon = OutlinedArrowDown.component;
@@ -17,5 +21,9 @@ export const HelpOutlineIcon = HelpOutline.component;
 export const BackIcon = Back.component;
 export const RefreshIcon = Refresh.component;
 export const HomeIcon = Home.component;
+export const MyWalletIcon = MyWallet.component;
+export const MyCartIcon = MyCart.component;
+export const NotificationsIcon = Notifications.component;
+export const UserIcon = User.component;
 
 
