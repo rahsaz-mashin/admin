@@ -9,11 +9,11 @@ import {MyCartIcon} from "@/stories/Icons";
 export const MyCartButton = () => {
     return (
         <>
-            <div className="flex relative h-20 min-w-20 items-center justify-center">
-                <Card isHoverable isPressable shadow="lg" className="w-full h-full hover:text-primary transition-colors duration-500">
-                    <CardBody className="flex flex-row gap-2 items-center overflow-y-hidden">
+            <div className="flex relative h-20 min-w-20 items-center justify-center overflow-hidden">
+                <Card isHoverable isPressable shadow="none" className="w-full h-full hover:text-primary transition-colors duration-500" radius="lg">
+                    <CardBody className="flex flex-row gap-4 px-4 items-center justify-center overflow-y-hidden">
                         <MyCartIcon size={36} />
-                        <div className="lg:flex flex-col items-start hidden">
+                        <div className="xl:flex flex-col items-start hidden">
                             <span className="font-bold flex items-center text-black">
                                 800,000
                                 {" "}

@@ -91,9 +91,9 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         menuItems={menuItems}
                     />
                 </nav>
-                <aside className="flex-1 flex flex-col gap-0 md:pr-32 h-full">
+                <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
                     <header className="w-full hidden py-4 h-28 md:flex items-center">
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 w-full">
                             <CallWidget />
                             <TopShortcut />
                             <MyWalletButton />
@@ -103,7 +103,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         </div>
                     </header>
                     <section
-                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit m-0 md:me-3 rounded-none md:rounded-3xl shadow-2xl  "
+                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit rounded-none md:rounded-3xl shadow-2xl  "
                     >
                         <Scrollbar
                             wrapperProps={{

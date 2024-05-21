@@ -53,8 +53,8 @@ export const CallWidget = () => {
     const [callDuration, setCallDuration] = useState(0);
     return (
         <>
-            <div className="flex relative w-96 items-center justify-center h-20">
-                <Card isHoverable shadow="lg" className="mr-6 w-full h-full">
+            <div className="flex relative w-96 min-w-96 max-w-96 items-center justify-center h-20">
+                <Card isHoverable shadow="none" className="mr-6 w-full h-full" radius="lg">
                     <AnimatePresence>
                         {status === "default" && (
                             <MotionCardBody
