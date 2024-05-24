@@ -9,11 +9,13 @@ module.exports = {
         './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}'
     ],
 
-theme: {
+    theme: {
         extend: {
             backgroundImage: {
                 'store-navigation-up': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M0 0.5V30.5H30C13.4315 30.5 0 17.0685 0 0.5Z' /></svg>")`,
                 'store-navigation-down': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M0 30V0H30C13.4315 0 0 13.4315 0 30Z' /></svg>")`,
+                'store-header-start': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M30 30L0 30L-3.57746e-07 3.57746e-07C-1.60169e-07 16.5685 13.4315 30 30 30Z' /></svg>")`,
+                'store-header-end': `url("data:image/svg+xml,<svg width='30' height='30' viewBox='0 0 30 30' fill='white' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M0 30L30 30L30 3.57746e-07C30 16.5685 16.5685 30 0 30Z' /></svg>")`,
             },
             colors: {
                 transparent: 'transparent',

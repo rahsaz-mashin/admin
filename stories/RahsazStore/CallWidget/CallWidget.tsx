@@ -16,7 +16,13 @@ import {AnimatePresence, motion, useMotionValue} from "framer-motion";
 
 const MotionCardBody = motion(CardBody);
 
-export const CallWidget = () => {
+
+export type CallWidgetProps = {
+    className?: string;
+}
+
+
+export const CallWidget = ({className = ""}: CallWidgetProps) => {
     const [status, setStatus] = useState<"default" | "menu" | "calling">(
         "default"
     );
@@ -53,8 +59,8 @@ export const CallWidget = () => {
     const [callDuration, setCallDuration] = useState(0);
     return (
         <>
-            <div className="flex relative w-96 min-w-96 max-w-96 items-center justify-center h-20">
-                <Card isHoverable shadow="none" className="mr-6 w-full h-full" radius="lg">
+            <div className={className + " relative w-96 min-w-96 max-w-96 items-center justify-center h-20 flex"}>
+                <Card shadow="none" className="mr-6 w-full h-full" radius="lg">
                     <AnimatePresence>
                         {status === "default" && (
                             <MotionCardBody
@@ -83,7 +89,7 @@ export const CallWidget = () => {
                                 </div>
 
                                 <div className="flex flex-col p-3 justify-between">
-                                    <a href="t.me/">
+                                    <a href="https://t.me/">
                                         <svg
                                             className="w-5 h-5 transition text-black hover:text-telegram hover:scale-110 active:scale-90"
                                             viewBox="0 0 18 18"
@@ -97,7 +103,7 @@ export const CallWidget = () => {
                                             />
                                         </svg>
                                     </a>
-                                    <a href="instagram.com/">
+                                    <a href="https://instagram.com/">
                                         <svg
                                             className="w-5 h-5 transition text-black hover:text-instagram hover:scale-110 active:scale-90"
                                             viewBox="0 0 18 18"
@@ -118,7 +124,7 @@ export const CallWidget = () => {
                                             />
                                         </svg>
                                     </a>
-                                    <a href="whatsapp.com/">
+                                    <a href="https://whatsapp.com/">
                                         <svg
                                             className="w-5 h-5 transition text-black hover:text-whatsapp hover:scale-110 active:scale-90"
                                             viewBox="0 0 18 18"

@@ -1,8 +1,9 @@
 import React from "react";
 import "@/styles/globals.css";
+import "keen-slider/keen-slider.min.css"
+import {IRANSansX} from "@/lib/font";
 import {Metadata, Viewport} from "next";
 import {rootConfig} from "@/config/root";
-import {IRANSansX} from "@/lib/font";
 import {Providers} from "./providers";
 import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
 
@@ -69,7 +70,6 @@ export default function RootLayout({children, params: {locale}}: {
             <main className="relative flex flex-col h-full w-full">
                 {children}
             </main>
-
             <InstallAppModal/>
         </Providers>
         </body>

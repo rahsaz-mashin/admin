@@ -10,11 +10,13 @@ import Link from "next/link";
 import {Navigation} from "@/stories/RahsazStore/Navigation";
 import {HomeIcon} from "@/stories/Icons";
 import {CallWidget} from "@/stories/RahsazStore";
-import {TopShortcut} from "@/stories/RahsazStore/TopShortcut";
+import {HeaderBox} from "@/stories/RahsazStore/HeaderBox";
 import {MyWalletButton} from "@/stories/RahsazStore/MyWalletButton";
 import {MyCartButton} from "@/stories/RahsazStore/MyCartButton";
 import {NotificationsButton} from "@/stories/RahsazStore/NotificationsButton";
-import {UserButton} from "@/stories/RahsazStore/UserButton";
+import {ToolsButton} from "@/stories/RahsazStore/ToolsButton";
+import {NavBar} from "@/stories/RahsazStore/NavBar";
+import {Drawer} from "@/stories/RahsazStore/Drawer";
 
 
 const menuItems = [
@@ -69,134 +71,147 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
         const m = v.scrollTop / (v.scrollHeight - v.clientHeight) * 100
         setScroll(m)
     }
+    const [isDrawerOpen, setDrawerOpen] = useState(false)
 
 
     return (
         <>
-            <div className="absolute top-0 w-full z-50">
-                <Progress
-                    aria-label="Loading..."
-                    value={scroll}
-                    size="sm"
-                    color="primary"
-                    className="h-[3px]"
-                />
-            </div>
-            <main className="flex w-full min-h-screen flex-col h-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
-                <nav className="hidden w-32 fixed md:flex flex-col h-full">
-                    <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
-                        <Logo size={60}/>
-                    </Link>
-                    <Navigation
-                        menuItems={menuItems}
+            <Drawer
+                isOpen={isDrawerOpen}
+                setClose={() => setDrawerOpen(false)}
+            >
+                <div className="absolute top-0 w-full z-50 hidden md:block">
+                    <Progress
+                        aria-label="Loading..."
+                        value={scroll}
+                        size="sm"
+                        color="primary"
+                        className="h-[3px]"
                     />
-                </nav>
-                <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
-                    <header className="w-full hidden py-4 h-28 md:flex items-center">
-                        <div className="flex gap-4 w-full">
-                            <CallWidget />
-                            <TopShortcut />
-                            <MyWalletButton />
-                            <MyCartButton />
-                            <NotificationsButton />
-                            <UserButton />
-                        </div>
-                    </header>
-                    <section
-                        className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit rounded-none md:rounded-3xl shadow-2xl  "
-                    >
-                        <Scrollbar
-                            wrapperProps={{
-                                renderer: (props) => {
-                                    const {elementRef, style, ...restProps} = props;
-                                    return (
-                                        <div
-                                            {...restProps}
-                                            ref={elementRef}
-                                            style={{overflow: "hidden", position: "absolute", inset: "0px 0px 0px 0px"}}
-                                            key="scrollbarWrapper"
-                                        />
-                                    );
-                                },
-                            }}
-                            trackXProps={{
-                                renderer: (props) => {
-                                    const {elementRef, style, ...restProps} = props;
-                                    return (
-                                        <div
-                                            {...restProps}
-                                            ref={elementRef}
-                                            className="!bg-scrolltrack"
-                                            style={{
-                                                ...style,
-                                                height: "0px",
-                                                left: "0px",
-                                                bottom: "0px",
-                                                width: "100%",
-                                                borderRadius: "8px"
-                                            }}
-                                            key="scrollbarTrackX"
-                                        />
-                                    );
-                                },
-                            }}
-                            thumbXProps={{
-                                renderer: (props) => {
-                                    const {elementRef, style, ...restProps} = props;
-                                    return <div
-                                        key="scrollbarThumbX"
-                                        {...restProps}
-                                        ref={elementRef}
-                                        className="!bg-scrollthumb rounded-lg"
-                                    />;
-                                },
-                            }}
-                            // ========================
-                            trackYProps={{
-                                renderer: (props) => {
-                                    const {elementRef, style, ...restProps} = props;
-                                    return (
-                                        <div
-                                            key="scrollbarTrackY"
-                                            {...restProps}
-                                            ref={elementRef}
-                                            className="!bg-scrolltrack"
-                                            style={{
-                                                ...style,
-                                                width: "0px",
-                                                left: "0px",
-                                                top: "0px",
-                                                height: "100%",
-                                                borderRadius: "8px"
-                                            }}
-                                        />
-                                    );
-                                },
-                            }}
-                            thumbYProps={{
-                                renderer: (props) => {
-                                    const {elementRef, style, ...restProps} = props;
-                                    return <div
-                                        key="scrollbarThumbY"
-                                        {...restProps}
-                                        ref={elementRef}
-                                        className="!bg-scrollthumb rounded-lg"
-                                    />;
-                                },
-                            }}
-                            onScroll={onScroll}
-                            // className="!fixed !h-full"
-                        >
-                            <div className="p-4">
-                                {children}
+                </div>
+                <main className="flex w-full min-h-screen flex-col h-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
+                    <nav className="hidden w-32 fixed md:flex flex-col h-full">
+                        <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
+                            <Logo size={60}/>
+                        </Link>
+                        <Navigation
+                            menuItems={menuItems}
+                        />
+                    </nav>
+                    <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
+                        <header className="w-full z-10 md:py-4 flex flex-col md:flex-row items-center">
+                            <div className="flex gap-4 w-full">
+                                <CallWidget className="hidden md:flex"/>
+                                <HeaderBox/>
+                                <MyWalletButton/>
+                                <MyCartButton/>
+                                <NotificationsButton/>
+                                <ToolsButton/>
                             </div>
-                        </Scrollbar>
-                    </section>
-                    <footer className="h-16 items-center hidden md:flex">
-                        footer
-                    </footer>
-                </aside>
-            </main>
+                            <NavBar
+                                setDrawerOpen={() => setDrawerOpen(true)}
+                            />
+                        </header>
+                        <section
+                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit rounded-none md:rounded-3xl shadow-2xl  "
+                        >
+                            <Scrollbar
+                                wrapperProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, style, ...restProps} = props;
+                                        return (
+                                            <div
+                                                {...restProps}
+                                                ref={elementRef}
+                                                style={{
+                                                    overflow: "hidden",
+                                                    position: "absolute",
+                                                    inset: "0px 0px 0px 0px"
+                                                }}
+                                                key="scrollbarWrapper"
+                                            />
+                                        );
+                                    },
+                                }}
+                                trackXProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, style, ...restProps} = props;
+                                        return (
+                                            <div
+                                                {...restProps}
+                                                ref={elementRef}
+                                                className="!bg-scrolltrack"
+                                                style={{
+                                                    ...style,
+                                                    height: "0px",
+                                                    left: "0px",
+                                                    bottom: "0px",
+                                                    width: "100%",
+                                                    borderRadius: "8px"
+                                                }}
+                                                key="scrollbarTrackX"
+                                            />
+                                        );
+                                    },
+                                }}
+                                thumbXProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, style, ...restProps} = props;
+                                        return <div
+                                            key="scrollbarThumbX"
+                                            {...restProps}
+                                            ref={elementRef}
+                                            className="!bg-scrollthumb rounded-lg"
+                                        />;
+                                    },
+                                }}
+                                // ========================
+                                trackYProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, style, ...restProps} = props;
+                                        return (
+                                            <div
+                                                key="scrollbarTrackY"
+                                                {...restProps}
+                                                ref={elementRef}
+                                                className="!bg-scrolltrack"
+                                                style={{
+                                                    ...style,
+                                                    width: "0px",
+                                                    left: "0px",
+                                                    top: "0px",
+                                                    height: "100%",
+                                                    borderRadius: "8px"
+                                                }}
+                                            />
+                                        );
+                                    },
+                                }}
+                                thumbYProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, style, ...restProps} = props;
+                                        return <div
+                                            key="scrollbarThumbY"
+                                            {...restProps}
+                                            ref={elementRef}
+                                            className="!bg-scrollthumb rounded-lg"
+                                        />;
+                                    },
+                                }}
+                                onScroll={onScroll}
+                                // className="!fixed !h-full"
+                            >
+                                <div className="p-4">
+                                    {children}
+                                </div>
+                            </Scrollbar>
+                        </section>
+                        <footer className="h-16 items-center hidden md:flex">
+                            footer
+                        </footer>
+                    </aside>
+                </main>
+            </Drawer>
         </>
     )
 }
