@@ -88,7 +88,7 @@ export const Drawer = (
                                 }
                             }}
                         >
-                            {clockShowing ? <Clock/> : <Logo/>}
+                            {clockShowing ? <Clock/> : <Logo size={60}/>}
                         </div>
                         {/* sections items */}
                         <div className="absolute pb-[150px] min-h-[278px] h-full flex flex-col z-10 w-full">

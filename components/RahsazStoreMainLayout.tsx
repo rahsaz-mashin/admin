@@ -111,7 +111,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         className="h-[3px]"
                     />
                 </div>
-                <main className="flex w-full min-h-screen flex-col h-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
+                <main className="flex w-full h-full min-h-full min-w-full flex-col bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
                     <nav className="hidden w-32 fixed md:flex flex-col h-full">
                         <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
                             <Logo size={60}/>
@@ -135,7 +135,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             />
                         </header>
                         <section
-                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden max-h-fit rounded-none md:rounded-3xl shadow-2xl  "
+                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden h-full rounded-none md:rounded-3xl shadow-2xl  "
                         >
                             <Scrollbar
                                 wrapperProps={{
@@ -221,7 +221,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                     },
                                 }}
                                 onScroll={onScroll}
-                                // className="!fixed !h-full"
+                                className="!h-full !w-full"
                             >
                                 <div className="p-4">
                                     {children}
