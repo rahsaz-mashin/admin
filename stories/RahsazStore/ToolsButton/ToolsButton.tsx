@@ -39,7 +39,11 @@ export const ToolsButton = () => {
                             </CardBody>
                         </Card>
                     </DropdownTrigger>
-                    <DropdownMenu variant="faded" aria-label="Dropdown menu with description">
+                    <DropdownMenu
+                        color="primary"
+                        variant="shadow"
+                        aria-label="Dropdown menu with description"
+                    >
                         <DropdownSection title="ابزارها" showDivider>
                             <DropdownItem
                                 key="my-notifications"

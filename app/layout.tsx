@@ -6,6 +6,7 @@ import {Metadata, Viewport} from "next";
 import {rootConfig} from "@/config/root";
 import {Providers} from "./providers";
 import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
+import {Logo} from "@/stories/General";
 
 
 export const metadata: Metadata = {
@@ -62,14 +63,25 @@ export default function RootLayout({children, params: {locale}}: {
     params: { locale: string }
 }) {
     return (
-        <html lang="fa-IR" dir="rtl" suppressHydrationWarning>
+        <html lang="fa-IR" dir="rtl" className="selection:bg-primary/25 selection:text-primary select-none" suppressHydrationWarning>
         <body
-            className={["min-h-screen bg-background overflow-hidden select-none antialiased scroll-smooth", IRANSansX.className].join(" ")}
+            className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth", IRANSansX.className].join(" ")}
         >
         <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
-            <main className="relative flex flex-col h-full w-full">
+            <main className="relative flex flex-col h-full w-full print:hidden">
                 {children}
             </main>
+            <div className="hidden print:flex flex-col justify-center items-center h-screen w-screen">
+                <span className="text-center font-bold text-5xl text-primary">
+                    سامانه راهساز ماشین
+                </span>
+                <span className="text-lg">
+                    چیزی برای پرینت پیدا نشد 🥺
+                </span>
+                <div className="absolute opacity-25">
+                    <Logo size={250}/>
+                </div>
+            </div>
             <InstallAppModal/>
         </Providers>
         </body>
