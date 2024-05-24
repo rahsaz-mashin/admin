@@ -1,6 +1,5 @@
 "use client"
 
-import {useRouter} from 'next-nprogress-bar';
 import React, {useState} from "react";
 import Scrollbar from "react-scrollbars-custom";
 import {ScrollState} from "react-scrollbars-custom/dist/types/types";
@@ -17,6 +16,8 @@ import {NotificationsButton} from "@/stories/RahsazStore/NotificationsButton";
 import {ToolsButton} from "@/stories/RahsazStore/ToolsButton";
 import {NavBar} from "@/stories/RahsazStore/NavBar";
 import {Drawer} from "@/stories/RahsazStore/Drawer";
+import {useRouter, usePathname, useSearchParams} from "next/navigation";
+import useHash from "@/hooks/useHash";
 
 
 const menuItems = [
@@ -71,14 +72,35 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
         const m = v.scrollTop / (v.scrollHeight - v.clientHeight) * 100
         setScroll(m)
     }
-    const [isDrawerOpen, setDrawerOpen] = useState(false)
+
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+    const router = useRouter();
+
+    const isDrawerOpen = searchParams.get("drawer") !== null
+    const onOpenDrawer = () => {
+        if(!isDrawerOpen) {
+            const u = new URLSearchParams(searchParams)
+            u.set("drawer", "")
+            router.push(pathname + "?" + u.toString())
+        }
+    }
+
+    const onCloseDrawer = () => {
+        if(isDrawerOpen) {
+            const u = new URLSearchParams(searchParams)
+            u.delete("drawer")
+            router.push(pathname + "?" + u.toString())
+        }
+    }
+
 
 
     return (
         <>
             <Drawer
                 isOpen={isDrawerOpen}
-                setClose={() => setDrawerOpen(false)}
+                setClose={onCloseDrawer}
             >
                 <div className="absolute top-0 w-full z-50 hidden md:block">
                     <Progress
@@ -109,7 +131,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 <ToolsButton/>
                             </div>
                             <NavBar
-                                setDrawerOpen={() => setDrawerOpen(true)}
+                                setDrawerOpen={onOpenDrawer}
                             />
                         </header>
                         <section
