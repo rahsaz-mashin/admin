@@ -1,9 +1,6 @@
 import React, {ReactNode} from "react";
 import {CallWidget, LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
-import {Button, Card, CardBody} from "@nextui-org/react";
-import {HamburgerMenuIcon} from "@/stories/Icons";
-import {Input} from "@nextui-org/input";
-import {SearchIcon} from "@storybook/icons";
+import {Button} from "@nextui-org/react";
 import {Close} from "@mui/icons-material";
 
 export type DrawerProps = {
@@ -42,10 +39,11 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                     </div>
                     <div
                         onClick={isOpen ? setClose : undefined}
-                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] w-full transition-all duration-700 group md:h-full md:start-0 md:rounded-s-none ${isOpen ? "h-3/4 start-2/3 rounded-s-3xl is-active-drawer" : "h-full start-0 rounded-s-none"}`}
+                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 group md:h-full md:start-0 md:rounded-s-none ${isOpen ? "h-3/4 start-2/3 rounded-s-3xl is-active-drawer" : "h-full start-0 rounded-s-none"}`}
                     >
                         <div
-                            className="absolute cursor-pointer top-0 start-0 h-full w-full bg-black/10 z-0 hidden group-[.is-active-drawer]:block group-[.is-active-drawer]:z-30"/>
+                            className="absolute cursor-pointer top-0 start-0 h-full w-full bg-black/10 z-0 hidden group-[.is-active-drawer]:block group-[.is-active-drawer]:z-30"
+                        />
                         {children}
                     </div>
                 </div>
