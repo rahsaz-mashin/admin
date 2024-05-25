@@ -31,7 +31,7 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                                 <Close/>
                             </Button>
                             <div/>
-                            <div className="flex z-50 flex-col justify-center items-center gap-3">
+                            <div className="flex flex-col justify-center items-center gap-3">
                                 <CallWidget />
                                 <div className="flex gap-3 justify-center items-center">
                                     <LanguageSwitcher/>
