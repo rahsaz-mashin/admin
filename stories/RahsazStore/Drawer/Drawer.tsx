@@ -1,7 +1,9 @@
 import React, {ReactNode} from "react";
 import {CallWidget, LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
 import {Button} from "@nextui-org/react";
-import {Close} from "@mui/icons-material";
+import {Close, Home, HomeOutlined} from "@mui/icons-material";
+import {DrawerMenuItem} from "@/stories/RahsazStore/Drawer/DrawerMenuItem";
+import {HomeIcon} from "@/stories/Icons";
 
 export type DrawerProps = {
     isOpen: boolean;
@@ -15,7 +17,7 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
             <div className="w-full h-full absolute inset-0">
                 <div className="w-full h-full relative flex items-center">
                     <div className="start-0 top-0 w-full h-full p-3">
-                        <div className="relative flex w-full h-full flex-col justify-between items-center">
+                        <div className="relative flex w-full h-full gap-3 flex-col justify-between">
                             <Button
                                 variant="flat"
                                 radius="full"
@@ -27,9 +29,85 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                             >
                                 <Close/>
                             </Button>
-                            <div/>
+                            <div className="w-3/5 flex-1 overflow-x-hidden">
+                                <ul className="flex gap-2 flex-col">
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                        isActive
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                    <DrawerMenuItem
+                                        id=""
+                                        label="صفحه اصلی"
+                                        icon={HomeIcon}
+                                        url=""
+                                    />
+                                </ul>
+                            </div>
                             <div className="flex flex-col justify-center items-center gap-3">
-                                <CallWidget />
+                                <CallWidget/>
                                 <div className="flex gap-3 justify-center items-center">
                                     <LanguageSwitcher/>
                                     <ThemeSwitcher/>
@@ -39,7 +117,7 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                     </div>
                     <div
                         onClick={isOpen ? setClose : undefined}
-                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 group md:h-full md:start-0 md:rounded-s-none ${isOpen ? "h-3/4 start-2/3 rounded-s-3xl is-active-drawer" : "h-full start-0 rounded-s-none"}`}
+                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 group md:h-full md:start-0 md:rounded-s-none ${isOpen ? "h-3/5 start-2/3 rounded-s-3xl top-20 is-active-drawer" : "h-full start-0 top-0 rounded-s-none"}`}
                     >
                         <div
                             className="absolute cursor-pointer top-0 start-0 h-full w-full bg-black/10 z-0 hidden group-[.is-active-drawer]:block group-[.is-active-drawer]:z-30"
