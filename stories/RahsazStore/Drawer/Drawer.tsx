@@ -30,7 +30,7 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                                 <Close/>
                             </Button>
                             <div className="w-3/5 flex-1 overflow-x-hidden">
-                                <ul className="flex gap-2 flex-col">
+                                <ul className="flex gap-1.5 flex-col">
                                     <DrawerMenuItem
                                         id=""
                                         label="صفحه اصلی"

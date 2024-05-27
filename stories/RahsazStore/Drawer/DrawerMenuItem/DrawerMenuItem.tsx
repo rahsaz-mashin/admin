@@ -27,7 +27,7 @@ export const DrawerMenuItem = (
             key={id}
             initial={isActive ? "hover" : "rest"} whileHover="hover" animate={isActive ? "hover" : "rest"}
             // variants={color}
-            className={"group text-white rounded-lg active:scale-90 shrink select-none cursor-pointer transition-all relative h-11 gap-3 flex items-center" + (isActive ? " bg-black/20" : "")}
+            className={"group text-white rounded-lg active:scale-90 shrink select-none cursor-pointer transition-all relative h-11 gap-2 flex items-center" + (isActive ? " bg-black/20" : "")}
             // onClick={() => {
             //     router.push()
             // }}
