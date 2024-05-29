@@ -29,7 +29,7 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                             >
                                 <Close/>
                             </Button>
-                            <div className="w-3/5 flex-1 overflow-x-hidden">
+                            <div className="w-56 flex-1 overflow-x-hidden">
                                 <ul className="flex gap-1.5 flex-col">
                                     <DrawerMenuItem
                                         id=""
@@ -115,13 +115,13 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                             </div>
                         </div>
                     </div>
+                    {/*<div className="bg-yellow-500 h-full w-full">*/}
+
+                    {/*</div>*/}
                     <div
                         onClick={isOpen ? setClose : undefined}
-                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 group md:h-full md:start-0 md:rounded-s-none ${isOpen ? "h-3/5 start-2/3 rounded-s-3xl top-20 is-active-drawer" : "h-full start-0 top-0 rounded-s-none"}`}
+                        className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 md:h-full md:start-0 md:top-0 md:rounded-s-none ${isOpen ? "h-[calc(100%-250px)] start-3/4 top-14 rounded-s-3xl" : "h-full start-0 top-0 rounded-s-none"}`}
                     >
-                        <div
-                            className="absolute cursor-pointer top-0 start-0 h-full w-full bg-black/10 z-0 hidden group-[.is-active-drawer]:block group-[.is-active-drawer]:z-30"
-                        />
                         {children}
                     </div>
                 </div>

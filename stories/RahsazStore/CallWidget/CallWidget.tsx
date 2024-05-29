@@ -49,6 +49,10 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
             label: "پشتیبانی",
         },
         {
+            id: "finance",
+            label: "مالی",
+        },
+        {
             id: "management",
             label: "مدیریت",
         },
@@ -59,7 +63,7 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
     const [callDuration, setCallDuration] = useState(0);
     return (
         <>
-            <div className={className + " relative w-96 min-w-96 max-w-96 items-center justify-center h-20 flex"}>
+            <div className={className + " relative w-full max-w-96 items-center justify-center h-20 flex"}>
                 <Card shadow="none" className="mr-6 w-full h-full" radius="lg">
                     <AnimatePresence>
                         {status === "default" && (
@@ -70,7 +74,7 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                                 transition={{type: "spring"}}
                                 className="text-center relative overflow-hidden p-0 pr-6 cursor-pointer items-center flex flex-row select-none"
                             >
-                                <div className="flex flex-col w-full flex-1 text-sm px-1.5">
+                                <div className="flex flex-col flex-[1_1_0] truncate text-sm px-1.5">
                                     <a
                                         href="tel:+9851 3344 5566"
                                         className="hover:text-primary transition"
@@ -82,13 +86,12 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                                     </span>
                                     <a
                                         href="https://maps.app.goo.gl/RwzjMTQQn2Vdnfkk9"
-                                        className="hover:text-primary transition"
+                                        className="hover:text-primary transition overflow-y-hidden hide-scrollbar"
                                     >
-                                        ایران - مشهد - کوشش 27 - خبیری 15 - پلاک 117
+                                         مشهد - کوشش 27 - خبیری 15 - پلاک 117
                                     </a>
                                 </div>
-
-                                <div className="flex flex-col p-3 justify-between">
+                                <div className="flex flex-col p-3 min-w-8 justify-between">
                                     <a href="https://t.me/">
                                         <svg
                                             className="w-5 h-5 transition text-black hover:text-telegram hover:scale-110 active:scale-90"
@@ -171,7 +174,7 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                                         animate={{scaleX: 1}}
                                         exit={{scaleX: 0}}
                                         transition={{type: "spring"}}
-                                        className="flex gap-2 justify-center"
+                                        className="flex gap-2 overflow-y-hidden hide-scrollbar"
                                     >
                                         {callLines.map(({id, label}) => (
                                             <Button
