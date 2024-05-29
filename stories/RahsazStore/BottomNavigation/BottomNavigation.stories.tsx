@@ -1,8 +1,9 @@
-import {Navigation} from "./Navigation";
+import {BottomNavigation} from "./BottomNavigation";
+
 
 export default {
-    title: "RahsazStore/Navigation",
-    component: Navigation,
+    title: "RahsazStore/BottomNavigation",
+    component: BottomNavigation,
 };
 
 export const Default = {

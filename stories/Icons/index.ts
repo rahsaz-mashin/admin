@@ -14,6 +14,7 @@ import User from "@/stories/Icons/User.stories";
 import Dashboard from "@/stories/Icons/Dashboard.stories";
 import Logout from "@/stories/Icons/Logout.stories";
 import HamburgerMenu from "@/stories/Icons/HamburgerMenu.stories";
+import BackHistory from "@/stories/Icons/BackHistory.stories";
 
 
 
@@ -33,4 +34,4 @@ export const UserIcon = User.component;
 export const DashboardIcon = Dashboard.component;
 export const LogoutIcon = Logout.component;
 export const HamburgerMenuIcon = HamburgerMenu.component;
-
+export const BackHistoryIcon = BackHistory.component;

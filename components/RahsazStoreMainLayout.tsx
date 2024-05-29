@@ -18,6 +18,7 @@ import {NavBar} from "@/stories/RahsazStore/NavBar";
 import {Drawer} from "@/stories/RahsazStore/Drawer";
 import {useRouter, usePathname, useSearchParams} from "next/navigation";
 import useHash from "@/hooks/useHash";
+import {BottomNavigation} from "@/stories/RahsazStore/BottomNavigation";
 
 
 const menuItems = [
@@ -228,6 +229,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 </div>
                             </Scrollbar>
                         </section>
+                        <BottomNavigation />
                         <footer className="h-16 items-center hidden md:flex">
                             footer
                         </footer>

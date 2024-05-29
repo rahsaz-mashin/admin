@@ -1,10 +1,12 @@
 import Link from "next/link";
 import React from "react";
+import {Stories} from "@/stories/RahsazStore/Stories";
 
 
 export default function Page() {
     return (
         <section className="font-normal text-black gap-4">
+            <Stories />
             <Link href="/gate">
                 Gate
             </Link>

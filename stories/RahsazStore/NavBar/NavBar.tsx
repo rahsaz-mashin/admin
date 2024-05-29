@@ -1,9 +1,11 @@
 import React, {useState} from "react";
 import {Button} from "@nextui-org/react";
-import {HamburgerMenuIcon} from "@/stories/Icons";
+import {BackHistoryIcon, BackIcon, HamburgerMenuIcon} from "@/stories/Icons";
 import {Input} from "@nextui-org/input";
 import {SearchIcon} from "@storybook/icons";
-import {Drawer} from "@/stories/RahsazStore/Drawer";
+import {Badge} from "@nextui-org/badge";
+import {useRouter} from "next/navigation";
+
 
 
 export type NavBarProps = {
@@ -12,20 +14,41 @@ export type NavBarProps = {
 
 export const NavBar = ({setDrawerOpen}: NavBarProps) => {
 
+    const router = useRouter()
 
     return (
         <>
-            <div className="bg-white shadow-2xl px-3 py-3 gap-3 w-full flex items-center md:hidden">
-                <Button
-                    variant="light"
-                    color="primary"
-                    size="lg"
-                    isIconOnly
-                    onPress={() => setDrawerOpen()}
+            <div className="bg-white shadow-2xl px-2 py-2 gap-2 w-full flex items-center md:hidden">
+                <Badge
+                    content=""
+                    color="success"
+                    variant="shadow"
+                    shape="circle"
+                    size="md"
+                    showOutline={false}
+                    placement="top-right"
+                    className="animate-pulse"
                 >
-                    <HamburgerMenuIcon size={32}/>
-                </Button>
+                    <Button
+                        variant="light"
+                        color="primary"
+                        size="lg"
+                        isIconOnly
+                        onPress={() => setDrawerOpen()}
 
+                    >
+                        <HamburgerMenuIcon size={32}/>
+                    </Button>
+                </Badge>
+                {/*<Button*/}
+                {/*    variant="light"*/}
+                {/*    color="secondary"*/}
+                {/*    size="lg"*/}
+                {/*    isIconOnly*/}
+                {/*    onPress={() => router.back()}*/}
+                {/*>*/}
+                {/*    <BackHistoryIcon size={32}/>*/}
+                {/*</Button>*/}
                 <div className="flex-1">
                     <Input
                         type="search"
@@ -38,7 +61,9 @@ export const NavBar = ({setDrawerOpen}: NavBarProps) => {
                         }}
                     />
                 </div>
+
             </div>
+
 
         </>
     );
