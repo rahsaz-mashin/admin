@@ -15,6 +15,8 @@ import Dashboard from "@/stories/Icons/Dashboard.stories";
 import Logout from "@/stories/Icons/Logout.stories";
 import HamburgerMenu from "@/stories/Icons/HamburgerMenu.stories";
 import BackHistory from "@/stories/Icons/BackHistory.stories";
+import HomeNavigation from "@/stories/Icons/HomeNavigation.stories";
+import CartNavigation from "@/stories/Icons/CartNavigation.stories";
 
 
 
@@ -35,3 +37,5 @@ export const DashboardIcon = Dashboard.component;
 export const LogoutIcon = Logout.component;
 export const HamburgerMenuIcon = HamburgerMenu.component;
 export const BackHistoryIcon = BackHistory.component;
+export const HomeNavigationIcon = HomeNavigation.component;
+export const CartNavigationIcon = CartNavigation.component;

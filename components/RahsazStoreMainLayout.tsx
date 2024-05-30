@@ -224,12 +224,13 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 onScroll={onScroll}
                                 className="!h-full !w-full"
                             >
-                                <div className="p-4 select-text">
+                                <div className="p-4 select-text mb-20 md:mb-0">
                                     {children}
                                 </div>
+                                <BottomNavigation />
                             </Scrollbar>
                         </section>
-                        <BottomNavigation />
+
                         <footer className="h-16 items-center hidden md:flex">
                             footer
                         </footer>
