@@ -20,6 +20,30 @@ export default withPWA({
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'www.arshiarahsazmachine.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.arshiarahsazmachine.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
         ],
     }
 });
