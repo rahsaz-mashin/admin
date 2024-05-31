@@ -13,7 +13,7 @@ export const BottomNavigation = ({}: BottomNavigationProps) => {
     const m = pathname.split("/")
     return (
         <div
-            className="w-full fixed -bottom-0.5 flex md:hidden justify-center items-end text-white bg-center h-20"
+            className="w-full absolute -bottom-0.5 flex md:hidden justify-center items-end text-white bg-center h-20"
             style={{backgroundImage: `url(/assets/images/bottom-nav-bg.svg)`}}
         >
             <div className="flex w-[360px] h-[63px] px-8 justify-between items-center">
