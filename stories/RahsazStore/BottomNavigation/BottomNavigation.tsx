@@ -86,7 +86,7 @@ export const BottomNavigation = ({}: BottomNavigationProps) => {
                                 initial={{scale: 0, bottom: 0}}
                                 animate={{scale: 1, bottom: "80px"}}
                                 exit={{scale: 0, bottom: 0}}
-                                className="absolute z-20 h-full w-full flex justify-center items-center overflow-hidden text-black"
+                                className="absolute z-20 h-full w-full p-1 flex justify-center items-center overflow-hidden text-black"
                             >
                                 <Input
                                     type="search"
@@ -94,6 +94,8 @@ export const BottomNavigation = ({}: BottomNavigationProps) => {
                                     size="lg"
                                     isClearable
                                     fullWidth
+                                    autoFocus
+                                    variant="faded"
                                     startContent={
                                         <i className="text-default-500 cursor-pointer">
                                             <SearchIcon size={24}/>
@@ -101,7 +103,7 @@ export const BottomNavigation = ({}: BottomNavigationProps) => {
                                     }
                                     classNames={{
                                         input: "placeholder:text-default-500 dark:placeholder:text-white/60",
-                                        inputWrapper: "h-[56px]"
+                                        inputWrapper: "h-full"
                                     }}
                                 />
                             </motion.div>
