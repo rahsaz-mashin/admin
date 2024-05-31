@@ -11,5 +11,15 @@ const withPWA = withPWAInit({
 export default withPWA({
     reactStrictMode: false,
     output: 'standalone',
-    swcMinify: true
+    swcMinify: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'dkstatics-public.digikala.com',
+                port: '',
+                pathname: '/**',
+            },
+        ],
+    }
 });
