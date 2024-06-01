@@ -49,6 +49,16 @@ module.exports = {
                         background: "rgb(239 239 239)",
                         primary: {
                             DEFAULT: "#FF921F",
+                            50: "#FF921F",
+                            100: "#FF921F",
+                            200: "#ffc287",
+                            300: "#ffb365",
+                            400: "#ffa241",
+                            500: "#FF921F",
+                            600: "#FF921F",
+                            700: "#FF921F",
+                            800: "#FF921F",
+                            900: "#FF921F",
                         },
                         secondary: {
                             DEFAULT: "#0075FF",

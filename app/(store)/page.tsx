@@ -1,12 +1,15 @@
 import Link from "next/link";
 import React from "react";
 import {Stories} from "@/stories/RahsazStore/Stories";
+import {HomeSlider} from "@/stories/RahsazStore/HomeSlider";
+
 
 
 export default function Page() {
     return (
-        <section className="font-normal text-black gap-4">
-            <Stories />
+        <section className="font-normal text-black flex flex-col gap-4 py-4">
+            <Stories/>
+            <HomeSlider/>
             <Link href="/gate">
                 Gate
             </Link>

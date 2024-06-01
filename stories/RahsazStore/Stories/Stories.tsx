@@ -66,6 +66,7 @@ export const Stories = () => {
     const selected = items.find((v) => v.id === openStory)
     const handleOpenStory = (id: string) => () => {
         setOpenStory(id)
+
     }
     const handleCloseStory = () => {
         setOpenStory(null)
@@ -74,7 +75,7 @@ export const Stories = () => {
 
     return (
         <>
-            <div className="px-0 py-0 gap-4 w-full flex items-center overflow-y-hidden hide-scrollbar">
+            <div className="px-4 gap-4 w-full flex items-center overflow-y-hidden hide-scrollbar">
                 {items.map((v, i) => {
                     return (
                         <StoryItem
