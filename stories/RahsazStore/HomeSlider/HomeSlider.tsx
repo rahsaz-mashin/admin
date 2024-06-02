@@ -1,19 +1,17 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
-import {AnimatePresence, motion} from "framer-motion";
-import {Button, Image} from "@nextui-org/react";
-import NextImage from "next/image";
+import React, {useState} from "react";
+import {Button,} from "@nextui-org/react";
 import {useKeenSlider} from "keen-slider/react";
-import {Spinner} from "@nextui-org/spinner";
 import {CircularProgress} from "@nextui-org/progress";
-import {Timeout} from "@mui/utils/useTimeout";
-
+import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
+import {AnimatePresence, motion} from "framer-motion";
 
 export type HomeSliderItems = {
     id: string;
     title: string;
     subtitle: string;
+    description?: string;
     type: "image";
     image: string;
 }
@@ -30,6 +28,7 @@ const sliders: HomeSliderItems[] = [
         id: "2",
         title: "پیش فروش لوازم برقی",
         subtitle: "آغاز اولین پیش فروش راهساز ماشین به مدت محدود",
+        description: `<div style="color: gold;"><b><u>فقط</u></b> ویژه مشتریان طلایی</div>`,
         type: "image",
         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
     },
@@ -44,6 +43,7 @@ const sliders: HomeSliderItems[] = [
         id: "4",
         title: "واگذاری نماینده فروش راهساز ماشین",
         subtitle: "نمایندگی فروش راهساز ماشین به مدت محدود واگذار می شود",
+        description: `<div style="color: dodgerblue;">اطلاع از شرایط نماینده فروش</div>`,
         type: "image",
         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
     },
@@ -182,7 +182,7 @@ export const HomeSlider = () => {
         created() {
             setLoaded(true)
         },
-    }, [WheelControls, AutoSwitch(setProgress)])
+    }, [AutoSwitch(setProgress)])
 
 
     return (
@@ -241,7 +241,20 @@ export const HomeSlider = () => {
                             />
                         </svg>
                     </div>
-                    <div className="relative bg-blue-600 h-full w-full">
+                    <div className="relative bg-blue-600 h-full w-full overflow-hidden">
+                        <AnimatePresence>
+                            {!!sliders[currentSlide].description && (
+                                <motion.div
+                                    initial={{bottom: "-60px"}}
+                                    animate={{bottom: 0}}
+                                    exit={{bottom: "-60px"}}
+                                    className="absolute end-0 bg-gradient-to-b px-24 from-transparent to-black/50 text-center h-16 w-full flex justify-center items-center"
+                                >
+                                    <p className="truncate"
+                                       dangerouslySetInnerHTML={{__html: sliders[currentSlide].description || ""}}/>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                         <div className="absolute top-0 end-0 p-2">
                             <CircularProgress
                                 size="sm"
@@ -260,6 +273,64 @@ export const HomeSlider = () => {
                             <div className="text-primary font-black text-3xl drop-shadow-[1px_1px_0px_black]">
                                 {currentSlide + 1}
                             </div>
+                        </div>
+                        <div
+                            className="absolute top-0 end-0 p-2 h-full w-12 flex flex-col gap-1.5 justify-center items-center"
+                        >
+                            <span className="rounded-full bg-white/40 aspect-square w-2"/>
+                            <span className="rounded-full bg-white/70 aspect-square w-2.5"/>
+                            <span className="rounded-full bg-primary aspect-square w-3"/>
+                            <span className="rounded-full bg-white/70 aspect-square w-2.5"/>
+                            <span className="rounded-full bg-white/40 aspect-square w-2"/>
+                        </div>
+                        <div className="absolute bottom-0 start-0 flex gap-1.5 justify-center items-center text-white">
+                            <div className="relative">
+                                <svg
+                                    width="90"
+                                    height="40"
+                                    viewBox="0 0 90 40"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M22.7379 5.40857C24.9569 2.03273 28.7257 0 32.7655 0H90V40H0L22.7379 5.40857Z"
+                                    />
+                                </svg>
+                                <div
+                                    className="absolute top-0 end-0 w-full h-full flex justify-center items-center pe-5">
+                                    <Button
+                                        color="primary"
+                                        variant="light"
+                                        size="sm"
+                                        radius="md"
+                                        className="z-10"
+                                        isIconOnly
+                                        onClick={(e) => {
+                                            // @ts-ignore
+                                            e.stopPropagation() || instanceRef.current?.prev()
+                                        }}
+                                        isDisabled={currentSlide === 0}
+                                    >
+                                        <KeyboardArrowRight/>
+                                    </Button>
+                                    <Button
+                                        color="primary"
+                                        variant="light"
+                                        size="sm"
+                                        radius="md"
+                                        className="z-10"
+                                        isIconOnly
+                                        onClick={(e) => {
+                                            // @ts-ignore
+                                            e.stopPropagation() || instanceRef.current?.next()
+                                        }}
+                                        isDisabled={currentSlide === (instanceRef.current?.track?.details?.slides?.length || 0) - 1}
+                                    >
+                                        <KeyboardArrowLeft/>
+                                    </Button>
+                                </div>
+                            </div>
+
                         </div>
                         <div ref={sliderRef} className="keen-slider w-full h-full">
                             {sliders.map((v, i) => {

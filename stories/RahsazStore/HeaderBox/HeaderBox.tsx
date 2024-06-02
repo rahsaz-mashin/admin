@@ -78,7 +78,7 @@ export const HeaderBox = () => {
         created() {
             setLoaded(true)
         },
-    }, [WheelControls])
+    }, [])
 
     return (
         <div className="flex flex-[1_1_0] relative h-10 md:h-20 items-center justify-center overflow-hidden">
