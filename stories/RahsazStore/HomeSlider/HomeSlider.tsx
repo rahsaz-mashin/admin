@@ -1,11 +1,13 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import {Button, Image} from "@nextui-org/react";
 import NextImage from "next/image";
 import {useKeenSlider} from "keen-slider/react";
 import {Spinner} from "@nextui-org/spinner";
+import {CircularProgress} from "@nextui-org/progress";
+import {Timeout} from "@mui/utils/useTimeout";
 
 
 export type HomeSliderItems = {
@@ -114,8 +116,56 @@ const WheelControls = (slider: any) => {
     })
 }
 
+
+const duration = 5000
+const durationPart = 50
+
+const AutoSwitch = (setProgress: React.Dispatch<React.SetStateAction<number>>) => (slider: any) => {
+    let timeout: NodeJS.Timeout
+    let mouseOver = false
+
+    function clearNextTimeout() {
+        clearTimeout(timeout)
+    }
+
+    function nextTimeout() {
+        clearTimeout(timeout)
+        if (mouseOver) return
+        timeout = setInterval(() => {
+            setProgress((o: number) => {
+                const v = o + (durationPart / duration)
+                if (v > 1) {
+                    if (slider.slides.length === slider.track.details.rel + 1) slider.moveToIdx(0)
+                    else slider.next()
+                }
+                return v
+            })
+        }, durationPart)
+    }
+
+    slider.on("created", () => {
+        slider.container.addEventListener("mouseover", () => {
+            mouseOver = true
+            clearNextTimeout()
+        })
+        slider.container.addEventListener("mouseout", () => {
+            mouseOver = false
+            nextTimeout()
+        })
+        nextTimeout()
+    })
+    slider.on("slideChanged", (e: any) => {
+        setProgress(0)
+    })
+    slider.on("dragStarted", clearNextTimeout)
+    slider.on("animationEnded", nextTimeout)
+    slider.on("updated", nextTimeout)
+}
+
+
 export const HomeSlider = () => {
 
+    const [progress, setProgress] = useState(0)
     const [currentSlide, setCurrentSlide] = useState(0)
     const [loaded, setLoaded] = useState(false)
     const [sliderRef, instanceRef] = useKeenSlider({
@@ -132,7 +182,7 @@ export const HomeSlider = () => {
         created() {
             setLoaded(true)
         },
-    }, [WheelControls])
+    }, [WheelControls, AutoSwitch(setProgress)])
 
 
     return (
@@ -141,11 +191,12 @@ export const HomeSlider = () => {
                 <div className="w-full h-full relative">
                     <div className="flex h-[56px] md:h-[60px]">
                         <div
-                            className="bg-primary transition-width flex flex-col px-1.5 py-1.5 flex-1 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]">
-                            <h6 className="font-bold text-lg md:text-xl text-white w-full truncate">
+                            className="bg-primary transition-width truncate flex flex-col px-2.5 py-1.5 flex-[1_1_0] flex-shrink-0 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]"
+                        >
+                            <h6 className="font-bold text-lg md:text-xl text-white truncate">
                                 {sliders[currentSlide].title}
                             </h6>
-                            <span className="font-light text-xs md:text-sm text-white w-full truncate">
+                            <span className="font-light text-xs md:text-sm text-white truncate">
                                 {sliders[currentSlide].subtitle}
                             </span>
                         </div>
@@ -153,7 +204,7 @@ export const HomeSlider = () => {
                             viewBox="0 0 36 36"
                             fill="currentColor"
                             xmlns="http://www.w3.org/2000/svg"
-                            className="text-primary z-[5]"
+                            className="text-primary -ms-[8px] z-[5]"
                         >
                             <path
                                 d="M17.7705 8.82712C21.3725 3.31939 27.5095 0 34.0904 0H60.5V36H0L17.7705 8.82712Z"
@@ -192,8 +243,11 @@ export const HomeSlider = () => {
                     </div>
                     <div className="relative bg-blue-600 h-full w-full">
                         <div className="absolute top-0 end-0 p-2">
-                            <Spinner
+                            <CircularProgress
                                 size="sm"
+                                strokeWidth={4}
+                                value={progress * 100}
+                                disableAnimation
                             />
                         </div>
                         <div className="absolute bottom-0 end-2 flex gap-1.5 justify-center items-end">
@@ -208,7 +262,7 @@ export const HomeSlider = () => {
                             </div>
                         </div>
                         <div ref={sliderRef} className="keen-slider w-full h-full">
-                        {sliders.map((v, i) => {
+                            {sliders.map((v, i) => {
                                 const {id, title, subtitle, type, image} = v
                                 return (
                                     <div
