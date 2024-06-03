@@ -3,15 +3,20 @@
 import React, {useState} from "react";
 import {Button,} from "@nextui-org/react";
 import {useKeenSlider} from "keen-slider/react";
-import {CircularProgress} from "@nextui-org/progress";
+import {CircularProgress, Progress} from "@nextui-org/progress";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {AnimatePresence, motion} from "framer-motion";
+import {AlarmIcon} from "@/stories/Icons";
+import moment from "moment";
 
 export type HomeSliderItems = {
     id: string;
     title: string;
     subtitle: string;
     description?: string;
+    startAt?: string;
+    endAt?: string;
+
     type: "image";
     image: string;
 }
@@ -29,6 +34,8 @@ const sliders: HomeSliderItems[] = [
         title: "پیش فروش لوازم برقی",
         subtitle: "آغاز اولین پیش فروش راهساز ماشین به مدت محدود",
         description: `<div style="color: gold;"><b><u>فقط</u></b> ویژه مشتریان طلایی</div>`,
+        startAt: moment().add(4, "days").toISOString(),
+        endAt: moment().add(16, "days").toISOString(),
         type: "image",
         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
     },
@@ -36,6 +43,8 @@ const sliders: HomeSliderItems[] = [
         id: "3",
         title: "کمپین فروش قطعات موتور",
         subtitle: "قطعات و لوازم موتور به مدت محدود",
+        startAt: moment().subtract(2, "days").toISOString(),
+        endAt: moment().add(16, "days").toISOString(),
         type: "image",
         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
     },
@@ -59,62 +68,6 @@ const sliders: HomeSliderItems[] = [
 
 
 export type HomeSliderProps = {}
-
-
-const WheelControls = (slider: any) => {
-    let touchTimeout: string | number | NodeJS.Timeout | undefined
-    let position: { x: any; y: any; }
-    let wheelActive: boolean
-
-    function dispatch(e: any, name: any) {
-        position.x -= e.deltaX
-        position.y -= e.deltaY
-        slider.container.dispatchEvent(
-            new CustomEvent(name, {
-                detail: {
-                    x: position.x,
-                    y: position.y,
-                },
-            })
-        )
-    }
-
-    function wheelStart(e: any) {
-        position = {
-            x: e.pageX,
-            y: e.pageY,
-        }
-        dispatch(e, "ksDragStart")
-    }
-
-    function wheel(e: any) {
-        dispatch(e, "ksDrag")
-    }
-
-    function wheelEnd(e: any) {
-        dispatch(e, "ksDragEnd")
-    }
-
-    function eventWheel(e: any) {
-        e.preventDefault()
-        if (!wheelActive) {
-            wheelStart(e)
-            wheelActive = true
-        }
-        wheel(e)
-        clearTimeout(touchTimeout)
-        touchTimeout = setTimeout(() => {
-            wheelActive = false
-            wheelEnd(e)
-        }, 50)
-    }
-
-    slider.on("created", () => {
-        slider.container.addEventListener("wheel", eventWheel, {
-            passive: false,
-        })
-    })
-}
 
 
 const duration = 5000
@@ -182,7 +135,29 @@ export const HomeSlider = () => {
         created() {
             setLoaded(true)
         },
-    }, [AutoSwitch(setProgress)])
+    }, [
+        // AutoSwitch(setProgress)
+    ])
+
+
+    const current = sliders[currentSlide]
+
+    let haveTimer = false
+    let isStarted = false
+    let isEnded = false
+    if (!!current.startAt || !!current.endAt) {
+        haveTimer = true
+        if (moment(current.startAt).diff(moment()) > 0) {
+            isStarted = false
+            isEnded = false
+        } else if (moment(current.endAt).diff(moment()) > 0) {
+            isStarted = true
+            isEnded = false
+        } else {
+            isStarted = true
+            isEnded = true
+        }
+    }
 
 
     return (
@@ -194,10 +169,10 @@ export const HomeSlider = () => {
                             className="bg-primary transition-width truncate flex flex-col px-2.5 py-1.5 flex-[1_1_0] flex-shrink-0 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]"
                         >
                             <h6 className="font-bold text-lg md:text-xl text-white truncate">
-                                {sliders[currentSlide].title}
+                                {current.title}
                             </h6>
                             <span className="font-light text-xs md:text-sm text-white truncate">
-                                {sliders[currentSlide].subtitle}
+                                {current.subtitle}
                             </span>
                         </div>
                         <svg
@@ -241,21 +216,23 @@ export const HomeSlider = () => {
                             />
                         </svg>
                     </div>
-                    <div className="relative bg-blue-600 h-full w-full overflow-hidden">
+                    <div className="relative bg-blue-600 h-full w-full overflow-hidden z-10">
                         <AnimatePresence>
-                            {!!sliders[currentSlide].description && (
+                            {!!current.description && (
                                 <motion.div
                                     initial={{bottom: "-60px"}}
                                     animate={{bottom: 0}}
                                     exit={{bottom: "-60px"}}
                                     className="absolute end-0 bg-gradient-to-b px-24 from-transparent to-black/50 text-center h-16 w-full flex justify-center items-center"
                                 >
-                                    <p className="truncate"
-                                       dangerouslySetInnerHTML={{__html: sliders[currentSlide].description || ""}}/>
+                                    <p
+                                        className="truncate"
+                                        dangerouslySetInnerHTML={{__html: current.description || ""}}
+                                    />
                                 </motion.div>
                             )}
                         </AnimatePresence>
-                        <div className="absolute top-0 end-0 p-2">
+                        <div className="absolute top-0 end-0 p-2 z-10">
                             <CircularProgress
                                 size="sm"
                                 strokeWidth={4}
@@ -263,7 +240,81 @@ export const HomeSlider = () => {
                                 disableAnimation
                             />
                         </div>
-                        <div className="absolute bottom-0 end-2 flex gap-1.5 justify-center items-end">
+                        <AnimatePresence>
+                            {haveTimer && (
+                                <motion.div
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    exit={{opacity: 0}}
+                                    className="absolute p-2 z-10"
+                                >
+                                    <div className="relative -rotate-90 h-10 origin-top-right start-10">
+                                        {/* not started yet */}
+                                        {!isStarted && !isEnded && (
+                                            <div className="flex flex-row items-center gap-1">
+                                                <Button
+                                                    color="primary"
+                                                    variant="shadow"
+                                                    size="md"
+                                                    radius="lg"
+                                                    isIconOnly
+                                                    // onClick={(e) => {
+                                                    //     // @ts-ignore
+                                                    //     e.stopPropagation() || instanceRef.current?.prev()
+                                                    // }}
+                                                    // isDisabled={currentSlide === 0}
+                                                >
+                                                    <AlarmIcon size={28}/>
+                                                </Button>
+                                                <div className="flex justify-center font-medium gap-1 px-1 text-white">
+                                                    <span>فقط</span>
+                                                    <b className="font-black">{moment(current.startAt).toNow(true)}</b>
+                                                    <span>مانده تا شروع</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {/* started but not ended yet */}
+                                        {isStarted && !isEnded && (
+                                            <div className="flex flex-col w-60 items-start gap-1">
+                                                <div className="flex justify-center font-medium gap-1 px-1 text-white">
+                                                    <span>فقط</span>
+                                                    <b className="font-black">{moment(current.startAt).toNow(true)}</b>
+                                                    <span>مانده تا پایان</span>
+                                                </div>
+                                                <Progress
+                                                    size="md"
+                                                    color={
+                                                        moment(current.endAt).diff(moment(), 'minutes') / moment(current.endAt).diff(moment(current.startAt), 'minutes') > 0.9 ? "danger"
+                                                            : moment(current.endAt).diff(moment(), 'minutes') / moment(current.endAt).diff(moment(current.startAt), 'minutes') > 0.5 ? "primary"
+                                                                : "success"
+                                                    }
+                                                    value={moment(current.endAt).diff(moment(), 'minutes') / moment(current.endAt).diff(moment(current.startAt), 'minutes')}
+                                                    minValue={0}
+                                                    maxValue={1}
+                                                />
+                                            </div>
+                                        )}
+                                        {/* not started but ended */}
+                                        {!isStarted && isEnded && (
+                                            <div className="flex flex-row items-end h-full gap-1">
+                                                <div className="flex justify-center font-medium gap-1 px-1 text-white">
+                                                    <span>مشکلی پیش آمده است</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {/* started and ended */}
+                                        {isStarted && isEnded && (
+                                            <div className="flex flex-row items-end h-full gap-1">
+                                                <div className="flex justify-center font-medium gap-1 px-1 text-white">
+                                                    <span>پایان یافته است</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                        <div className="absolute z-10 bottom-0 end-2 flex gap-1.5 justify-center items-end">
                             <div className="text-white font-bold text-xl">
                                 {sliders.length}
                             </div>
@@ -275,7 +326,7 @@ export const HomeSlider = () => {
                             </div>
                         </div>
                         <div
-                            className="absolute top-0 end-0 p-2 h-full w-12 flex flex-col gap-1.5 justify-center items-center"
+                            className="absolute z-10 top-0 end-0 p-2 h-full w-12 flex flex-col gap-1.5 justify-center items-center"
                         >
                             <span className="rounded-full bg-white/40 aspect-square w-2"/>
                             <span className="rounded-full bg-white/70 aspect-square w-2.5"/>
@@ -283,7 +334,9 @@ export const HomeSlider = () => {
                             <span className="rounded-full bg-white/70 aspect-square w-2.5"/>
                             <span className="rounded-full bg-white/40 aspect-square w-2"/>
                         </div>
-                        <div className="absolute bottom-0 start-0 flex gap-1.5 justify-center items-center text-white">
+                        <div
+                            className="absolute z-10 bottom-0 start-0 flex gap-1.5 justify-center items-center text-white"
+                        >
                             <div className="relative">
                                 <svg
                                     width="90"

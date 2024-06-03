@@ -17,6 +17,7 @@ import HamburgerMenu from "@/stories/Icons/HamburgerMenu.stories";
 import BackHistory from "@/stories/Icons/BackHistory.stories";
 import HomeNavigation from "@/stories/Icons/HomeNavigation.stories";
 import CartNavigation from "@/stories/Icons/CartNavigation.stories";
+import Alarm from "@/stories/Icons/Alarm.stories";
 
 
 
@@ -39,3 +40,4 @@ export const HamburgerMenuIcon = HamburgerMenu.component;
 export const BackHistoryIcon = BackHistory.component;
 export const HomeNavigationIcon = HomeNavigation.component;
 export const CartNavigationIcon = CartNavigation.component;
+export const AlarmIcon = Alarm.component;
