@@ -8,6 +8,7 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {AnimatePresence, motion} from "framer-motion";
 import {AlarmIcon} from "@/stories/Icons";
 import moment from "moment";
+import jMoment from "jalali-moment";
 
 export type HomeSliderItems = {
     id: string;
@@ -268,7 +269,7 @@ export const HomeSlider = () => {
                                                 </Button>
                                                 <div className="flex justify-center font-medium gap-1 px-1 text-white">
                                                     <span>فقط</span>
-                                                    <b className="font-black">{moment(current.startAt).toNow(true)}</b>
+                                                    <b className="font-black">{jMoment(current.startAt).locale('fa').toNow(true)}</b>
                                                     <span>مانده تا شروع</span>
                                                 </div>
                                             </div>
@@ -278,7 +279,7 @@ export const HomeSlider = () => {
                                             <div className="flex flex-col w-60 items-start gap-1">
                                                 <div className="flex justify-center font-medium gap-1 px-1 text-white">
                                                     <span>فقط</span>
-                                                    <b className="font-black">{moment(current.startAt).toNow(true)}</b>
+                                                    <b className="font-black">{jMoment(current.startAt).locale('fa').toNow(true)}</b>
                                                     <span>مانده تا پایان</span>
                                                 </div>
                                                 <Progress
