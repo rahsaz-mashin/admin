@@ -136,9 +136,7 @@ export const HomeSlider = () => {
         created() {
             setLoaded(true)
         },
-    }, [
-        // AutoSwitch(setProgress)
-    ])
+    }, [AutoSwitch(setProgress)])
 
 
     const current = sliders[currentSlide]
@@ -334,12 +332,20 @@ export const HomeSlider = () => {
                                     // @ts-ignore
                                     [...new Array(instanceRef.current.track.details.slides.length).keys()].map((idx) => {
                                         if (currentSlide === idx) {
-                                            return <span className="rounded-full transition-all duration-500 bg-primary aspect-square w-3" />
+                                            return <span
+                                                key={idx}
+                                                className="rounded-full transition-all duration-500 bg-primary aspect-square w-3"
+                                            />
+                                        } else if (Math.abs(currentSlide - idx) <= 1) {
+                                            return <span
+                                                key={idx}
+                                                className="rounded-full transition-all duration-500 bg-white/70 aspect-square w-2"
+                                            />
                                         }
-                                        else if(Math.abs(currentSlide-idx) <= 1) {
-                                            return <span className="rounded-full transition-all duration-500 bg-white/70 aspect-square w-2"/>
-                                        }
-                                        return <span className="rounded-full transition-all duration-500 bg-white/40 aspect-square w-1.5"/>
+                                        return <span
+                                            key={idx}
+                                            className="rounded-full transition-all duration-500 bg-white/40 aspect-square w-1.5"
+                                        />
                                     })
                                 }
                             </div>
