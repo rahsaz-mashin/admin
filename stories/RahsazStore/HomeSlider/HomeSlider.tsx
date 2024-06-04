@@ -237,6 +237,7 @@ export const HomeSlider = () => {
                                 strokeWidth={4}
                                 value={progress * 100}
                                 disableAnimation
+                                aria-label="progess auto switch"
                             />
                         </div>
                         <AnimatePresence>
@@ -290,6 +291,7 @@ export const HomeSlider = () => {
                                                     value={moment(current.endAt).diff(moment(), 'minutes') / moment(current.endAt).diff(moment(current.startAt), 'minutes')}
                                                     minValue={0}
                                                     maxValue={1}
+                                                    aria-label="progess bar to end"
                                                 />
                                             </div>
                                         )}
