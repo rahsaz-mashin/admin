@@ -141,8 +141,8 @@ export const ProductCategoryShortcut = () => {
                     <svg
                         height="280"
                         viewBox="0 0 24 24"
-                        className="-rotate-[15deg]"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="-rotate-[15deg]"
                     >
                         <path
                             fillRule="evenodd"
@@ -233,7 +233,7 @@ export const ProductCategoryShortcut = () => {
                         })}
                     </div>
                     {/**/}
-                    <div className="mb-6"/>
+                    <div className="mb-8"/>
                     {/**/}
                     <h3 className="text-secondary font-bold text-xl md:text-2xl text-center w-full py-1">
                         برند ماشینت چیه؟

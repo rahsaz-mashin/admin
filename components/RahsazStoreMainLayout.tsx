@@ -19,6 +19,7 @@ import {Drawer} from "@/stories/RahsazStore/Drawer";
 import {useRouter, usePathname, useSearchParams} from "next/navigation";
 import useHash from "@/hooks/useHash";
 import {BottomNavigation} from "@/stories/RahsazStore/BottomNavigation";
+import {Footer} from "@/stories/RahsazStore/Footer";
 
 
 const menuItems = [
@@ -227,14 +228,10 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 <div className="select-text mb-20 md:mb-0">
                                     {children}
                                 </div>
-
                             </Scrollbar>
                             <BottomNavigation />
                         </section>
-
-                        <footer className="h-16 items-center hidden md:flex">
-                            footer
-                        </footer>
+                        <Footer />
                     </aside>
                 </main>
             </Drawer>
