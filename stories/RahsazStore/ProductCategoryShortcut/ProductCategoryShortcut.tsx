@@ -136,128 +136,133 @@ export const ProductCategoryShortcut = () => {
 
     return (
         <>
-            <div
-                className="relative w-full flex flex-col justify-center items-center self-center max-w-6xl px-4"
-            >
-                <div className="absolute top-0 start-0 fill-primary/25">
+            <div className="relative w-full flex justify-center">
+                <div className="absolute -top-[50px] -start-[50px] fill-primary/25">
                     <svg
-                        width="270" height="240" viewBox="0 0 270 240"
+                        height="280"
+                        viewBox="0 0 24 24"
+                        className="-rotate-[15deg]"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <g>
-                            <g clipPath="url(#clip0_2528_46454)">
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M68.9121 -1.73479C76.0152 -28.244 103.263 -43.9757 129.773 -36.8726C156.282 -29.7695 172.013 -2.52132 164.91 23.9879C157.807 50.497 130.559 66.2287 104.05 59.1256C77.5407 52.0225 61.809 24.7744 68.9121 -1.73479Z"
-                                />
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M150.286 139.206C157.389 112.696 184.637 96.9648 211.147 104.068C237.656 111.171 253.387 138.419 246.284 164.928C239.181 191.437 211.933 207.169 185.424 200.066C158.915 192.963 143.183 165.715 150.286 139.206Z"
-                                />
-                                <path
-                                    d="M38.7551 110.81C44.6425 88.8383 47.5862 77.8523 56.241 72.8555C64.8958 67.8586 75.8818 70.8023 97.8538 76.6897C119.826 82.5771 130.812 85.5208 135.809 94.1756C140.805 102.83 137.862 113.816 131.974 135.788C126.087 157.76 123.143 168.746 114.489 173.743C105.834 178.74 94.8478 175.796 72.8758 169.909C50.9038 164.022 39.9178 161.078 34.9209 152.423C29.9241 143.768 32.8677 132.782 38.7551 110.81Z"
-                                />
-                                <path
-                                    d="M183.219 27.4046C189.106 5.43257 192.05 -5.55343 200.705 -10.5503C209.36 -15.5471 220.346 -12.6034 242.318 -6.71606C264.29 -0.828683 275.276 2.11501 280.272 10.7698C285.269 19.4246 282.326 30.4106 276.438 52.3826C270.551 74.3546 267.607 85.3406 258.952 90.3374C250.298 95.3343 239.312 92.3906 217.34 86.5032C195.368 80.6159 184.382 77.6722 179.385 69.0174C174.388 60.3626 177.332 49.3766 183.219 27.4046Z"
-                                />
-                            </g>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_2528_46454">
-                                <rect
-                                    x="66.6084" y="-76"
-                                    width="257.354" height="257.354"
-                                    rx="5"
-                                    transform="rotate(15 66.6084 -76)"
-                                    fill="white"
-                                />
-                            </clipPath>
-                        </defs>
+                        <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M2 6.63415C2 4.07478 4.07478 2 6.63415 2C9.19351 2 11.2683 4.07478 11.2683 6.63415C11.2683 9.19351 9.19351 11.2683 6.63415 11.2683C4.07478 11.2683 2 9.19351 2 6.63415Z"
+                        />
+                        <path
+                            opacity="0.5"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M12.7324 17.3661C12.7324 14.8067 14.8072 12.7319 17.3666 12.7319C19.9259 12.7319 22.0007 14.8067 22.0007 17.3661C22.0007 19.9254 19.9259 22.0002 17.3666 22.0002C14.8072 22.0002 12.7324 19.9254 12.7324 17.3661Z"
+                        />
+                        <path
+                            d="M2 17.5C2 15.3787 2 14.318 2.65901 13.659C3.31802 13 4.37868 13 6.5 13C8.62132 13 9.68198 13 10.341 13.659C11 14.318 11 15.3787 11 17.5C11 19.6213 11 20.682 10.341 21.341C9.68198 22 8.62132 22 6.5 22C4.37868 22 3.31802 22 2.65901 21.341C2 20.682 2 19.6213 2 17.5Z"
+                        />
+                        <path
+                            opacity="0.5"
+                            d="M13 6.5C13 4.37868 13 3.31802 13.659 2.65901C14.318 2 15.3787 2 17.5 2C19.6213 2 20.682 2 21.341 2.65901C22 3.31802 22 4.37868 22 6.5C22 8.62132 22 9.68198 21.341 10.341C20.682 11 19.6213 11 17.5 11C15.3787 11 14.318 11 13.659 10.341C13 9.68198 13 8.62132 13 6.5Z"
+                        />
                     </svg>
                 </div>
-                <div className="absolute bottom-0 end-0 fill-secondary/25">
-                    <svg width="181" height="214" viewBox="0 0 181 214" xmlns="http://www.w3.org/2000/svg">
-                        <g>
-                            <g>
-                                <path
-                                    d="M52.5003 160.625C70.2425 160.625 84.6253 146.242 84.6253 128.5C84.6253 110.758 70.2425 96.3748 52.5003 96.3748C34.7582 96.3748 20.3753 110.758 20.3753 128.5C20.3753 146.242 34.7582 160.625 52.5003 160.625Z"
-                                />
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M159.584 128.5C159.584 187.64 111.641 235.583 52.5003 235.583C-6.64017 235.583 -54.583 187.64 -54.583 128.5C-54.583 69.3593 -6.64017 21.4165 52.5003 21.4165C111.641 21.4165 159.584 69.3593 159.584 128.5ZM52.5003 192.75C87.9846 192.75 116.75 163.984 116.75 128.5C116.75 93.0155 87.9846 64.2498 52.5003 64.2498C17.016 64.2498 -11.7497 93.0155 -11.7497 128.5C-11.7497 163.984 17.016 192.75 52.5003 192.75ZM84.6253 128.5C84.6253 146.242 70.2425 160.625 52.5003 160.625C34.7582 160.625 20.3753 146.242 20.3753 128.5C20.3753 110.758 34.7582 96.3748 52.5003 96.3748C70.2425 96.3748 84.6253 110.758 84.6253 128.5Z"
-                                />
-                            </g>
+                <div className="absolute -bottom-[70px] -end-[70px] fill-secondary/25">
+                    <svg
+                        height="320"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g opacity="0.5">
                             <path
-                                d="M27.5729 187.735L43.8976 159.46C38.5805 157.986 33.8177 155.179 29.9915 151.421L13.6691 179.692C17.9204 182.922 22.5863 185.634 27.5729 187.735Z"
+                                d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z"
                             />
                             <path
-                                d="M-11.2532 136.529H21.3865C20.7262 133.963 20.375 131.272 20.375 128.5C20.375 125.726 20.7266 123.034 21.3876 120.467H-11.2527C-11.5809 123.098 -11.75 125.779 -11.75 128.5C-11.75 131.219 -11.5811 133.899 -11.2532 136.529Z"
-                            />
-                            <path
-                                d="M13.6703 77.3066L29.9926 105.578C33.8189 101.82 38.5819 99.0132 43.899 97.5393L27.5742 69.2639C22.5876 71.3648 17.9216 74.0769 13.6703 77.3066Z"
-                            />
-                            <path
-                                d="M61.1003 97.5391L77.4252 69.2637C82.4119 71.3645 87.0778 74.0766 91.3292 77.3062L75.0069 105.577C71.1805 101.82 66.4175 99.013 61.1003 97.5391Z"
-                            />
-                            <path
-                                d="M83.6135 136.529C84.2738 133.963 84.625 131.272 84.625 128.5C84.625 125.726 84.2734 123.034 83.6124 120.467H116.253C116.581 123.098 116.75 125.779 116.75 128.5C116.75 131.219 116.581 133.899 116.253 136.529H83.6135Z"
-                            />
-                            <path
-                                d="M61.1033 159.46C66.4203 157.986 71.1831 155.178 75.0092 151.421L91.3316 179.692C87.0804 182.922 82.4145 185.634 77.428 187.735L61.1033 159.46Z"
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
                             />
                         </g>
+                        <path
+                            d="M9.67217 17.5318L11.1967 14.8913C10.7001 14.7536 10.2553 14.4915 9.89804 14.1406L8.37377 16.7807C8.77077 17.0823 9.2065 17.3356 9.67217 17.5318Z"
+                        />
+                        <path
+                            d="M6.0464 12.7499H9.09446C9.0328 12.5102 9 12.259 9 12.0001C9 11.741 9.03283 11.4896 9.09456 11.2499H6.04644C6.01579 11.4956 6 11.746 6 12.0001C6 12.254 6.01577 12.5042 6.0464 12.7499Z"
+                        />
+                        <path
+                            d="M8.37388 7.21935L9.89814 9.85945C10.2555 9.50856 10.7003 9.24643 11.1968 9.10879L9.6723 6.46828C9.20662 6.66447 8.77089 6.91775 8.37388 7.21935Z"
+                        />
+                        <path
+                            d="M12.8031 9.10877L14.3276 6.46826C14.7933 6.66445 15.2291 6.91772 15.6261 7.21931L14.1018 9.85941C13.7445 9.50852 13.2997 9.2464 12.8031 9.10877Z"
+                        />
+                        <path
+                            d="M14.9055 12.7499C14.9672 12.5102 15 12.259 15 12.0001C15 11.741 14.9672 11.4896 14.9054 11.2499H17.9536C17.9842 11.4956 18 11.746 18 12.0001C18 12.254 17.9842 12.5042 17.9536 12.7499H14.9055Z"
+                        />
+                        <path
+                            d="M12.8034 14.8913C13.3 14.7536 13.7447 14.4914 14.102 14.1405L15.6263 16.7806C15.2293 17.0822 14.7936 17.3355 14.3279 17.5317L12.8034 14.8913Z"
+                        />
                     </svg>
 
                 </div>
-                <h3 className="text-primary font-bold text-2xl text-center w-full py-1">
-                    چی لازم داری؟
-                </h3>
                 <div
-                    className="relative w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8"
+                    className="w-full flex flex-col justify-center items-center self-center max-w-6xl px-4"
                 >
-                    {categoryItems.map((v, i) => {
-                        return (
-                            <Card key={v.id} isPressable isHoverable shadow="none" radius="none"
-                                  className="bg-transparent items-center">
-                                <CardBody className="flex items-center justify-center">
-                                    {v.icon}
-                                </CardBody>
-                                <CardFooter
-                                    className="font-bold text-center truncate bg-primary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                    <h3 className="text-primary font-bold text-xl md:text-2xl text-center w-full py-1">
+                        چی لازم داری؟
+                    </h3>
+                    <div
+                        className="relative w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8"
+                    >
+                        {categoryItems.map((v, i) => {
+                            return (
+                                <Card
+                                    key={v.id}
+                                    isPressable
+                                    isHoverable
+                                    shadow="none"
+                                    radius="none"
+                                    className="bg-transparent items-center hover:bg-transparent"
                                 >
-                                    {v.title}
-                                </CardFooter>
-                            </Card>
-                        )
-                    })}
-                </div>
-                {/**/}
-                <div className="mb-6"/>
-                {/**/}
-                <h3 className="text-secondary font-bold text-2xl text-center w-full py-1">
-                    برند ماشینت چیه؟
-                </h3>
-                <div
-                    className="w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8"
-                >
-                    {brandsItems.map((v, i) => {
-                        return (
-                            <Card key={v.id} isPressable isHoverable shadow="none" radius="none"
-                                  className="bg-transparent items-center">
-                                <CardBody className="flex items-center justify-center">
-                                    {v.icon}
-                                </CardBody>
-                                <CardFooter
-                                    className="font-bold text-center truncate bg-secondary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                                    <CardBody className="flex items-center justify-center overflow-hidden">
+                                        {v.icon}
+                                    </CardBody>
+                                    <CardFooter
+                                        className="font-bold text-center truncate bg-primary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                                    >
+                                        {v.title}
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
+                    </div>
+                    {/**/}
+                    <div className="mb-6"/>
+                    {/**/}
+                    <h3 className="text-secondary font-bold text-xl md:text-2xl text-center w-full py-1">
+                        برند ماشینت چیه؟
+                    </h3>
+                    <div
+                        className="w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8"
+                    >
+                        {brandsItems.map((v, i) => {
+                            return (
+                                <Card
+                                    key={v.id}
+                                    isPressable
+                                    isHoverable
+                                    shadow="none"
+                                    radius="none"
+                                    className="bg-transparent items-center hover:bg-transparent"
                                 >
-                                    {v.title}
-                                </CardFooter>
-                            </Card>
-                        )
-                    })}
+                                    <CardBody className="flex items-center justify-center overflow-hidden">
+                                        {v.icon}
+                                    </CardBody>
+                                    <CardFooter
+                                        className="font-bold text-center truncate bg-secondary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                                    >
+                                        {v.title}
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
         </>

@@ -9,12 +9,12 @@ import {ProductCategoryShortcut} from "@/stories/RahsazStore/ProductCategoryShor
 export default function Page() {
     return (
         <>
-            <section className="font-normal text-black flex flex-col gap-4 py-4 bg-white drop-shadow-2xl">
+            <section className="font-normal text-black flex flex-col gap-4 py-4 bg-white overflow-hidden drop-shadow-2xl">
                 <Stories/>
                 <HomeSlider/>
                 <Shortcuts/>
             </section>
-            <section className="font-normal text-black flex flex-col gap-4 py-4 bg-gray-100">
+            <section className="font-normal text-black flex flex-col gap-4 py-4 bg-gray-100 overflow-hidden">
                 <ProductCategoryShortcut/>
             </section>
         </>
