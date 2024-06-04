@@ -161,7 +161,7 @@ export const HomeSlider = () => {
 
     return (
         <>
-            <div className="w-full h-96 select-none p-0 md:px-4">
+            <div className="w-full select-none p-0 md:px-4">
                 <div className="w-full h-full relative">
                     <div className="flex h-[56px] md:h-[60px]">
                         <div
@@ -334,17 +334,26 @@ export const HomeSlider = () => {
                                         if (currentSlide === idx) {
                                             return <span
                                                 key={idx}
-                                                className="rounded-full transition-all duration-500 bg-primary aspect-square w-3"
+                                                onClick={() => {
+                                                    instanceRef.current?.moveToIdx(idx)
+                                                }}
+                                                className="rounded-full cursor-pointer transition-all duration-500 bg-primary aspect-square w-3"
                                             />
                                         } else if (Math.abs(currentSlide - idx) <= 1) {
                                             return <span
                                                 key={idx}
-                                                className="rounded-full transition-all duration-500 bg-white/70 aspect-square w-2"
+                                                onClick={() => {
+                                                    instanceRef.current?.moveToIdx(idx)
+                                                }}
+                                                className="rounded-full cursor-pointer transition-all duration-500 bg-white/70 aspect-square w-2"
                                             />
                                         }
                                         return <span
                                             key={idx}
-                                            className="rounded-full transition-all duration-500 bg-white/40 aspect-square w-1.5"
+                                            onClick={() => {
+                                                instanceRef.current?.moveToIdx(idx)
+                                            }}
+                                            className="rounded-full cursor-pointer transition-all duration-500 bg-white/40 aspect-square w-1.5"
                                         />
                                     })
                                 }
@@ -403,7 +412,7 @@ export const HomeSlider = () => {
 
                             </div>
                         )}
-                        <div ref={sliderRef} className="keen-slider w-full h-full">
+                        <div ref={sliderRef} className="keen-slider w-full h-96">
                             {sliders.map((v, i) => {
                                 const {id, title, subtitle, type, image} = v
                                 return (
