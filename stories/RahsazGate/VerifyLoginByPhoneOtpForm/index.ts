@@ -1,0 +1,1 @@
+export { VerifyLoginByPhoneOtpForm } from "./VerifyLoginByPhoneOtpForm";
