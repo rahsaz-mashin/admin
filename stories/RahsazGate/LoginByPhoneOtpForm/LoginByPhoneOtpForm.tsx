@@ -29,8 +29,10 @@ export const LoginByPhoneOtpForm = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}
-                  className="flex w-full flex-col gap-3 justify-center items-center h-full">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex w-full flex-col gap-3 justify-center items-center h-full"
+            >
                 <div className="flex w-full flex-col items-center gap-3 py-8">
                     <Logo size={52}/>
                     <h1 className="font-bold text-primary">

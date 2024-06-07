@@ -46,7 +46,7 @@ export default function Layout({children}: { children: React.ReactNode }) {
     return (
         <main className="flex w-full min-h-screen overflow-hidden flex-col h-full bg-primary">
             <aside className="flex-1 relative h-full flex-row flex">
-                <div className="h-2/5 md:h-2/3 w-full md:w-auto transition-all aspect-square bottom-0 md:top-0 end-0 bg-white/70 rounded-br-3xl absolute flex justify-center p-3">
+                <div className="h-2/5 md:h-2/3 w-full md:w-auto transition-all aspect-square min-h-96 bottom-0 md:top-0 end-0 bg-white/70 rounded-br-3xl absolute flex justify-center p-3">
                     <div className="relative w-full h-full flex justify-center max-w-sm">
                         {children}
                     </div>
