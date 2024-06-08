@@ -69,7 +69,8 @@
     "tailwind-variants": "^0.1.20",
     "tailwindcss": "3.4.3",
     "three": "^0.164.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.0.10",

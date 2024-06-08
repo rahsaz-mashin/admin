@@ -1,31 +1,55 @@
 "use client"
 
-import React, {FormEvent} from "react";
+import React from "react";
 import {Logo} from "@/stories/General";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {PatternFormat} from 'react-number-format';
-
+import {useRouter, useSearchParams} from "next/navigation";
+import {PatternFormat} from "react-number-format";
+import {z} from 'zod'
 
 export type LoginByPhoneOtpFormType = {
-    phoneNumber: string,
+    phoneNumber: string;
 };
 
-
 export const LoginByPhoneOtpForm = () => {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm<LoginByPhoneOtpFormType>();
-    const onSubmit: SubmitHandler<LoginByPhoneOtpFormType> = (data) => {
-        console.log(data)
-        // const response = await fetch('/api/submit', {
-        //     method: 'POST',
-        //     body: formData,
-        // })
-        //
-        // // Handle response if necessary
-        // const data = await response.json()
-        // ...
+    const router = useRouter()
+    const searchParams = useSearchParams()
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        reset,
+        formState: {errors, isLoading, isSubmitting, isValidating, isSubmitSuccessful}
+    } = useForm<LoginByPhoneOtpFormType>();
+
+    const onSubmit: SubmitHandler<LoginByPhoneOtpFormType> = async (_data) => {
+        return new Promise((resolve, reject) => {
+            // =====> validation & transformation <=====
+            const shape = {
+                phoneNumber: z.string().regex(/09[0-9]{2} [0-9]{3} [0-9]{4}/, "شماره اشتباهه").transform((val) => val.replaceAll(" ", "")),
+            }
+            const {success, data, error} = z.object(shape).safeParse(_data);
+            if (!success) {
+                const issues = error.issues
+                for (let i = 0; i < issues.length; i++) {
+                    setError(issues[i].path.join(".") as any, {message: issues[i].message})
+                }
+                return reject()
+            }
+
+            // =====> send request <=====
+            router.push("/gate/phone?phoneNumber=" + data.phoneNumber)
+            setTimeout(() => {
+                router.push("/gate/phone/verify?phoneNumber=" + data.phoneNumber)
+                return resolve(true)
+            }, 5000)
+        })
     }
+    const {ref: phoneNumberFieldRef, ...phoneNumberField} = register("phoneNumber")
+
 
     return (
         <>
@@ -44,15 +68,22 @@ export const LoginByPhoneOtpForm = () => {
                     size="lg"
                     dir="ltr"
                     label="شماره موبایل خود را وارد کنید"
-                    labelPlacement="outside"
                     placeholder="09212728307"
-                    {...register("phoneNumber")}
+                    labelPlacement="outside"
+                    isDisabled={isSubmitSuccessful}
+                    isReadOnly={isSubmitting}
+                    value={searchParams.get("phoneNumber")?.substring(2)}
+                    {...phoneNumberField}
+                    getInputRef={phoneNumberFieldRef}
+                    isInvalid={!!errors.phoneNumber}
+                    errorMessage={errors.phoneNumber?.message}
                     {...{
                         format: "09## ### ####",
                         allowEmptyFormatting: true,
                         mask: " ",
-                        customInput: Input
+                        customInput: Input,
                     }}
+                    type="tel"
                 />
                 <Button
                     fullWidth
@@ -60,6 +91,8 @@ export const LoginByPhoneOtpForm = () => {
                     variant="shadow"
                     color="primary"
                     type="submit"
+                    isDisabled={isSubmitSuccessful}
+                    isLoading={isSubmitting}
                 >
                     ادامه
                 </Button>
@@ -69,6 +102,7 @@ export const LoginByPhoneOtpForm = () => {
                     variant="light"
                     color="secondary"
                     className="font-bold"
+                    isDisabled={isSubmitSuccessful || isSubmitting}
                 >
                     ورود با ایمیل
                 </Button>
