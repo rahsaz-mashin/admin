@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, {useState} from "react";
 import {Logo} from "@/stories/General";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
@@ -9,7 +9,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {z} from "zod";
 import Link from "next/link";
-import { PatternFormat } from "react-number-format";
+import {PatternFormat} from "react-number-format";
 
 export type VerifyLoginByPhoneOtpFormType = {
     phoneNumber: string;
@@ -18,6 +18,7 @@ export type VerifyLoginByPhoneOtpFormType = {
     otp3: string;
     otp4: string;
     otp5: string;
+    token: string;
 };
 
 export const VerifyLoginByPhoneOtpForm = () => {
@@ -30,15 +31,20 @@ export const VerifyLoginByPhoneOtpForm = () => {
         setError,
         reset,
         setFocus,
+        setValue,
+        getValues,
         formState: {errors, isLoading, isSubmitting, isValidating, isSubmitSuccessful}
     } = useForm<VerifyLoginByPhoneOtpFormType>();
 
+    const [token, setToken] = useState("*****")
     const onSubmit: SubmitHandler<VerifyLoginByPhoneOtpFormType> = async (_data) => {
         return new Promise((resolve, reject) => {
             // =====> validation & transformation <=====
             const shape = {
-                phoneNumber: z.string().regex(/09[0-9]{2} [0-9]{3} [0-9]{4}/, "شماره اشتباهه").transform((val) => val.replaceAll(" ", "")),
+                phoneNumber: z.string().regex(/09[0-9]{2}[0-9]{3}[0-9]{4}/, "شماره وارد شده معتبر نیست"),
+                token: z.string().regex(/[0-9]{5}/, "کد تایید نادرست است")
             }
+            _data.token = token
             const {success, data, error} = z.object(shape).safeParse(_data);
             if (!success) {
                 const issues = error.issues
@@ -50,10 +56,10 @@ export const VerifyLoginByPhoneOtpForm = () => {
 
             // =====> send request <=====
             // router.push("/gate/phone?phoneNumber=" + data.phoneNumber)
-            // setTimeout(() => {
-            //     router.push("/gate/phone/verify?phoneNumber=" + data.phoneNumber)
-            //     return resolve(true)
-            // }, 5000)
+            setTimeout(() => {
+                // router.push("/gate/phone/verify?phoneNumber=" + data.phoneNumber)
+                return resolve(true)
+            }, 5000)
         })
     }
     const {ref: phoneNumberFieldRef, ...phoneNumberField} = register("phoneNumber")
@@ -62,7 +68,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
     const {ref: otp3FieldRef, ...otp3Field} = register("otp3")
     const {ref: otp4FieldRef, ...otp4Field} = register("otp4")
     const {ref: otp5FieldRef, ...otp5Field} = register("otp5")
-
+    const {ref: tokenFieldRef, ...tokenField} = register("token")
 
 
     const onKeyUpOtp = (e: any, i: number) => {
@@ -90,37 +96,28 @@ export const VerifyLoginByPhoneOtpForm = () => {
         }
         switch (i) {
             case 1:
+                setValue("otp1", value)
                 setFocus("otp2")
                 break;
             case 2:
+                setValue("otp2", value)
                 setFocus("otp3")
                 break;
             case 3:
+                setValue("otp3", value)
                 setFocus("otp4")
                 break;
             case 4:
+                setValue("otp4", value)
                 setFocus("otp5")
                 break;
             case 5:
-                alert("ok ok")
+                setValue("otp5", value)
+                handleSubmit(onSubmit)()
                 break;
         }
     }
-    const onKeyDownOtp = (e: any, i: number) => {
-        // const value = e.target.value;
-        // const key = e.key.toLowerCase();
-        //
-        // console.log("down", value, key, i)
-        //
-        // if (key == "backspace" || key == "delete") {
-        //     // target.value = "";
-        //     // const prev = target.previousElementSibling;
-        //     // if (prev) {
-        //     //     prev.focus();
-        //     // }
-        //     return;
-        // }
-    }
+
     return (
         <>
             <form
@@ -142,6 +139,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                     placeholder="09212728307"
                     color="primary"
                     variant="faded"
+                    isDisabled={isSubmitSuccessful}
                     isReadOnly
                     value={searchParams.get("phoneNumber") || ""}
                     {...phoneNumberField}
@@ -153,8 +151,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             color="secondary"
                             variant="light"
                             size="sm"
-                            endContent={<EditSharp fontSize="small"/>}
-                            className="text-secondary ms-2"
+                            className="text-secondary ms-2 min-w-fit font-bold p-1"
                             onClick={() => router.replace("/gate/phone?phoneNumber=" + searchParams.get("phoneNumber"))}
                         >
                             ویرایش
@@ -162,107 +159,150 @@ export const VerifyLoginByPhoneOtpForm = () => {
                     }
                     type="tel"
                 />
-                <div className="flex gap-2" dir="ltr">
-                    <PatternFormat
-                        fullWidth
-                        size="lg"
-                        dir="ltr"
-                        color="primary"
-                        variant="faded"
-                        classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
-                        onKeyUp={(e: any) => onKeyUpOtp(e, 1)}
-                        // onKeyDown={(e) => onKeyDownOtp(e, 1)}
-                        maxLength={1}
-                        type="tel"
-                        {...{
-                            format: "#",
-                            allowEmptyFormatting: true,
-                            mask: "",
-                            customInput: Input,
-                        }}
-                        {...otp1Field}
-                        getInputRef={otp1FieldRef}
-                    />
-                    <PatternFormat
-                        fullWidth
-                        size="lg"
-                        dir="ltr"
-                        color="primary"
-                        variant="faded"
-                        classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
-                        onKeyUp={(e: any) => onKeyUpOtp(e, 2)}
-                        // onKeyDown={(e) => onKeyDownOtp(e, 2)}
-                        maxLength={1}
-                        type="tel"
-                        {...{
-                            format: "#",
-                            allowEmptyFormatting: true,
-                            mask: "",
-                            customInput: Input,
-                        }}
-                        {...otp2Field}
-                        getInputRef={otp2FieldRef}
-                    />
-                    <PatternFormat
-                        fullWidth
-                        size="lg"
-                        dir="ltr"
-                        color="primary"
-                        variant="faded"
-                        classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
-                        onKeyUp={(e: any) => onKeyUpOtp(e, 3)}
-                        // onKeyDown={(e) => onKeyDownOtp(e, 3)}
-                        maxLength={1}
-                        type="tel"
-                        {...{
-                            format: "#",
-                            allowEmptyFormatting: true,
-                            mask: "",
-                            customInput: Input,
-                        }}
-                        {...otp3Field}
-                        getInputRef={otp3FieldRef}
-                    />
-                    <PatternFormat
-                        fullWidth
-                        size="lg"
-                        dir="ltr"
-                        color="primary"
-                        variant="faded"
-                        classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
-                        onKeyUp={(e: any) => onKeyUpOtp(e, 4)}
-                        // onKeyDown={(e) => onKeyDownOtp(e, 4)}
-                        maxLength={1}
-                        type="tel"
-                        {...{
-                            format: "#",
-                            allowEmptyFormatting: true,
-                            mask: "",
-                            customInput: Input,
-                        }}
-                        {...otp4Field}
-                        getInputRef={otp4FieldRef}
-                    />
-                    <PatternFormat
-                        fullWidth
-                        size="lg"
-                        dir="ltr"
-                        color="primary"
-                        variant="faded"
-                        classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
-                        onKeyUp={(e: any) => onKeyUpOtp(e, 5)}
-                        // onKeyDown={(e) => onKeyDownOtp(e, 5)}
-                        maxLength={1}
-                        type="tel"
-                        {...{
-                            format: "#",
-                            allowEmptyFormatting: true,
-                            mask: "",
-                            customInput: Input,
-                        }}
-                        {...otp5Field}
-                        getInputRef={otp5FieldRef}
-                    />
+                <div className="flex flex-col">
+                    <div className="flex gap-2" dir="ltr">
+                        <PatternFormat
+                            fullWidth
+                            size="lg"
+                            dir="ltr"
+                            color="primary"
+                            variant="faded"
+                            isDisabled={isSubmitSuccessful}
+                            isReadOnly={isSubmitting}
+                            classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
+                            onKeyUp={(e: any) => onKeyUpOtp(e, 1)}
+                            maxLength={1}
+                            type="tel"
+                            {...{
+                                format: "#",
+                                allowEmptyFormatting: true,
+                                mask: "",
+                                customInput: Input,
+                            }}
+                            {...otp1Field}
+                            onChange={(e) => {
+                                otp1Field.onChange(e)
+                                const t = token.split("")
+                                t[0] = e.target.value
+                                setToken(t.join(""))
+                                tokenField.onChange({...e, target: {...e.target, value: t.join("")}})
+                            }}
+                            getInputRef={otp1FieldRef}
+                        />
+                        <PatternFormat
+                            fullWidth
+                            size="lg"
+                            dir="ltr"
+                            color="primary"
+                            variant="faded"
+                            isDisabled={isSubmitSuccessful}
+                            isReadOnly={isSubmitting}
+                            classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
+                            onKeyUp={(e: any) => onKeyUpOtp(e, 2)}
+                            maxLength={1}
+                            type="tel"
+                            {...{
+                                format: "#",
+                                allowEmptyFormatting: true,
+                                mask: "",
+                                customInput: Input,
+                            }}
+                            {...otp2Field}
+                            onChange={(e) => {
+                                otp2Field.onChange(e)
+                                const t = token.split("")
+                                t[1] = e.target.value
+                                setToken(t.join(""))
+                                setValue("token", t.join(""))
+                            }}
+                            getInputRef={otp2FieldRef}
+                        />
+                        <PatternFormat
+                            fullWidth
+                            size="lg"
+                            dir="ltr"
+                            color="primary"
+                            variant="faded"
+                            isDisabled={isSubmitSuccessful}
+                            isReadOnly={isSubmitting}
+                            classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
+                            onKeyUp={(e: any) => onKeyUpOtp(e, 3)}
+                            maxLength={1}
+                            type="tel"
+                            {...{
+                                format: "#",
+                                allowEmptyFormatting: true,
+                                mask: "",
+                                customInput: Input,
+                            }}
+                            {...otp3Field}
+                            onChange={(e) => {
+                                otp3Field.onChange(e)
+                                const t = token.split("")
+                                t[2] = e.target.value
+                                setToken(t.join(""))
+                                setValue("token", t.join(""))
+                            }}
+                            getInputRef={otp3FieldRef}
+                        />
+                        <PatternFormat
+                            fullWidth
+                            size="lg"
+                            dir="ltr"
+                            color="primary"
+                            variant="faded"
+                            isDisabled={isSubmitSuccessful}
+                            isReadOnly={isSubmitting}
+                            classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
+                            onKeyUp={(e: any) => onKeyUpOtp(e, 4)}
+                            maxLength={1}
+                            type="tel"
+                            {...{
+                                format: "#",
+                                allowEmptyFormatting: true,
+                                mask: "",
+                                customInput: Input,
+                            }}
+                            {...otp4Field}
+                            onChange={(e) => {
+                                otp4Field.onChange(e)
+                                const t = token.split("")
+                                t[3] = e.target.value
+                                setToken(t.join(""))
+                                setValue("token", t.join(""))
+                            }}
+                            getInputRef={otp4FieldRef}
+                        />
+                        <PatternFormat
+                            fullWidth
+                            size="lg"
+                            dir="ltr"
+                            color="primary"
+                            variant="faded"
+                            isDisabled={isSubmitSuccessful}
+                            isReadOnly={isSubmitting}
+                            classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
+                            onKeyUp={(e: any) => onKeyUpOtp(e, 5)}
+                            maxLength={1}
+                            type="tel"
+                            {...{
+                                format: "#",
+                                allowEmptyFormatting: true,
+                                mask: "",
+                                customInput: Input,
+                            }}
+                            {...otp5Field}
+                            onChange={(e) => {
+                                otp5Field.onChange(e)
+                                const t = token.split("")
+                                t[4] = e.target.value
+                                setToken(t.join(""))
+                                setValue("token", t.join(""))
+                            }}
+                            getInputRef={otp5FieldRef}
+                        />
+                    </div>
+                    {!!errors.token && <span className="text-danger-500 font-light text-sm">{errors.token?.message}</span>}
                 </div>
                 <Button
                     fullWidth

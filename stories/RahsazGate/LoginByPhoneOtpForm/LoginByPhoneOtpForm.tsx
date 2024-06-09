@@ -29,7 +29,7 @@ export const LoginByPhoneOtpForm = () => {
         return new Promise((resolve, reject) => {
             // =====> validation & transformation <=====
             const shape = {
-                phoneNumber: z.string().regex(/09[0-9]{2} [0-9]{3} [0-9]{4}/, "شماره اشتباهه").transform((val) => val.replaceAll(" ", "")),
+                phoneNumber: z.string().regex(/09[0-9]{2} [0-9]{3} [0-9]{4}/, "شماره وارد شده معتبر نیست").transform((val) => val.replaceAll(" ", "")),
             }
             const {success, data, error} = z.object(shape).safeParse(_data);
             if (!success) {
