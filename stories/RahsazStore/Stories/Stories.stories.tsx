@@ -2,7 +2,7 @@ import {Stories} from "./Stories";
 
 
 export default {
-    title: "RahsazStore/NavBar",
+    title: "RahsazStore/Stories",
     component: Stories,
 };
 

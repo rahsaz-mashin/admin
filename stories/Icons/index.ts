@@ -18,6 +18,14 @@ import BackHistory from "@/stories/Icons/BackHistory.stories";
 import HomeNavigation from "@/stories/Icons/HomeNavigation.stories";
 import CartNavigation from "@/stories/Icons/CartNavigation.stories";
 import Alarm from "@/stories/Icons/Alarm.stories";
+import StarRate from "@/stories/Icons/StarRate.stories";
+import OutlinedPack from "@/stories/Icons/OutlinedPack.stories";
+import OutlinedAward from "@/stories/Icons/OutlinedAward.stories";
+import OutlinedGift from "@/stories/Icons/OutlinedGift.stories";
+import OutlinedWallet from "@/stories/Icons/OutlinedWallet.stories";
+import OutlinedUser from "@/stories/Icons/OutlinedUser.stories";
+import OutlinedSetting from "@/stories/Icons/OutlinedSetting.stories";
+
 
 
 
@@ -41,3 +49,10 @@ export const BackHistoryIcon = BackHistory.component;
 export const HomeNavigationIcon = HomeNavigation.component;
 export const CartNavigationIcon = CartNavigation.component;
 export const AlarmIcon = Alarm.component;
+export const StarRateIcon = StarRate.component;
+export const OutlinedPackIcon = OutlinedPack.component;
+export const OutlinedAwardIcon = OutlinedAward.component;
+export const OutlinedGiftIcon = OutlinedGift.component;
+export const OutlinedWalletIcon = OutlinedWallet.component;
+export const OutlinedUserIcon = OutlinedUser.component;
+export const OutlinedSettingIcon = OutlinedSetting.component;

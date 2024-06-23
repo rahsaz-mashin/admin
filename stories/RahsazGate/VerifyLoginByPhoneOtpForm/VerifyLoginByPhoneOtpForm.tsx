@@ -159,8 +159,8 @@ export const VerifyLoginByPhoneOtpForm = () => {
                     }
                     type="tel"
                 />
-                <div className="flex flex-col">
-                    <div className="flex gap-2" dir="ltr">
+                <div className="flex flex-col w-full">
+                    <div className="flex gap-2 items-center" dir="ltr">
                         <PatternFormat
                             fullWidth
                             size="lg"
@@ -169,6 +169,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             variant="faded"
                             isDisabled={isSubmitSuccessful}
                             isReadOnly={isSubmitting}
+                            className="items-center"
                             classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
                             onKeyUp={(e: any) => onKeyUpOtp(e, 1)}
                             maxLength={1}
@@ -197,6 +198,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             variant="faded"
                             isDisabled={isSubmitSuccessful}
                             isReadOnly={isSubmitting}
+                            className="items-center"
                             classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
                             onKeyUp={(e: any) => onKeyUpOtp(e, 2)}
                             maxLength={1}
@@ -225,6 +227,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             variant="faded"
                             isDisabled={isSubmitSuccessful}
                             isReadOnly={isSubmitting}
+                            className="items-center"
                             classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
                             onKeyUp={(e: any) => onKeyUpOtp(e, 3)}
                             maxLength={1}
@@ -253,6 +256,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             variant="faded"
                             isDisabled={isSubmitSuccessful}
                             isReadOnly={isSubmitting}
+                            className="items-center"
                             classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
                             onKeyUp={(e: any) => onKeyUpOtp(e, 4)}
                             maxLength={1}
@@ -281,6 +285,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             variant="faded"
                             isDisabled={isSubmitSuccessful}
                             isReadOnly={isSubmitting}
+                            className="items-center"
                             classNames={{input: "text-center font-bold", inputWrapper: "w-12"}}
                             onKeyUp={(e: any) => onKeyUpOtp(e, 5)}
                             maxLength={1}
@@ -302,7 +307,19 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             getInputRef={otp5FieldRef}
                         />
                     </div>
-                    {!!errors.token && <span className="text-danger-500 font-light text-sm">{errors.token?.message}</span>}
+                    {!!errors.token &&
+                        <span className="text-danger-500 font-light text-sm">{errors.token?.message}</span>}
+                    <div className="h-2"/>
+                    <Button
+                        color="secondary"
+                        variant="light"
+                        size="md"
+                        className="text-secondary"
+                        isDisabled={isSubmitSuccessful}
+                        // onClick={() => router.replace("/gate/phone?phoneNumber=" + searchParams.get("phoneNumber"))}
+                    >
+                        ارسال مجدد کد (45)
+                    </Button>
                 </div>
                 <Button
                     fullWidth
