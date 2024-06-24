@@ -25,6 +25,14 @@ import OutlinedGift from "@/stories/Icons/OutlinedGift.stories";
 import OutlinedWallet from "@/stories/Icons/OutlinedWallet.stories";
 import OutlinedUser from "@/stories/Icons/OutlinedUser.stories";
 import OutlinedSetting from "@/stories/Icons/OutlinedSetting.stories";
+import OutlinedMarket from "@/stories/Icons/OutlinedMarket.stories";
+import VerifiedCheck from "@/stories/Icons/VerifiedCheck.stories";
+import OutlinedCardSearch from "@/stories/Icons/OutlinedCardSearch.stories";
+import CardPayment from "@/stories/Icons/CardPayment.stories";
+import Wallet from "@/stories/Icons/Wallet.stories";
+import FastDelivery from "@/stories/Icons/FastDelivery.stories";
+import Support from "@/stories/Icons/Support.stories";
+import ReverseProduct from "@/stories/Icons/ReverseProduct.stories";
 
 
 
@@ -56,3 +64,11 @@ export const OutlinedGiftIcon = OutlinedGift.component;
 export const OutlinedWalletIcon = OutlinedWallet.component;
 export const OutlinedUserIcon = OutlinedUser.component;
 export const OutlinedSettingIcon = OutlinedSetting.component;
+export const OutlinedMarketIcon = OutlinedMarket.component;
+export const VerifiedCheckIcon = VerifiedCheck.component;
+export const OutlinedCardSearchIcon = OutlinedCardSearch.component;
+export const CardPaymentIcon = CardPayment.component;
+export const WalletIcon = Wallet.component;
+export const FastDeliveryIcon = FastDelivery.component;
+export const SupportIcon = Support.component;
+export const ReverseProductIcon = ReverseProduct.component;

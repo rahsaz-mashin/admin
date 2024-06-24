@@ -32,7 +32,7 @@ export const ProductBreadcrumbs = (
 
 
     return (
-        <div className="">
+        <div className="select-none">
             <Breadcrumbs
                 color="secondary"
                 separator={<SeparatorIcon size={20}/>}
