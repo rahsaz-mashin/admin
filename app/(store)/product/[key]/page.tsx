@@ -19,6 +19,7 @@ import {ProductRahsazOnlinePostsBox} from "@/stories/RahsazStore/Product/RahsazO
 import {ProductCommentsBox} from "@/stories/RahsazStore/Product/CommentsBox";
 import {ProductQABox} from "@/stories/RahsazStore/Product/QABox";
 import {ProductPriceBox} from "@/stories/RahsazStore/Product/PriceBox";
+import { ProductTabContents } from "@/stories/RahsazStore/Product/TabContents";
 
 export default function Page({params}: { params: { key: string } }) {
 
@@ -40,37 +41,42 @@ export default function Page({params}: { params: { key: string } }) {
 
     return (
         <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
-            <section className="flex flex-col p-4 gap-3 col-span-2">
-                <ProductBreadcrumbs/>
-                <div className="flex flex-col gap-2 sticky top-0 z-30 py-3 bg-white">
-                    <ProductTitle title={product.title}/>
-                    <div className="flex items-center gap-3">
-                        <ProductRateSummary/>
-                        <ProductOfferPack/>
-                        <ProductAvailableInStock/>
-                        {/*<ProductAvailableInMarketPlace/>*/}
-                        {/*<ProductFreeDelivery/>*/}
-                        {/*<ProductWithGift/>*/}
+            <section className="col-span-2 relative">
+                <div className="flex flex-col p-4 gap-3 relative">
+                    <ProductBreadcrumbs/>
+                    <div className="flex flex-col gap-2 sticky top-0 z-30 py-3 bg-white">
+                        <ProductTitle title={product.title}/>
+                        <div className="flex items-center gap-3">
+                            <ProductRateSummary/>
+                            <ProductOfferPack/>
+                            <ProductAvailableInStock/>
+                            {/*<ProductAvailableInMarketPlace/>*/}
+                            {/*<ProductFreeDelivery/>*/}
+                            {/*<ProductWithGift/>*/}
+                        </div>
+                        <ProductCampaign/>
                     </div>
-                    <ProductCampaign/>
+                    <ProductCustomFeatures/>
+                    <ProductFeaturesBox/>
+                    <ProductMarketplaceBox/>
+                    <ProductRahsazBox/>
+                    <ProductRelatedProductsBox/>
+                    <ProductIntroBox/>
+                    <ProductTechnicalBox/>
+                    <ProductTechnicalMagBox/>
+                    <ProductRahsazOnlinePostsBox/>
+                    <ProductCommentsBox/>
+                    <ProductQABox/>
                 </div>
-                <ProductCustomFeatures/>
-                <ProductFeaturesBox/>
-                <ProductMarketplaceBox/>
-                <ProductRahsazBox/>
-                <ProductRelatedProductsBox/>
-                <ProductIntroBox/>
-                <ProductTechnicalBox/>
-                <ProductTechnicalMagBox/>
-                <ProductRahsazOnlinePostsBox/>
-                <ProductCommentsBox/>
-                <ProductQABox/>
             </section>
-            <section className="relative col-span-1 lg:col-span-2 xl:col-span-3 3xl:col-span-5">
-                <div className="static bg-purple-600 w-full h-full">
-ffff
+            <section className="col-span-1 lg:col-span-2 xl:col-span-3 3xl:col-span-5 relative">
+                <div className="absolute bottom-0 w-full">
+                    <ProductPriceBox/>
+                </div>
+                <div className="absolute top-4 end-4">
+                    <ProductTabContents/>
                 </div>
             </section>
         </main>
-);
+    );
 }
