@@ -33,8 +33,18 @@ import Wallet from "@/stories/Icons/Wallet.stories";
 import FastDelivery from "@/stories/Icons/FastDelivery.stories";
 import Support from "@/stories/Icons/Support.stories";
 import ReverseProduct from "@/stories/Icons/ReverseProduct.stories";
-
-
+import OutlinedBookmark from "@/stories/Icons/OutlinedBookmark.stories";
+import OutlinedDocument from "@/stories/Icons/OutlinedDocument.stories";
+import OutlinedShop from "@/stories/Icons/OutlinedShop.stories";
+import OutlinedRibbonStar from "@/stories/Icons/OutlinedRibbonStar.stories";
+import OutlinedMirrorLeft from "@/stories/Icons/OutlinedMirrorLeft.stories";
+import OutlinedNotebookBookmark from "@/stories/Icons/OutlinedNotebookBookmark.stories";
+import OutlinedRulerPen from "@/stories/Icons/OutlinedRulerPen.stories";
+import OutlinedMap from "@/stories/Icons/OutlinedMap.stories";
+import OutlinedNotes from "@/stories/Icons/OutlinedNotes.stories";
+import OutlinedComment from "@/stories/Icons/OutlinedComment.stories";
+import OutlinedDialog from "@/stories/Icons/OutlinedDialog.stories";
+import OutlinedBasket from "@/stories/Icons/OutlinedBasket.stories";
 
 
 export const OutlinedCustomizationIcon = OutlinedCustomization.component;
@@ -72,3 +82,17 @@ export const WalletIcon = Wallet.component;
 export const FastDeliveryIcon = FastDelivery.component;
 export const SupportIcon = Support.component;
 export const ReverseProductIcon = ReverseProduct.component;
+
+
+export const OutlinedBookmarkIcon = OutlinedBookmark.component;
+export const OutlinedDocumentIcon = OutlinedDocument.component;
+export const OutlinedShopIcon = OutlinedShop.component;
+export const OutlinedRibbonStarIcon = OutlinedRibbonStar.component;
+export const OutlinedMirrorLeftIcon = OutlinedMirrorLeft.component;
+export const OutlinedNotebookBookmarkIcon = OutlinedNotebookBookmark.component;
+export const OutlinedRulerPenIcon = OutlinedRulerPen.component;
+export const OutlinedMapIcon = OutlinedMap.component;
+export const OutlinedNotesIcon = OutlinedNotes.component;
+export const OutlinedCommentIcon = OutlinedComment.component;
+export const OutlinedDialogIcon = OutlinedDialog.component;
+export const OutlinedBasketIcon = OutlinedBasket.component;

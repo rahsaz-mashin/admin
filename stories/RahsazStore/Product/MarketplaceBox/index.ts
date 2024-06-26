@@ -1,1 +1,1 @@
-export * from "./FeaturesBox";
+export * from "./MarketplaceBox";
