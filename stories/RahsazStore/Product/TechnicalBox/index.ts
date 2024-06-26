@@ -1,1 +1,1 @@
-export * from "./RelatedProductsBox";
+export * from "./TechnicalBox";
