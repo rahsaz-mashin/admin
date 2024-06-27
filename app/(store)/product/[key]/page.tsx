@@ -20,6 +20,7 @@ import {ProductCommentsBox} from "@/stories/RahsazStore/Product/CommentsBox";
 import {ProductQABox} from "@/stories/RahsazStore/Product/QABox";
 import {ProductPriceBox} from "@/stories/RahsazStore/Product/PriceBox";
 import { ProductTabContents } from "@/stories/RahsazStore/Product/TabContents";
+import {ProductInfoBox} from "@/stories/RahsazStore/Product/InfoBox";
 
 export default function Page({params}: { params: { key: string } }) {
 
@@ -43,19 +44,7 @@ export default function Page({params}: { params: { key: string } }) {
         <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
             <section className="col-span-2 relative">
                 <div className="flex flex-col p-4 gap-3 relative">
-                    <ProductBreadcrumbs/>
-                    <div className="flex flex-col gap-2 sticky top-0 z-30 py-3 bg-white">
-                        <ProductTitle title={product.title}/>
-                        <div className="flex items-center gap-3">
-                            <ProductRateSummary/>
-                            <ProductOfferPack/>
-                            <ProductAvailableInStock/>
-                            {/*<ProductAvailableInMarketPlace/>*/}
-                            {/*<ProductFreeDelivery/>*/}
-                            {/*<ProductWithGift/>*/}
-                        </div>
-                        <ProductCampaign/>
-                    </div>
+                    <ProductInfoBox title={product.title} />
                     <ProductCustomFeatures/>
                     <ProductFeaturesBox/>
                     <ProductMarketplaceBox/>
@@ -70,11 +59,11 @@ export default function Page({params}: { params: { key: string } }) {
                 </div>
             </section>
             <section className="col-span-1 lg:col-span-2 xl:col-span-3 3xl:col-span-5 relative">
-                <div className="absolute bottom-0 w-full">
-                    <ProductPriceBox/>
-                </div>
-                <div className="absolute top-4 end-4">
+                <div className="">
                     <ProductTabContents/>
+                </div>
+                <div className="">
+                    <ProductPriceBox/>
                 </div>
             </section>
         </main>

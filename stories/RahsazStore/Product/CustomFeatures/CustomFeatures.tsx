@@ -1,6 +1,7 @@
 import React from "react";
 import {Card, CardBody, CardHeader, CardFooter} from "@nextui-org/card";
 import {OutlinedSettingIcon} from "@/stories/Icons";
+import Link from "next/link";
 
 export type ProductCustomFeaturesProps = {}
 

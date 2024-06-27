@@ -20,6 +20,7 @@ import {useRouter, usePathname, useSearchParams} from "next/navigation";
 import useHash from "@/hooks/useHash";
 import {BottomNavigation} from "@/stories/RahsazStore/BottomNavigation";
 import {Footer} from "@/stories/RahsazStore/Footer";
+import {FixedContent} from "@/stories/RahsazStore/FixedContent";
 
 
 const menuItems = [
@@ -137,7 +138,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             />
                         </header>
                         <section
-                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden h-full rounded-none md:rounded-3xl shadow-2xl  "
+                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
                         >
                             <Scrollbar
                                 wrapperProps={{
@@ -156,6 +157,19 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                             />
                                         );
                                     },
+                                }}
+                                scrollerProps={{
+                                    renderer: (props) => {
+                                        const {elementRef, ...restProps} = props;
+                                        return (
+                                            <div
+                                                ref={elementRef}
+                                                {...restProps}
+                                                className={props.className + " scroll-smooth"}
+                                                key="scrollbarScroller"
+                                            />
+                                        );
+                                    }
                                 }}
                                 trackXProps={{
                                     renderer: (props) => {
@@ -229,6 +243,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                     {children}
                                 </div>
                             </Scrollbar>
+                            {/*<FixedContent/>*/}
                             <BottomNavigation />
                         </section>
                         <Footer />
