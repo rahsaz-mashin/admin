@@ -138,8 +138,9 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             />
                         </header>
                         <section
-                            className="flex-[1_1_0] bg-white transition-all overflow-x-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
+                            className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
                         >
+                            <FixedContent/>
                             <Scrollbar
                                 wrapperProps={{
                                     renderer: (props) => {
@@ -203,7 +204,6 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                         />;
                                     },
                                 }}
-                                // ========================
                                 trackYProps={{
                                     renderer: (props) => {
                                         const {elementRef, style, ...restProps} = props;
@@ -243,7 +243,6 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                     {children}
                                 </div>
                             </Scrollbar>
-                            {/*<FixedContent/>*/}
                             <BottomNavigation />
                         </section>
                         <Footer />
