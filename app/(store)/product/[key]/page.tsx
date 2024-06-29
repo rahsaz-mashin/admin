@@ -37,7 +37,6 @@ export default function Page({params}: { params: { key: string } }) {
         ],
         rate: 4.3,
         rateCount: 38,
-
     }
 
     return (
@@ -58,16 +57,6 @@ export default function Page({params}: { params: { key: string } }) {
                     <ProductQABox/>
                 </div>
             </section>
-            {/*<section className="col-span-1 lg:col-span-2 xl:col-span-3 3xl:col-span-5 relative">*/}
-            {/*    <div className="bg-primary h-96">*/}
-            {/*        /!*<div className="">*!/*/}
-            {/*        /!*    <ProductTabContents/>*!/*/}
-            {/*        /!*</div>*!/*/}
-            {/*        /!*<div className="">*!/*/}
-            {/*        /!*    <ProductPriceBox/>*!/*/}
-            {/*        /!*</div>*!/*/}
-            {/*    </div>*/}
-            {/*</section>*/}
         </main>
     );
 }
