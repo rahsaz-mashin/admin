@@ -1,5 +1,4 @@
-// @ts-ignore
-import { interpolate } from '@/flubber';
+import { interpolate } from "flubber";
 import { MotionValue, useTransform } from "framer-motion";
 
 export const getIndex = (_: any, index: number) => index;

@@ -63,9 +63,9 @@ export default function RootLayout({children, params: {locale}}: {
     params: { locale: string }
 }) {
     return (
-        <html lang="fa-IR" dir="rtl" className="selection:bg-primary/25 selection:text-primary select-none" suppressHydrationWarning>
+        <html lang="fa-IR" dir="rtl" className="selection:bg-primary/25 selection:text-primary select-none h-full" suppressHydrationWarning>
         <body
-            className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth", IRANSansX.className].join(" ")}
+            className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth h-full", IRANSansX.className].join(" ")}
         >
         <Providers themeProps={{attribute: "class", defaultTheme: "light"}}>
             <main className="relative flex flex-col h-full w-full print:hidden">
