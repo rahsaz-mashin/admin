@@ -55,57 +55,60 @@ export const LoginByPhoneOtpForm = () => {
         <>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex w-full flex-col gap-3 justify-center items-center h-full"
+                className="flex w-full flex-col gap-3 p-3 justify-between items-center h-full min-h-fit"
             >
-                <div className="flex w-full flex-col items-center gap-3 py-8">
-                    <Logo size={52}/>
-                    <h1 className="font-bold text-primary">
-                        احراز هویت مرکزی سامانه راهساز ماشین
-                    </h1>
+                <div className="flex w-full flex-col items-center gap-3">
+                    <Logo size={48}/>
+                    {/*<h1 className="font-bold text-primary truncate text-xs us:text-sm xs:text-base">*/}
+                    {/*    احراز هویت مرکزی*/}
+                    {/*</h1>*/}
                 </div>
-                <PatternFormat
-                    fullWidth
-                    size="lg"
-                    dir="ltr"
-                    label="شماره موبایل خود را وارد کنید"
-                    placeholder="09212728307"
-                    labelPlacement="outside"
-                    isDisabled={isSubmitSuccessful}
-                    isReadOnly={isSubmitting}
-                    value={searchParams.get("phoneNumber")?.substring(2)}
-                    {...phoneNumberField}
-                    getInputRef={phoneNumberFieldRef}
-                    isInvalid={!!errors.phoneNumber}
-                    errorMessage={errors.phoneNumber?.message}
-                    {...{
-                        format: "09## ### ####",
-                        allowEmptyFormatting: true,
-                        mask: " ",
-                        customInput: Input,
-                    }}
-                    type="tel"
-                />
-                <Button
-                    fullWidth
-                    size="lg"
-                    variant="shadow"
-                    color="primary"
-                    type="submit"
-                    isDisabled={isSubmitSuccessful}
-                    isLoading={isSubmitting}
-                >
-                    ادامه
-                </Button>
-                <Button
-                    fullWidth
-                    size="md"
-                    variant="light"
-                    color="secondary"
-                    className="font-bold"
-                    isDisabled={isSubmitSuccessful || isSubmitting}
-                >
-                    ورود با ایمیل
-                </Button>
+                <div className="flex w-full flex-col items-center gap-3">
+                    {/*// @ts-ignore*/}
+                    <PatternFormat
+                        fullWidth
+                        size="lg"
+                        dir="ltr"
+                        label="شماره موبایل خود را وارد کنید"
+                        placeholder="09212728307"
+                        labelPlacement="outside"
+                        isDisabled={isSubmitSuccessful}
+                        isReadOnly={isSubmitting}
+                        value={searchParams.get("phoneNumber")?.substring(2)}
+                        {...phoneNumberField}
+                        getInputRef={phoneNumberFieldRef}
+                        isInvalid={!!errors.phoneNumber}
+                        errorMessage={errors.phoneNumber?.message}
+                        format="09## ### ####"
+                        allowEmptyFormatting
+                        mask=" "
+                        customInput={Input}
+                        type="tel"
+                    />
+                </div>
+                <div className="flex w-full flex-col items-center gap-3">
+                    <Button
+                        fullWidth
+                        size="lg"
+                        variant="shadow"
+                        color="primary"
+                        type="submit"
+                        isDisabled={isSubmitSuccessful}
+                        isLoading={isSubmitting}
+                    >
+                        ادامه
+                    </Button>
+                    <Button
+                        fullWidth
+                        size="md"
+                        variant="light"
+                        color="secondary"
+                        className="font-bold"
+                        isDisabled={isSubmitSuccessful || isSubmitting}
+                    >
+                        ورود با ایمیل
+                    </Button>
+                </div>
             </form>
         </>
     );
