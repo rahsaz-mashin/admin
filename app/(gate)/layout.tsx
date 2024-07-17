@@ -22,12 +22,73 @@ export default function Layout({children}: { children: React.ReactNode }) {
                         <div className="flex-1 max-h-96 max-w-80 w-full overflow-x-hidden z-10 ps-0 pe-0 py-3">
                             {children}
                         </div>
+                        <div
+                            className="absolute end-0 top-0 hidden justify-center items-center lg:flex"
+                        >
+                            <svg
+                                className="w-full"
+                                viewBox="0 0 694 788"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <g clipPath="url(#clip0_2651_15616)">
+                                    <g filter="url(#filter0_i_2651_15616)">
+                                        <path
+                                            d="M-225.784 213.318C-234.925 163.021 -210.639 112.559 -165.628 88.3235L210.617 -114.263C255.627 -138.499 311.125 -130.995 348.083 -95.6766L657.021 199.551C693.979 234.869 703.992 289.969 681.823 336.033L496.512 721.08C474.343 767.143 425.035 793.693 374.375 786.844L-49.091 729.589C-99.7508 722.739 -140.238 684.048 -149.379 633.751L-225.784 213.318Z"
+                                            fill="white"
+                                            fillOpacity="0.7"
+                                        />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter
+                                        id="filter0_i_2651_15616"
+                                        x="-231.693"
+                                        y="-132.369"
+                                        width="925.193"
+                                        height="920.282"
+                                        filterUnits="userSpaceOnUse"
+                                        colorInterpolationFilters="sRGB"
+                                    >
+                                        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
+                                        <feBlend
+                                            mode="normal"
+                                            in="SourceGraphic"
+                                            in2="BackgroundImageFix"
+                                            result="shape"
+                                        />
+                                        <feColorMatrix
+                                            in="SourceAlpha"
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                            result="hardAlpha"
+                                        />
+                                        <feOffset dx="-4" dy="-4"/>
+                                        <feGaussianBlur stdDeviation="6"/>
+                                        <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+                                        <feColorMatrix
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"
+                                        />
+                                        <feBlend
+                                            mode="normal"
+                                            in2="shape"
+                                            result="effect1_innerShadow_2651_15616"
+                                        />
+                                    </filter>
+                                    <clipPath id="clip0_2651_15616">
+                                        <rect width="694" height="788" fill="white"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
                         <div className="absolute -bottom-3 w-full flex justify-center items-center lg:hidden">
                             <svg
                                 className="w-[1024px] min-w-[1024px]"
-
-                                viewBox="0 0 1024 417" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                                viewBox="0 0 1024 417"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
                                 <g clipPath="url(#clip0_2810_3139)">
                                     <g filter="url(#filter0_i_2810_3139)">
                                         <path

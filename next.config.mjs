@@ -16,6 +16,12 @@ export default withPWA({
         remotePatterns: [
             {
                 protocol: 'https',
+                hostname: 'nextui.org',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
                 hostname: 'dkstatics-public.digikala.com',
                 port: '',
                 pathname: '/**',
