@@ -16,7 +16,7 @@ export const CartCurrentList = (
 
     return (
         <>
-        <div className="text-sm text-gray-500 p-2 w-full">
+        <div className="text-sm text-gray-500 px-2 w-full">
             <span className="text-justify w-full block">هزینه این سفارش هنوز پرداخت نشده‌ و در صورت اتمام موجودی، کالاها از سبد حذف می‌شوند.</span>
         </div>
         <Card>

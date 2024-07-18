@@ -27,6 +27,7 @@ export const CartTabs = (
                 color="primary"
                 size="lg"
                 classNames={{panel: "py-2"}}
+                selectedKey={"current"}
             >
                 <Tab
                     key="current"
@@ -36,11 +37,10 @@ export const CartTabs = (
                             <Chip size="lg" radius="full" variant="solid" className="bg-black/20 text-white">9</Chip>
                         </div>
                     )}
+                    className="flex flex-col gap-4"
                 >
                     {/*<CartEmptyCurrentList/>*/}
-
                     <CartCurrentList/>
-                    <CartDeliveryTypeBox/>
                 </Tab>
                 <Tab
                     key="next"
