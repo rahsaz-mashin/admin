@@ -1,18 +1,16 @@
-import { CartPendingOrders } from "./Product";
+import {CartProduct} from "./Product";
 
 
 export default {
-  title: "RahsazStore/Cart/Product",
-  component: CartPendingOrders,
+    title: "RahsazStore/Cart/Product",
+    component: CartProduct,
 };
 
 export const Default = {
-  args: {
-
-  },
-  parameters: {
-    nextjs: {
-      appDirectory: true,
-    }
-  },
+    args: {},
+    parameters: {
+        nextjs: {
+            appDirectory: true,
+        }
+    },
 };

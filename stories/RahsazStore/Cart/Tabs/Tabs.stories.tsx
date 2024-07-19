@@ -1,9 +1,9 @@
-import { CartPendingOrders } from "./PendingOrders";
+import { CartTabs } from "./Tabs";
 
 
 export default {
-  title: "RahsazStore/Cart/PendingOrders",
-  component: CartPendingOrders,
+  title: "RahsazStore/Cart/Tabs",
+  component: CartTabs,
 };
 
 export const Default = {
