@@ -140,14 +140,14 @@ export const CartAddressItem = (props: CartAddressItemProps) => {
                 <span className="font-light">{zipCode}</span>
             </span>
             <div className="flex justify-end w-full">
-                <Button
-                    color="secondary"
-                    variant="light"
-                    size="sm"
-                    startContent={<EditIcon/>}
-                >
-                    ویرایش
-                </Button>
+                {/*<Button*/}
+                {/*    color="secondary"*/}
+                {/*    variant="light"*/}
+                {/*    size="sm"*/}
+                {/*    startContent={<EditIcon/>}*/}
+                {/*>*/}
+                {/*    ویرایش*/}
+                {/*</Button>*/}
             </div>
         </Card>
     )

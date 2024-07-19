@@ -14,8 +14,9 @@ import {
     AutocompleteItem,
     Checkbox
 } from "@nextui-org/react";
-import {Map} from "@neshan-maps-platform/ol"
-import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers"
+import dynamic from "next/dynamic";
+import {Spinner} from "@nextui-org/spinner";
+
 
 export type CartAddAddressProps = {
     isOpen: boolean;
@@ -26,10 +27,16 @@ export type CartAddAddressProps = {
 export const CartAddAddress = (props: CartAddAddressProps) => {
     const {isOpen, onOpenChange} = props
 
+
     const [step, setStep] = useState<"location" | "address">("location")
 
     return (
-        <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+        <Modal
+            scrollBehavior="inside"
+            backdrop="blur"
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+        >
             <ModalContent>
                 {(onClose) => (
                     <>
@@ -53,23 +60,19 @@ export const CartAddAddress = (props: CartAddAddressProps) => {
 };
 
 
-const ChooseLocation = ({submit}: { submit: () => void }) => {
+const DynamicMap = dynamic(() => import('@/stories/General/Map/Map'), {
+    loading: () => <div className="flex justify-center items-center min-h-40"><Spinner/></div>,
+})
+
+const ChooseLocation = ({submit}: { submit: () => void; }) => {
+
     return (
         <>
             <ModalBody>
                 <span className="text-gray-500 text-sm font-light">
                     موقعیت مکانی خود را از روی نقشه انتخاب کنید:
                 </span>
-                <NeshanMap
-                    mapKey="web.0cd8558bb31843c3a919ea52fcd093ce"
-                    defaultType="neshan"
-                    center={{ latitude: 24.7665394, longitude: 51.4749824 }}
-                    style={{ height: "48vh", width: "100%" }}
-                    // onInit={onInit}
-                    zoom={13}
-                >
-
-                </NeshanMap>
+                <DynamicMap/>
             </ModalBody>
             <ModalFooter>
                 <Button

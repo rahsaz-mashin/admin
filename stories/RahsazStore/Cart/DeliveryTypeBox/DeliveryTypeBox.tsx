@@ -1142,11 +1142,11 @@ export const CartDeliveryTypeBox = (
             <CardHeader
                 className="text-white bg-primary py-2 w-fit font-light text-base rounded-tr-2xl relative after:absolute after:bg-primary after:-end-12 after:h-full after:w-12 after:rounded-tl-[10rem]"
             >
-                نحوه دریافت
+                روش دریافت
             </CardHeader>
             <CardBody className="border border-primary rounded-2xl rounded-tr-none gap-2 text-start">
                 <span className="text-gray-500 text-sm font-light">
-                    نحوه دریافت کالا را انتخاب کنید!
+                    روش دریافت کالا را انتخاب کنید!
                 </span>
                 <ul className="flex flex-wrap gap-3">
                     {deliveryTypes.map(({id, key, title, icon}) => {

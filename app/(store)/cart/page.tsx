@@ -3,6 +3,11 @@ import {CartTabs} from "@/stories/RahsazStore/Cart/Tabs";
 import {CartDeliveryTypeBox} from "@/stories/RahsazStore/Cart/DeliveryTypeBox";
 import React from "react";
 import {CartAddressBox} from "@/stories/RahsazStore/Cart/AddressBox";
+import {CartPaymentWayBox} from "@/stories/RahsazStore/Cart/PaymentWayBox";
+import {CartCouponBox} from "@/stories/RahsazStore/Cart/CouponBox";
+import {CartSummaryBox} from "@/stories/RahsazStore/Cart/SummaryBox";
+import {CartPreInvoice} from "@/stories/RahsazStore/Cart/PreInvoice";
+import {CartSubmitBox} from "@/stories/RahsazStore/Cart/SubmitBox";
 
 export default function Page() {
     return (
@@ -15,9 +20,14 @@ export default function Page() {
             </section>
             <section className="col-span-full lg:col-span-2 relative">
                 <div className="flex flex-col gap-3 relative">
+                    <CartSummaryBox/>
+                    <CartPreInvoice/>
                     <CartDeliveryTypeBox/>
                     <CartAddressBox/>
+                    <CartPaymentWayBox/>
+                    <CartCouponBox/>
                 </div>
+                <CartSubmitBox/>
             </section>
         </main>
     );
