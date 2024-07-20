@@ -46,6 +46,11 @@ import OutlinedComment from "@/stories/Icons/OutlinedComment.stories";
 import OutlinedDialog from "@/stories/Icons/OutlinedDialog.stories";
 import OutlinedBasket from "@/stories/Icons/OutlinedBasket.stories";
 
+import DuotoneDangerSquare from "@/stories/Icons/DuotoneDangerSquare.stories";
+import DuotoneCheckSquare from "@/stories/Icons/DuotoneCheckSquare.stories";
+import DuotoneProcessSquare from "@/stories/Icons/DuotoneProcessSquare.stories";
+import DuotoneCancelSquare from "@/stories/Icons/DuotoneCancelSquare.stories";
+
 
 export const OutlinedCustomizationIcon = OutlinedCustomization.component;
 export const OutlinedArrowDownIcon = OutlinedArrowDown.component;
@@ -96,3 +101,10 @@ export const OutlinedNotesIcon = OutlinedNotes.component;
 export const OutlinedCommentIcon = OutlinedComment.component;
 export const OutlinedDialogIcon = OutlinedDialog.component;
 export const OutlinedBasketIcon = OutlinedBasket.component;
+
+
+
+export const DuotoneDangerSquareIcon = DuotoneDangerSquare.component;
+export const DuotoneCheckSquareIcon = DuotoneCheckSquare.component;
+export const DuotoneProcessSquareIcon = DuotoneProcessSquare.component;
+export const DuotoneCancelSquareIcon = DuotoneCancelSquare.component;

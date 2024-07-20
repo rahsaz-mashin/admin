@@ -21,7 +21,7 @@ export const CartPendingOrders = (
 
 
     return (
-        <Card shadow="sm" className="mb-5">
+        <Card shadow="sm" className="m-4">
             <CardHeader className="font-bold text-sm text-gray-500">
                 شما 2 سفارش در انتظار پرداخت دارید:
             </CardHeader>

@@ -15,7 +15,7 @@ export const CartSubmitBox = (
 
 
     return (
-        <div className="flex flex-col gap-3 p-4">
+        <div className="flex flex-col gap-3">
             <div className="flex flex-row justify-between">
                 <span>
                     قابل پرداخت:

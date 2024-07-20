@@ -26,7 +26,7 @@ export const CartTabs = (
                 variant="light"
                 color="primary"
                 size="lg"
-                classNames={{panel: "py-2"}}
+                classNames={{panel: "p-4", base: "sticky top-0 pt-4 pb-2 px-4 z-20 bg-white"}}
                 selectedKey={"current"}
             >
                 <Tab
@@ -50,6 +50,7 @@ export const CartTabs = (
                             <Chip size="lg" radius="full" variant="solid" className="bg-black/20 text-white">4</Chip>
                         </div>
                     )}
+                    className="flex flex-col gap-4"
                 >
                     <CartEmptyNextList/>
                 </Tab>

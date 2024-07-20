@@ -25,7 +25,7 @@ export const CartPreInvoice = (
             </Button>
             <span className="font-light">
                 برای دریافت فاکتور، پس از ثبت سفارش، از حساب کاربری در صفحه
-                <Link href="/dashboard/orders" className="font-semibold text-blue-500"> سفارشات من </Link>
+                <Link href="/dashboard/order" className="font-semibold text-blue-500"> سفارشات من </Link>
                 به جزئیات سفارش سر بزنید.
             </span>
         </div>
