@@ -20,10 +20,14 @@ export type OrderItemProps = {
 
 export const OrderItem = (props: OrderItemProps) => {
     const {status, step} = props
-    const result = {
+    const result : any = {
         color: "text-warning-500",
         label: "نامشخص",
-        icon: DuotoneDangerSquareIcon
+        icon: DuotoneDangerSquareIcon,
+        error: "",
+        warning: "",
+        info: "",
+        tools: []
     }
     switch (status) {
         case "current":
@@ -32,31 +36,103 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.color = "text-warning-500"
                     result.label = "در انتظار پرداخت"
                     result.icon = DuotoneDangerSquareIcon
+                    result.error = "سفارش شما در صورت عدم پرداخت تا 23 دقیقه دیگر لغو خواهد شد."
+                    result.tools = [
+                        {
+                            title: "لغو",
+                            onPress: () => alert("cancel"),
+                            variant: "solid",
+                            color: "default",
+                        },
+                        {
+                            title: "پرداخت",
+                            onPress: () => alert("pay"),
+                            variant: "shadow",
+                            color: "primary",
+                        }
+                    ]
                     break
                 case "reserved":
                     result.color = "text-warning-500"
                     result.label = "رزرو شده - در انتظار ادامه پرداخت"
                     result.icon = DuotoneDangerSquareIcon
+                    result.error = "سفارش شما به صورت کامل پرداخت نشده است و تا 67 ساعت دیگر مهلت خواهید داشت تا پرداخت بعدی در جهت تکمیل سفارش را انجام دهید."
+                    result.tools = [
+                        {
+                            title: "لغو",
+                            onPress: () => alert("cancel"),
+                            variant: "solid",
+                            color: "default",
+                        },
+                        {
+                            title: "ادامه پرداخت",
+                            onPress: () => alert("pay"),
+                            variant: "shadow",
+                            color: "primary",
+                        }
+                    ]
                     break
                 case "waitingForConfirm":
                     result.color = "text-blue-500"
                     result.label = "در انتظار تایید"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "سفارش شما ثبت شده و در انتظار تایید توسط کارشناسان می باشد."
+                    result.tools = [
+                        {
+                            title: "مشاهده فاکتور",
+                            onPress: () => alert("factor"),
+                            variant: "flat",
+                            color: "primary",
+                        }
+                    ]
                     break
                 case "processing":
                     result.color = "text-blue-500"
                     result.label = "در حال پردازش"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "سفارش شما ثبت شده است و در حال انجام فرایندهای لازم می باشد."
+                    result.tools = [
+                        {
+                            title: "مشاهده فاکتور",
+                            onPress: () => alert("factor"),
+                            variant: "flat",
+                            color: "primary",
+                        }
+                    ]
                     break
                 case "readyForDelivery":
                     result.color = "text-blue-500"
                     result.label = "آماده تحویل"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "سفارش شما آماده برای ارسال یا تحویل می باشد."
+                    result.tools = [
+                        {
+                            title: "مشاهده فاکتور",
+                            onPress: () => alert("factor"),
+                            variant: "flat",
+                            color: "primary",
+                        }
+                    ]
                     break
                 case "sent":
                     result.color = "text-blue-500"
                     result.label = "ارسال شده"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "سفارش شما ارسال شده است."
+                    result.tools = [
+                        {
+                            title: "مشاهده بیجک",
+                            onPress: () => alert("bijak"),
+                            variant: "flat",
+                            color: "primary",
+                        },
+                        {
+                            title: "مشاهده فاکتور",
+                            onPress: () => alert("factor"),
+                            variant: "flat",
+                            color: "primary",
+                        },
+                    ]
                     break
             }
             break
@@ -66,6 +142,14 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.color = "text-green-500"
                     result.label = "تحویل شده"
                     result.icon = DuotoneCheckSquareIcon
+                    result.tools = [
+                        {
+                            title: "مشاهده فاکتور",
+                            onPress: () => alert("factor"),
+                            variant: "flat",
+                            color: "primary",
+                        }
+                    ]
                     break
             }
             break
@@ -75,11 +159,13 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.color = "text-blue-500"
                     result.label = "مرجوعی - در انتظار تایید"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "درخواست مرجوعی شما ثبت شده و در انتظار تایید توسط کارشناسان می باشد."
                     break
                 case "processing":
                     result.color = "text-blue-500"
                     result.label = "مرجوعی - در حال پردازش"
                     result.icon = DuotoneProcessSquareIcon
+                    result.info = "درخواست مرجوعی شما در حال انجام فرایندهای لازم می باشد."
                     break
                 case "completed":
                     result.color = "text-green-500"
@@ -94,6 +180,7 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.color = "text-red-500"
                     result.label = "لغو شده"
                     result.icon = DuotoneDangerSquareIcon
+                    result.error = "سفارش شما به صورت سیستمی لغو شده است."
                     break
             }
             break
@@ -137,27 +224,34 @@ export const OrderItem = (props: OrderItemProps) => {
                         </span>
                     </div>
                     <div className="flex justify-start items-center">
-                        <span className="flex items-center gap-1 text-danger text-sm font-light">
-                            سفارش شما در صورت عدم پرداخت تا 23 دقیقه دیگر لغو خواهد شد.
-                        </span>
-                    </div>
-                    <div className="flex justify-start items-center">
 
                     </div>
-                    <div className="flex justify-end gap-2 items-center">
-                        <Button
-                            color="default"
-                            variant="solid"
-                        >
-                            انصراف
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="shadow"
-                        >
-                            پرداخت
-                        </Button>
-                    </div>
+                    {(result.error || result.warning || result.info) && (
+                        <div className="flex justify-start items-center text-start">
+                            <span
+                                className={clsx("flex items-center gap-1 text-sm font-light", result.error ? "text-danger" : result.warning ? "text-warning" : "text-gray-600")}>
+                                {result.error || result.warning || result.info}
+                            </span>
+                        </div>
+                    )}
+                    {!!result.tools?.length && (
+                        <div className="flex justify-end gap-2 items-center">
+                            {(result.tools.map(({title, variant, color, onPress} : any) => {
+                                    return (
+                                        <Button
+                                            /*// @ts-ignore */
+                                            variant={variant}
+                                            /*// @ts-ignore */
+                                            color={color}
+                                            onPress={onPress}
+                                        >
+                                            {title}
+                                        </Button>
+                                    )
+                                })
+                            )}
+                        </div>
+                    )}
                 </CardBody>
             </Card>
         </li>

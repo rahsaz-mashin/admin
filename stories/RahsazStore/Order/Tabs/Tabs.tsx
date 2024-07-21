@@ -9,11 +9,7 @@ import {OrderEmptyList} from "@/stories/RahsazStore/Order/EmptyList";
 export type OrderTabsProps = {}
 
 
-export const OrderTabs = (
-    {}
-        :
-        OrderTabsProps
-) => {
+export const OrderTabs = (props: OrderTabsProps) => {
 
 
     return (
@@ -28,19 +24,6 @@ export const OrderTabs = (
                 // selectedKey={"all"}
             >
                 <Tab
-                    key="all"
-                    title={(
-                        <div className="flex items-center gap-2">
-                            <span>همه</span>
-                            <Chip size="lg" radius="full" variant="solid" className="bg-black/20 text-white">9</Chip>
-                        </div>
-                    )}
-                    className="flex flex-col gap-4"
-                >
-                    {/*<OrderEmptyList status="all"/>*/}
-                    <OrderList/>
-                </Tab>
-                <Tab
                     key="current"
                     title={(
                         <div className="flex items-center gap-2">
@@ -51,6 +34,7 @@ export const OrderTabs = (
                     className="flex flex-col gap-4"
                 >
                     <OrderEmptyList status="current"/>
+                    <OrderList/>
                 </Tab>
                 <Tab
                     key="delivered"

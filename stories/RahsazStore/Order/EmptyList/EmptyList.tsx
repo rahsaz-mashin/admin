@@ -2,7 +2,7 @@ import React from "react";
 import {Card, CardBody} from "@nextui-org/card";
 
 export type OrderEmptyListProps = {
-    status: "all" | "current" | "delivered" | "returned" | "canceled"
+    status: "current" | "delivered" | "returned" | "canceled"
 }
 
 
