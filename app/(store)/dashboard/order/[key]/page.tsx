@@ -1,36 +1,20 @@
-import {CartPendingOrders} from "@/stories/RahsazStore/Cart/PendingOrders/PendingOrders";
-import {CartTabs} from "@/stories/RahsazStore/Cart/Tabs";
-import {CartDeliveryTypeBox} from "@/stories/RahsazStore/Cart/DeliveryTypeBox";
 import React from "react";
-import {CartAddressBox} from "@/stories/RahsazStore/Cart/AddressBox";
-import {CartPaymentWayBox} from "@/stories/RahsazStore/Cart/PaymentWayBox";
-import {CartCouponBox} from "@/stories/RahsazStore/Cart/CouponBox";
-import {CartSummaryBox} from "@/stories/RahsazStore/Cart/SummaryBox";
-import {CartPreInvoice} from "@/stories/RahsazStore/Cart/PreInvoice";
-import {CartSubmitBox} from "@/stories/RahsazStore/Cart/SubmitBox";
+import {OrderTabs} from "@/stories/RahsazStore/Order/Tabs";
+import {OrderDetail} from "@/stories/RahsazStore/Order/Detail";
 
 export default function Page({params}: { params: { key: string } }) {
     return (
-        <main className="grid grid-cols-6 p-4 gap-4">
-            سفارش من
-            {params.key}
-            {/*<section className="col-span-full lg:col-span-4 relative">*/}
-            {/*    <div className="flex flex-col gap-3 relative">*/}
-            {/*        <CartPendingOrders/>*/}
-            {/*        <CartTabs/>*/}
-            {/*    </div>*/}
-            {/*</section>*/}
-            {/*<section className="col-span-full lg:col-span-2 relative">*/}
-            {/*    <div className="flex flex-col gap-3 relative">*/}
-            {/*        <CartSummaryBox/>*/}
-            {/*        <CartPreInvoice/>*/}
-            {/*        <CartDeliveryTypeBox/>*/}
-            {/*        <CartAddressBox/>*/}
-            {/*        <CartPaymentWayBox/>*/}
-            {/*        <CartCouponBox/>*/}
-            {/*    </div>*/}
-            {/*    <CartSubmitBox/>*/}
-            {/*</section>*/}
+        <main className="grid grid-cols-7">
+            <section className="col-span-full hidden lg:block lg:col-span-3 relative">
+                <div className="flex flex-col gap-3 relative">
+                    <OrderTabs/>
+                </div>
+            </section>
+            <section className="col-span-full lg:col-span-4 relative">
+                <div className="flex flex-col gap-3 relative">
+                    <OrderDetail/>
+                </div>
+            </section>
         </main>
     );
 }

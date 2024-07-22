@@ -21,7 +21,7 @@ export const OrderTabs = (props: OrderTabsProps) => {
                 color="primary"
                 size="lg"
                 classNames={{panel: "p-4", base: "sticky top-0 pt-4 pb-0 px-4 z-10 bg-white"}}
-                // selectedKey={"all"}
+                selectedKey={"current"}
             >
                 <Tab
                     key="current"

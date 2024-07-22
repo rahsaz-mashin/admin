@@ -14,57 +14,57 @@ export const OrderList = (props: OrderListProps) => {
     return (
         <Card shadow="sm" className="">
             <CardBody>
-                <ul className="flex flex-col gap-1">
+                <ul className="flex flex-col gap-2">
                     <OrderItem
                         status="current"
                         step="waitingForPayment"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="current"
                         step="reserved"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="current"
                         step="waitingForConfirm"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="current"
                         step="processing"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="current"
                         step="readyForDelivery"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="current"
                         step="sent"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="delivered"
                         step="completed"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="return"
                         step="waitingForConfirm"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="return"
                         step="processing"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="return"
                         step="completed"
                     />
-                    <Divider/>
+                    {/*<Divider/>*/}
                     <OrderItem
                         status="canceled"
                         step="completed"

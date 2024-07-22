@@ -20,7 +20,7 @@ export type OrderItemProps = {
 
 export const OrderItem = (props: OrderItemProps) => {
     const {status, step} = props
-    const result : any = {
+    const result: any = {
         color: "text-warning-500",
         label: "نامشخص",
         icon: DuotoneDangerSquareIcon,
@@ -38,18 +38,17 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneDangerSquareIcon
                     result.error = "سفارش شما در صورت عدم پرداخت تا 23 دقیقه دیگر لغو خواهد شد."
                     result.tools = [
-                        {
-                            title: "لغو",
-                            onPress: () => alert("cancel"),
-                            variant: "solid",
-                            color: "default",
-                        },
-                        {
-                            title: "پرداخت",
-                            onPress: () => alert("pay"),
-                            variant: "shadow",
-                            color: "primary",
-                        }
+                        <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold">
+                            <span>قابل پرداخت:</span>
+                            <span className="text-primary">10,000,000تومانءء</span>
+                        </span>,
+                        <Button
+                            variant="shadow"
+                            color="primary"
+                            onPress={() => alert("pay")}
+                        >
+                            پرداخت
+                        </Button>
                     ]
                     break
                 case "reserved":
@@ -58,18 +57,17 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneDangerSquareIcon
                     result.error = "سفارش شما به صورت کامل پرداخت نشده است و تا 67 ساعت دیگر مهلت خواهید داشت تا پرداخت بعدی در جهت تکمیل سفارش را انجام دهید."
                     result.tools = [
-                        {
-                            title: "لغو",
-                            onPress: () => alert("cancel"),
-                            variant: "solid",
-                            color: "default",
-                        },
-                        {
-                            title: "ادامه پرداخت",
-                            onPress: () => alert("pay"),
-                            variant: "shadow",
-                            color: "primary",
-                        }
+                        <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold">
+                            <span>قابل پرداخت:</span>
+                            <span className="text-primary">10,000,000تومانءء</span>
+                        </span>,
+                        <Button
+                            variant="shadow"
+                            color="primary"
+                            onPress={() => alert("pay")}
+                        >
+                            ادامه پرداخت
+                        </Button>
                     ]
                     break
                 case "waitingForConfirm":
@@ -78,12 +76,13 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneProcessSquareIcon
                     result.info = "سفارش شما ثبت شده و در انتظار تایید توسط کارشناسان می باشد."
                     result.tools = [
-                        {
-                            title: "مشاهده فاکتور",
-                            onPress: () => alert("factor"),
-                            variant: "flat",
-                            color: "primary",
-                        }
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("factor")}
+                        >
+                            مشاهده فاکتور
+                        </Button>
                     ]
                     break
                 case "processing":
@@ -92,12 +91,13 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneProcessSquareIcon
                     result.info = "سفارش شما ثبت شده است و در حال انجام فرایندهای لازم می باشد."
                     result.tools = [
-                        {
-                            title: "مشاهده فاکتور",
-                            onPress: () => alert("factor"),
-                            variant: "flat",
-                            color: "primary",
-                        }
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("factor")}
+                        >
+                            مشاهده فاکتور
+                        </Button>
                     ]
                     break
                 case "readyForDelivery":
@@ -106,12 +106,13 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneProcessSquareIcon
                     result.info = "سفارش شما آماده برای ارسال یا تحویل می باشد."
                     result.tools = [
-                        {
-                            title: "مشاهده فاکتور",
-                            onPress: () => alert("factor"),
-                            variant: "flat",
-                            color: "primary",
-                        }
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("factor")}
+                        >
+                            مشاهده فاکتور
+                        </Button>
                     ]
                     break
                 case "sent":
@@ -120,18 +121,20 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.icon = DuotoneProcessSquareIcon
                     result.info = "سفارش شما ارسال شده است."
                     result.tools = [
-                        {
-                            title: "مشاهده بیجک",
-                            onPress: () => alert("bijak"),
-                            variant: "flat",
-                            color: "primary",
-                        },
-                        {
-                            title: "مشاهده فاکتور",
-                            onPress: () => alert("factor"),
-                            variant: "flat",
-                            color: "primary",
-                        },
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("bijak")}
+                        >
+                            مشاهده بیجک
+                        </Button>,
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("factor")}
+                        >
+                            مشاهده فاکتور
+                        </Button>
                     ]
                     break
             }
@@ -143,12 +146,20 @@ export const OrderItem = (props: OrderItemProps) => {
                     result.label = "تحویل شده"
                     result.icon = DuotoneCheckSquareIcon
                     result.tools = [
-                        {
-                            title: "مشاهده فاکتور",
-                            onPress: () => alert("factor"),
-                            variant: "flat",
-                            color: "primary",
-                        }
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("bijak")}
+                        >
+                            مشاهده بیجک
+                        </Button>,
+                        <Button
+                            variant="flat"
+                            color="primary"
+                            onPress={() => alert("factor")}
+                        >
+                            مشاهده فاکتور
+                        </Button>
                     ]
                     break
             }
@@ -191,10 +202,10 @@ export const OrderItem = (props: OrderItemProps) => {
                 shadow="none"
                 radius="md"
                 isHoverable
-                isPressable
-                className="w-full"
+                // isPressable
+                className="w-full cursor-pointer"
             >
-                <CardBody className="flex flex-col gap-3 p-2">
+                <CardBody className="flex flex-col gap-3 p-3">
                     <div className="flex justify-between items-center">
                         <span className={clsx("flex items-center gap-2 text-sm font-medium", result.color)}>
                             <result.icon size={24}/>
@@ -219,7 +230,7 @@ export const OrderItem = (props: OrderItemProps) => {
                     </div>
                     <div className="flex justify-end items-center">
                         <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold">
-                            <span>مبلغ سفارش:</span>
+                            <span>مبلغ کل سفارش:</span>
                             <span className="text-primary">10,000,000تومانءء</span>
                         </span>
                     </div>
@@ -236,18 +247,8 @@ export const OrderItem = (props: OrderItemProps) => {
                     )}
                     {!!result.tools?.length && (
                         <div className="flex justify-end gap-2 items-center">
-                            {(result.tools.map(({title, variant, color, onPress} : any) => {
-                                    return (
-                                        <Button
-                                            /*// @ts-ignore */
-                                            variant={variant}
-                                            /*// @ts-ignore */
-                                            color={color}
-                                            onPress={onPress}
-                                        >
-                                            {title}
-                                        </Button>
-                                    )
+                            {(result.tools.map((tool: any) => {
+                                    return tool
                                 })
                             )}
                         </div>
