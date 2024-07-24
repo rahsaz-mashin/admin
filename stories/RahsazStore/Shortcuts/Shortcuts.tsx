@@ -281,7 +281,6 @@ export const Shortcuts = () => {
                         onClose={handleCloseList}
                         placement="center"
                         isDismissable
-                        classNames={{closeButton: "right-auto left-1"}}
                     >
                         <ModalContent>
                             <ModalHeader>امکانات راهساز ماشین</ModalHeader>

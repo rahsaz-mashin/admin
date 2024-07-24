@@ -3,7 +3,7 @@
 import React from "react";
 import {Tab, Tabs} from "@nextui-org/tabs";
 import {Chip} from "@nextui-org/chip";
-import {OrderList} from "@/stories/RahsazStore/Order/OrderList";
+import {OrderList} from "@/stories/RahsazStore/Order/List";
 import {OrderEmptyList} from "@/stories/RahsazStore/Order/EmptyList";
 
 export type OrderTabsProps = {}

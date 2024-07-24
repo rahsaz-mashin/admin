@@ -349,8 +349,6 @@ export const OrderDetail = (props: OrderDetailProps) => {
                     <OrderProduct/>
                     <OrderProduct/>
                 </div>
-
-
             </CardBody>
         </Card>
     );

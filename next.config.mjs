@@ -12,6 +12,7 @@ export default withPWA({
     reactStrictMode: false,
     output: 'standalone',
     swcMinify: true,
+    transpilePackages: ['@mui/x-charts'],
     images: {
         remotePatterns: [
             {

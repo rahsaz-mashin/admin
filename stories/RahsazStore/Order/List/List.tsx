@@ -2,8 +2,7 @@
 
 import React from "react";
 import {Card, CardBody} from "@nextui-org/card";
-import {OrderItem} from "@/stories/RahsazStore/Order/OrderItem";
-import {Divider} from "@nextui-org/react";
+import {OrderItem} from "@/stories/RahsazStore/Order/Item";
 
 export type OrderListProps = {}
 

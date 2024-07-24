@@ -1,4 +1,4 @@
-import { OrderList } from "./OrderList";
+import { OrderList } from "./List";
 
 
 export default {
