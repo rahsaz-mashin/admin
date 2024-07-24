@@ -1,7 +1,17 @@
 "use client"
 
 import React, {useState} from "react";
-import {Button, Card, CardBody, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader} from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    Divider,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader
+} from "@nextui-org/react";
 import {UseDisclosureReturn} from "@nextui-org/use-disclosure";
 import {BoldDuotoneCreditCardIcon, BoldDuotoneReceiptIcon, BoldDuotoneTicketIcon} from "@/stories/Icons";
 import clsx from "clsx";
@@ -73,9 +83,7 @@ export const WalletIncreaseTypeModal = (props: WalletIncreaseTypeModalProps) => 
                         </Card>
                     </div>
                 </ModalBody>
-                <ModalFooter
-                    className=""
-                >
+                <ModalFooter>
                     <Button
                         className="flex-1 md:flex-grow-0"
                         variant="flat"
