@@ -5,15 +5,13 @@ import {
     Button,
     Card,
     CardBody,
-    Checkbox,
     ModalBody,
     ModalFooter,
     ModalHeader
 } from "@nextui-org/react";
-import {CardHeader} from "@nextui-org/card";
 import {Input} from "@nextui-org/input";
 import clsx from "clsx";
-import {BoldDuotoneCreditCardIcon} from "@/stories/Icons";
+import {BoldDuotoneWalletIcon} from "@/stories/Icons";
 
 
 export type WalletChargeByOnlineProps = {
@@ -26,6 +24,13 @@ export const WalletChargeByOnline = (props: WalletChargeByOnlineProps) => {
     const {onBackToMain, onClose} = props
     const [step, setStep] = useState(1)
 
+    return (
+        <WalletChargeByOnlineSuccess
+            prev={onBackToMain}
+            next={() => setStep(2)}
+            done={() => onClose()}
+        />
+    )
     if (step === 1) return (
         <WalletChargeByOnlineStep1
             prev={onBackToMain}
@@ -33,20 +38,7 @@ export const WalletChargeByOnline = (props: WalletChargeByOnlineProps) => {
             done={() => onClose()}
         />
     )
-    if (step === 2) return (
-        <WalletChargeByOnlineStep2
-            prev={() => setStep(1)}
-            next={() => setStep(3)}
-            done={() => onClose()}
-        />
-    )
-    if (step === 3) return (
-        <WalletChargeByOnlineStep3
-            prev={() => setStep(2)}
-            next={() => setStep(4)}
-            done={() => onClose()}
-        />
-    )
+
     return null
 };
 
@@ -133,99 +125,126 @@ export const WalletChargeByOnlineStep1 = (props: WalletChargeByOnlineStepsProps)
                     // isDisabled={!type}
                     onPress={next}
                 >
-                    تایید و ادامه
+                    پرداخت
                 </Button>
             </ModalFooter>
         </>
     );
 };
 
-export const WalletChargeByOnlineStep2 = (props: WalletChargeByOnlineStepsProps) => {
+export const WalletChargeByOnlineSuccess = (props: WalletChargeByOnlineStepsProps) => {
     const {prev, next, done} = props
 
     return (
         <>
             <ModalHeader>
-                شارژ کیف پول - واریز بانکی
+                شارژ کیف پول - درگاه آنلاین
             </ModalHeader>
-            <ModalBody className="flex flex-col gap-2">
-                <p className="text-gray-500 text-sm text-justify font-light">
-                    حال اطلاعات چک را وارد کنید:
-                </p>
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="مبلغ واریزی"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="زمان واریز"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="نام بانک"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="شماره فیش"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="شماره پیگیری"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="شماره حساب / کارت مبداء"
-                />
-                <Checkbox>
-                    اطلاعات فوق تایید می شود.
-                </Checkbox>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-success flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        عملیات شارژ کیف پول شما با موفقیت انجام شد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            کد رهگیری:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره ارجاع:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                </div>
             </ModalBody>
             <ModalFooter>
                 <Button
                     className="flex-1 md:flex-none"
                     variant="flat"
                     color="default"
-                    onPress={prev}
+                    onPress={done}
                 >
-                    برگشت
-                </Button>
-                <Button
-                    className="flex-1 md:flex-none"
-                    variant="shadow"
-                    color="primary"
-                    // isDisabled={!type}
-                    onPress={next}
-                >
-                    ثبت و ارسال
+                باشه
                 </Button>
             </ModalFooter>
         </>
     );
 };
 
-export const WalletChargeByOnlineStep3 = (props: WalletChargeByOnlineStepsProps) => {
+export const WalletChargeByOnlineFailure = (props: WalletChargeByOnlineStepsProps) => {
     const {prev, next, done} = props
 
     return (
         <>
             <ModalHeader>
-                شارژ کیف پول - واریز بانکی
+                شارژ کیف پول - درگاه آنلاین
             </ModalHeader>
-            <ModalBody className="flex flex-col gap-2">
-                <span className="text-success text-sm font-bold">
-                    اطلاعات واریزی با موفقیت ثبت گردید.
-                </span>
-                <p className="text-gray-500 text-sm text-justify font-light">
-                    نتیجه بررسی آن به اطلاع شما خواهد رسید.
-                    <br/>
-                    پس از تایید، کیف پول شما شارژ خواهد شد.
-                </p>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-danger flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        عملیات شارژ کیف پول شما با موفقیت انجام شد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            کد رهگیری:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره ارجاع:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                </div>
             </ModalBody>
             <ModalFooter>
                 <Button

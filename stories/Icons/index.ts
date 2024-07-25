@@ -56,6 +56,7 @@ import OutlinedCreditCard from "@/stories/Icons/OutlinedCreditCard.stories";
 import BoldDuotoneCreditCard from "@/stories/Icons/BoldDuotoneCreditCard.stories";
 import BoldDuotoneReceipt from "@/stories/Icons/BoldDuotoneReceipt.stories";
 import BoldDuotoneTicket from "@/stories/Icons/BoldDuotoneTicket.stories";
+import BoldDuotoneWallet from "@/stories/Icons/BoldDuotoneWallet.stories";
 
 
 export const OutlinedCustomizationIcon = OutlinedCustomization.component;
@@ -123,3 +124,4 @@ export const DuotoneCancelSquareIcon = DuotoneCancelSquare.component;
 export const BoldDuotoneCreditCardIcon = BoldDuotoneCreditCard.component;
 export const BoldDuotoneReceiptIcon = BoldDuotoneReceipt.component;
 export const BoldDuotoneTicketIcon = BoldDuotoneTicket.component;
+export const BoldDuotoneWalletIcon = BoldDuotoneWallet.component;
