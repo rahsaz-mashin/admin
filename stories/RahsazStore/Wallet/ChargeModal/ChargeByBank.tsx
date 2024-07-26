@@ -12,17 +12,40 @@ import {
 } from "@nextui-org/react";
 import {CardHeader} from "@nextui-org/card";
 import {Input} from "@nextui-org/input";
+import {BoldDuotoneWalletIcon} from "@/stories/Icons";
+
+
+
+
 
 
 export type WalletChargeByBankProps = {
     onBackToMain: () => void;
     onClose: () => void;
+    result?: any;
 }
 
 
 export const WalletChargeByBank = (props: WalletChargeByBankProps) => {
-    const {onBackToMain, onClose} = props
+    const {onBackToMain, onClose, result} = props
     const [step, setStep] = useState(1)
+
+    if (!!result && result.success) {
+        return (
+            <WalletChargeByBankSuccess
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
+    if (!!result && !result.success) {
+        return (
+            <WalletChargeByBankFailure
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
 
     if (step === 1) return (
         <WalletChargeByBankStep1
@@ -47,6 +70,14 @@ export const WalletChargeByBank = (props: WalletChargeByBankProps) => {
     )
     return null
 };
+
+
+
+
+
+
+
+
 
 
 export type WalletChargeByBankStepsProps = {
@@ -203,6 +234,160 @@ export const WalletChargeByBankStep3 = (props: WalletChargeByBankStepsProps) => 
                     <br/>
                     پس از تایید، کیف پول شما شارژ خواهد شد.
                 </p>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                    className="flex-1 md:flex-none"
+                    variant="flat"
+                    color="default"
+                    onPress={done}
+                >
+                    باشه
+                </Button>
+            </ModalFooter>
+        </>
+    );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export type WalletChargeByBankResultProps = {
+    done: () => void;
+    result?: any;
+}
+
+export const WalletChargeByBankSuccess = (props: WalletChargeByBankResultProps) => {
+    const {done, result} = props
+
+    return (
+        <>
+            <ModalHeader>
+                شارژ کیف پول - واریز بانکی
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-success flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        اطلاعات واریزی شما تایید شد و کیف پول شما شارژ شد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره پیگیری:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان ثبت:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان تایید:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                    className="flex-1 md:flex-none"
+                    variant="flat"
+                    color="default"
+                    onPress={done}
+                >
+                    باشه
+                </Button>
+            </ModalFooter>
+        </>
+    );
+};
+
+export const WalletChargeByBankFailure = (props: WalletChargeByBankResultProps) => {
+    const {done, result} = props
+
+    return (
+        <>
+            <ModalHeader>
+                شارژ کیف پول - واریز بانکی
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-danger flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        اطلاعات واریزی شما تایید نشد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره پیگیری:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان ثبت:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان رد:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            دلیل رد:
+                        </span>
+                        <span className="text-danger">
+                            عدم تطابق اطلاعات واریزی
+                        </span>
+                    </div>
+                </div>
             </ModalBody>
             <ModalFooter>
                 <Button

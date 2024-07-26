@@ -17,30 +17,57 @@ import {BoldDuotoneWalletIcon} from "@/stories/Icons";
 export type WalletChargeByOnlineProps = {
     onBackToMain: () => void;
     onClose: () => void;
+    result?: any;
 }
 
 
 export const WalletChargeByOnline = (props: WalletChargeByOnlineProps) => {
-    const {onBackToMain, onClose} = props
+    const {onBackToMain, onClose, result} = props
     const [step, setStep] = useState(1)
 
-    return (
-        <WalletChargeByOnlineSuccess
-            prev={onBackToMain}
-            next={() => setStep(2)}
-            done={() => onClose()}
-        />
-    )
+    if (!!result && result.success) {
+        return (
+            <WalletChargeByOnlineSuccess
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
+    if (!!result && !result.success) {
+        return (
+            <WalletChargeByOnlineFailure
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
+
     if (step === 1) return (
         <WalletChargeByOnlineStep1
-            prev={onBackToMain}
+            prev={() => onBackToMain()}
             next={() => setStep(2)}
             done={() => onClose()}
         />
     )
-
+    if (step === 2) return (
+        <WalletChargeByOnlineStep2
+            prev={() => alert("There is no way backward")}
+            next={() => alert("There is no way forward")}
+            done={() => alert("There is no way")}
+        />
+    )
     return null
 };
+
+
+
+
+
+
+
+
+
+
 
 
 export type WalletChargeByOnlineStepsProps = {
@@ -85,9 +112,10 @@ export const WalletChargeByOnlineStep1 = (props: WalletChargeByOnlineStepsProps)
                     مبلغ مدنظر جهت افزایش موجودی را انتخاب کرده یا وارد کنید
                 </p>
                 <div className="grid grid-cols-3 gap-2">
-                    {amountList.map((v) => {
+                    {amountList.map((v, i) => {
                         return (
                             <Card
+                                key={i}
                                 isHoverable
                                 isPressable
                                 shadow="none"
@@ -107,7 +135,6 @@ export const WalletChargeByOnlineStep1 = (props: WalletChargeByOnlineStepsProps)
                     label="مبلغ"
                     value={amount.toString()}
                 />
-
             </ModalBody>
             <ModalFooter>
                 <Button
@@ -132,8 +159,39 @@ export const WalletChargeByOnlineStep1 = (props: WalletChargeByOnlineStepsProps)
     );
 };
 
-export const WalletChargeByOnlineSuccess = (props: WalletChargeByOnlineStepsProps) => {
-    const {prev, next, done} = props
+export const WalletChargeByOnlineStep2 = (props: WalletChargeByOnlineStepsProps) => {
+    return (
+        <>
+            <ModalHeader>
+                شارژ کیف پول - درگاه آنلاین
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-2">
+                <span className="flex items-center justify-center py-6">
+                    در حال انتقال به درگاه پرداخت ...
+                </span>
+            </ModalBody>
+        </>
+    );
+};
+
+
+
+
+
+
+
+
+
+
+
+
+export type WalletChargeByOnlineResultProps = {
+    done: () => void;
+    result?: any;
+}
+
+export const WalletChargeByOnlineSuccess = (props: WalletChargeByOnlineResultProps) => {
+    const {done, result} = props
 
     return (
         <>
@@ -189,15 +247,15 @@ export const WalletChargeByOnlineSuccess = (props: WalletChargeByOnlineStepsProp
                     color="default"
                     onPress={done}
                 >
-                باشه
+                    باشه
                 </Button>
             </ModalFooter>
         </>
     );
 };
 
-export const WalletChargeByOnlineFailure = (props: WalletChargeByOnlineStepsProps) => {
-    const {prev, next, done} = props
+export const WalletChargeByOnlineFailure = (props: WalletChargeByOnlineResultProps) => {
+    const {done, result} = props
 
     return (
         <>
@@ -208,7 +266,7 @@ export const WalletChargeByOnlineFailure = (props: WalletChargeByOnlineStepsProp
                 <div className="text-danger flex flex-col items-center gap-2">
                     <BoldDuotoneWalletIcon size={64}/>
                     <span className="font-bold">
-                        عملیات شارژ کیف پول شما با موفقیت انجام شد.
+                        عملیات شارژ کیف پول شما با خطا مواجه شد.
                     </span>
                 </div>
                 <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
@@ -237,11 +295,8 @@ export const WalletChargeByOnlineFailure = (props: WalletChargeByOnlineStepsProp
                         </span>
                     </div>
                     <div className="flex justify-between">
-                        <span>
-                            شماره ارجاع:
-                        </span>
-                        <span>
-                            121314
+                        <span className="text-justify">
+                            در صورت کسر شدن مبلغ، وجه مورد نظر حداکثر تا ۷۲ ساعت به حساب شما بازگشت داده خواهد شد.
                         </span>
                     </div>
                 </div>

@@ -12,17 +12,36 @@ import {
 } from "@nextui-org/react";
 import {CardHeader} from "@nextui-org/card";
 import {Input} from "@nextui-org/input";
+import {BoldDuotoneWalletIcon} from "@/stories/Icons";
 
 
 export type WalletChargeByChequeProps = {
     onBackToMain: () => void;
     onClose: () => void;
+    result?: any;
 }
 
 
 export const WalletChargeByCheque = (props: WalletChargeByChequeProps) => {
-    const {onBackToMain, onClose} = props
+    const {onBackToMain, onClose, result} = props
     const [step, setStep] = useState(1)
+
+    if (!!result && result.success) {
+        return (
+            <WalletChargeByChequeSuccess
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
+    if (!!result && !result.success) {
+        return (
+            <WalletChargeByChequeFailure
+                done={() => onClose()}
+                result={result}
+            />
+        )
+    }
 
     if (step === 1) return (
         <WalletChargeByChequeStep1
@@ -47,6 +66,17 @@ export const WalletChargeByCheque = (props: WalletChargeByChequeProps) => {
     )
     return null
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 export type WalletChargeByChequeStepsProps = {
@@ -258,3 +288,169 @@ export const WalletChargeByChequeStep3 = (props: WalletChargeByChequeStepsProps)
         </>
     );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export type WalletChargeByChequeResultProps = {
+    done: () => void;
+    result?: any;
+}
+
+export const WalletChargeByChequeSuccess = (props: WalletChargeByChequeResultProps) => {
+    const {done, result} = props
+
+    return (
+        <>
+            <ModalHeader>
+                شارژ کیف پول - چک صیادی
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-success flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        چک صیادی شما تایید شد و کیف پول شما شارژ شد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره چک:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان ثبت:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان تایید:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                    className="flex-1 md:flex-none"
+                    variant="flat"
+                    color="default"
+                    onPress={done}
+                >
+                    باشه
+                </Button>
+            </ModalFooter>
+        </>
+    );
+};
+
+export const WalletChargeByChequeFailure = (props: WalletChargeByChequeResultProps) => {
+    const {done, result} = props
+
+    return (
+        <>
+            <ModalHeader>
+                شارژ کیف پول - چک صیادی
+            </ModalHeader>
+            <ModalBody className="flex flex-col gap-4 justify-center">
+                <div className="text-danger flex flex-col items-center gap-2">
+                    <BoldDuotoneWalletIcon size={64}/>
+                    <span className="font-bold">
+                        چک صیادی شما تایید نشد.
+                    </span>
+                </div>
+                <div className="flex flex-col gap-1 font-light text-sm text-gray-500">
+                    <div className="flex justify-between">
+                        <span>
+                            مبلغ:
+                        </span>
+                        <span>
+                            5,000,000تومانءء
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            شماره چک:
+                        </span>
+                        <span>
+                            121314
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان ثبت:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            زمان رد:
+                        </span>
+                        <span>
+                            1402/07/22 ساعت 14:25
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>
+                            دلیل رد:
+                        </span>
+                        <span className="text-danger">
+                            عدم وضوح کافی تصویر
+                        </span>
+                    </div>
+                </div>
+            </ModalBody>
+            <ModalFooter>
+                <Button
+                    className="flex-1 md:flex-none"
+                    variant="flat"
+                    color="default"
+                    onPress={done}
+                >
+                    باشه
+                </Button>
+            </ModalFooter>
+        </>
+    );
+};
+
+
+
+
+
+
+
+
+
+

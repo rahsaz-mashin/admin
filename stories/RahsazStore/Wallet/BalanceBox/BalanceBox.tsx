@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, {useState} from "react";
 import {Card, CardBody} from "@nextui-org/card";
 import {Button, useDisclosure} from "@nextui-org/react";
 import {WalletChargeModal} from "@/stories/RahsazStore/Wallet/ChargeModal";
@@ -9,7 +9,9 @@ export type WalletBalanceBoxProps = {}
 
 
 export const WalletBalanceBox = (props: WalletBalanceBoxProps) => {
-    const increaseTypeModal = useDisclosure();
+    const increaseTypeModal = useDisclosure({defaultOpen: false});
+
+
     return (
         <Card
             shadow="none"
