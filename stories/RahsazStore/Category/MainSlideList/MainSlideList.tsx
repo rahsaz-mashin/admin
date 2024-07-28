@@ -1,8 +1,9 @@
 "use client"
 
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import {useKeenSlider} from "keen-slider/react";
 import {KeenSliderOptions, TrackDetails} from "keen-slider";
+import clsx from "clsx";
 
 export type CategoryMainSlideListProps = {}
 
@@ -12,14 +13,18 @@ export const CategoryMainSlideList = (props: CategoryMainSlideListProps) => {
 
     return (
         <div
-            className="flex justify-center items-center w-full"
+            className="flex flex-col justify-center items-center w-full"
         >
-            <div className="h-60 w-full">
+            <div className="h-4 w-4 bg-red-600 absolute z-50"/>
+            <div className="w-full">
                 <Wheel
-                    initIdx={1}
+                    initIdx={0}
                     length={24}
                     height={24}
                 />
+            </div>
+            <div className="w-full bg-primary h-20 shadow-inner">
+
             </div>
         </div>
     );
@@ -39,17 +44,31 @@ export default function Wheel(props: {
     )
     const size = useRef(0)
     const options = useRef<KeenSliderOptions>({
+
         slides: {
             number: slides,
             origin: "center",
-            perView: 7,
+            perView: "auto",
+            spacing: 0,
         },
+        // breakpoints: {
+        //     '(min-width: 320px)': {
+        //         slides: {
+        //             // number: slides,
+        //             origin: "auto",
+        //             perView: 13,
+        //         },
+        //     },
+        // },
 
         vertical: false,
 
         initial: props.initIdx || 0,
         loop: true,
         drag: true,
+
+        rubberband: false,
+        mode: "free-snap",
 
         created: (s) => {
             size.current = s.size
@@ -60,9 +79,11 @@ export default function Wheel(props: {
         detailsChanged: (s) => {
             setSliderState(s.track.details)
         },
-        rubberband: false,
-        mode: "free-snap",
+        slideChanged(s) {
+            setCurrentSlide(s.track.details.rel)
+        },
     })
+    const [currentSlide, setCurrentSlide] = useState(0)
 
     const [sliderRef, slider] = useKeenSlider<HTMLDivElement>(options.current)
 
@@ -86,7 +107,7 @@ export default function Wheel(props: {
                     ? 180
                     : distance * (360 / wheelSize) * -1
             const style = {
-                transform: `rotateY(${rotate}deg) translateZ(${-radius}px) translateY(${-radius/16}px)`,
+                transform: `rotateY(${rotate}deg) translateZ(${-radius}px) translateY(${-radius / 16}px)`,
                 WebkitTransform: `rotateY(${rotate}deg) translateZ(${-radius}px)`,
             }
             const value = i
@@ -100,24 +121,55 @@ export default function Wheel(props: {
             className="keen-slider block text-white h-full w-full overflow-visible"
             ref={sliderRef}
         >
-            <div className="flex items-center justify-center transform-style-3d perspective-1000 h-full w-full">
-                <div className="h-full w-full relative" style={{height: props.height + "px"}}>
-                    {slideValues().map(({style, value}, idx) => (
-                        <div
-                            key={idx}
-                            style={style}
-                            className="flex flex-col gap-4 items-center justify-center h-full w-full absolute backface-hidden"
-                        >
-                            <div className="bg-orange-100 shadow-[0_0_24px_2px_#ff921f] rounded-full h-24 w-24 flex-shrink-0">
+            {/*<div className="flex items-center justify-center transform-style-3d perspective-1000 h-full w-full">*/}
+            {/*    <div className="h-full w-full relative" style={{height: props.height + "px"}}>*/}
+            {new Array(slides).fill(1).map(({style,}, idx) => {
 
-                            </div>
-                            <span className="font-black text-xl text-primary">
-                                موتور
-                            </span>
+                const lv1 = [currentSlide + 1, currentSlide - 1]
+
+
+                // first slide
+                if (currentSlide === 0) {
+                    lv1[1] = slides - 1
+                }
+                // last slide
+                if (currentSlide === slides - 1) {
+                    lv1[0] = 0
+                }
+                const lv2 = [lv1[0] + 1, lv1[1] - 1]
+                const lv3 = [lv1[0] + 2, lv1[1] - 2]
+                const lv4 = [lv1[0] + 3, lv1[1] - 3]
+                const lv5 = [lv1[0] + 4, lv1[1] - 4]
+
+                const className = ["keen-slider__slide flex-shrink-0 flex flex-col gap-4 items-center justify-center !w-fit p-5"]
+                if (currentSlide === idx) className.push("bg-yellow-400")
+                else if (lv1.includes(idx)) className.push("opacity-80 bg-green-400")
+                else if (lv2.includes(idx)) className.push("opacity-65 bg-blue-400")
+                else if (lv3.includes(idx)) className.push("opacity-50 bg-red-400")
+                else if (lv4.includes(idx)) className.push("opacity-35 bg-purple-400")
+                // else if(lv4.includes(idx)) className.push("opacity-20")
+                else className.push("opacity-20")
+
+                return (
+                    <div
+                        key={idx}
+                        // style={style}
+                        className={className.join(" ")}
+                    >
+                        <div className="bg-orange-100 ring-4 ring-primary rounded-full h-24 w-24 flex-shrink-0">
+
                         </div>
-                    ))}
-                </div>
-            </div>
+                        <span className="font-black text-xl text-primary">
+                            موتور
+                        </span>
+                        <span className="font-black text-xl text-primary">
+                            {currentSlide}
+                        </span>
+                    </div>
+                )
+            })}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     )
 }

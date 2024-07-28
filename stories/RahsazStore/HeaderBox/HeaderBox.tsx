@@ -68,7 +68,7 @@ export const HeaderBox = () => {
         loop: false,
         mode: "free",
         rtl: true,
-        slides: {origin: "auto", spacing: 8, perView: "auto" },
+        slides: {origin: "auto", spacing: 8, perView: "auto"},
         initial: 0,
         vertical: false,
         rubberband: false,
@@ -80,9 +80,14 @@ export const HeaderBox = () => {
         },
     }, [])
 
+
     return (
         <div className="flex flex-[1_1_0] relative h-10 md:h-20 items-center justify-center overflow-hidden">
-            <Card shadow="none" className="w-full h-full bg-primary md:bg-content1" radius="none" classNames={{base: "md:rounded-large"}}>
+            <Card
+                shadow="none"
+                className="w-full h-full bg-primary md:bg-content1" radius="none"
+                classNames={{base: "md:rounded-large"}}
+            >
                 <CardBody className="relative flex flex-row items-center justify-center overflow-hidden">
                     <div ref={sliderRef} className="keen-slider mx-0 lg:mx-9 ">
                         <Button
