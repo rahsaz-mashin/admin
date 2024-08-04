@@ -1,7 +1,7 @@
 import { Cover } from "./Cover";
 
 export default {
-  title: "RahsazGate/ThemeSwitcher",
+  title: "RahsazGate/Cover",
   component: Cover,
 };
 

@@ -51,6 +51,12 @@ export default withPWA({
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'bucket.zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
         ],
     }
 });
