@@ -6,16 +6,25 @@ import {Environment, OrbitControls, PerspectiveCamera, useFBX} from "@react-thre
 import {FBXLoader, GLTFLoader} from "three-stdlib";
 import {TextureLoader} from "three";
 import * as THREE from 'three'
+import {Input} from "@nextui-org/input";
 
 
 export const Cover = () => {
+    // const [cameraPosition, setCameraPosition] = useState<[number, number, number]>([2, 2, 2]);
 
     return (
         <>
-            <div className="w-full h-full flex-1 flex flex-col" dir="ltr">
+            <div className="w-full h-full flex-1 flex flex-col relative" dir="ltr">
                 <Canvas className="!h-screen w-full">
-                    <Area/>
+                    <Area />
                 </Canvas>
+                {/*<div className="absolute top-0 left-0 p-3 z-50">*/}
+                {/*    <Input*/}
+                {/*        type="text"*/}
+                {/*        value={cameraPosition.join(",")}*/}
+                {/*        onValueChange={(v) => setCameraPosition(v.split(",").map((v) => parseFloat(v)) as [number, number, number])}*/}
+                {/*    />*/}
+                {/*</div>*/}
             </div>
         </>
     );
@@ -23,7 +32,6 @@ export const Cover = () => {
 
 
 export const Area = () => {
-    const [cameraPosition, setCameraPosition] = useState<[number, number, number]>([-6, 3.9, 6.21]);
     return (
         <Suspense fallback={null}>
             <color attach="background" args={["#930eff"]}/>
@@ -37,14 +45,14 @@ export const Area = () => {
             {/*<light/>*/}
             {/*<pointLight/>*/}
             {/*<spotLight/>*/}
-            {/*<PerspectiveCamera makeDefault position={cameraPosition} fov={40}/>*/}
+            <PerspectiveCamera makeDefault zoom={0.1} position={[2, 12, 12]} fov={10}/>
             {/*<spotLight/>*/}
             {/*<light/>*/}
             {/*<pointLight  position={[5, 5, 1]}/>*/}
             {/*<rectAreaLight/>*/}
             {/*<ambientLight intensity={0.8}/>*/}
             {/*<directionalLight color="white" position={[100, 100, 100]}/>*/}
-            <OrbitControls/>
+            <OrbitControls />
             <Track/>
         </Suspense>
     );
@@ -55,7 +63,7 @@ export function Track() {
 
     const model = useLoader(
         GLTFLoader,
-        "/3d/models/sense.glb"
+        "/3d/cube/models/withTextureSpline.glb"
     );
     // const fbx = useFBX('/3d/models/c4d.fbx')
     //
@@ -75,18 +83,21 @@ export function Track() {
     //
     // // Here's the animation part
     // // *************************
-    // let mixer: any
-    // if (model.animations.length) {
-    //     mixer = new THREE.AnimationMixer(model.scene);
-    //     model.animations.forEach((clip: any) => {
-    //         const action = mixer.clipAction(clip)
-    //         action.play();
-    //     });
-    // }
-    //
-    // useFrame((state, delta) => {
-    //     mixer?.update(delta)
-    // })
+    let mixer: any
+    if (model.animations.length) {
+        console.log("hey youuuuuuuu")
+        mixer = new THREE.AnimationMixer(model.scene)
+        model.animations.forEach((clip: any) => {
+            console.log("hey")
+            const action = mixer.clipAction(clip)
+            console.log(action)
+            action.play()
+        })
+    }
+
+    useFrame((state, delta) => {
+        mixer?.update(delta)
+    })
     // // *************************
     //
     // model.scene.traverse((child: any) => {
@@ -98,7 +109,7 @@ export function Track() {
     // })
 
 
-    // return <primitive object={model.scene}/>;
+    return <primitive object={model.scene}/>;
     // const myMesh = useRef()
     // useFrame(({ clock }) => {
     //     // @ts-ignore

@@ -1,1 +1,1 @@
-export { IconWrapper } from "./IconWrapper";
+export { ItemCounter } from "./ItemCounter";

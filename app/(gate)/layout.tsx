@@ -12,6 +12,10 @@ export const metadata: Metadata = {
 export default function Layout({children}: { children: React.ReactNode }) {
 
 
+    return <>
+        <Cover/>
+    </>
+
     return (
         <main className="fixed h-full w-full bg-primary">
             <div className="h-full w-full relative">
