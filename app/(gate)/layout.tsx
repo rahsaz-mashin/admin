@@ -11,11 +11,6 @@ export const metadata: Metadata = {
 
 export default function Layout({children}: { children: React.ReactNode }) {
 
-
-    return <>
-        <Cover/>
-    </>
-
     return (
         <main className="fixed h-full w-full bg-primary">
             <div className="h-full w-full relative">
@@ -23,14 +18,14 @@ export default function Layout({children}: { children: React.ReactNode }) {
                     className="absolute flex justify-center items-start w-full h-full bottom-0 end-0"
                 >
                     <div className="h-full w-full z-10 relative flex flex-col lg:flex-row items-center justify-end">
-                        <div className="flex-1 max-h-96 max-w-80 w-full overflow-x-hidden z-10 ps-0 pe-0 py-3">
+                        <div className="flex-1 max-h-96 max-w-80 w-full overflow-x-hidden lg:bg-white/70 lg:rounded-3xl z-10 ps-0 pe-0 py-3">
                             {children}
                         </div>
                         <div
                             className="absolute end-0 top-0 hidden justify-center items-center lg:flex"
                         >
                             <svg
-                                className="w-full"
+                                className="w-full hidden"
                                 viewBox="0 0 694 788"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -216,8 +211,6 @@ export default function Layout({children}: { children: React.ReactNode }) {
                     </div>
                 </div>
             </div>
-            {/*<Cover/>*/}
-
         </main>
     );
 }

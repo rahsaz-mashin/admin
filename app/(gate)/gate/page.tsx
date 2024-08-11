@@ -1,7 +1,5 @@
-import {LoginByPhoneOtpForm} from "@/stories/RahsazGate/LoginByPhoneOtpForm";
+import {redirect} from "next/navigation";
 
 export default function Page() {
-    return (
-        <LoginByPhoneOtpForm />
-    );
+    return redirect('/gate/phone');
 }

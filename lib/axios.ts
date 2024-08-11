@@ -1,10 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { toast } from "@/lib/toast";
-import { signOut } from "next-auth/react";
+import axios from "axios";
+import {toast} from "@/lib/toast";
 
 
 const config = {
-    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+    baseURL: `${process.env.NEXT_PUBLIC_CORE_BASE_URL}`,
     headers: {
         "Content-Type": "application/json",
     },
@@ -14,12 +13,8 @@ const config = {
     },
     paramsSerializer: {
         indexes: null // by default: false
-    }
-
+    },
 }
-
-
-
 
 
 // **********************
@@ -30,17 +25,10 @@ axiosAuth.interceptors.response.use(
         return response;
     },
     (error: any) => {
-        if (error.response.status === 401) {
-            // signOut()
-            return Promise.reject(error)
-        }
-        handleToastError(error);
-        return Promise.reject(error.response.data)
+        return Promise.reject(handleToastError(error))
     },
 );
-export { axiosAuth }
-
-
+export {axiosAuth}
 
 
 // **********************
@@ -51,42 +39,34 @@ axiosNoAuth.interceptors.response.use(
         return response;
     },
     (error: any) => {
-        handleToastError(error);
-        return Promise.reject(error.response.data)
+        return Promise.reject(handleToastError(error))
     },
 );
-export default axiosNoAuth
-
-
-
-
-
+export {axiosNoAuth}
 
 
 // ======================================================> error handlers
 
-
-export const handleFieldsError = (error: any, setError: any) => {
-    // if (error?.response?.status === 400) {
-    let _err = error?.errors
-    if (!_err) return
-    let _errKeys = Object.keys(_err)
-    for (let i = 0; i < _errKeys.length; i++) {
-        const c = Object.keys(_err[_errKeys[i]]);
-        for (let j = 0; j < c.length; j++) {
-            setError(_errKeys[i], {
-                type: "manual",
-                message: _err[_errKeys[i]][c[j]],
-            });
-        }
-    }
-    // }
-}
-
+//
+// export const handleFieldsError = (error: any, setError: any) => {
+//     // if (error?.response?.status === 400) {
+//     let _err = error?.errors
+//     if (!_err) return
+//     let _errKeys = Object.keys(_err)
+//     for (let i = 0; i < _errKeys.length; i++) {
+//         const c = Object.keys(_err[_errKeys[i]]);
+//         for (let j = 0; j < c.length; j++) {
+//             setError(_errKeys[i], {
+//                 type: "manual",
+//                 message: _err[_errKeys[i]][c[j]],
+//             });
+//         }
+//     }
+//     // }
+// }
 
 
 export const handleToastError = (error: any) => {
-    console.log("Err", error);
     const response = error.response
     const messages = [];
     if (!response) {
@@ -96,6 +76,8 @@ export const handleToastError = (error: any) => {
     }
     // show messages
     messages.map(message => toast(message, "error"));
+
+    return response.data
 };
 
 

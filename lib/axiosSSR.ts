@@ -10,20 +10,6 @@ const config = {
     },
 }
 
-const axiosSSR = axios.create(config)
+const axiosSSRNoAuth = axios.create(config)
 
-// axiosSSR.interceptors.response.use(
-//     response => {
-//         // if (response?.status === 401) {
-//         // }
-//         return response;
-//     },
-//     // error => {
-//     //     return Promise.reject("Hi")
-//     // },
-// );
-
-
-// **********************
-// axios without auth
-export default axiosSSR
+export {axiosSSRNoAuth}
