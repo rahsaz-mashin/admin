@@ -1,6 +1,6 @@
-import { User } from "./User.interface";
+import { Account } from "./Account.interface";
 
 export interface Session {
-    user: User,
+    account: Account,
     accessToken: string;
 }

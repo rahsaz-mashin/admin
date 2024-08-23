@@ -7,6 +7,7 @@ import {ThemeProvider as NextThemesProvider} from "next-themes";
 import {ThemeProviderProps} from "next-themes/dist/types";
 import {AppProgressBar as ProgressBar} from "next-nprogress-bar";
 import {Suspense} from "react";
+import {SessionProvider} from "next-auth/react";
 
 
 export interface ProvidersProps {
@@ -20,17 +21,19 @@ export function Providers({children, themeProps}: ProvidersProps) {
     return (
         <NextUIProvider navigate={router.push}>
             <NextThemesProvider {...themeProps}>
-                <Suspense>
-                    {children}
-                    <ProgressBar
-                        height="3px"
-                        color="#FF921F"
-                        options={{showSpinner: true}}
-                        shallowRouting
-                        stopDelay={500}
-                        disableSameURL={false}
-                    />
-                </Suspense>
+                <SessionProvider>
+                    <Suspense>
+                        {children}
+                        <ProgressBar
+                            height="3px"
+                            color="#FF921F"
+                            options={{showSpinner: true}}
+                            shallowRouting
+                            stopDelay={500}
+                            disableSameURL={false}
+                        />
+                    </Suspense>
+                </SessionProvider>
             </NextThemesProvider>
         </NextUIProvider>
     );

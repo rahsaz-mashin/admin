@@ -1,4 +1,4 @@
-import React, {ReactNode, Suspense, useEffect, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {Container} from "@/stories/RahsazAdmin//Container";
 import {Drawer} from "@/stories/RahsazAdmin/Drawer";
 import {Loading} from "@/stories/RahsazAdmin/Loading";
@@ -31,45 +31,49 @@ export const MainLayout = (
     const [isLoading, setLoading] = useState(true);
 
     const pathname = usePathname()
-    const m = pathname.split("/")
-
+    const m = pathname?.split("/")
 
     useEffect(() => {
         setTimeout(() => setLoading(false), 1000)
     }, [])
 
     useEffect(() => {
-        if (pathname.split("/").length >= 4) setOpenDrawer(false)
-    }, [pathname]);
+        if (!!m) {
+            if (m.length >= 4) setOpenDrawer(false)
+        }
+    }, [m])
 
-
+    if (!m) return null
     return (
         <main className="flex w-full h-max">
-            {/*<Suspense fallback={<Loading isLoading/>}>*/}
-                <Drawer
-                    isOpenDrawer={isOpenDrawer}
-                    workspaceItems={workspaceItems}
-                    menuItems={menuItems}
-                    userMenuItems={userMenuItems}
+            <Drawer
+                isOpenDrawer={isOpenDrawer}
+                workspaceItems={workspaceItems}
+                menuItems={menuItems}
+                userMenuItems={userMenuItems}
 
-                    activeWorkspace={m[2]}
-                    activeMenu={m[3]}
-                    accountName="عباسقلی میرزا"
-                />
-                {isOpenDrawer && (
-                    <>
-                        <div
-                            className="z-10 cursor-pointer items-start justify-end backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen fixed inset-0 top-0 right-0 block md:hidden"
-                            onClick={() => setOpenDrawer(false)}
-                        >
-                        </div>
-                    </>
-                )}
-                <Container headerProps={{...headerProps, setOpenDrawer: () => setOpenDrawer(true)}}>
-                    {children}
-                </Container>
-                <Loading isLoading={isLoading}/>
-            {/*</Suspense>*/}
+                activeWorkspace={m[2]}
+                activeMenu={m[3]}
+                accountName="عباسقلی میرزا"
+            />
+            {isOpenDrawer && (
+                <>
+                    <div
+                        className="z-10 cursor-pointer items-start justify-end backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen fixed inset-0 top-0 right-0 block md:hidden"
+                        onClick={() => setOpenDrawer(false)}
+                    >
+                    </div>
+                </>
+            )}
+            <Container
+                headerProps={{
+                    ...headerProps,
+                    setOpenDrawer: () => setOpenDrawer(true)
+                }}
+            >
+                {children}
+            </Container>
+            <Loading isLoading={isLoading}/>
         </main>
     );
 };

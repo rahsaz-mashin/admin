@@ -13,6 +13,7 @@ import {Tooltip} from "@nextui-org/tooltip";
 import {toast} from "@/lib/toast";
 import {axiosNoAuth} from "@/lib/axios";
 import {LoginByEmailButton} from "@/stories/RahsazGate/LoginByEmailButton";
+import {signIn} from "next-auth/react";
 
 
 export type VerifyLoginByPhoneOtpFormType = {
@@ -30,9 +31,9 @@ export const VerifyLoginByPhoneOtpForm = () => {
     const searchParams = useSearchParams()
 
     const initialValues = {
-        phoneNumber: searchParams.get("phoneNumber")?.substring(2) || ""
+        phoneNumber: searchParams?.get("phoneNumber") || ""
     }
-    const [phoneNumber, setPhoneNumber] = useState(searchParams.get("phoneNumber"))
+    const [phoneNumber, setPhoneNumber] = useState(initialValues.phoneNumber)
 
 
     // =========================================================================================================================> initial form
@@ -88,20 +89,16 @@ export const VerifyLoginByPhoneOtpForm = () => {
 
 
     const submit = async (data: any) => {
-        try {
-            const {data: result} = await axiosNoAuth.post('/auth/loginByPhoneOtp', {
-                phone: data.phoneNumber,
-                token: data.token
-            })
-            // TODO::go to first url
-            router.push("/")
+        const result = await signIn("phoneOtp", { ...data, callbackUrl: "/", redirect: false });
+        console.log(result)
+        if(result?.ok) {
             toast.success("با موفقیت وارد شدید")
-            return
-        } catch (e: any) {
-            if (e.code === "TokenInvalid") {
-                setError("token", {message: "کد وارد شده معتبر نیست"})
-            }
-            throw ""
+            // TODO::go to first url
+            // router.push(result?.url || "/")
+        } else  {
+            const err = result?.error || "خطای ناشناخته"
+            toast.error(err)
+            setError("token", {message: err})
         }
     }
 
@@ -117,11 +114,8 @@ export const VerifyLoginByPhoneOtpForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex w-full flex-col gap-3 p-3 justify-between items-center h-80 min-h-fit"
             >
-                <div className="flex w-full flex-col items-center gap-3">
+                <div className="flex w-full flex-col items-center gap-3 py-3">
                     <Logo size={48}/>
-                    {/*<h1 className="font-bold text-primary truncate text-xs us:text-sm xs:text-base">*/}
-                    {/*    احراز هویت مرکزی*/}
-                    {/*</h1>*/}
                 </div>
                 <div className="flex w-full flex-col items-center gap-3">
                     <Button
@@ -203,6 +197,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
 
 export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; phoneNumber: string }) => {
 
+    const [isLoading, setLoading] = useState(false)
 
     const allowSendAgain = true
     const onSendAgain = async () => {
@@ -210,13 +205,15 @@ export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; ph
             toast.error("برای ارسال مجدد کد یکبار مصرف کمی صبر کنید")
             return
         }
-        toast.info("در حال ارسال مجدد کد یکبار مصرف...")
+        setLoading(true)
         try {
             const {data: result} = await axiosNoAuth.post('/auth/phoneOtp', {phone: phoneNumber})
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
+            setLoading(false)
             return
         } catch (e: any) {
+            setLoading(false)
             throw ""
         }
     }
@@ -231,6 +228,7 @@ export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; ph
                 size="lg"
                 isIconOnly
                 isDisabled={isDisabled || !allowSendAgain}
+                isLoading={isLoading}
                 onPress={onSendAgain}
             >
                 <RefreshIcon size={20}/>

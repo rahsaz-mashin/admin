@@ -1,4 +1,4 @@
-import React, {CSSProperties, useCallback, useEffect, useRef, useState} from "react";
+import React, {CSSProperties, useCallback, useRef, useState} from "react";
 import {ScrollShadow} from "@nextui-org/react";
 import {Logo} from "@/stories/General";
 import {AccountAvatar} from "@/stories/RahsazAdmin/AccountAvatar";
@@ -8,7 +8,6 @@ import {DrawerWorkspaceItem, DrawerWorkspaceItemProps} from "@/stories/RahsazAdm
 import {DrawerMenuItemProps, DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 import {Clock} from "@/stories/RahsazAdmin/Clock";
-import {Tooltip} from "@nextui-org/tooltip";
 
 
 export type DrawerProps = {
@@ -21,6 +20,7 @@ export type DrawerProps = {
     accountName: string,
     accountAvatar?: string,
 }
+
 
 export const Drawer = (
     {
@@ -147,7 +147,8 @@ export const Drawer = (
                                             />
                                             <feBlend
                                                 mode="normal" in="SourceGraphic"
-                                                in2="effect2_dropShadow_2360_80713" result="shape"
+                                                in2="effect2_dropShadow_2360_80713"
+                                                result="shape"
                                             />
                                         </filter>
                                     </defs>
@@ -217,21 +218,15 @@ export const Drawer = (
                         </div>
                     </div>
                 </div>
-                {/*<div className="flex flex-1 justify-center items-center">*/}
-                {/*    <Spinner/>*/}
-                {/*</div>*/}
-                {/*<div className="flex flex-1 justify-center items-center">*/}
-                {/*    <span className="text-gray-500">آیتمی یافت نشد :(</span>*/}
-                {/*</div>*/}
                 {!!menuItems?.length && (
                     <ScrollShadow hideScrollBar size={75} className="flex-1 h-[calc(100%-130px)]">
                         <ul className="flex flex-col p-3 gap-3 z-50">
-                            {menuItems?.map(({id, label, icon}) => {
+                            {menuItems.filter(({workspace}) => (workspace === activeWorkspace))?.map(({id, label, workspace, icon}) => {
                                 return <DrawerMenuItem
-                                    workspace={workspace}
                                     key={id}
-                                    label={label}
                                     id={id}
+                                    label={label}
+                                    workspace={workspace}
                                     icon={OutlinedCustomizationIcon}
                                     isActive={activeMenu === id}
                                 />

@@ -50,6 +50,12 @@ const workspaceItems: DrawerWorkspaceItemProps[] = [
 
 const menuItems: DrawerMenuItemProps[] = [
     {
+        id: "dashboard",
+        label: "داشبورد",
+        icon: OutlinedCustomizationIcon,
+        workspace: "store",
+    },
+    {
         id: "customer",
         label: "مشتریان",
         icon: OutlinedCustomizationIcon,
@@ -73,79 +79,10 @@ const menuItems: DrawerMenuItemProps[] = [
         icon: OutlinedCustomizationIcon,
         workspace: "store",
     },
-    {
-        id: "customers1",
-        label: "مشتریان",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "products1",
-        label: "محصولات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "orders1",
-        label: "سفارشات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "wallet1",
-        label: "کیف پول",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "customers2",
-        label: "مشتریان",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "products2",
-        label: "محصولات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "orders2",
-        label: "سفارشات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "wallet2",
-        label: "کیف پول",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "customers3",
-        label: "مشتریان",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "products3",
-        label: "محصولات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "orders3",
-        label: "سفارشات",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
-    {
-        id: "wallet3",
-        label: "کیف پول",
-        icon: OutlinedCustomizationIcon,
-        workspace: "store",
-    },
 ]
+
+
+
 
 const userMenuItems: DrawerUserMenuItemType[] = [
     {
@@ -159,7 +96,7 @@ const userMenuItems: DrawerUserMenuItemType[] = [
     {
         id: "logout",
         label: "خروج از حساب کاربری"
-    }
+    },
 ]
 
 const headerProps = {
@@ -184,10 +121,9 @@ const headerProps = {
 }
 
 
-
-
-
 const RahsazAdminMainLayout = ({children}: { children: React.ReactNode }) => {
+
+
     return (
         <>
             <Scrollbar

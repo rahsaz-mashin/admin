@@ -63,7 +63,12 @@ export default function RootLayout({children, params: {locale}}: {
     params: { locale: string }
 }) {
     return (
-        <html lang="fa-IR" dir="rtl" className="selection:bg-primary/25 selection:text-primary select-none h-full" suppressHydrationWarning>
+        <html
+            lang="fa-IR"
+            dir="rtl"
+            className="selection:bg-primary/25 selection:text-primary select-none h-full"
+            suppressHydrationWarning
+        >
         <body
             className={["min-h-screen bg-background overflow-hidden antialiased scroll-smooth h-full", IRANSansX.className].join(" ")}
         >
@@ -72,12 +77,12 @@ export default function RootLayout({children, params: {locale}}: {
                 {children}
             </main>
             <div className="hidden print:flex flex-col justify-center items-center h-screen w-screen">
-                <span className="text-center font-bold text-5xl text-primary">
-                    سامانه راهساز ماشین
-                </span>
+                    <span className="text-center font-bold text-5xl text-primary">
+                        سامانه راهساز ماشین
+                    </span>
                 <span className="text-lg">
-                    چیزی برای پرینت پیدا نشد 🥺
-                </span>
+                        چیزی برای پرینت پیدا نشد 🥺
+                    </span>
                 <div className="absolute opacity-25">
                     <Logo size={250}/>
                 </div>

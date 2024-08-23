@@ -2,6 +2,7 @@ import {Metadata} from "next"
 import React from "react"
 import RahsazAdminMainLayout from "@/components/RahsazAdminMainLayout";
 
+
 export const metadata: Metadata = {
     title: "پنل مدیریت",
     icons: {

@@ -1,9 +1,16 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
-import { LoginByPhoneOtpForm } from "@/interfaces/forms/LoginByPhoneOtp.form";
-import { LoginByEmailOtpForm } from "@/interfaces/forms/LoginByEmailOtp.form";
 
+export interface LoginByPhoneOtpForm {
+    phone: string;
+    token: string;
+}
+
+export interface LoginByEmailOtpForm {
+    email: string;
+    token: string;
+}
 
 export const nextAuthOptions: NextAuthOptions = {
     providers: [
@@ -16,6 +23,7 @@ export const nextAuthOptions: NextAuthOptions = {
             },
             async authorize(credentials, req) {
                 const data = credentials as LoginByPhoneOtpForm
+                console.log(data, "ggggg")
                 // const response = await axiosSSR.post("/auth/loginByPhoneOtp", data)
                 // if (response.status >= 400) return null
                 // return response.data

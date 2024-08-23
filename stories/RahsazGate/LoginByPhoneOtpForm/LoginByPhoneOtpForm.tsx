@@ -22,7 +22,7 @@ export const LoginByPhoneOtpForm = () => {
 
 
     const initialValues = {
-        phoneNumber: searchParams.get("phoneNumber")?.substring(2) || ""
+        phoneNumber: searchParams?.get("phoneNumber") || ""
     }
 
 
@@ -80,6 +80,8 @@ export const LoginByPhoneOtpForm = () => {
             toast.success("کد یکبار مصرف ارسال شد")
             return
         } catch (e: any) {
+            const err = e.response.data
+            setError("phoneNumber", {message: err.message})
             throw ""
         }
     }
@@ -92,7 +94,7 @@ export const LoginByPhoneOtpForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex w-full flex-col gap-3 p-3 justify-between items-center h-80 min-h-fit"
             >
-                <div className="flex w-full flex-col items-center gap-3">
+                <div className="flex w-full flex-col items-center gap-3 py-3">
                     <Logo size={48}/>
                 </div>
                 <div className="flex w-full flex-col items-center gap-3">
@@ -105,7 +107,7 @@ export const LoginByPhoneOtpForm = () => {
                         variant="flat"
                         label="شماره موبایل خود را وارد کنید"
                         placeholder="09212728307"
-                        defaultValue={initialValues.phoneNumber}
+                        defaultValue={initialValues.phoneNumber.substring(2)}
                         labelPlacement="outside"
                         isDisabled={isSubmitSuccessful}
                         isReadOnly={isSubmitting}
