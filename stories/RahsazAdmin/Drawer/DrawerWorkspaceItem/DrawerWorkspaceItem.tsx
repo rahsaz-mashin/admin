@@ -1,11 +1,11 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {Tooltip} from "@nextui-org/tooltip";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerWorkspaceItemProps = {
     id: string;
     label: string;
-    logo: React.ElementType;
+    logo: ReactNode;
     isActive?: boolean
 }
 
@@ -14,7 +14,7 @@ export const DrawerWorkspaceItem = (
     {
         id,
         label,
-        logo: Logo,
+        logo,
         isActive
     }: DrawerWorkspaceItemProps
 ) => {
@@ -37,7 +37,7 @@ export const DrawerWorkspaceItem = (
                 onClick={() => router.push()}
                 className={`cursor-pointer min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}
             >
-                <Logo size={36}/>
+                {logo}
             </li>
         </Tooltip>
     );

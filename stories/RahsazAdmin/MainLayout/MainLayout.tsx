@@ -17,18 +17,19 @@ export type MainLayoutProps = {
 }
 
 
-export const MainLayout = (
-    {
+export const MainLayout = (props: MainLayoutProps) => {
+
+    const {
         workspaceItems,
         menuItems,
         userMenuItems,
         headerProps,
-
         children,
-    }: MainLayoutProps
-) => {
+    } = props
+
+
     const [isOpenDrawer, setOpenDrawer] = useState(false);
-    const [isLoading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(false);
 
     const pathname = usePathname()
     const m = pathname?.split("/")

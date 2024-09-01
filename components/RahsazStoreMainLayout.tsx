@@ -239,7 +239,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 onScroll={onScroll}
                                 className="!h-full !w-full"
                             >
-                                <div className="select-text mb-20 md:mb-0">
+                                <div className="select-text mb-20 md:mb-0 absolute h-full w-full overflow-hidden">
                                     {children}
                                 </div>
                             </Scrollbar>

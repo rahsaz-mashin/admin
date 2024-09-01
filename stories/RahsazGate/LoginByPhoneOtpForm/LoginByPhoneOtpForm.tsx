@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useTransition} from "react";
 import {Logo} from "@/stories/General";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
@@ -9,7 +9,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {PatternFormat} from "react-number-format";
 import {z} from 'zod'
 import {toast} from "@/lib/toast";
-import {axiosNoAuth} from "@/lib/axios";
+import {axiosCore} from "@/lib/axios";
 import {LoginByEmailButton} from "@/stories/RahsazGate/LoginByEmailButton";
 
 export type LoginByPhoneOtpFormType = {
@@ -20,11 +20,11 @@ export const LoginByPhoneOtpForm = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
 
+    const [isPending, startTransition] = useTransition()
 
     const initialValues = {
         phoneNumber: searchParams?.get("phoneNumber") || ""
     }
-
 
 
     // =========================================================================================================================> initial form
@@ -38,13 +38,8 @@ export const LoginByPhoneOtpForm = () => {
     } = useForm<LoginByPhoneOtpFormType>();
 
 
-
     // =========================================================================================================================> initial inputs
     const {ref: phoneNumberFieldRef, ...phoneNumberField} = register("phoneNumber")
-
-
-
-
 
 
     // =========================================================================================================================> submit
@@ -74,7 +69,7 @@ export const LoginByPhoneOtpForm = () => {
     const submit = async (data: any) => {
         router.replace("/gate/phone?phoneNumber=" + data.phoneNumber)
         try {
-            const {data: result} = await axiosNoAuth.post('/auth/phoneOtp', {phone: data.phoneNumber})
+            const {data: result} = await axiosCore().post('/auth/phoneOtp', {phone: data.phoneNumber})
             router.push("/gate/phone/verify?phoneNumber=" + `0${result.phone.replace("+98", "")}`)
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
@@ -85,7 +80,6 @@ export const LoginByPhoneOtpForm = () => {
             throw ""
         }
     }
-
 
 
     return (
@@ -111,6 +105,8 @@ export const LoginByPhoneOtpForm = () => {
                         labelPlacement="outside"
                         isDisabled={isSubmitSuccessful}
                         isReadOnly={isSubmitting}
+                        type="tel"
+
                         {...phoneNumberField}
                         getInputRef={phoneNumberFieldRef}
                         isInvalid={!!errors.phoneNumber}
@@ -119,7 +115,6 @@ export const LoginByPhoneOtpForm = () => {
                         allowEmptyFormatting
                         mask=" "
                         customInput={Input}
-                        type="tel"
                     />
                 </div>
                 <div className="flex w-full flex-col items-center gap-3">
@@ -134,9 +129,9 @@ export const LoginByPhoneOtpForm = () => {
                     >
                         ادامه
                     </Button>
-                   <LoginByEmailButton
-                       isDisabled={isSubmitSuccessful || isSubmitting}
-                   />
+                    <LoginByEmailButton
+                        isDisabled={isSubmitSuccessful || isSubmitting}
+                    />
                 </div>
             </form>
         </>

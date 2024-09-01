@@ -35,6 +35,16 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 
+@layer utilities {
+    .ltr {
+        direction: ltr;
+    }
+    .rtl {
+        direction: rtl;
+    }
+}
+
+
 
 
 

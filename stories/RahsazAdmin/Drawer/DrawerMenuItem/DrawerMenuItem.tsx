@@ -1,12 +1,16 @@
+"use client";
+
+
+
 import {motion} from "framer-motion";
-import React from "react";
+import React, {ReactNode} from "react";
 import {useRouteManager} from "@/hooks/useRouteManager";
 
 export type DrawerMenuItemProps = {
     id: string;
     label: string;
     workspace: string;
-    icon: React.ElementType;
+    icon: ReactNode;
     isActive?: boolean;
 }
 
@@ -54,7 +58,7 @@ export const DrawerMenuItem = (
         label,
         workspace,
         id,
-        icon: Icon,
+        icon,
         isActive
     }: DrawerMenuItemProps
 ) => {
@@ -90,8 +94,9 @@ export const DrawerMenuItem = (
                 />
             </motion.svg>
             <div
-                className="bg-white z-10 flex justify-center shadow-[-4px_0px_2px_#00000025] transition-all duration-1000 text-gray-600 group-hover:text-black rounded-full w-9 h-9 p-1.5 mr-1 ">
-                <Icon />
+                className="bg-white z-10 flex justify-center shadow-[-4px_0px_2px_#00000025] transition-all duration-1000 text-gray-600 group-hover:text-black rounded-full w-9 h-9 p-1.5 mr-1"
+            >
+                {icon}
             </div>
             <span className="z-10">{label}</span>
         </motion.li>

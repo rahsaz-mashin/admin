@@ -6,7 +6,7 @@ import {MyLocation} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
 import {useInfiniteScroll} from "@nextui-org/use-infinite-scroll";
-import {usePokemonList} from "@/hooks/usePokemonList";
+import {useInfinityList} from "@/hooks/useInfinityList";
 import {useAsyncList} from "@react-stately/data";
 
 export type MapProps = {}

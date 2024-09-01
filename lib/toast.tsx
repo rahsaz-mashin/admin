@@ -11,6 +11,7 @@ if (isBrowser) {
 }
 const ShowSnackbar = ({ message, variant }: { message: SnackbarMessage; variant: "default" | "error" | "success" | "warning" | "info" }) => {
   const { enqueueSnackbar } = useSnackbar();
+  if(!message) return null
   enqueueSnackbar(message, { variant });
   return null;
 };

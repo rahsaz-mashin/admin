@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import {OutlinedMoreIcon} from "@/stories/Icons";
@@ -6,6 +8,7 @@ import {OutlinedMoreIcon} from "@/stories/Icons";
 export type DrawerUserMenuItemType = {
     id: string;
     label: string;
+    onPress?: () => void
 }
 
 
@@ -35,6 +38,7 @@ export const DrawerUserMenu = ({items}: DrawerUserMenuProps) => {
                         key={item.id}
                         color={item.id === "logout" ? "danger" : "default"}
                         className={item.id === "logout" ? "text-danger" : ""}
+                        onPress={item?.onPress}
                         // showDivider={item.id !== "logout"}
                     >
                         {item.label}

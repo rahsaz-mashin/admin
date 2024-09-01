@@ -1,0 +1,1 @@
+export { MinorSwitch } from "./MinorSwitch";

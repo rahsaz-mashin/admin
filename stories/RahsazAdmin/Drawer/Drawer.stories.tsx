@@ -1,6 +1,7 @@
 import {Drawer} from "./Drawer";
 import {OutlinedCustomizationIcon} from "@/stories/Icons";
 import {Logo as RahsazStoreLogo, Logo} from "@/stories/RahsazStore";
+import React from "react";
 
 export default {
     title: "RahsazAdmin/Drawer",
@@ -14,119 +15,69 @@ export const Default = {
             {
                 id: "gate",
                 label: "راهساز گیت",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "store",
                 label: "راهساز استور",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "info",
                 label: "راهساز اینفو",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "online",
                 label: "راهساز آنلاین",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "mag",
                 label: "راهساز مگ",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "support",
                 label: "راهساز ساپورت",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
             {
                 id: "pro",
                 label: "راهساز پرو",
-                logo: RahsazStoreLogo
+                logo: <RahsazStoreLogo size={36}/>
             },
         ],
         menuItems: [
             {
-                id: "customers",
+                id: "dashboard",
+                label: "داشبورد",
+                icon: <OutlinedCustomizationIcon/>,
+                workspace: "store",
+            },
+            {
+                id: "customer",
                 label: "مشتریان",
-                icon: OutlinedCustomizationIcon,
+                icon: <OutlinedCustomizationIcon/>,
+                workspace: "store",
             },
             {
-                id: "products",
+                id: "product",
                 label: "محصولات",
-                icon: OutlinedCustomizationIcon,
+                icon: <OutlinedCustomizationIcon/>,
+                workspace: "store",
             },
             {
-                id: "orders",
+                id: "order",
                 label: "سفارشات",
-                icon: OutlinedCustomizationIcon,
+                icon: <OutlinedCustomizationIcon/>,
+                workspace: "store",
             },
             {
                 id: "wallet",
                 label: "کیف پول",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "customers1",
-                label: "مشتریان",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "products1",
-                label: "محصولات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "orders1",
-                label: "سفارشات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "wallet1",
-                label: "کیف پول",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "customers2",
-                label: "مشتریان",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "products2",
-                label: "محصولات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "orders2",
-                label: "سفارشات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "wallet2",
-                label: "کیف پول",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "customers3",
-                label: "مشتریان",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "products3",
-                label: "محصولات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "orders3",
-                label: "سفارشات",
-                icon: OutlinedCustomizationIcon,
-            },
-            {
-                id: "wallet3",
-                label: "کیف پول",
-                icon: OutlinedCustomizationIcon,
+                icon: <OutlinedCustomizationIcon/>,
+                workspace: "store",
             },
         ],
         userMenuItems: [

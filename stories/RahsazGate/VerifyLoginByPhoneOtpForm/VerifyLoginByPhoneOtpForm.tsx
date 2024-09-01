@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useState, useTransition} from "react";
 import {Logo} from "@/stories/General";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
@@ -11,9 +11,9 @@ import {PatternFormat} from "react-number-format";
 import {RefreshIcon} from "@/stories/Icons";
 import {Tooltip} from "@nextui-org/tooltip";
 import {toast} from "@/lib/toast";
-import {axiosNoAuth} from "@/lib/axios";
+import {axiosCore} from "@/lib/axios";
 import {LoginByEmailButton} from "@/stories/RahsazGate/LoginByEmailButton";
-import {signIn} from "next-auth/react";
+import {authSignIn} from "@/lib/auth.action";
 
 
 export type VerifyLoginByPhoneOtpFormType = {
@@ -26,9 +26,19 @@ export type VerifyLoginByPhoneOtpFormType = {
     token: string;
 };
 
+const schema = z.object(
+    {
+        phoneNumber: z.string().regex(/09[0-9]{2}[0-9]{3}[0-9]{4}/, "شماره وارد شده معتبر نیست"),
+        token: z.string().regex(/[0-9]{4}/, "کد تایید نادرست است")
+    }
+)
+
+
 export const VerifyLoginByPhoneOtpForm = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
+
+    const [isPending, startTransition] = useTransition()
 
     const initialValues = {
         phoneNumber: searchParams?.get("phoneNumber") || ""
@@ -66,14 +76,11 @@ export const VerifyLoginByPhoneOtpForm = () => {
     const validate = (_data: VerifyLoginByPhoneOtpFormType) => {
         if (!phoneNumber) return alert("Unknown error!")
         // =====> validation & transformation <=====
-        const shape = {
-            phoneNumber: z.string().regex(/09[0-9]{2}[0-9]{3}[0-9]{4}/, "شماره وارد شده معتبر نیست"),
-            token: z.string().regex(/[0-9]{4}/, "کد تایید نادرست است")
-        }
+
         _data.token = `${_data.otp1}${_data.otp2}${_data.otp3}${_data.otp4}`
         _data.phoneNumber = phoneNumber
 
-        const {success, data, error} = z.object(shape).safeParse(_data);
+        const {success, data, error} = schema.safeParse(_data);
         if (!success) {
             const issues = error.issues
             for (let i = 0; i < issues.length; i++) {
@@ -89,17 +96,14 @@ export const VerifyLoginByPhoneOtpForm = () => {
 
 
     const submit = async (data: any) => {
-        const result = await signIn("phoneOtp", { ...data, callbackUrl: "/", redirect: false });
-        console.log(result)
-        if(result?.ok) {
-            toast.success("با موفقیت وارد شدید")
-            // TODO::go to first url
-            // router.push(result?.url || "/")
-        } else  {
-            const err = result?.error || "خطای ناشناخته"
-            toast.error(err)
-            setError("token", {message: err})
+        const result = await authSignIn(data)
+        if (!result?.ok && !!result?.error) {
+            setError("root", {message: result?.error})
+            toast.error(result?.error)
+            return
         }
+        toast.success("با موفقیت وارد شدید!")
+        // TODO:: redirect
     }
 
 
@@ -168,9 +172,6 @@ export const VerifyLoginByPhoneOtpForm = () => {
                                 done={handleSubmit(onSubmit)}
                             />
                         </div>
-                        {!!errors.token && (
-                            <span className="text-danger-500 font-light text-sm p-1">{errors.token?.message}</span>
-                        )}
                     </div>
                 </div>
                 <div className="flex w-full flex-col items-center gap-3">
@@ -207,7 +208,7 @@ export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; ph
         }
         setLoading(true)
         try {
-            const {data: result} = await axiosNoAuth.post('/auth/phoneOtp', {phone: phoneNumber})
+            const {data: result} = await axiosCore().post('/auth/phoneOtp', {phone: phoneNumber})
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
             setLoading(false)

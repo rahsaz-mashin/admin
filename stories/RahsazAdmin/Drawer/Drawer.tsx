@@ -39,7 +39,7 @@ export const Drawer = (
 ) => {
 
 
-    const [height, setHeight] = useState<null | number>(null);
+    const [height, setHeight] = useState<null | number>(500);
     const div = useCallback((node: any) => {
         if (node !== null) {
             setHeight(node.getBoundingClientRect().height);
@@ -195,12 +195,12 @@ export const Drawer = (
                                                 </svg>
                                             </div>
                                             <ul className="flex flex-col w-full items-center h-full gap-0">
-                                                {workspaceItems?.map(({id, label, logo: Logo}) => {
+                                                {workspaceItems?.map(({id, label, logo}) => {
                                                     return <DrawerWorkspaceItem
                                                         key={id}
                                                         id={id}
                                                         label={label}
-                                                        logo={Logo}
+                                                        logo={logo}
                                                         isActive={activeWorkspace === id}
                                                     />
                                                 })}
@@ -227,7 +227,7 @@ export const Drawer = (
                                     id={id}
                                     label={label}
                                     workspace={workspace}
-                                    icon={OutlinedCustomizationIcon}
+                                    icon={icon}
                                     isActive={activeMenu === id}
                                 />
                             })}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {toast} from "@/lib/toast";
+import {getSession} from "next-auth/react";
 
 
 const config = {
@@ -7,7 +8,6 @@ const config = {
     headers: {
         "Content-Type": "application/json",
     },
-    // withCredentials: true,
     validateStatus: function (status: number) {
         return status >= 200 && status < 400;
     },
@@ -17,54 +17,57 @@ const config = {
 }
 
 
-// **********************
-// A: axios with auth
-const axiosAuth = axios.create(config)
-axiosAuth.interceptors.response.use(
-    (response: any) => {
-        return response;
-    },
-    (error: any) => {
-        return Promise.reject(handleToastError(error))
-    },
-);
-export {axiosAuth}
+// Core without auth
+const axiosCore = () => {
+    const a = axios.create(config)
+    a.interceptors.request.use((config: any) => {
+        return config
+    })
+    a.interceptors.response.use(
+        (response: any) => {
+            return response;
+        },
+        (error: any) => {
+            return Promise.reject(handleToastError(error))
+        },
+    )
+    return a
+}
 
 
-// **********************
-// B: axios without auth
-const axiosNoAuth = axios.create(config)
-axiosNoAuth.interceptors.response.use(
-    (response: any) => {
-        return response;
-    },
-    (error: any) => {
-        return Promise.reject(handleToastError(error))
-    },
-);
-export {axiosNoAuth}
+// Core with auth
+const axiosCoreWithAuth = () => {
+    const a = axios.create(config)
+    a.interceptors.request.use(async (config: any) => {
+        const session = await getSession()
+        if(session?.accessToken) config.headers.Authorization = `Bearer ${session.accessToken}`
+        return config
+    })
+    a.interceptors.response.use(
+        (response: any) => {
+            return response;
+        },
+        (error: any) => {
+            return Promise.reject(handleToastError(error))
+        },
+    )
+    return a
+}
+
+
+export {axiosCore, axiosCoreWithAuth}
+
+
+
+
+
+
+
+
+
 
 
 // ======================================================> error handlers
-
-//
-// export const handleFieldsError = (error: any, setError: any) => {
-//     // if (error?.response?.status === 400) {
-//     let _err = error?.errors
-//     if (!_err) return
-//     let _errKeys = Object.keys(_err)
-//     for (let i = 0; i < _errKeys.length; i++) {
-//         const c = Object.keys(_err[_errKeys[i]]);
-//         for (let j = 0; j < c.length; j++) {
-//             setError(_errKeys[i], {
-//                 type: "manual",
-//                 message: _err[_errKeys[i]][c[j]],
-//             });
-//         }
-//     }
-//     // }
-// }
-
 
 export const handleToastError = (error: any) => {
     const response = error.response
@@ -75,7 +78,7 @@ export const handleToastError = (error: any) => {
         messages.push(response?.data?.message || response?.data?.error || `خطای ناشتاخته: ${response.status}`);
     }
     // show messages
-    messages.map(message => toast(message, "error"));
+    messages.map(message => toast(message || "خطای نامشخص 🥺", "error"));
 
     return response.data
 };

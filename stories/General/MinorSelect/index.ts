@@ -1,0 +1,1 @@
+export { MinorSelect } from "./MinorSelect";
