@@ -245,12 +245,6 @@ export const DashboardIdentity = (props: DashboardIdentityProps) => {
                                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full">
                                     {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
                                     {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
-                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
                                 </div>
                             </div>
                             <div className="w-full">
