@@ -1,9 +1,9 @@
-import {DashboardIdentityInfoForm} from "./InfoForm";
+import {DashboardIdentity} from "./Identity";
 
 
 export default {
-    title: "RahsazStore/Dashboard/Identity/InfoForm",
-    component: DashboardIdentityInfoForm,
+    title: "RahsazStore/Dashboard/Identity",
+    component: DashboardIdentity,
 };
 
 export const Default = {

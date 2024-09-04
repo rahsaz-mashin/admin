@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import Scrollbar from "react-scrollbars-custom";
 import {ScrollState} from "react-scrollbars-custom/dist/types/types";
 import {Progress} from "@nextui-org/progress";
@@ -21,6 +21,8 @@ import useHash from "@/hooks/useHash";
 import {BottomNavigation} from "@/stories/RahsazStore/BottomNavigation";
 import {Footer} from "@/stories/RahsazStore/Footer";
 import {FixedContent} from "@/stories/RahsazStore/FixedContent";
+import {useContainerDimensions} from "@/hooks/useContainerDimentions";
+import {ContainerDimensionsContext, ContainerDimensionsProvider} from "@/context/containerDimensions.context";
 
 
 const menuItems = [
@@ -98,6 +100,14 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
     }
 
 
+    const containerRef = useRef<HTMLDivElement>(null)
+    const dimensions = useContainerDimensions(containerRef)
+    const containerDimensionsContext = useContext(ContainerDimensionsContext)
+
+    useEffect(() => {
+        containerDimensionsContext?.setDimensions(dimensions)
+        console.log({dimensions})
+    }, [dimensions, containerDimensionsContext]);
 
     return (
         <>
@@ -239,7 +249,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                 onScroll={onScroll}
                                 className="!h-full !w-full"
                             >
-                                <div className="select-text mb-20 md:mb-0 absolute h-full w-full overflow-hidden">
+                                <div ref={containerRef} className="select-text mb-20 md:mb-0 absolute h-full w-full">
                                     {children}
                                 </div>
                             </Scrollbar>

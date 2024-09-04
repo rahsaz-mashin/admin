@@ -1,22 +1,23 @@
 "use client"
 
-import React, {useEffect} from "react";
-import {Card, CardBody, CardHeader} from "@nextui-org/card";
-import {Button, CardFooter} from "@nextui-org/react";
-import {Control, SubmitHandler, useForm, useWatch} from "react-hook-form";
+import React, {LegacyRef, useContext, useEffect, useRef, useState} from "react";
+import {Button} from "@nextui-org/react";
+import {Control, SubmitHandler, useController, useForm, useWatch} from "react-hook-form";
 import {gendersEnum, identityTypesEnum} from "@/interfaces/Identity.interface";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {cn} from "@nextui-org/theme";
 import {MinorInput} from "@/stories/General/MinorInput";
 import {MinorSelect} from "@/stories/General/MinorSelect";
-import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {Session} from "next-auth";
-import {CalendarDate, getLocalTimeZone, startOfYear, today} from "@internationalized/date";
+import {CalendarDate} from "@internationalized/date";
 import {axiosCoreWithAuth} from "@/lib/axios";
+import {motion} from "framer-motion";
+import {useContainerDimensions} from "@/hooks/useContainerDimentions";
+import {ContainerDimensionsContext} from "@/context/containerDimensions.context";
+import {useMediaQuery} from "@/hooks/useMediaQuery";
 
 
-export type DashboardIdentityInfoFormProps = {
+export type DashboardIdentityProps = {
     session: Session
 }
 
@@ -70,13 +71,12 @@ const schema = z.discriminatedUnion(
     }
 )
 
-export const DashboardIdentityInfoForm = (props: DashboardIdentityInfoFormProps) => {
+export const DashboardIdentity = (props: DashboardIdentityProps) => {
 
     const {session} = props
-
+    const identity = session.account?.identity
+    const isFirst = !identity
     const initialData: () => Promise<IdentityInfoFormType> = async () => {
-        const identity = session.account?.identity
-
         let result: IdentityInfoFormType
         if (identity) {
             result = {
@@ -121,6 +121,7 @@ export const DashboardIdentityInfoForm = (props: DashboardIdentityInfoFormProps)
         handleSubmit,
         control,
         reset,
+        setValue,
     } = useForm<IdentityInfoFormType>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
@@ -156,81 +157,118 @@ export const DashboardIdentityInfoForm = (props: DashboardIdentityInfoFormProps)
     }, [identityType]);
 
 
+    const typesVariants = {
+        desktop: {
+            real: {
+                x: 0,
+            },
+            legal: {
+                x: "100%",
+            },
+        },
+        mobile: {
+            real: {
+                x: 0,
+            },
+            legal: {
+                x: 0,
+            },
+        },
+    };
+
+    const formVariants = {
+        desktop: {
+            real: {
+                x: 0,
+            },
+            legal: {
+                x: "-100%",
+            },
+        },
+        mobile: {
+            real: {
+                x: 0,
+            },
+            legal: {
+                x: 0,
+            },
+        },
+    };
+
+
+    const containerDimensionsContext = useContext(ContainerDimensionsContext);
+    const isDesktopScreen = useMediaQuery('(min-width: 1024px)');
+
     return (
         <>
-            <section className="h-full select-none bg-primary transition duration-500 hover:bg-primary-50 hover:text-primary cursor-pointer flex flex-col justify-center items-center gap-3 text-white">
-                <h1 className="font-black text-2xl">شخصیت حقوقی</h1>
-                <h6 className="font-medium text-base">
-                    در صورتی که نماینده یا مالک شرکت هستید، اینجا کلیک کنید.
-                </h6>
-            </section>
-            <section className="h-full bg-white">
-                <div className="h-full p-4">
-                    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-                        <div className="relative w-full flex flex-col gap-1">
-                            <h1 className="font-black text-black text-base">
-                                مشخصات هویتی
-                            </h1>
-                            <span className="font-light text-gray-500 text-base">
+            <div className="relative min-h-full">
+                <motion.section
+                    variants={isDesktopScreen ? typesVariants.desktop : typesVariants.mobile}
+                    initial={identityType}
+                    animate={identityType}
+                    transition={{duration: 1}}
+                    onClick={() => {
+                        if (isFirst) setValue("identityType", identityType === identityTypesEnum.real ? identityTypesEnum.legal : identityTypesEnum.real)
+                    }}
+                    style={{height: (containerDimensionsContext?.dimensions?.height || 0) + "px"}}
+                    className="sticky top-0 left-0 w-full shadow-[inset_#00000036_0_0_20px_10px] lg:shadow-none lg:w-1/2 max-h-24 lg:max-h-none z-20 lg:z-0 flex float-left bg-primary text-white select-none cursor-pointer flex-col items-center gap-1 justify-center p-4"
+                >
+                    <h1 className="font-bold lg:font-black text-lg lg:text-2xl">
+                        {identityType === identityTypesEnum.real && "شخصیت حقیقی"}
+                        {identityType === identityTypesEnum.legal && "شخصیت حقوقی"}
+                    </h1>
+                    {isFirst && (
+                        <h6 className="font-light lg:font-medium text-sm lg:text-base text-center">
+                            {identityType === identityTypesEnum.real && "در صورتی که مالک یا نماینده شرکت هستید، جهت تغییر به شخصیت حقوقی اینجا را کلیک کنید."}
+                            {identityType === identityTypesEnum.legal && "در صورتی که نماینده یا مالک شرکت  نیستید، برای تغییر به شخصیت حقیقی اینجا را کلیک کنید."}
+                        </h6>
+                    )}
+                </motion.section>
+                <motion.section
+                    variants={isDesktopScreen ? formVariants.desktop : formVariants.mobile}
+                    initial={identityType}
+                    animate={identityType}
+                    transition={{duration: 1}}
+                    className="w-full lg:w-1/2 h-full bg-white p-4 flex flex-col gap-5 shadow-none lg:shadow-[#00000036_0_0_20px_20px]"
+                >
+                    <div className="h-full">
+                        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                            <div className="relative w-full flex flex-col gap-1">
+                                <h1 className="font-black text-black text-base">
+                                    مشخصات هویتی
+                                </h1>
+                                <span className="font-light text-gray-500 text-base">
                                 اطلاعات هویتی خود را کامل کنید.
                             </span>
-                        </div>
-                        <div className="flex gap-2 w-full">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 w-full">
-                                {/*<MinorRadioBox*/}
-                                {/*    control={control}*/}
-                                {/*    name="identityType"*/}
-                                {/*    label="نوع هویت"*/}
-                                {/*    isRequired*/}
-                                {/*    orientation="horizontal"*/}
-                                {/*    items={[*/}
-                                {/*        {*/}
-                                {/*            key: identityTypesEnum.real,*/}
-                                {/*            label: "حقیقی"*/}
-                                {/*        },*/}
-                                {/*        {*/}
-                                {/*            key: identityTypesEnum.legal,*/}
-                                {/*            label: "حقوقی"*/}
-                                {/*        },*/}
-                                {/*    ]}*/}
-                                {/*    description={(*/}
-                                {/*        <>*/}
-                                {/*            در صورتی که نماینده یا مالک شرکت هستید، گزینه*/}
-                                {/*            <b className="text-primary"> حقوقی </b>*/}
-                                {/*            و در غیر اینصورت گزینه*/}
-                                {/*            <b className="text-primary"> حقیقی </b>*/}
-                                {/*            را انتخاب کنید.*/}
-                                {/*        </>*/}
-                                {/*    )}*/}
-                                {/*    className="col-span-full"*/}
-                                {/*    itemClassNames={{*/}
-                                {/*        base: cn(*/}
-                                {/*            "inline-flex m-0 bg-content2 items-center justify-between",*/}
-                                {/*            "flex-row-reverse max-w-full flex-1 cursor-pointer rounded-xl gap-4 p-4 border-2 border-transparent",*/}
-                                {/*            "hover:not[data-[selected=true]]:bg-content3",*/}
-                                {/*            "data-[selected=true]:bg-primary/30",*/}
-                                {/*        ),*/}
-                                {/*    }}*/}
-                                {/*/>*/}
-                                {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
-                                {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
                             </div>
-                        </div>
-                        <div className="w-full">
-                            <Button
-                                type="submit"
-                                variant="shadow"
-                                color="primary"
-                                size="lg"
-                            >
-                                تایید و ثبت
-                            </Button>
-                        </div>
-                    </form>
-                </div>
-            </section>
+                            <div className="flex gap-2 w-full">
+                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 w-full">
+                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.real && <RealIdentity control={control}/>}
+                                    {identityType === identityTypesEnum.legal && <LegalIdentity control={control}/>}
+                                </div>
+                            </div>
+                            <div className="w-full">
+                                <Button
+                                    type="submit"
+                                    variant="shadow"
+                                    color="primary"
+                                    size="lg"
+                                >
+                                    تایید و ثبت
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+                </motion.section>
+            </div>
         </>
-    );
+    )
 };
 
 

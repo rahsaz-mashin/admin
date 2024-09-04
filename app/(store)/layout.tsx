@@ -1,6 +1,7 @@
 import {Metadata} from "next";
 import React from "react";
 import RahsazStoreMainLayout from "@/components/RahsazStoreMainLayout";
+import {Providers} from "@/app/(store)/providers";
 
 export const metadata: Metadata = {
     title: "صفحه اصلی",
@@ -10,10 +11,12 @@ export const metadata: Metadata = {
 };
 
 
-export default function Layout({children, params: {locale}}: { children: React.ReactNode, params: {locale: string} }) {
+export default function Layout({children}: { children: React.ReactNode }) {
     return (
-        <RahsazStoreMainLayout>
-            {children}
-        </RahsazStoreMainLayout>
+        <Providers>
+            <RahsazStoreMainLayout>
+                {children}
+            </RahsazStoreMainLayout>
+        </Providers>
     );
 }
