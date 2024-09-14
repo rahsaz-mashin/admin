@@ -32,7 +32,7 @@ export const BottomNavigation = ({}: BottomNavigationProps) => {
 
         <div
             className="w-full z-30 absolute -bottom-0.5 flex md:hidden justify-center items-end text-white bg-center h-20"
-            style={{backgroundImage: `url(/assets/images/bottom-nav-bg.svg)`}}
+            style={{backgroundImage: `url(/static/assets/images/bottom-nav-bg.svg)`}}
         >
             <ClickAwayListener onClickAway={handleCloseSearch}>
                 <div className="flex w-[360px] h-full relative mx-8 items-end justify-center">

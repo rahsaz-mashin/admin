@@ -208,7 +208,7 @@ export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; ph
         }
         setLoading(true)
         try {
-            const {data: result} = await axiosCore().post('/auth/phoneOtp', {phone: phoneNumber})
+            const result: any = await axiosCore().post('/auth/phoneOtp', {phone: phoneNumber})
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
             setLoading(false)

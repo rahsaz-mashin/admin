@@ -1,27 +1,28 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useContext} from "react";
 import {Tooltip} from "@nextui-org/tooltip";
-import {useRouteManager} from "@/hooks/useRouteManager";
+import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
+import {AdminContext} from "@/context/admin.context";
 
 export type DrawerWorkspaceItemProps = {
     id: string;
     label: string;
-    logo: ReactNode;
-    isActive?: boolean
+    icon?: ReactNode;
+    isActive?: boolean;
+    isEnable?: boolean;
 }
 
 
-export const DrawerWorkspaceItem = (
-    {
+export const DrawerWorkspaceItem = (props: DrawerWorkspaceItemProps) => {
+
+    const {
         id,
         label,
-        logo,
-        isActive
-    }: DrawerWorkspaceItemProps
-) => {
+        icon,
+        isActive,
+        isEnable,
+    } = props
 
-    const workspace = id
-    const section = ""
-    const router = useRouteManager(workspace, section)
+    const adminContext = useContext(AdminContext)
 
     return (
         <Tooltip
@@ -32,12 +33,15 @@ export const DrawerWorkspaceItem = (
             content={label}
             className="select-none"
             radius="sm"
+            isDisabled={!isEnable}
         >
             <li
-                onClick={() => router.push()}
-                className={`cursor-pointer min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "opacity-100 scale-125" : "opacity-60"}`}
+                onClick={() => {
+                    if(isEnable) adminContext.setActiveWorkspace(id)
+                }}
+                className={` min-h-14 h-14 w-14 flex justify-center items-center transition-all ${isActive ? "!opacity-100 scale-125" : ""} ${isEnable ? "opacity-60 cursor-pointer" : "opacity-20"}`}
             >
-                {logo}
+                {icon || <RahsazStoreLogo size={36} noAnimation/>}
             </li>
         </Tooltip>
     );

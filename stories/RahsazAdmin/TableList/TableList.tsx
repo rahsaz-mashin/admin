@@ -1,0 +1,422 @@
+"use client"
+
+import {
+    Spinner,
+    Pagination,
+    Table,
+    TableBody,
+    TableCell,
+    TableColumn,
+    TableHeader,
+    TableRow,
+    getKeyValue, Button, useDisclosure, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem, ModalFooter, Modal
+} from "@nextui-org/react";
+import React, {
+    forwardRef,
+    ForwardRefRenderFunction,
+    MutableRefObject,
+    useContext,
+    useEffect,
+    useImperativeHandle,
+    useState
+} from "react";
+import useSWR, {KeyedMutator} from 'swr';
+import {ColumnSize, ColumnStaticSize} from "@react-types/table";
+import {LoadingState} from "@react-types/shared";
+import {DeleteOutlineOutlined, DriveFileRenameOutlineOutlined, RefreshRounded} from "@mui/icons-material";
+import {usePathname, useRouter} from "next/navigation";
+import {AdminContext} from "@/context/admin.context";
+import {Tooltip} from "@nextui-org/tooltip";
+import {FormHandlerRefType} from "@/stories/RahsazAdmin/FormHandler";
+import {UseDisclosureReturn} from "@nextui-org/use-disclosure";
+import {axiosCoreWithAuth} from "@/lib/axios";
+import {toast} from "@/lib/toast";
+
+
+type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
+
+type ToolsCellType<T> = { editable?: boolean; removable?: boolean; extra?: ColumnRenderType<T>; }
+
+
+export type ColumnType<T> = {
+    key: string;
+    title: string;
+    align?: "start" | "center" | "end";
+    hideHeader?: boolean;
+    allowsSorting?: boolean;
+    isRowHeader?: boolean;
+    textValue?: string;
+    width?: ColumnSize | null;
+    minWidth?: ColumnStaticSize | null;
+    maxWidth?: ColumnStaticSize | null;
+
+    toolsCell?: ToolsCellType<T>;
+    render?: ColumnRenderType<T>;
+}
+
+
+export type TableListRefType = {
+    refresh: () => void;
+}
+
+
+export type TableListProps<T> = {
+    apiRoute: string;
+    columns: ColumnType<T>[];
+    rowsPerPage?: number;
+    editingId?: string | number | null;
+
+    formRef?: React.MutableRefObject<FormHandlerRefType | undefined>;
+}
+
+
+export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) => {
+
+    const {
+        apiRoute,
+        columns,
+        rowsPerPage = 10,
+        editingId,
+    } = props
+
+    const [page, setPage] = useState(1);
+    const [loadingState, setLoadingState] = useState<LoadingState>("idle");
+
+
+    const {data, error, isLoading, isValidating, mutate} = useSWR<[T[], number]>(`/${apiRoute}`)
+
+    const items = (data?.[0] ?? [])
+    const count = data?.[1] || 0
+    const pages = Math.ceil(count / rowsPerPage);
+
+    useEffect(() => {
+        if (isLoading) setLoadingState("loading")
+        else if (isValidating) setLoadingState("loading")
+        else setLoadingState("idle")
+    }, [isLoading, isValidating])
+
+    const refresh = async () => {
+        await mutate()
+    }
+
+    useImperativeHandle(ref, () => ({
+        refresh
+    }));
+
+
+    return (
+        <>
+            <Table
+                isHeaderSticky
+                topContent={<TopContent mutate={mutate} error={error}/>}
+                bottomContent={<BottomContent pages={pages} page={page} setPage={setPage}/>}
+            >
+                <TableHeader columns={columns}>
+                    {(column) => (
+                        <TableColumn
+                            align={column.align}
+                            hideHeader={column.hideHeader}
+                            allowsSorting={column.allowsSorting}
+                            isRowHeader={column.isRowHeader}
+                            textValue={column.textValue}
+                            width={column.width}
+                            minWidth={column.minWidth}
+                            maxWidth={column.maxWidth}
+                        >
+                            {column.title}
+                        </TableColumn>
+                    )}
+                </TableHeader>
+                <TableBody<T>
+                    items={items}
+                    loadingContent={<LoadingContent/>}
+                    emptyContent={<EmptyContent/>}
+                    loadingState={loadingState}
+                >
+                    {(item) => {
+                        const id = getKeyValue(item, "id")
+                        return (
+                            <TableRow key={id}>
+                                {(columnKey) => {
+                                    const toolsCell = columns?.find(({key}) => (key === columnKey))?.toolsCell
+                                    const render = columns?.find(({key}) => (key === columnKey))?.render
+                                    const value = getKeyValue(item, columnKey)
+                                    if (toolsCell !== undefined) {
+                                        return (
+                                            <TableCell>
+                                                <ToolsCell<T>
+                                                    id={id}
+                                                    item={item}
+                                                    options={toolsCell}
+                                                    apiRoute={apiRoute}
+                                                    refresh={refresh}
+                                                />
+                                            </TableCell>
+                                        )
+                                    }
+                                    if (render) {
+                                        return (<TableCell>{render(value, item, id)}</TableCell>)
+                                    }
+                                    return (<TableCell>{value}</TableCell>)
+                                }}
+                            </TableRow>
+                        )
+                    }}
+                </TableBody>
+            </Table>
+        </>
+    );
+})
+TableList.displayName = "TableList"
+
+
+type ToolsCellPropsType<T> = {
+    id: string | number;
+    item: T;
+    apiRoute: string;
+    options: ToolsCellType<T>;
+    refresh: () => void
+}
+
+const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
+    const {id, item, options, apiRoute, refresh} = props
+
+    const adminContext = useContext(AdminContext)
+    const deleteModal = useDisclosure({defaultOpen: false});
+
+    return (
+        <div className="flex flex-row gap-1 justify-center items-center">
+            {!!options?.editable && (
+                <>
+                    <Tooltip
+                        color="foreground"
+                        placement="bottom"
+                        showArrow
+                        content="ویرایش"
+                        className="select-none"
+                        radius="sm"
+                    >
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            color="success"
+                            radius="full"
+                            onPress={() => adminContext.editItem(id)}
+                        >
+                            <DriveFileRenameOutlineOutlined/>
+                        </Button>
+                    </Tooltip>
+                </>
+            )}
+            {!!options?.removable && (
+                <>
+                    <Tooltip
+                        color="foreground"
+                        placement="bottom"
+                        showArrow
+                        content="حذف"
+                        className="select-none"
+                        radius="sm"
+                    >
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            color="danger"
+                            radius="full"
+                            onPress={() => {
+                                deleteModal.onOpen()
+                            }}
+                        >
+                            <DeleteOutlineOutlined/>
+                        </Button>
+                    </Tooltip>
+                    <DeleteModal
+                        id={id}
+                        state={deleteModal}
+                        apiRoute={apiRoute}
+                        refresh={refresh}
+                    />
+                </>
+            )}
+            {options?.extra ? options?.extra(null, item, id) : null}
+        </div>
+    )
+}
+
+
+type DeleteModalPropsType = {
+    id: string | number;
+    state: UseDisclosureReturn;
+    apiRoute: string;
+    refresh: () => void;
+}
+const DeleteModal = <T, >(props: DeleteModalPropsType) => {
+
+    const {id, state, apiRoute, refresh} = props
+
+    const [item, setItem] = useState<T | null>(null)
+    const [isLoading, setLoading] = useState<boolean>(false)
+
+    const title = (item as any)?.['title'] || null
+
+    const axios = axiosCoreWithAuth()
+    const getItem = async () => {
+        setLoading(true)
+        const d: T = await axios.get(`${apiRoute}/${id}`)
+        setItem(d)
+        setTimeout(() => {
+            setLoading(false)
+        }, 1000)
+    }
+
+    const deleteItem = async () => {
+        setLoading(true)
+        await axios.delete(`${apiRoute}/${id}`)
+        toast.success(`${title} با موفقیت حذف شد `)
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        if (state.isOpen) getItem()
+    }, [state.isOpen]);
+
+    const onCancel = () => {
+        if (isLoading) return
+        state.onClose()
+    }
+
+    const onSubmit = async () => {
+        if (isLoading) return
+        await deleteItem()
+        refresh()
+        state.onClose()
+    }
+
+
+    return (
+        <Modal
+            //
+            backdrop="blur"
+            isOpen={state.isOpen}
+            onClose={onCancel}
+            placement="bottom-center"
+            isDismissable
+        >
+            <ModalContent>
+                <ModalHeader>
+                    حذف
+                </ModalHeader>
+                <ModalBody className="relative">
+                    <div
+                        data-loading={isLoading || undefined}
+                        className="h-24 w-full hidden data-[loading]:flex justify-center items-center"
+                    >
+                        <Spinner/>
+                    </div>
+                    <div
+                        data-loading={isLoading || undefined}
+                        className="h-24 w-full flex data-[loading]:hidden justify-center items-center"
+                    >
+                        <p>آیا از حذف</p>
+                        <b>&nbsp;{title}&nbsp;</b>
+                        <p>مطمئن هستید؟</p>
+                    </div>
+                </ModalBody>
+                <ModalFooter>
+                    <Button
+                        variant="shadow"
+                        color="danger"
+                        isDisabled={isLoading}
+                        onPress={onSubmit}
+                    >
+                        آره، حذف شود
+                    </Button>
+                    <Button
+                        variant="flat"
+                        color="default"
+                        isDisabled={isLoading}
+                        onPress={onCancel}
+                    >
+                        خیر
+                    </Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    )
+}
+
+
+const TopContent = ({mutate, error}: { mutate: KeyedMutator<any>, error: any }) => {
+    return (
+        <div className="flex flex-row justify-between items-center gap-3">
+            <div className="text-danger font-semibold">
+                {error ? `خطا در دریافت: ${error.message}` : ""}
+            </div>
+            <Button
+                isIconOnly
+                variant="light"
+                color="success"
+                radius="full"
+                onPress={mutate}
+            >
+                <RefreshRounded/>
+            </Button>
+        </div>
+    )
+}
+
+
+const BottomContent = ({page, setPage, pages}: { page: number, setPage: (i: number) => void, pages: number }) => {
+    if (pages <= 0) return null
+    return (
+        <div className="flex w-full justify-center">
+            <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={page}
+                total={pages}
+                onChange={setPage}
+                dir="ltr"
+            />
+        </div>
+    )
+
+}
+
+
+const LoadingContent = () => {
+    return (
+        <div className="flex flex-col justify-center items-center gap-3">
+            <Spinner/>
+        </div>
+    )
+}
+
+
+const EmptyContent = () => {
+    return (
+        <div className="flex flex-col justify-center items-center gap-3">
+            <svg
+                width="60"
+                height="60"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    d="M20.3116 12.6473L20.8293 10.7154C21.4335 8.46034 21.7356 7.3328 21.5081 6.35703C21.3285 5.58657 20.9244 4.88668 20.347 4.34587C19.6157 3.66095 18.4881 3.35883 16.2331 2.75458C13.978 2.15033 12.8504 1.84821 11.8747 2.07573C11.1042 2.25537 10.4043 2.65945 9.86351 3.23687C9.27709 3.86298 8.97128 4.77957 8.51621 6.44561C8.43979 6.7254 8.35915 7.02633 8.27227 7.35057L8.27222 7.35077L7.75458 9.28263C7.15033 11.5377 6.84821 12.6652 7.07573 13.641C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6392 12.3508 17.2435L12.3508 17.2435C14.3834 17.7881 15.4999 18.0873 16.415 17.9744C16.5152 17.9621 16.6129 17.9448 16.7092 17.9223C17.4796 17.7427 18.1795 17.3386 18.7203 16.7612C19.4052 16.0299 19.7074 14.9024 20.3116 12.6473Z"
+                />
+                <path
+                    opacity="0.5"
+                    d="M16.4149 17.9745C16.2064 18.6128 15.8398 19.1903 15.347 19.6519C14.6157 20.3368 13.4881 20.6389 11.2331 21.2432C8.97798 21.8474 7.85044 22.1496 6.87466 21.922C6.10421 21.7424 5.40432 21.3383 4.86351 20.7609C4.17859 20.0296 3.87647 18.9021 3.27222 16.647L2.75458 14.7152C2.15033 12.4601 1.84821 11.3325 2.07573 10.3568C2.25537 9.5863 2.65945 8.88641 3.23687 8.3456C3.96815 7.66068 5.09569 7.35856 7.35077 6.75431C7.7774 6.64 8.16369 6.53649 8.51621 6.44534C8.51618 6.44545 8.51624 6.44524 8.51621 6.44534C8.43979 6.72513 8.3591 7.02657 8.27222 7.35081L7.75458 9.28266C7.15033 11.5377 6.84821 12.6653 7.07573 13.6411C7.25537 14.4115 7.65945 15.1114 8.23687 15.6522C8.96815 16.3371 10.0957 16.6393 12.3508 17.2435C14.3833 17.7881 15.4999 18.0873 16.4149 17.9745Z"
+                />
+            </svg>
+
+            <span>
+                  موردی یافت نشد :(
+            </span>
+        </div>
+    )
+}

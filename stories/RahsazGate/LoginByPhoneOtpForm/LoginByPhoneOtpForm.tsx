@@ -69,7 +69,7 @@ export const LoginByPhoneOtpForm = () => {
     const submit = async (data: any) => {
         router.replace("/gate/phone?phoneNumber=" + data.phoneNumber)
         try {
-            const {data: result} = await axiosCore().post('/auth/phoneOtp', {phone: data.phoneNumber})
+            const result: any = await axiosCore().post('/auth/phoneOtp', {phone: data.phoneNumber})
             router.push("/gate/phone/verify?phoneNumber=" + `0${result.phone.replace("+98", "")}`)
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")

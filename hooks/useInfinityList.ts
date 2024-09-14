@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useAxiosWithAuth} from "@/hooks/useAxiosWithAuth";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
 
 export type UseInfinityListProps = {
@@ -28,7 +28,7 @@ const useInfinityList = (props: UseInfinityListProps) => {
     const [page, setPage] = useState(0);
     const [error, setError] = useState("");
 
-    const axios = useAxiosWithAuth()
+    const axios = axiosCoreWithAuth()
 
     const loadData = async () => {
         try {
@@ -47,10 +47,10 @@ const useInfinityList = (props: UseInfinityListProps) => {
             Object.keys(filter).map((v, i) => {
                 if(filter[v]) _filter[v] = filter[v]
             })
-            const result = await axios.get(route, {params: {..._filter, selected, page, per}})
-            if (!!result.data?.items) {
-                setHasMore(list.length < result.data.count);
-                setList((prev) => (page === 0 ? result.data.items : [...prev, ...result.data.items]));
+            const result: any = await axios.get(route, {params: {..._filter, selected, page, per}})
+            if (!!result?.items) {
+                setHasMore(list.length < result.count);
+                setList((prev) => (page === 0 ? result.items : [...prev, ...result.items]));
                 return
             }
         } catch (error: any) {

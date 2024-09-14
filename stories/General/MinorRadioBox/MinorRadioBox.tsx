@@ -1,8 +1,6 @@
 import React, {ReactNode} from "react";
 import {Control, useController} from "react-hook-form";
-import {Checkbox, CheckboxGroup} from "@nextui-org/checkbox";
 import {Radio, RadioGroup} from "@nextui-org/radio";
-import {className} from "postcss-selector-parser";
 
 
 export type MinorRadioBoxProps = {

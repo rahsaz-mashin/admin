@@ -48,8 +48,7 @@ export default {
             async authorize(credentials, req) {
                 try {
                     const data = credentials as LoginByPhoneOtpForm
-                    const response = await axiosServerCore().post("/auth/loginByPhoneOtp", data)
-                    return response.data
+                    return await axiosServerCore().post("/auth/loginByPhoneOtp", data)
                 } catch (e: any) {
                     return null
                 }

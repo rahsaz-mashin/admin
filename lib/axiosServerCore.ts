@@ -1,4 +1,5 @@
 import axios from "axios";
+import {handleToastError} from "@/lib/axios";
 
 
 
@@ -22,6 +23,14 @@ const axiosServerCore = () => {
     a.interceptors.request.use((config: any) => {
         return config
     })
+    a.interceptors.response.use(
+        (response: any) => {
+            return response.data;
+        },
+        (error: any) => {
+            return Promise.reject(error)
+        },
+    )
     return a
 }
 
@@ -33,6 +42,14 @@ const axiosServerCoreWithAuth = (accessToken: string) => {
         config.headers.Authorization = `Bearer ${accessToken}`
         return config
     })
+    a.interceptors.response.use(
+        (response: any) => {
+            return response.data;
+        },
+        (error: any) => {
+            return Promise.reject(error)
+        },
+    )
     return a
 }
 

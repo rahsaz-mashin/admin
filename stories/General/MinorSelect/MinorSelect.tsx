@@ -8,6 +8,13 @@ import {Autocomplete, AutocompleteItem, AutocompleteSection, MenuTriggerAction} 
 import {useFilter} from "@react-aria/i18n";
 
 
+export type DynamicSelectType = {
+    route: string;
+    filter?: { [key: string]: string };
+    per?: number;
+}
+
+
 export type MinorSelectProps = {
     name: string;
     control: Control<any, any>;
@@ -41,11 +48,7 @@ export type MinorSelectProps = {
 
     isMultiline?: boolean;
 
-    dynamic?: {
-        route: string;
-        filter?: { [key: string]: string };
-        per?: number;
-    };
+    dynamic?: DynamicSelectType;
     withSection?: boolean;
     isSearchable?: boolean;
 }

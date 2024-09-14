@@ -1,17 +1,16 @@
 "use client";
 
 
-
 import {motion} from "framer-motion";
-import React, {ReactNode} from "react";
-import {useRouteManager} from "@/hooks/useRouteManager";
+import React, {ReactNode, useContext} from "react";
+import {AdminContext} from "@/context/admin.context";
 
 export type DrawerMenuItemProps = {
     id: string;
     label: string;
-    workspace: string;
-    icon: ReactNode;
+    icon?: ReactNode;
     isActive?: boolean;
+    isEnable?: boolean;
 }
 
 
@@ -53,34 +52,35 @@ const color = {
 };
 
 
-export const DrawerMenuItem = (
-    {
+export const DrawerMenuItem = (props: DrawerMenuItemProps) => {
+    const {
         label,
-        workspace,
         id,
         icon,
-        isActive
-    }: DrawerMenuItemProps
-) => {
+        isActive,
+        isEnable,
+    } = props
 
-    const section = id
-    const router = useRouteManager(workspace, section)
+    const adminContext = useContext(AdminContext)
 
     return (
         <motion.li
             key={id}
-            initial={isActive ? "hover" : "rest"} whileHover="hover" animate={isActive ? "hover" : "rest"}
+            initial={(isEnable && isActive) ? "hover" : "rest"}
+            whileHover={isEnable ? "hover" : undefined}
+            animate={(isEnable && isActive) ? "hover" : "rest"}
             variants={color}
-            className="group active:scale-90 shrink select-none cursor-pointer transition-all relative h-11 gap-3 flex items-center"
+            data-disabled={!isEnable || undefined}
+            className="group shrink select-none transition-all relative h-11 gap-3 flex items-center cursor-pointer active:scale-90 data-[disabled]:opacity-60 data-[disabled]:cursor-default data-[disabled]:active:scale-100"
             onClick={() => {
-                router.push()
+                if (isEnable) adminContext.setActiveSection(id)
             }}
         >
             <motion.svg
                 width="220"
                 height="44"
                 viewBox="0 0 220 44"
-                className="cursor-pointer absolute"
+                className="absolute"
             >
                 <motion.rect
                     width="216"
@@ -94,11 +94,13 @@ export const DrawerMenuItem = (
                 />
             </motion.svg>
             <div
-                className="bg-white z-10 flex justify-center shadow-[-4px_0px_2px_#00000025] transition-all duration-1000 text-gray-600 group-hover:text-black rounded-full w-9 h-9 p-1.5 mr-1"
+                className="bg-white z-10 flex justify-center items-center shadow-[-4px_0px_2px_#00000025] transition-all duration-1000 text-gray-800 rounded-full w-9 h-9 p-1.5 mr-1"
             >
                 {icon}
             </div>
-            <span className="z-10">{label}</span>
+            <span className="z-10">
+                {label}
+            </span>
         </motion.li>
     );
 };

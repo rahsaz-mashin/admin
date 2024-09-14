@@ -1,80 +1,39 @@
-import React, {ReactNode, useEffect, useState} from "react";
+import React, {ReactNode, useContext, useEffect, useState} from "react";
 import {Container} from "@/stories/RahsazAdmin//Container";
 import {Drawer} from "@/stories/RahsazAdmin/Drawer";
 import {Loading} from "@/stories/RahsazAdmin/Loading";
-import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
-import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 import {usePathname} from "next/navigation";
-import {HeaderProps} from "@/stories/RahsazAdmin/Header/Header";
+import {AdminContext} from "@/context/admin.context";
+import { Session } from "next-auth";
 
 export type MainLayoutProps = {
-    workspaceItems: DrawerWorkspaceItemProps[],
-    menuItems: DrawerMenuItemProps[],
-    userMenuItems: DrawerUserMenuItemType[],
-    headerProps: HeaderProps,
-    children: ReactNode
+    children: ReactNode;
+    session: Session;
 }
 
 
 export const MainLayout = (props: MainLayoutProps) => {
 
-    const {
-        workspaceItems,
-        menuItems,
-        userMenuItems,
-        headerProps,
-        children,
-    } = props
+    const {children, session} = props
 
+    const adminContext = useContext(AdminContext)
 
-    const [isOpenDrawer, setOpenDrawer] = useState(false);
-    const [isLoading, setLoading] = useState(false);
-
-    const pathname = usePathname()
-    const m = pathname?.split("/")
-
-    useEffect(() => {
-        setTimeout(() => setLoading(false), 1000)
-    }, [])
-
-    useEffect(() => {
-        if (!!m) {
-            if (m.length >= 4) setOpenDrawer(false)
-        }
-    }, [m])
-
-    if (!m) return null
     return (
         <main className="flex w-full h-max">
-            <Drawer
-                isOpenDrawer={isOpenDrawer}
-                workspaceItems={workspaceItems}
-                menuItems={menuItems}
-                userMenuItems={userMenuItems}
-
-                activeWorkspace={m[2]}
-                activeMenu={m[3]}
-                accountName="عباسقلی میرزا"
-            />
-            {isOpenDrawer && (
+            <Drawer session={session}/>
+            {adminContext.isOpenDrawer && (
                 <>
                     <div
                         className="z-10 cursor-pointer items-start justify-end backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen fixed inset-0 top-0 right-0 block md:hidden"
-                        onClick={() => setOpenDrawer(false)}
+                        onClick={() => adminContext.setOpenDrawer(false)}
                     >
                     </div>
                 </>
             )}
-            <Container
-                headerProps={{
-                    ...headerProps,
-                    setOpenDrawer: () => setOpenDrawer(true)
-                }}
-            >
+            <Container>
                 {children}
             </Container>
-            <Loading isLoading={isLoading}/>
+            <Loading isLoading={adminContext.isLoading}/>
         </main>
     );
 };

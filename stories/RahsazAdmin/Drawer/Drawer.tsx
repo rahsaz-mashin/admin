@@ -1,42 +1,25 @@
-import React, {CSSProperties, useCallback, useRef, useState} from "react";
+import React, {CSSProperties, useCallback, useContext, useRef, useState} from "react";
 import {ScrollShadow} from "@nextui-org/react";
 import {Logo} from "@/stories/General";
 import {AccountAvatar} from "@/stories/RahsazAdmin/AccountAvatar";
 import {AccountName} from "@/stories/RahsazAdmin/AccountName";
-import {OutlinedCustomizationIcon} from "@/stories/Icons";
-import {DrawerWorkspaceItem, DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
-import {DrawerMenuItemProps, DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
-import {DrawerUserMenu, DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
+import {DrawerWorkspaceItem} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
+import {DrawerMenuItem} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
 import {Clock} from "@/stories/RahsazAdmin/Clock";
+import {AdminContext} from "@/context/admin.context";
+import {Session} from "next-auth";
+import {identityTypesEnum} from "@/interfaces/Identity.interface";
+import {DrawerUserMenu} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
 
 
 export type DrawerProps = {
-    isOpenDrawer: boolean,
-    workspaceItems: DrawerWorkspaceItemProps[],
-    menuItems: DrawerMenuItemProps[],
-    userMenuItems: DrawerUserMenuItemType[],
-    activeWorkspace: string,
-    activeMenu: string,
-    accountName: string,
-    accountAvatar?: string,
+    session: Session;
 }
 
 
-export const Drawer = (
-    {
-        isOpenDrawer,
+export const Drawer = (props: DrawerProps) => {
 
-        workspaceItems,
-        menuItems,
-        userMenuItems,
-
-        activeWorkspace,
-        activeMenu,
-
-        accountName,
-        accountAvatar
-    }: DrawerProps
-) => {
+    const {session} = props
 
 
     const [height, setHeight] = useState<null | number>(500);
@@ -49,27 +32,43 @@ export const Drawer = (
             resizeObserver.observe(node);
         }
     }, []);
-
-
     const sidebarHeight = height ? (height > 630 ? 530 : height < 300 ? 200 : (height - 100)) : 200
 
-    const workspace = "store"
-    const [clockShowing, setClockShowing] = useState(false)
 
+    const [clockShowing, setClockShowing] = useState(false)
     const timeoutClock = useRef<ReturnType<typeof setTimeout>>();
+
+
+    const adminContext = useContext(AdminContext)
+
+    const activeWorkspace = adminContext.activeWorkspace;
+    const activeSection = adminContext.activeSection;
+
+    const workspacesList = adminContext.workspacesList()
+    const sectionsList = adminContext.sectionsList()
+
+
+    let accountName = "[هویت ثبت نشده]"
+    const accountAvatar = session.account.avatar+""
+    if (session.account.identity?.identityType === identityTypesEnum.real) {
+        accountName = session.account.identity?.firstName! + " " + session.account.identity?.lastName!
+    }
+    if (session.account.identity?.identityType === identityTypesEnum.legal) {
+        accountName = session.account.identity?.legalName!
+    }
+
 
     return (
         <nav
             className={
                 "h-full z-20 select-none w-80 md:translate-x-0 shadow-2xl fixed transition-transform duration-1000" +
-                (isOpenDrawer ? " translate-x-0" : " translate-x-96")
+                (adminContext.isOpenDrawer ? " translate-x-0" : " translate-x-96")
             }
         >
             <div className="bg-white overflow-hidden h-full w-full relative rounded-tl-3xl flex">
                 <div className="w-[76px] h-full overflow-hidden bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
                     <div className="relative w-full h-full flex items-center flex-col justify-between">
                         {/* logo */}
-
                         <div
                             className="flex items-center justify-center cursor-pointer z-20 w-full py-3 px-3"
                             onClick={() => {
@@ -90,7 +89,9 @@ export const Drawer = (
                         >
                             {clockShowing ? <Clock/> : <Logo size={60}/>}
                         </div>
-                        {/* sections items */}
+
+
+                        {/* workspaces items */}
                         <div className="absolute pb-[150px] min-h-[278px] h-full flex flex-col z-10 w-full">
                             <div className="h-full relative" ref={div}>
                                 <svg
@@ -154,7 +155,9 @@ export const Drawer = (
                                     </defs>
                                 </svg>
                                 <div className="flex-1 relative overflow-hidden z-10 mt-36 mr-2.5">
-                                    {!!workspaceItems?.length && (
+
+                                    {/* workspaces list */}
+                                    {!!workspacesList?.length && (
                                         <ScrollShadow
                                             hideScrollBar
                                             size={25}
@@ -166,7 +169,7 @@ export const Drawer = (
                                                     width="8" height="37" viewBox="0 0 8 37" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     className="transition-all transform"
-                                                    style={{"--tw-translate-y": `${(workspaceItems?.findIndex(({id}) => (id === activeWorkspace)) * 56) || 0}px`} as CSSProperties}
+                                                    style={{"--tw-translate-y": `${(workspacesList?.findIndex(({key}) => (key === activeWorkspace)) * 56) || 0}px`} as CSSProperties}
                                                 >
                                                     <mask id="path-1-inside-1_794_12086" fill="white">
                                                         <path
@@ -195,41 +198,50 @@ export const Drawer = (
                                                 </svg>
                                             </div>
                                             <ul className="flex flex-col w-full items-center h-full gap-0">
-                                                {workspaceItems?.map(({id, label, logo}) => {
-                                                    return <DrawerWorkspaceItem
-                                                        key={id}
-                                                        id={id}
-                                                        label={label}
-                                                        logo={logo}
-                                                        isActive={activeWorkspace === id}
-                                                    />
+                                                {workspacesList?.map(({key, title, icon, isEnable}) => {
+                                                    return (
+                                                        <DrawerWorkspaceItem
+                                                            key={key}
+                                                            id={key}
+                                                            label={title}
+                                                            icon={icon}
+                                                            isActive={activeWorkspace === key}
+                                                            isEnable={isEnable}
+                                                        />
+                                                    )
                                                 })}
                                             </ul>
                                         </ScrollShadow>
                                     )}
+
                                 </div>
                             </div>
                         </div>
+                        {/* account */}
                         <div className="flex items-center justify-center z-20 h-[150px] pt-[74px] w-full">
                             <AccountAvatar
                                 name={accountName}
                                 avatar={accountAvatar}
                             />
                         </div>
+
                     </div>
                 </div>
-                {!!menuItems?.length && (
+                {/* sections list */}
+                {!!sectionsList?.length && (
                     <ScrollShadow hideScrollBar size={75} className="flex-1 h-[calc(100%-130px)]">
                         <ul className="flex flex-col p-3 gap-3 z-50">
-                            {menuItems.filter(({workspace}) => (workspace === activeWorkspace))?.map(({id, label, workspace, icon}) => {
-                                return <DrawerMenuItem
-                                    key={id}
-                                    id={id}
-                                    label={label}
-                                    workspace={workspace}
-                                    icon={icon}
-                                    isActive={activeMenu === id}
-                                />
+                            {sectionsList.map(({key, title, icon, isEnable}) => {
+                                return (
+                                    <DrawerMenuItem
+                                        key={key}
+                                        id={key}
+                                        label={title}
+                                        icon={icon}
+                                        isActive={activeSection === key}
+                                        isEnable={isEnable}
+                                    />
+                                )
                             })}
                         </ul>
                     </ScrollShadow>
@@ -255,9 +267,10 @@ export const Drawer = (
                 </defs>
             </svg>
             <div
-                className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]">
+                className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]"
+            >
                 <AccountName name={accountName}/>
-                {!!userMenuItems?.length && (<DrawerUserMenu items={userMenuItems}/>)}
+                <DrawerUserMenu />
             </div>
         </nav>
     );

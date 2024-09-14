@@ -85,6 +85,7 @@
     "recharts": "^2.12.7",
     "storybook-addon-i18n": "^5.1.13",
     "storybook-addon-rtl": "^1.0.0",
+    "swr": "^2.2.5",
     "tailwind-variants": "^0.1.20",
     "tailwindcss": "3.4.3",
     "three": "^0.164.1",

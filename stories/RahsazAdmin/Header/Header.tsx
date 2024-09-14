@@ -1,33 +1,29 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {BreadcrumbItem, Breadcrumbs, Button} from "@nextui-org/react";
 import {useRouter} from "next-nprogress-bar";
 import {BackIcon, RefreshIcon, SeparatorIcon} from "@/stories/Icons";
+import {AdminContext} from "@/context/admin.context";
 
 
-export type StepItemType = {
-    id: string;
-    label: string;
-    url: string;
-}
-
-export type HeaderProps = {
-    setOpenDrawer?: () => void;
-    workspaceName: string;
-    steps: StepItemType[]
-}
+export type HeaderProps = {}
 
 
-export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
+export const Header = (props: HeaderProps) => {
+
+    const {} = props
+
     const router = useRouter()
 
+    const adminContext = useContext(AdminContext)
+    const currentWorkspace = adminContext.getCurrentWorkspace()
+    const breadCrumbs = adminContext.breadCrumbs()
 
     return (
-        <header className="w-full truncate z-50 select-none flex items-start gap-3 sticky top-0 bg-background">
+        <header className="w-full h-24 truncate z-50 select-none flex items-start gap-3 sticky top-0 bg-background">
             <div
                 className="block md:hidden cursor-pointer text-primary hover:text-primary/80 transition group"
-                onClick={setOpenDrawer}
+                onClick={() => adminContext.setOpenDrawer(true)}
             >
-
                 <svg
                     width="43"
                     height="56"
@@ -88,7 +84,7 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                     </defs>
                 </svg>
             </div>
-            <div className="flex flex-col w-full ps-0 pe-4 md:ps-4 py-2">
+            <div className="flex flex-col gap-2 w-full ps-0 pe-4 md:ps-4 py-2">
                 <div className="flex justify-between">
                     <div className="flex items-center gap-2">
                         <Button
@@ -100,7 +96,9 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                         >
                             <BackIcon size={24}/>
                         </Button>
-                        <h1 className="font-bold text-primary text-lg truncate">{workspaceName}</h1>
+                        <h1 className="font-bold text-primary text-lg truncate">
+                            {currentWorkspace?.title}
+                        </h1>
                     </div>
                     <Button
                         onPress={() => location.reload()}
@@ -112,16 +110,17 @@ export const Header = ({setOpenDrawer, workspaceName, steps}: HeaderProps) => {
                         <RefreshIcon size={24}/>
                     </Button>
                 </div>
-                {!!steps?.length &&
+                {!!breadCrumbs?.length &&
                     (
                         <Breadcrumbs
                             underline="hover"
                             color="secondary"
-                            separator={<SeparatorIcon size={24}/>}
+                            className="ps-12"
+                            separator={<SeparatorIcon size={20}/>}
                         >
-                            {steps.map(({id, label, url}) => (
-                                <BreadcrumbItem key={id} href={url}>
-                                    {label}
+                            {breadCrumbs.map(({title, url}, idx) => (
+                                <BreadcrumbItem key={idx} href={url}>
+                                    {title}
                                 </BreadcrumbItem>
                             ))}
                         </Breadcrumbs>

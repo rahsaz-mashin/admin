@@ -106,7 +106,6 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
 
     useEffect(() => {
         containerDimensionsContext?.setDimensions(dimensions)
-        console.log({dimensions})
     }, [dimensions, containerDimensionsContext]);
 
     return (

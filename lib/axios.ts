@@ -25,7 +25,7 @@ const axiosCore = () => {
     })
     a.interceptors.response.use(
         (response: any) => {
-            return response;
+            return response.data;
         },
         (error: any) => {
             return Promise.reject(handleToastError(error))
@@ -45,7 +45,7 @@ const axiosCoreWithAuth = () => {
     })
     a.interceptors.response.use(
         (response: any) => {
-            return response;
+            return response.data;
         },
         (error: any) => {
             return Promise.reject(handleToastError(error))

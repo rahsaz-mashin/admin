@@ -6,18 +6,26 @@ import {OutlinedMoreIcon} from "@/stories/Icons";
 
 
 export type DrawerUserMenuItemType = {
-    id: string;
-    label: string;
-    onPress?: () => void
+    key: string;
+    title: string;
+    color?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+    className?: string;
+    onPress?: () => void;
 }
 
 
 export type DrawerUserMenuProps = {
-    items: DrawerUserMenuItemType[];
+
 }
 
 
-export const DrawerUserMenu = ({items}: DrawerUserMenuProps) => {
+export const DrawerUserMenu = () => {
+
+    const items: DrawerUserMenuItemType[] = [
+
+    ]
+
+
     return (
         <Dropdown backdrop="blur">
             <DropdownTrigger>
@@ -32,16 +40,20 @@ export const DrawerUserMenu = ({items}: DrawerUserMenuProps) => {
                     <OutlinedMoreIcon size={28}/>
                 </Button>
             </DropdownTrigger>
-            <DropdownMenu aria-label="UserCenter Actions" dir="rtl" items={items}>
+            <DropdownMenu
+                aria-label="UserCenter Actions"
+                dir="rtl"
+                items={items}
+                emptyContent={<>موردی پیدا نشد</>}
+            >
                 {(item) => (
                     <DropdownItem
-                        key={item.id}
-                        color={item.id === "logout" ? "danger" : "default"}
-                        className={item.id === "logout" ? "text-danger" : ""}
+                        key={item.key}
+                        color={item?.color}
+                        className={item?.className}
                         onPress={item?.onPress}
-                        // showDivider={item.id !== "logout"}
                     >
-                        {item.label}
+                        {item.title}
                     </DropdownItem>
                 )}
             </DropdownMenu>

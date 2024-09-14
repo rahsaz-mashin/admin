@@ -4,32 +4,18 @@
 import React, {ReactNode} from "react";
 import {RahsazAdmin} from "@/stories"
 import Scrollbar from "react-scrollbars-custom";
-import {DrawerWorkspaceItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerWorkspaceItem";
-import {DrawerMenuItemProps} from "@/stories/RahsazAdmin/Drawer/DrawerMenuItem";
-import {DrawerUserMenuItemType} from "@/stories/RahsazAdmin/Drawer/DrawerUserMenu";
-import {HeaderProps} from "@/stories/RahsazAdmin/Header";
+import {Session} from "next-auth";
 
 
 export type RahsazAdminMainLayoutProps = {
-    workspaceItems: DrawerWorkspaceItemProps[],
-    menuItems: DrawerMenuItemProps[],
-    userMenuItems: DrawerUserMenuItemType[],
-    headerProps: HeaderProps,
-    children: ReactNode
+    children: ReactNode;
+    session: Session;
 }
 
 
 
 const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
-
-
-    const {
-        workspaceItems,
-        menuItems,
-        userMenuItems,
-        headerProps,
-        children,
-    } = props
+    const {children, session} = props
 
     return (
         <>
@@ -90,12 +76,7 @@ const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
                 }}
                 className="!fixed !h-full"
             >
-                <RahsazAdmin.MainLayout
-                    workspaceItems={workspaceItems}
-                    menuItems={menuItems}
-                    userMenuItems={userMenuItems}
-                    headerProps={headerProps}
-                >
+                <RahsazAdmin.MainLayout session={session}>
                     {children}
                 </RahsazAdmin.MainLayout>
             </Scrollbar>

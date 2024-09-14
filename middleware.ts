@@ -7,7 +7,7 @@ import {
     identityPrefix,
     DEFAULT_LOGIN_ROUTE,
     IDENTITY_ROUTE,
-    DEFAULT_ROUTE_AFTER_LOGIN,
+    DEFAULT_ROUTE_AFTER_LOGIN, adminPrefix,
 } from "@/routes";
 
 const {auth} = NextAuth(authConfig)
@@ -23,6 +23,7 @@ export default auth(async function middleware(req) {
     const {nextUrl} = req
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
+    const isAdminRoute = nextUrl.pathname.startsWith(adminPrefix)
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname)
     const isAuthRoute = authRoutes.includes(nextUrl.pathname)
     const isIdentityRoute = identityPrefix.includes(nextUrl.pathname)
@@ -32,11 +33,16 @@ export default auth(async function middleware(req) {
     if(isApiAuthRoute) {
         return null
     }
+    // if(isLoggedIn && !isIdentityRoute && !haveIdentity) {
+    //     return Response.redirect(new URL(IDENTITY_ROUTE, nextUrl))
+    // }
 
-    if(isLoggedIn && !isIdentityRoute && !haveIdentity) {
-        return Response.redirect(new URL(IDENTITY_ROUTE, nextUrl))
+    // TODO:: this is temporary
+    if(isAdminRoute) {
+        if(nextUrl.pathname === "/admin") {
+            return Response.redirect(new URL("/admin/store/product", nextUrl))
+        }
     }
-
     if(isAuthRoute) {
         if(isLoggedIn) {
             return Response.redirect(new URL(DEFAULT_ROUTE_AFTER_LOGIN, nextUrl))
@@ -46,11 +52,9 @@ export default auth(async function middleware(req) {
         }
         return null
     }
-
     if(!isLoggedIn && !isPublicRoute) {
         return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl))
     }
-
     return null
 })
 
@@ -66,6 +70,6 @@ export const config = {
          * - manifest.json
          * - serviceWorker files
          */
-        '/((?!api|_next/static|_next/image|icons|screenshots|favicon.ico|sitemap.xml|robots.txt|sw.js|manifest.json|workbox).*)',
+        '/((?!api|_next/static|_next/image|static|fallback|icons|screenshots|favicon.ico|logo.svg|light-logo.svg|dark-logo.svg|sitemap.xml|robots.txt|sw.js|swe-worker-development.js|manifest.json|workbox).*)',
     ],
 }
