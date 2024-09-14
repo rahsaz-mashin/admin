@@ -23,7 +23,13 @@ import React, {
 import useSWR, {KeyedMutator} from 'swr';
 import {ColumnSize, ColumnStaticSize} from "@react-types/table";
 import {LoadingState} from "@react-types/shared";
-import {DeleteOutlineOutlined, DriveFileRenameOutlineOutlined, RefreshRounded} from "@mui/icons-material";
+import {
+    DeleteForeverOutlined,
+    DeleteOutlineOutlined,
+    DeleteOutlineRounded, DeleteSweepOutlined,
+    DriveFileRenameOutlineOutlined, ListOutlined, RecyclingOutlined, RefreshOutlined,
+    RefreshRounded
+} from "@mui/icons-material";
 import {usePathname, useRouter} from "next/navigation";
 import {AdminContext} from "@/context/admin.context";
 import {Tooltip} from "@nextui-org/tooltip";
@@ -81,9 +87,15 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
 
     const [page, setPage] = useState(1);
     const [loadingState, setLoadingState] = useState<LoadingState>("idle");
+    const [showTrashBox, setShowTrashBox] = useState(false);
 
+    const [filtering, setFiltering] = useState<any>({});
+    const [sorting, setSorting] = useState<any>({});
 
-    const {data, error, isLoading, isValidating, mutate} = useSWR<[T[], number]>(`/${apiRoute}`)
+    const filter = new URLSearchParams(filtering).toString()
+    const sort = new URLSearchParams(sorting).toString()
+    const params = filter + ((filter && sort) ? `&${sort}` : "")
+    const {data, error, isLoading, isValidating, mutate} = useSWR<[T[], number]>(`/${apiRoute}?${params}`)
 
     const items = (data?.[0] ?? [])
     const count = data?.[1] || 0
@@ -94,6 +106,12 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         else if (isValidating) setLoadingState("loading")
         else setLoadingState("idle")
     }, [isLoading, isValidating])
+
+
+    useEffect(() => {
+        if (showTrashBox) setFiltering((old: any) => ({...old, trash: true}))
+        else setFiltering(({trash, ...old}: any) => ({...old}))
+    }, [showTrashBox])
 
     const refresh = async () => {
         await mutate()
@@ -108,8 +126,21 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         <>
             <Table
                 isHeaderSticky
-                topContent={<TopContent mutate={mutate} error={error}/>}
-                bottomContent={<BottomContent pages={pages} page={page} setPage={setPage}/>}
+                topContent={
+                    <TopContent
+                        mutate={mutate}
+                        error={error}
+                        showTrashBox={showTrashBox}
+                        setShowTrashBox={setShowTrashBox}
+                    />
+                }
+                bottomContent={
+                    <BottomContent
+                        pages={pages}
+                        page={page}
+                        setPage={setPage}
+                    />
+                }
             >
                 <TableHeader columns={columns}>
                     {(column) => (
@@ -135,8 +166,12 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                 >
                     {(item) => {
                         const id = getKeyValue(item, "id")
+                        const isDeleted = !!getKeyValue(item, "deletedAt")
                         return (
-                            <TableRow key={id}>
+                            <TableRow
+                                key={id}
+                                className={isDeleted ? "bg-red-100" : (editingId === id + "") ? "bg-green-100" : undefined}
+                            >
                                 {(columnKey) => {
                                     const toolsCell = columns?.find(({key}) => (key === columnKey))?.toolsCell
                                     const render = columns?.find(({key}) => (key === columnKey))?.render
@@ -154,10 +189,11 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                                             </TableCell>
                                         )
                                     }
-                                    if (render) {
-                                        return (<TableCell>{render(value, item, id)}</TableCell>)
-                                    }
-                                    return (<TableCell>{value}</TableCell>)
+                                    return (
+                                        <TableCell>
+                                            {render ? render(value, item, id) : value}
+                                        </TableCell>
+                                    )
                                 }}
                             </TableRow>
                         )
@@ -170,12 +206,17 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
 TableList.displayName = "TableList"
 
 
+/*
+============================================================================================================= ToolsCell
+*/
+
+
 type ToolsCellPropsType<T> = {
     id: string | number;
     item: T;
     apiRoute: string;
     options: ToolsCellType<T>;
-    refresh: () => void
+    refresh: () => void;
 }
 
 const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
@@ -183,6 +224,56 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
 
     const adminContext = useContext(AdminContext)
     const deleteModal = useDisclosure({defaultOpen: false});
+
+    // @ts-ignore
+    if (item.deletedAt) {
+        return (
+            <div className="flex flex-row gap-1 justify-center items-center">
+                <Tooltip
+                    color="foreground"
+                    placement="bottom"
+                    showArrow
+                    content="برگرداندن به لیست"
+                    className="select-none"
+                    radius="sm"
+                >
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        color="warning"
+                        radius="full"
+                        onPress={deleteModal.onOpen}
+                    >
+                        <RecyclingOutlined/>
+                    </Button>
+                </Tooltip>
+                <Tooltip
+                    color="foreground"
+                    placement="bottom"
+                    showArrow
+                    content="حذف همیشگی"
+                    className="select-none"
+                    radius="sm"
+                >
+                    <Button
+                        isIconOnly
+                        variant="light"
+                        color="danger"
+                        radius="full"
+                        onPress={deleteModal.onOpen}
+                    >
+                        <DeleteForeverOutlined/>
+                    </Button>
+                </Tooltip>
+                <DeleteModal
+                    id={id}
+                    state={deleteModal}
+                    apiRoute={apiRoute}
+                    refresh={refresh}
+                />
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-row gap-1 justify-center items-center">
@@ -223,9 +314,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                             variant="light"
                             color="danger"
                             radius="full"
-                            onPress={() => {
-                                deleteModal.onOpen()
-                            }}
+                            onPress={deleteModal.onOpen}
                         >
                             <DeleteOutlineOutlined/>
                         </Button>
@@ -244,12 +333,19 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
 }
 
 
+/*
+============================================================================================================= DeleteModal
+*/
+
+
 type DeleteModalPropsType = {
     id: string | number;
     state: UseDisclosureReturn;
     apiRoute: string;
     refresh: () => void;
 }
+
+
 const DeleteModal = <T, >(props: DeleteModalPropsType) => {
 
     const {id, state, apiRoute, refresh} = props
@@ -257,22 +353,14 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
     const [item, setItem] = useState<T | null>(null)
     const [isLoading, setLoading] = useState<boolean>(false)
 
-    const title = (item as any)?.['title'] || null
+    const title = getKeyValue(item, "title") || null
+    const isDeleted = !!getKeyValue(item, "deletedAt")
 
     const axios = axiosCoreWithAuth()
     const getItem = async () => {
         setLoading(true)
         const d: T = await axios.get(`${apiRoute}/${id}`)
         setItem(d)
-        setTimeout(() => {
-            setLoading(false)
-        }, 1000)
-    }
-
-    const deleteItem = async () => {
-        setLoading(true)
-        await axios.delete(`${apiRoute}/${id}`)
-        toast.success(`${title} با موفقیت حذف شد `)
         setLoading(false)
     }
 
@@ -285,9 +373,11 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
         state.onClose()
     }
 
-    const onSubmit = async () => {
+    const onSubmit = async ({permanent = false, restore = false}: { permanent?: boolean, restore?: boolean }) => {
         if (isLoading) return
-        await deleteItem()
+        setLoading(true)
+        await axios.delete(`${apiRoute}/${id}?permanent=${permanent}&restore=${restore}`)
+        setLoading(false)
         refresh()
         state.onClose()
     }
@@ -303,42 +393,72 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
             isDismissable
         >
             <ModalContent>
-                <ModalHeader>
-                    حذف
-                </ModalHeader>
+                {!isLoading && (
+                    <ModalHeader>
+                        {isDeleted ? "حذف همیشگی" : "حذف"}
+                    </ModalHeader>
+                )}
                 <ModalBody className="relative">
-                    <div
-                        data-loading={isLoading || undefined}
-                        className="h-24 w-full hidden data-[loading]:flex justify-center items-center"
-                    >
-                        <Spinner/>
-                    </div>
-                    <div
-                        data-loading={isLoading || undefined}
-                        className="h-24 w-full flex data-[loading]:hidden justify-center items-center"
-                    >
-                        <p>آیا از حذف</p>
-                        <b>&nbsp;{title}&nbsp;</b>
-                        <p>مطمئن هستید؟</p>
-                    </div>
+                    {isLoading && (
+                        <div className="h-24 w-full flex justify-center items-center">
+                            <Spinner/>
+                        </div>
+                    )}
+                    {!isLoading && (
+                        <div className="w-full">
+                            {isDeleted
+                                ?
+                                <>
+                                    <p>
+                                        با کلیک بر روی
+                                        <span className="text-green-600">&nbsp;برگرداندن&nbsp;</span>
+                                        <b>&nbsp;{title}&nbsp;</b>
+                                        به باکس اصلی برگشته و در صورت کلیک روی
+                                        <span className="text-red-600">&nbsp;حذف همیشگی&nbsp;</span>
+                                        برای همیشه حذف خواهد شد.
+                                    </p>
+                                </>
+                                :
+                                <>
+                                    <p>
+                                        در صورت ادامه
+                                        &nbsp;<b>{title}</b>&nbsp;
+                                        حذف شده و به زباله دان می رود.
+                                    </p>
+                                </>
+                            }
+                        </div>
+                    )}
                 </ModalBody>
                 <ModalFooter>
-                    <Button
-                        variant="shadow"
-                        color="danger"
-                        isDisabled={isLoading}
-                        onPress={onSubmit}
-                    >
-                        آره، حذف شود
-                    </Button>
                     <Button
                         variant="flat"
                         color="default"
                         isDisabled={isLoading}
                         onPress={onCancel}
                     >
-                        خیر
+                        انصراف
                     </Button>
+                    <Button
+                        variant="shadow"
+                        color="danger"
+                        className="text-white"
+                        isDisabled={isLoading}
+                        onPress={() => onSubmit({permanent: isDeleted})}
+                    >
+                        {isDeleted ? "حذف همیشگی" : "حذف"}
+                    </Button>
+                    {isDeleted && (
+                        <Button
+                            variant="shadow"
+                            color="success"
+                            className="text-white"
+                            isDisabled={isLoading}
+                            onPress={() => onSubmit({restore: true})}
+                        >
+                            برگرداندن
+                        </Button>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>
@@ -346,27 +466,67 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
 }
 
 
-const TopContent = ({mutate, error}: { mutate: KeyedMutator<any>, error: any }) => {
+/*
+============================================================================================================= TopContent
+*/
+
+
+type TopContentPropsType = {
+    mutate: KeyedMutator<any>;
+    error: any;
+    showTrashBox: boolean;
+    setShowTrashBox: (i: (b: boolean) => boolean) => void;
+}
+const TopContent = (props: TopContentPropsType) => {
+
+    const {mutate, error, showTrashBox, setShowTrashBox} = props
+
     return (
         <div className="flex flex-row justify-between items-center gap-3">
             <div className="text-danger font-semibold">
                 {error ? `خطا در دریافت: ${error.message}` : ""}
             </div>
-            <Button
-                isIconOnly
-                variant="light"
-                color="success"
-                radius="full"
-                onPress={mutate}
-            >
-                <RefreshRounded/>
-            </Button>
+            <div className="flex flex-row justify-center items-center gap-2">
+                <Button
+                    // isIconOnly
+                    variant="flat"
+                    color="success"
+                    radius="full"
+                    onPress={mutate}
+                    startContent={<RefreshOutlined/>}
+                >
+                    بروزرسانی
+                </Button>
+                <Button
+                    // isIconOnly
+                    variant={showTrashBox ? "solid" : "flat"}
+                    color="primary"
+                    radius="full"
+                    onPress={() => setShowTrashBox((b) => (!b))}
+                    startContent={showTrashBox ? <ListOutlined/> : <DeleteSweepOutlined/>}
+                >
+                    {showTrashBox ? "باکس اصلی" : "زباله دان"}
+                </Button>
+            </div>
         </div>
     )
 }
 
 
-const BottomContent = ({page, setPage, pages}: { page: number, setPage: (i: number) => void, pages: number }) => {
+/*
+============================================================================================================= BottomContent
+*/
+
+type BottomContentPropsType = {
+    page: number;
+    setPage: (i: number) => void;
+    pages: number;
+}
+
+const BottomContent = (props: BottomContentPropsType) => {
+    const {page, setPage, pages} = props
+
+
     if (pages <= 0) return null
     return (
         <div className="flex w-full justify-center">
@@ -386,6 +546,11 @@ const BottomContent = ({page, setPage, pages}: { page: number, setPage: (i: numb
 }
 
 
+/*
+============================================================================================================= LoadingContent
+*/
+
+
 const LoadingContent = () => {
     return (
         <div className="flex flex-col justify-center items-center gap-3">
@@ -394,6 +559,10 @@ const LoadingContent = () => {
     )
 }
 
+
+/*
+============================================================================================================= EmptyContent
+*/
 
 const EmptyContent = () => {
     return (
