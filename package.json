@@ -21,7 +21,7 @@
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.16.4",
     "@mui/utils": "^5.16.4",
-    "@mui/x-charts": "^7.11.0",
+    "@mui/x-charts": "^7.16.0",
     "@neshan-maps-platform/mapbox-gl-react": "^1.0.2",
     "@neshan-maps-platform/ol": "^1.0.5",
     "@neshan-maps-platform/react-openlayers": "^3.0.1",
