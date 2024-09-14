@@ -11,7 +11,6 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@auth/prisma-adapter": "^2.4.2",
     "@ducanh2912/next-pwa": "^10.2.7",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
@@ -37,7 +36,6 @@
     "@nextui-org/system": "2.1.0",
     "@nextui-org/theme": "^2.2.9",
     "@nextui-org/use-infinite-scroll": "^2.1.4",
-    "@prisma/client": "^5.18.0",
     "@react-aria/ssr": "^3.9.2",
     "@react-aria/visually-hidden": "^3.8.10",
     "@react-stately/data": "^3.11.4",
