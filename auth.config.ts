@@ -55,6 +55,7 @@ export default {
             }
         }),
     ],
+    trustHost: true,
     callbacks: {
         async session({token, session, trigger}) {
             const accessToken = token.accessToken as string
