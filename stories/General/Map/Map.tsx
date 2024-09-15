@@ -26,6 +26,8 @@ export type MapProps = {
     onChange?: (v: Position) => void;
     findOnInit?: boolean;
     withSearchBox?: boolean;
+    isDisabled?: boolean;
+    isReadOnly?: boolean;
 }
 
 
@@ -81,6 +83,8 @@ export const MapContainer = (props: MapProps) => {
 
     return (
         <div className="relative overflow-hidden rounded-xl flex justify-center items-center">
+            {props.isReadOnly && <div className="absolute h-full w-full z-10"/>}
+            {props.isDisabled && <div className="absolute h-full w-full z-10 bg-black/20"/>}
             <NeshanMap
                 ref={mapRef}
                 mapKey="web.0cd8558bb31843c3a919ea52fcd093ce"

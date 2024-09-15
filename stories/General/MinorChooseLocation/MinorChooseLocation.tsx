@@ -1,6 +1,5 @@
 import React, {ReactNode} from "react";
 import {Control, useController} from "react-hook-form";
-import {Switch} from "@nextui-org/switch";
 import MapContainer from "../Map/Map";
 
 
@@ -60,6 +59,8 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
                 onChange={field.onChange}
                 findOnInit
                 withSearchBox
+                isDisabled={isDisabled}
+                isReadOnly={isReadOnly}
             />
             <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
                 {!!description && (
