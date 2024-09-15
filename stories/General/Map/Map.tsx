@@ -71,7 +71,7 @@ export const MapContainer = (props: MapProps) => {
         const __zoom = toFixed(_zoom, 3)
         setPosition(__position)
         setZoom(__zoom)
-        props.onChange(__position)
+        if(props?.onChange) props.onChange(__position)
     }
 
     return (
