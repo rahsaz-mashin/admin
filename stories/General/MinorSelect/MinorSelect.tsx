@@ -10,7 +10,12 @@ import {useFilter} from "@react-aria/i18n";
 
 export type DynamicSelectType = {
     route: string;
+    headers?: { [key: string]: string };
+
     filter?: { [key: string]: string };
+    searchKey?: string;
+    disablePagination?: boolean;
+    withSelected?: boolean;
     per?: number;
 }
 
@@ -219,12 +224,6 @@ export const MinorSelect = (props: MinorSelectProps) => {
 
 
     // **************** AutoComplete search when it's not dynamic
-
-    const [filter, setFilter] = React.useState<any>({
-        selectedKey: "",
-        inputValue: "",
-        items: itemList,
-    });
 
     const {startsWith} = useFilter({sensitivity: "base"});
 

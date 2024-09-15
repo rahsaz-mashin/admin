@@ -23,7 +23,7 @@ export const toast = (msg: SnackbarMessage, variant: "default" | "error" | "succ
         <ShowSnackbar message={msg} variant={variant} />
       </SnackbarProvider>
     );
-    root.render(provider);
+    if(!!msg) root.render(provider);
   }
 };
 

@@ -4,13 +4,15 @@ import React, {useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
 import {Autocomplete, AutocompleteItem, Button} from "@nextui-org/react";
-import {MyLocation} from "@mui/icons-material";
+import {FmdGood, MyLocation} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
 import {useAsyncList} from "@react-stately/data";
 import {fromLonLat, toLonLat, transform} from "@neshan-maps-platform/ol/proj";
 import {toFixed} from "@neshan-maps-platform/ol/math";
 import {toast} from "@/lib/toast";
+import {MinorSelect} from "@/stories/General/MinorSelect";
+import {useForm} from "react-hook-form";
 
 
 type Position = {
@@ -23,6 +25,7 @@ export type MapProps = {
     zoom?: number;
     onChange?: (v: Position) => void;
     findOnInit?: boolean;
+    withSearchBox?: boolean;
 }
 
 
@@ -42,8 +45,7 @@ export const MapContainer = (props: MapProps) => {
         const geolocation = new Geolocation();
         geolocation.setTracking(true);
         geolocation.on('change', () => {
-            const coordinate = geolocation.getPosition()!
-            mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
+            goTo(geolocation.getPosition()!)
         });
         geolocation.on('error', (error) => {
             toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
@@ -55,11 +57,8 @@ export const MapContainer = (props: MapProps) => {
         const view = mapRef.current?.map?.getView();
         const _center = view?.getCenter()!
         const _zoom = view?.getZoom()!
-        handlePosition(_center, _zoom)
-    }
 
 
-    const handlePosition = (_center: Coordinate, _zoom: number) => {
         const coordinate = toLonLat(_center)
         const __position = {
             latitude: toFixed(coordinate[1], 7),
@@ -71,8 +70,13 @@ export const MapContainer = (props: MapProps) => {
         if(props?.onChange) props.onChange(__position)
     }
 
+
+    const goTo = (coordinate: Coordinate) => {
+        mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
+    }
+
     return (
-        <div className="relative overflow-hidden rounded-xl">
+        <div className="relative overflow-hidden rounded-xl flex justify-center items-center">
             <NeshanMap
                 ref={mapRef}
                 mapKey="web.0cd8558bb31843c3a919ea52fcd093ce"
@@ -85,9 +89,19 @@ export const MapContainer = (props: MapProps) => {
                 center={position}
                 zoom={zoom}
             />
-            {/*<div className="absolute top-0 w-full p-3">*/}
-            {/*    {!!position && <SearchMap position={position} goTo={goTo}/>}*/}
-            {/*</div>*/}
+            {props.withSearchBox && (
+                <div className="absolute top-0 w-full p-3">
+                    <SearchMap
+                        position={position}
+                        goTo={goTo}
+                    />
+                </div>
+            )}
+            <div className="absolute">
+                <div className="flex justify-center items-center text-blue-600">
+                    <FmdGood fontSize="large"/>
+                </div>
+            </div>
             <div className="absolute bottom-0 w-full p-3">
                 <Button
                     isIconOnly
@@ -106,67 +120,36 @@ export const MapContainer = (props: MapProps) => {
 
 export default MapContainer
 
-export type Pokemon = {
+export type LocationList = {
     category: string;
     location: { x: number; y: number };
     region: string;
     title: string;
     type: string;
 };
-const SearchMap = ({position, goTo}: { position: Coordinate; goTo: (p: Coordinate) => void }) => {
+const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate) => void }) => {
 
-    const [isOpen, setOpen] = useState(false);
-    // const {items, hasMore, isLoading, onLoadMore} = usePokemonList({term: "", lat: position[0], lng: position[1]});
+    const {
+        control,
+    } = useForm()
 
-    const {filterText, isLoading, items, setFilterText} = useAsyncList<Pokemon>({
-        async load({signal, filterText}) {
-            let res = await fetch(
-                `https://api.neshan.org/v1/search?term=${filterText}&lat=${position[0]}&lng=${position[1]}`,
-                {signal, headers: {"Api-Key": "service.81e2bd23d6044cba94e6b8dedd9e8763"}},
-            );
-            let json = await res.json();
-
-            return {
-                items: json.items,
-            };
-        },
-    });
-
-    // const [, scrollerRef] = useInfiniteScroll({
-    //     hasMore: false,
-    //     isEnabled: isOpen,
-    //     shouldUseLoader: false, // We don't want to show the loader at the bottom of the list
-    //     onLoadMore,
-    // });
-
-    const selectChange = (v: React.Key | null) => {
-        if (!v) return
-        goTo((v as string).split(",").map(v => parseFloat(v)) as Coordinate)
-    }
 
     return (
-        <Autocomplete
-            color="primary"
-            variant="faded"
-            items={items}
-            inputValue={filterText}
-            isLoading={isLoading}
-            label="جستجو"
-            placeholder="محله، خیابان، کوچه و..."
-            // scrollRef={scrollerRef}
-            // selectionMode="single"
-            onOpenChange={setOpen}
-            onInputChange={setFilterText}
-            onSelectionChange={selectChange}
-            listboxProps={{
-                emptyContent: "چیزی پیدا نشد"
+        <MinorSelect
+            name="location"
+            control={control}
+            isSearchable
+            dynamic={{
+                route: "https://api.neshan.org/v1/search",
+                headers: {"Api-Key": "service.81e2bd23d6044cba94e6b8dedd9e8763"},
+                filter: {
+                    lat: position.latitude+"",
+                    lng: position.longitude+"",
+                },
+                disablePagination: true,
+                withSelected: false,
+                searchKey: "term"
             }}
-        >
-            {(item) => (
-                <AutocompleteItem key={Object.values(item.location).reverse().join(",")} className="capitalize">
-                    {item.title}
-                </AutocompleteItem>
-            )}
-        </Autocomplete>
+        />
     )
 }

@@ -5,6 +5,10 @@ import {axiosCoreWithAuth} from "@/lib/axios";
 export type UseInfinityListProps = {
     isEnable?: boolean;
     route?: string;
+    headers?: { [key: string]: string };
+    searchKey?: string;
+    disablePagination?: boolean;
+    withSelected?: boolean;
     filter?: { [key: string]: any };
     per?: number;
     delay?: number;
@@ -19,7 +23,11 @@ const useInfinityList = (props: UseInfinityListProps) => {
         filter = {},
         per = 10,
         delay = 1000,
-        selected = []
+        selected = [],
+        searchKey,
+        disablePagination,
+        withSelected = true,
+        headers,
     } = props
 
     const [list, setList] = useState<any[]>([]);
@@ -47,7 +55,22 @@ const useInfinityList = (props: UseInfinityListProps) => {
             Object.keys(filter).map((v, i) => {
                 if(filter[v]) _filter[v] = filter[v]
             })
-            const result: any = await axios.get(route, {params: {..._filter, selected, page, per}})
+
+
+            const params: {[key:string]: any} = {..._filter}
+            if(withSelected) {
+                params.selected = selected
+            }
+            if(!!searchKey) {
+                params[searchKey] = params.search
+                delete params.search
+            }
+            if(!disablePagination) {
+                params.page = page
+                params.per = per
+            }
+
+            const result: any = await axios.get(route, {params, headers})
             if (!!result?.items) {
                 setHasMore(list.length < result.count);
                 setList((prev) => (page === 0 ? result.items : [...prev, ...result.items]));

@@ -60,6 +60,7 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
                 zoom={15}
                 onChange={field.onChange}
                 findOnInit
+                withSearchBox
             />
             <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
                 {!!description && (
