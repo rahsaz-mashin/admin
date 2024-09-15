@@ -74,9 +74,9 @@ export const LoginByPhoneOtpForm = () => {
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
             return
-        } catch (e: any) {
-            const err = e.response.data
-            setError("phoneNumber", {message: err.message})
+        } catch (err: any) {
+            if(err?.message) setError("phoneNumber", {message: err.message})
+            else setError("root", {message: "خطای ناشناخته"})
             throw ""
         }
     }

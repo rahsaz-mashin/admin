@@ -1,9 +1,10 @@
 import React, {ReactNode} from "react";
 import {Control, useController} from "react-hook-form";
 import {Switch} from "@nextui-org/switch";
+import MapContainer from "../Map/Map";
 
 
-export type MinorSwitchProps = {
+export type MinorChooseLocationProps = {
     name: string;
     control: Control<any, any>;
 
@@ -11,9 +12,6 @@ export type MinorSwitchProps = {
 
     isDisabled?: boolean;
     isReadOnly?: boolean;
-
-    size?: "lg" | "md" | "sm";
-    color?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
 
     description?: ReactNode;
     errorMessage?: ReactNode;
@@ -23,15 +21,12 @@ export type MinorSwitchProps = {
 }
 
 
-export const MinorSwitch = (props: MinorSwitchProps) => {
+export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
     const {
         name,
         control,
 
         label,
-
-        size,
-        color,
 
         isDisabled,
         isReadOnly,
@@ -51,25 +46,6 @@ export const MinorSwitch = (props: MinorSwitchProps) => {
     } = useController({name, control})
 
 
-    const _props = {
-        // label: label,
-
-        size: size || "lg",
-        color: color || "primary",
-
-        isDisabled: isDisabled,
-        isReadOnly: isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting,
-
-        // description: description,
-        // isInvalid: isInvalid || fieldState.invalid,
-        // errorMessage: errorMessage || fieldState.error?.message,
-
-        value: field.value,
-        onChange: field.onChange,
-        onBlur: field.onBlur,
-        name: field.name,
-    }
-
 
     const hasHelper = !!description || isInvalid || fieldState.invalid
 
@@ -78,12 +54,13 @@ export const MinorSwitch = (props: MinorSwitchProps) => {
             className={"relative group flex flex-col gap-2 justify-center " + className}
             data-has-helper={hasHelper}
         >
-            <Switch
-                {..._props}
-                ref={field.ref}
-            >
-                {label}
-            </Switch>
+            {JSON.stringify(field.value)}
+            <MapContainer
+                position={field.value || {latitude: 36.2612469, longitude: 59.6004759}}
+                zoom={15}
+                onChange={field.onChange}
+                findOnInit
+            />
             <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
                 {!!description && (
                     <div className="text-tiny text-foreground-400">

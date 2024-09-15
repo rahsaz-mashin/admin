@@ -70,7 +70,7 @@ export {axiosCore, axiosCoreWithAuth}
 // ======================================================> error handlers
 
 export const handleToastError = (error: any) => {
-    const response = error.response
+    const response = error?.response
     const messages = [];
     if (!response) {
         messages.push("خطای شبکه");
@@ -80,7 +80,7 @@ export const handleToastError = (error: any) => {
     // show messages
     messages.map(message => toast(message || "خطای نامشخص 🥺", "error"));
 
-    return response.data
+    return response?.data || null
 };
 
 

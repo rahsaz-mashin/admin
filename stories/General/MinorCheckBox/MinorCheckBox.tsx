@@ -27,6 +27,8 @@ export type MinorCheckBoxProps = {
     orientation?: "vertical" | "horizontal";
 
     items?: { key: string; label: any }[];
+
+    className?: string;
 }
 
 
@@ -54,6 +56,7 @@ export const MinorCheckBox = (props: MinorCheckBoxProps) => {
         orientation = "vertical",
 
         items,
+        className = "",
     } = props
 
 
@@ -88,7 +91,7 @@ export const MinorCheckBox = (props: MinorCheckBoxProps) => {
         const hasHelper = !!description || isInvalid || fieldState.invalid
         return (
             <div
-                className="relative group flex flex-col gap-2 justify-center"
+                className={"relative group flex flex-col gap-2 justify-center " + className}
                 data-has-helper={hasHelper}
             >
                 <Checkbox
@@ -117,6 +120,7 @@ export const MinorCheckBox = (props: MinorCheckBoxProps) => {
     return (
         <CheckboxGroup
             {..._props}
+            className={className}
             label={label}
             description={description}
             errorMessage={errorMessage || fieldState.error?.message}

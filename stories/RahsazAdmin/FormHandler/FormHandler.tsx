@@ -136,7 +136,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                     {isEditing ? "ویرایش" : "ایجاد"} {title}
                 </h3>
             </CardHeader>
-            <CardBody className="gap-5">
+            <CardBody className="gap-5 grid grid-cols-2">
                 {children}
             </CardBody>
             <CardFooter className="gap-2 justify-end">

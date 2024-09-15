@@ -113,7 +113,7 @@ export const MinorInput = (props: MinorInputProps) => {
 
         withRangePicker,
 
-        className,
+        className = "",
         classNames,
 
     } = props
@@ -164,6 +164,7 @@ export const MinorInput = (props: MinorInputProps) => {
                 {..._props}
 
                 dir="ltr"
+                className={className}
                 classNames={{innerWrapper: "ltr"}}
 
                 hideTimeZone
@@ -182,6 +183,7 @@ export const MinorInput = (props: MinorInputProps) => {
                     <DatePicker
                         {..._props}
 
+                        className={className}
                         // dir="ltr"
                         // classNames={{innerWrapper: "ltr"}}
 
@@ -220,6 +222,7 @@ export const MinorInput = (props: MinorInputProps) => {
             <DateInput
                 {..._props}
 
+                className={className}
                 // dir="ltr"
                 // classNames={{innerWrapper: "ltr"}}
 

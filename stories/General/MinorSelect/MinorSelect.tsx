@@ -51,6 +51,8 @@ export type MinorSelectProps = {
     dynamic?: DynamicSelectType;
     withSection?: boolean;
     isSearchable?: boolean;
+
+    className?: string;
 }
 
 
@@ -91,6 +93,8 @@ export const MinorSelect = (props: MinorSelectProps) => {
 
         withSection,
         isSearchable,
+
+        className = "",
     } = props
 
 
@@ -269,6 +273,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
                     onSelectionChange={onSelectionChange}
                     inputValue={search}
                     onInputChange={onSearchChange}
+                    className={className}
                 >
                     {$items}
                 </Autocomplete>
@@ -293,6 +298,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
                 selectionMode={isMultiple ? "multiple" : "single"}
                 selectedKeys={new Set(field.value?.split(","))}
                 onSelectionChange={onSelectionChange}
+                className={className}
             >
                 {$items}
             </Select>

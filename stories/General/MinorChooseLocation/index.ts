@@ -1,0 +1,1 @@
+export { MinorChooseLocation } from "./MinorChooseLocation";

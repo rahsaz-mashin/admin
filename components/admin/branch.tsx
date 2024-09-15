@@ -13,7 +13,6 @@ type T = Branch
 const formInitial: T = {
     id: undefined,
     title: "",
-    key: "",
     description: "",
     phone: "",
 }
@@ -34,13 +33,7 @@ const formFields: FormFieldType[] = [
         type: "input",
         label: "عنوان",
         isRequired: true,
-    },
-    {
-        name: "key",
-        type: "input",
-        label: "کلید",
-        isRequired: true,
-        isLtr: true,
+        className: "col-span-full xl:col-span-1",
     },
     {
         name: "phone",
@@ -49,6 +42,53 @@ const formFields: FormFieldType[] = [
         isRequired: true,
         isNumeric: true,
         pattern: "### #### ####",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "location",
+        type: "location",
+        label: "موقعیت مکانی",
+        className: "col-span-full",
+    },
+    {
+        name: "country",
+        type: "select",
+        label: "کشور",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "province",
+        type: "select",
+        label: "استان",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "city",
+        type: "select",
+        label: "شهر",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "address",
+        type: "input",
+        label: "آدرس کامل",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "zipCode",
+        type: "input",
+        label: "کد پستی",
+        isNumeric: true,
+        pattern: "##########",
+        className: "col-span-full xl:col-span-1",
+    },
+    {
+        name: "postBox",
+        type: "input",
+        label: "صندوق پستی",
+        isNumeric: true,
+        pattern: "##########",
+        className: "col-span-full xl:col-span-1",
     },
     {
         name: "description",
@@ -56,6 +96,7 @@ const formFields: FormFieldType[] = [
         label: "توضیحات",
         isRequired: true,
         isMultiline: true,
+        className: "col-span-full",
     },
 ]
 
@@ -76,12 +117,6 @@ const tableColumns: ColumnType<T>[] = [
         key: "id",
         title: "شناسه",
         width: 100,
-    },
-    {
-        key: "key",
-        title: "کلید",
-        width: "500",
-        minWidth: "500",
     },
     {
         key: "title",

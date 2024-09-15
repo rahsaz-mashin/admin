@@ -6,6 +6,7 @@ import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
 import {Control} from "react-hook-form";
 import React from "react";
+import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -28,6 +29,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             key={field.name}
                             control={control}
 
+                            className={field.className}
                             name={field.name}
                             label={field.label}
                             isRequired={field.isRequired}
@@ -50,6 +52,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorSelect
                             key={field.name}
                             control={control}
+                            className={field.className}
 
                             name={field.name}
                             label={field.label}
@@ -73,6 +76,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorSwitch
                             key={field.name}
                             control={control}
+                            className={field.className}
 
                             name={field.name}
                             label={field.label}
@@ -87,6 +91,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorRadioBox
                             key={field.name}
                             control={control}
+                            className={field.className}
 
                             name={field.name}
                             label={field.label}
@@ -105,6 +110,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorCheckBox
                             key={field.name}
                             control={control}
+                            className={field.className}
 
                             name={field.name}
                             label={field.label}
@@ -118,6 +124,26 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
                             mode={field.mode}
 
+                        />
+                    )
+                case "location":
+                    return (
+                        <MinorChooseLocation
+                            key={field.name}
+                            control={control}
+                            className={field.className}
+
+                            name={field.name}
+                            // label={field.label}
+                            // isRequired={field.isRequired}
+                            // isDisabled={field.isDisabled}
+                            // isReadOnly={field.isReadOnly}
+                            // description={field.description}
+                            //
+                            // orientation={field.orientation}
+                            // items={field.items}
+                            //
+                            // mode={field.mode}
                         />
                     )
                 // default:
@@ -142,6 +168,7 @@ type FromFieldTypeCommon = {
     description?: string;
     isDisabled?: boolean;
     isReadOnly?: boolean;
+    className?: string;
 }
 
 
@@ -157,7 +184,6 @@ type FromFieldTypeInput = {
 
     isMultiline?: boolean;
     isLtr?: boolean;
-
 }
 
 type FromFieldTypeSelect = {
@@ -199,12 +225,20 @@ type FromFieldTypeSwitch = {
     type: "switch";
 }
 
+type FromFieldTypeLocation = {
+    type: "location";
+}
+
+type FromFieldTypeUploader = {
+    type: "uploader";
+}
+
 
 
 
 export type FormFieldType =
     FromFieldTypeCommon &
-    (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch)
+    (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch | FromFieldTypeLocation | FromFieldTypeUploader)
 
 
 
