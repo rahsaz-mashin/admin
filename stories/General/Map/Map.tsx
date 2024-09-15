@@ -8,7 +8,7 @@ import {MyLocation} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
 import {useAsyncList} from "@react-stately/data";
-import {toLonLat, transform} from "@neshan-maps-platform/ol/proj";
+import {fromLonLat, toLonLat, transform} from "@neshan-maps-platform/ol/proj";
 import {toFixed} from "@neshan-maps-platform/ol/math";
 import {toast} from "@/lib/toast";
 
@@ -42,14 +42,11 @@ export const MapContainer = (props: MapProps) => {
         const geolocation = new Geolocation();
         geolocation.setTracking(true);
         geolocation.on('change', () => {
-            const pos = geolocation.getPosition()!
-            alert(pos);
-            mapRef.current?.map?.getView().setCenter(pos)
-            // handlePosition(pos, 15)
+            const coordinate = geolocation.getPosition()!
+            mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
         });
         geolocation.on('error', (error) => {
             toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
-            alert("Error" + JSON.stringify(error))
         })
     }
 
