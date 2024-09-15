@@ -54,7 +54,6 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
             className={"relative group flex flex-col gap-2 justify-center " + className}
             data-has-helper={hasHelper}
         >
-            {JSON.stringify(field.value)}
             <MapContainer
                 position={field.value || {latitude: 36.2612469, longitude: 59.6004759}}
                 zoom={15}
