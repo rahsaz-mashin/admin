@@ -35,6 +35,7 @@ export const MapContainer = (props: MapProps) => {
     const mapRef = useRef<NeshanMapRef | null>(null)
     const [position, setPosition] = useState<Position>(props.position || defaultPosition)
     const [zoom, setZoom] = useState<number>(props.zoom || 15)
+    const [trackingLoading, setTrackingLoading] = useState<boolean>(false)
     const onInit = (map: Map) => {
         map.on('moveend', onMoveEnd);
         if (props.findOnInit) handleMyLocation()
@@ -42,13 +43,16 @@ export const MapContainer = (props: MapProps) => {
 
 
     const handleMyLocation = () => {
+        setTrackingLoading(true)
         const geolocation = new Geolocation();
         geolocation.setTracking(true);
         geolocation.on('change', () => {
             goTo(geolocation.getPosition()!)
+            setTrackingLoading(false)
         });
         geolocation.on('error', (error) => {
             toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
+            setTrackingLoading(false)
         })
     }
 
@@ -109,6 +113,7 @@ export const MapContainer = (props: MapProps) => {
                     radius="md"
                     size="sm"
                     onPress={handleMyLocation}
+                    isLoading={trackingLoading}
                 >
                     <MyLocation/>
                 </Button>
