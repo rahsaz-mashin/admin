@@ -55,7 +55,7 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
             data-has-helper={hasHelper}
         >
             <MapContainer
-                position={field.value || {latitude: 36.2612469, longitude: 59.6004759}}
+                position={field.value}
                 zoom={15}
                 onChange={field.onChange}
                 findOnInit
