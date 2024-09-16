@@ -1,6 +1,7 @@
-import React, {ReactNode} from "react";
+import React, {ReactNode, useState} from "react";
 import {Control, useController} from "react-hook-form";
-import MapContainer from "../Map/Map";
+import {MapContainer} from "@/stories/General/Map";
+import dynamic from "next/dynamic";
 
 
 export type MinorChooseLocationProps = {
@@ -18,6 +19,10 @@ export type MinorChooseLocationProps = {
 
     className?: string;
 }
+
+
+const Component = dynamic(() => import('@/stories/General/Map/Map'), { loading: () => <>loading</>, ssr: false });
+
 
 
 export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
@@ -44,8 +49,6 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
         formState,
     } = useController({name, control})
 
-
-
     const hasHelper = !!description || isInvalid || fieldState.invalid
 
     return (
@@ -53,12 +56,12 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
             className={"relative group flex flex-col gap-2 justify-center " + className}
             data-has-helper={hasHelper}
         >
-            <MapContainer
+            <Component
                 position={field.value}
                 zoom={15}
                 onChange={field.onChange}
                 findOnInit
-                withSearchBox
+                // withSearchBox
                 isDisabled={isDisabled}
                 isReadOnly={isReadOnly}
             />

@@ -125,6 +125,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     return (
         <>
             <Table
+                aria-label="table of items"
                 isHeaderSticky
                 topContent={
                     <TopContent

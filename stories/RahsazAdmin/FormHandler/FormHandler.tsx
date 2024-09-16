@@ -1,6 +1,6 @@
 "use client"
 
-import React, {forwardRef, MutableRefObject, ReactNode, useContext, useImperativeHandle} from "react";
+import React, {forwardRef, MutableRefObject, ReactNode, useContext, useImperativeHandle, useState} from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
@@ -84,8 +84,9 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         watch,
         cancel: adminContext.backToList,
         reset: resetToDefault,
-
     }
+
+
 
 
     return (
@@ -141,6 +142,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
             </CardBody>
             <CardFooter className="gap-2 justify-end">
                 <Button
+                    aria-label="Reset Form"
                     type="button"
                     variant="flat"
                     color="default"
@@ -151,6 +153,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                 </Button>
                 {isEditing && (
                     <Button
+                        aria-label="Cancel Form"
                         type="button"
                         variant="flat"
                         color="default"
@@ -194,14 +197,13 @@ type FormContentPropsType<T> = {
     isEditing?: boolean;
     cancel?: () => void;
     reset?: () => void;
-    watch:  UseFormWatch<T & FieldValues>;
+    watch: UseFormWatch<T & FieldValues>;
     formState: FormState<T & FieldValues>;
 }
 
 export type FormContentType = <T>(props: FormContentPropsType<T> & {
     children: ReactNode
 }) => JSX.Element | null
-
 
 
 export type FormRender<T> = {

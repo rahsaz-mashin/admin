@@ -3,12 +3,11 @@
 import React, {useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
-import {Autocomplete, AutocompleteItem, Button} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import {FmdGood, MyLocation} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
-import {useAsyncList} from "@react-stately/data";
-import {fromLonLat, toLonLat, transform} from "@neshan-maps-platform/ol/proj";
+import {fromLonLat, toLonLat} from "@neshan-maps-platform/ol/proj";
 import {toFixed} from "@neshan-maps-platform/ol/math";
 import {toast} from "@/lib/toast";
 import {MinorSelect} from "@/stories/General/MinorSelect";
@@ -34,6 +33,7 @@ export type MapProps = {
 export const MapContainer = (props: MapProps) => {
 
     const defaultPosition = {latitude: 36.2612469, longitude: 59.6004759}
+
     const mapRef = useRef<NeshanMapRef | null>(null)
     const [position, setPosition] = useState<Position>(props.position || defaultPosition)
     const [zoom, setZoom] = useState<number>(props.zoom || 15)
@@ -81,10 +81,13 @@ export const MapContainer = (props: MapProps) => {
         mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
     }
 
+
+
     return (
         <div className="relative overflow-hidden rounded-xl flex justify-center items-center">
-            {props.isReadOnly && <div className="absolute h-full w-full z-10"/>}
-            {props.isDisabled && <div className="absolute h-full w-full z-10 bg-black/20"/>}
+            {props.isReadOnly && <div className="absolute h-full w-full z-10" aria-label="readonly" />}
+            {props.isDisabled && <div className="absolute h-full w-full z-10 bg-black/20" aria-label="disabled"/>}
+
             <NeshanMap
                 ref={mapRef}
                 mapKey="web.0cd8558bb31843c3a919ea52fcd093ce"
@@ -112,6 +115,7 @@ export const MapContainer = (props: MapProps) => {
             </div>
             <div className="absolute bottom-0 w-full p-3">
                 <Button
+                    aria-label="current location"
                     isIconOnly
                     color="primary"
                     radius="md"
@@ -145,6 +149,7 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
 
     return (
         <MinorSelect
+            label="جستجوی مکان"
             name="location"
             control={control}
             isSearchable

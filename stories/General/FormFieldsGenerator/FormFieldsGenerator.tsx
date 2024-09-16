@@ -1,16 +1,18 @@
+"use client"
+
 import {MinorInput} from "@/stories/General/MinorInput";
 import {MinorSelect} from "@/stories/General/MinorSelect";
 import {MinorSwitch} from "@/stories/General/MinorSwitch";
 import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
+import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
 import {Control} from "react-hook-form";
-import React from "react";
-import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
+import React, {useState} from "react";
+
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
-
     const {fields, control} = props
 
     if (!fields?.length) return (
@@ -18,6 +20,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
             برای این فرم هیچ فیلدی تعریف نشده است
         </div>
     )
+
+
 
 
     return <>
@@ -134,24 +138,18 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             className={field.className}
 
                             name={field.name}
-                            // label={field.label}
-                            // isRequired={field.isRequired}
-                            // isDisabled={field.isDisabled}
-                            // isReadOnly={field.isReadOnly}
-                            // description={field.description}
-                            //
-                            // orientation={field.orientation}
-                            // items={field.items}
-                            //
-                            // mode={field.mode}
+                            label={field.label}
+                            isDisabled={field.isDisabled}
+                            isReadOnly={field.isReadOnly}
+                            description={field.description}
                         />
                     )
-                // default:
-                //     return (
-                //         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
-                //             این نوع فیلد، تعریف نشده است
-                //         </div>
-                //     )
+                default:
+                    return (
+                        <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
+                            این نوع فیلد، تعریف نشده است
+                        </div>
+                    )
             }
         })}
     </>

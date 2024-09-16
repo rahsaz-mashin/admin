@@ -54,6 +54,9 @@ const formFields: FormFieldType[] = [
         name: "country",
         type: "select",
         label: "کشور",
+        dynamic: {
+           route: "addressCountry/sloStyle",
+        },
         className: "col-span-full xl:col-span-1",
     },
     {
@@ -156,5 +159,5 @@ export const branchContext = {
     },
     table: {
         columns: tableColumns,
-    }
+    },
 }
