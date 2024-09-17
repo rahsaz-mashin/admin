@@ -1,9 +1,9 @@
 "use client"
 
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
-import {Button} from "@nextui-org/react";
+import {AutocompleteItem, Button} from "@nextui-org/react";
 import {FmdGood, MyLocation} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
@@ -73,7 +73,7 @@ export const MapContainer = (props: MapProps) => {
         const __zoom = toFixed(_zoom, 3)
         setPosition(__position)
         setZoom(__zoom)
-        if(props?.onChange) props.onChange(__position)
+        if (props?.onChange) props.onChange(__position)
     }
 
 
@@ -82,19 +82,17 @@ export const MapContainer = (props: MapProps) => {
     }
 
 
-
     return (
         <div className="relative overflow-hidden rounded-xl flex justify-center items-center">
-            {props.isReadOnly && <div className="absolute h-full w-full z-10" aria-label="readonly" />}
+            {props.isReadOnly && <div className="absolute h-full w-full z-10" aria-label="readonly"/>}
             {props.isDisabled && <div className="absolute h-full w-full z-10 bg-black/20" aria-label="disabled"/>}
-
             <NeshanMap
                 ref={mapRef}
                 mapKey="web.0cd8558bb31843c3a919ea52fcd093ce"
                 defaultType="neshan"
                 traffic={false}
                 poi={false}
-                style={{height: "48vh", width: "100%"}}
+                style={{height: "40vh", width: "100%"}}
                 onInit={onInit}
 
                 center={position}
@@ -144,7 +142,16 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
 
     const {
         control,
+        watch,
     } = useForm()
+
+    const location = watch("location")
+    useEffect(() => {
+        if (!!location) {
+            const coordinate = location.split("_").map((v: string) => (parseFloat(v))).reverse()
+            goTo(coordinate)
+        }
+    }, [location])
 
 
     return (
@@ -154,15 +161,23 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
             control={control}
             isSearchable
             dynamic={{
-                route: "https://api.neshan.org/v1/search",
-                headers: {"Api-Key": "service.81e2bd23d6044cba94e6b8dedd9e8763"},
+                route: "neshan/searchAddress",
                 filter: {
-                    lat: position.latitude+"",
-                    lng: position.longitude+"",
+                    lat: String(position.latitude),
+                    lng: String(position.longitude),
                 },
                 disablePagination: true,
                 withSelected: false,
-                searchKey: "term"
+            }}
+            itemBuilder={(item) => {
+                return (
+                    <AutocompleteItem key={item.key}>
+                        <div className="flex flex-col">
+                            <h3 className="font-bold">{item.label}</h3>
+                            <span className="text-gray-600">{item.address}</span>
+                        </div>
+                    </AutocompleteItem>
+                )
             }}
         />
     )

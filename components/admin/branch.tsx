@@ -1,7 +1,7 @@
 import React from "react";
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
-import {FormFieldType} from "@/stories/General/FormFieldsGenerator";
+import {FormFieldFunc, FormFieldType} from "@/stories/General/FormFieldsGenerator";
 import {Branch} from "@/interfaces/Branch.interface";
 
 
@@ -27,82 +27,95 @@ const formSchema = z.object({
 });
 
 
-const formFields: FormFieldType[] = [
-    {
-        name: "title",
-        type: "input",
-        label: "عنوان",
-        isRequired: true,
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "phone",
-        type: "input",
-        label: "شماره",
-        isRequired: true,
-        isNumeric: true,
-        pattern: "### #### ####",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "location",
-        type: "location",
-        label: "موقعیت مکانی",
-        className: "col-span-full",
-    },
-    {
-        name: "country",
-        type: "select",
-        label: "کشور",
-        dynamic: {
-           route: "addressCountry/sloStyle",
+const formFields: FormFieldFunc<T> = (watch) => {
+    return ([
+        {
+            name: "title",
+            type: "input",
+            label: "عنوان",
+            isRequired: true,
+            className: "col-span-full xl:col-span-1",
         },
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "province",
-        type: "select",
-        label: "استان",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "city",
-        type: "select",
-        label: "شهر",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "address",
-        type: "input",
-        label: "آدرس کامل",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "zipCode",
-        type: "input",
-        label: "کد پستی",
-        isNumeric: true,
-        pattern: "##########",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "postBox",
-        type: "input",
-        label: "صندوق پستی",
-        isNumeric: true,
-        pattern: "##########",
-        className: "col-span-full xl:col-span-1",
-    },
-    {
-        name: "description",
-        type: "input",
-        label: "توضیحات",
-        isRequired: true,
-        isMultiline: true,
-        className: "col-span-full",
-    },
-]
-
+        {
+            name: "phone",
+            type: "input",
+            label: "شماره",
+            isRequired: true,
+            isNumeric: true,
+            pattern: "### #### ####",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "location",
+            type: "location",
+            label: "موقعیت مکانی",
+            className: "col-span-full",
+        },
+        {
+            name: "country",
+            type: "select",
+            label: "کشور",
+            dynamic: {
+                route: "addressCountry/sloStyle",
+            },
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "province",
+            type: "select",
+            label: "استان",
+            dynamic: {
+                route: "addressProvince/sloStyle",
+                filter: {
+                    country: watch("country"), // watch dependencies
+                },
+            },
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "city",
+            type: "select",
+            label: "شهر",
+            dynamic: {
+                route: "addressCity/sloStyle",
+                filter: {
+                    province: watch("province"),
+                },
+            },
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "address",
+            type: "input",
+            label: "آدرس کامل",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "zipCode",
+            type: "input",
+            label: "کد پستی",
+            isNumeric: true,
+            pattern: "##########",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "postBox",
+            type: "input",
+            label: "صندوق پستی",
+            isNumeric: true,
+            pattern: "##########",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "description",
+            type: "input",
+            label: "توضیحات",
+            isRequired: true,
+            isMultiline: true,
+            className: "col-span-full",
+        },
+    ])
+}
 
 const tableColumns: ColumnType<T>[] = [
     {

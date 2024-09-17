@@ -4,7 +4,7 @@ import React, {useRef} from "react";
 import {ZodType} from "zod";
 import {FormHandler, FormHandlerRefType, FormRender} from "@/stories/RahsazAdmin/FormHandler";
 import {ColumnType, TableList, TableListRefType} from "@/stories/RahsazAdmin/TableList";
-import {FormFieldType} from "@/stories/General/FormFieldsGenerator";
+import {FormFieldFunc, FormFieldType} from "@/stories/General/FormFieldsGenerator";
 
 
 export function FormListContext<T>(props: FormListContextProps<T>) {
@@ -100,7 +100,7 @@ type FormListContextListModeProps<T> = { mode: "list" } & FormListContextListMod
 type FormListContextFormModePureProps<T> = {
     formTitle?: string;
     formSchema: ZodType<any, any, any>;
-    formFields?: FormFieldType[];
+    formFields?: FormFieldFunc<T>;
     formInitialValue?: T;
     formRender?: FormRender<T>[];
 }

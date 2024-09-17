@@ -12,7 +12,7 @@ export type DynamicSelectType = {
     route: string;
     headers?: { [key: string]: string };
 
-    filter?: { [key: string]: string };
+    filter?: { [key: string]: any };
     searchKey?: string;
     disablePagination?: boolean;
     withSelected?: boolean;
@@ -123,7 +123,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
     } = useInfinityList({
         ...dynamic,
         filter: {search, ...dynamic?.filter},
-        selected: field.value?.split(",") || [],
+        selected: String(field.value)?.split(",") || [],
         isEnable: isDynamic
     });
 
@@ -295,7 +295,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
                 }}
                 isMultiline={isMultiline}
                 selectionMode={isMultiple ? "multiple" : "single"}
-                selectedKeys={new Set(field.value?.split(","))}
+                selectedKeys={new Set(String(field.value)?.split(","))}
                 onSelectionChange={onSelectionChange}
                 className={className}
             >

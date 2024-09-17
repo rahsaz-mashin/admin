@@ -1,13 +1,25 @@
 "use client"
 
-import React, {forwardRef, MutableRefObject, ReactNode, useContext, useImperativeHandle, useState} from "react";
+import React, {
+    forwardRef,
+    MutableRefObject,
+    ReactNode,
+    useContext,
+    useEffect,
+    useImperativeHandle,
+    useState
+} from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
-import {FormFieldsGenerator, FormFieldType} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
+import {
+    FormFieldFunc,
+    FormFieldsGenerator,
+    FormFieldType
+} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
@@ -47,9 +59,11 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         reset,
         formState,
         watch,
+        setValue,
     } = useForm<T>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
+
     });
 
     const onSubmit: SubmitHandler<T> = async (data) => {
@@ -87,6 +101,40 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     }
 
 
+    // =========================================================================================================> separate this
+
+    // @ts-ignore
+    const location: any = watch("location")
+    const getAddress = async () => {
+        const params = {lat: location.latitude, lng: location.longitude}
+        const data = await axios.get("neshan/getAddress", {params})
+        // @ts-ignore
+        setValue("address", data.address)
+        // @ts-ignore
+        setValue("country", data.countryId || "")
+        // @ts-ignore
+        setValue("province", data.provinceId || "")
+        // @ts-ignore
+        setValue("city", data.cityId || "")
+    }
+    useEffect(() => {
+        if (!!location) {
+            getAddress()
+        }
+    }, [location]);
+
+    // =========================================================================================================> separate this
+
+
+
+
+    if (!fields) return (
+        <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
+            برای این فرم هیچ فیلدی تعریف نشده است
+        </div>
+    )
+
+    const f = fields(watch)
 
 
     return (
@@ -98,7 +146,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                         <r.render key={idx} {...contentProps}>
                             <FormFieldsGenerator
                                 control={control}
-                                fields={fields?.filter(({name}) => (r.fields.includes(name)))}
+                                fields={f?.filter(({name}) => (r.fields.includes(name)))}
                             />
                         </r.render>
                     )
@@ -107,7 +155,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                 <BuiltInContent<T> {...contentProps}>
                     <FormFieldsGenerator
                         control={control}
-                        fields={fields}
+                        fields={f}
                     />
                 </BuiltInContent>
             }
@@ -220,7 +268,7 @@ export type FormHandlerProps<T> = {
     title?: string;
     apiRoute: string;
     schema: ZodType<any, any, any>;
-    fields?: FormFieldType[]
+    fields?: FormFieldFunc<T>;
     editingId?: string | number | null;
     initialValue?: T;
     render?: FormRender<T>[]

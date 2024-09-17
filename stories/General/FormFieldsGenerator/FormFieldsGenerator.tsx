@@ -7,9 +7,8 @@ import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
-import {Control} from "react-hook-form";
+import {Control, FieldValues, UseFormWatch} from "react-hook-form";
 import React, {useState} from "react";
-
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -20,8 +19,6 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
             برای این فرم هیچ فیلدی تعریف نشده است
         </div>
     )
-
-
 
 
     return <>
@@ -157,9 +154,6 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 }
 
 
-
-
-
 type FromFieldTypeCommon = {
     name: string;
     label?: string;
@@ -232,15 +226,13 @@ type FromFieldTypeUploader = {
 }
 
 
-
-
 export type FormFieldType =
     FromFieldTypeCommon &
     (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch | FromFieldTypeLocation | FromFieldTypeUploader)
 
 
-
-
+// @ts-ignore
+export type FormFieldFunc<T> = (watch: UseFormWatch<T>) => FormFieldType[]
 
 
 type FormFieldsGeneratorPropsType = {

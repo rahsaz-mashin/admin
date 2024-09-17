@@ -47,6 +47,7 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
         field,
         fieldState,
         formState,
+
     } = useController({name, control})
 
     const hasHelper = !!description || isInvalid || fieldState.invalid
@@ -61,9 +62,9 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
                 zoom={15}
                 onChange={field.onChange}
                 findOnInit
-                // withSearchBox
+                withSearchBox
                 isDisabled={isDisabled}
-                isReadOnly={isReadOnly}
+                isReadOnly={isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting}
             />
             <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
                 {!!description && (
