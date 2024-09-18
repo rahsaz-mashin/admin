@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
 import {AutocompleteItem, Button} from "@nextui-org/react";
@@ -38,43 +38,12 @@ export const MapContainer = (props: MapProps) => {
     const mapRef = useRef<NeshanMapRef | null>(null)
     const [position, setPosition] = useState<Position>(props.position || defaultPosition)
     const [zoom, setZoom] = useState<number>(props.zoom || 15)
-    const [trackingLoading, setTrackingLoading] = useState<boolean>(false)
+
+    const currentLocationRef = useRef<{ locate: () => void }>()
+
     const onInit = (map: Map) => {
         map.on('moveend', onMoveEnd);
-        if (props.findOnInit) handleMyLocation()
-    }
-
-
-    const handleMyLocation = () => {
-        setTrackingLoading(true)
-
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    setTrackingLoading(false)
-                    goTo([position.coords.longitude, position.coords.latitude])
-                },
-                (error) => {
-                    setTrackingLoading(false)
-                    toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
-                    toast.error(error.message)
-                }
-            );
-        } else {
-            toast.error("مرورگر شما قابلیت دریافت موقعیت را پشتیبانی نمی کند")
-            setTrackingLoading(false)
-        }
-        // const geolocation = new Geolocation();
-        // geolocation.setTracking(true);
-        // geolocation.on('change', () => {
-        //     goTo(geolocation.getPosition()!)
-        //     setTrackingLoading(false)
-        // })
-        // geolocation.on('error', (error) => {
-        //     toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
-        //     setTrackingLoading(false)
-        // })
-
+        if (props.findOnInit) currentLocationRef.current?.locate()
     }
 
 
@@ -117,32 +86,22 @@ export const MapContainer = (props: MapProps) => {
                 center={position}
                 zoom={zoom}
             />
+            <CurrentLocationTool
+                ref={currentLocationRef}
+                goTo={goTo}
+            />
             {props.withSearchBox && (
-                <div className="absolute top-0 w-full p-3">
-                    <SearchMap
-                        position={position}
-                        goTo={goTo}
-                    />
-                </div>
+                <SearchMap
+                    position={position}
+                    goTo={goTo}
+                />
             )}
             <div className="absolute">
                 <div className="flex justify-center items-center text-blue-600">
                     <FmdGood fontSize="large"/>
                 </div>
             </div>
-            <div className="absolute bottom-0 w-full p-3">
-                <Button
-                    aria-label="current location"
-                    isIconOnly
-                    color="primary"
-                    radius="md"
-                    size="sm"
-                    onPress={handleMyLocation}
-                    isLoading={trackingLoading}
-                >
-                    <MyLocation/>
-                </Button>
-            </div>
+
         </div>
     );
 };
@@ -157,6 +116,61 @@ export type LocationList = {
     title: string;
     type: string;
 };
+
+
+const CurrentLocationTool = forwardRef(({goTo}: { goTo: (c: Coordinate) => void }, ref) => {
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+
+    useImperativeHandle(ref, () => {
+        return {
+            locate: handleMyLocation,
+        }
+    })
+
+    const handleMyLocation = () => {
+        setIsLoading(true)
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setIsLoading(false)
+                    goTo([position.coords.longitude, position.coords.latitude])
+                },
+                (error) => {
+                    setIsLoading(false)
+                    toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
+                    toast.error(error.message)
+                }
+            );
+        } else {
+            toast.error("مرورگر شما قابلیت دریافت موقعیت را پشتیبانی نمی کند")
+            setIsLoading(false)
+        }
+    }
+
+    return (
+        <div className="absolute bottom-0 start-0 m-3 h-10">
+            <div className="flex h-full items-center gap-2">
+                <Button
+                    aria-label="current location"
+                    isIconOnly
+                    color="primary"
+                    radius="full"
+                    size="md"
+                    onPress={handleMyLocation}
+                    isLoading={isLoading}
+                >
+                    <MyLocation/>
+                </Button>
+            </div>
+        </div>
+    )
+})
+CurrentLocationTool.displayName = "CurrentLocationTool"
+
+
 const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate) => void }) => {
 
     const [isVisible, setVisible] = useState(false)
@@ -176,48 +190,49 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
 
 
     return (
-        <ClickAwayListener onClickAway={() => setVisible(false)}>
-            <div className="flex justify-end gap-2">
-                {isVisible && (
-
-                    <MinorSelect
-                        label="جستجوی مکان"
-                        name="location"
-                        control={control}
-                        isSearchable
-                        size="sm"
-                        dynamic={{
-                            route: "neshan/searchAddress",
-                            filter: {
-                                lat: String(position.latitude),
-                                lng: String(position.longitude),
-                            },
-                            disablePagination: true,
-                            withSelected: false,
-                        }}
-                        itemBuilder={(item) => {
-                            return (
-                                <AutocompleteItem key={item.key}>
-                                    <div className="flex flex-col">
-                                        <h3 className="font-bold">{item.label}</h3>
-                                        <span className="text-gray-600">{item.address}</span>
-                                    </div>
-                                </AutocompleteItem>
-                            )
-                        }}
-                    />
-                )}
-                <Button
-                    aria-label="search location"
-                    isIconOnly
-                    color="primary"
-                    radius="md"
-                    size="sm"
-                    onPress={() => setVisible((visible) => !visible)}
-                >
-                    {isVisible ? <CloseOutlined/> : <SearchOutlined/>}
-                </Button>
-            </div>
-        </ClickAwayListener>
+        <div className="absolute top-0 end-0 m-3 h-12">
+            <ClickAwayListener onClickAway={() => setVisible(false)}>
+                <div className="flex h-full items-center gap-2">
+                    {isVisible && (
+                        <MinorSelect
+                            label="جستجوی مکان"
+                            name="location"
+                            control={control}
+                            isSearchable
+                            size="sm"
+                            dynamic={{
+                                route: "neshan/searchAddress",
+                                filter: {
+                                    lat: String(position.latitude),
+                                    lng: String(position.longitude),
+                                },
+                                disablePagination: true,
+                                withSelected: false,
+                            }}
+                            itemBuilder={(item) => {
+                                return (
+                                    <AutocompleteItem key={item.key}>
+                                        <div className="flex flex-col">
+                                            <h3 className="font-bold">{item.label}</h3>
+                                            <span className="text-gray-600">{item.address}</span>
+                                        </div>
+                                    </AutocompleteItem>
+                                )
+                            }}
+                        />
+                    )}
+                    <Button
+                        aria-label="search location"
+                        isIconOnly
+                        color="primary"
+                        radius="full"
+                        size="md"
+                        onPress={() => setVisible((visible) => !visible)}
+                    >
+                        {isVisible ? <CloseOutlined/> : <SearchOutlined/>}
+                    </Button>
+                </div>
+            </ClickAwayListener>
+        </div>
     )
 }
