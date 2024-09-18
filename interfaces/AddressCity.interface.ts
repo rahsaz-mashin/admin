@@ -4,9 +4,8 @@ import {AddressProvince} from "@/interfaces/AddressProvince.interface";
 export interface AddressCity {
     id?: number;
 
-    province: AddressProvince;
+    province?: AddressProvince;
 
-    key: string;
     title: string;
     icon?: Icon | null;
 }

@@ -8,7 +8,7 @@ import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
 import {Control, FieldValues, UseFormWatch} from "react-hook-form";
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -44,6 +44,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             allowNegative={field.allowNegative}
                             decimalScale={field.decimalScale}
                             isMultiline={field.isMultiline}
+                            rows={field.rows}
 
                             isLtr={field.isLtr}
                         />
@@ -157,7 +158,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 type FromFieldTypeCommon = {
     name: string;
     label?: string;
-    description?: string;
+    description?: ReactNode;
     isDisabled?: boolean;
     isReadOnly?: boolean;
     className?: string;
@@ -175,6 +176,7 @@ type FromFieldTypeInput = {
     decimalScale?: number;
 
     isMultiline?: boolean;
+    rows?: number | [number, number];
     isLtr?: boolean;
 }
 

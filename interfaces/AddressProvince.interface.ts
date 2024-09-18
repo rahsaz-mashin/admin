@@ -5,9 +5,8 @@ import {AddressCountry} from "@/interfaces/AddressCountry.interface";
 export interface AddressProvince {
     id?: number;
 
-    country: AddressCountry;
+    country?: AddressCountry;
 
-    key: string;
     title: string;
     icon?: Icon | null;
 

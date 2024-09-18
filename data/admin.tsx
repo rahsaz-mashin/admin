@@ -6,9 +6,9 @@ import {
     BoldDuotoneCategoryBrandIcon,
     BoldDuotoneCategoryListIcon,
     BoldDuotoneCategoryManufactureIcon,
-    BoldDuotoneCurrencyIcon, BoldDuotoneDiscountIcon,
-    BoldDuotoneListIcon, BoldDuotonePresaleIcon,
-    BoldDuotonePriceIcon, BoldDuotoneSettingIcon, BoldDuotoneStatisticIcon,
+    BoldDuotoneCurrencyIcon, BoldDuotoneDiscountIcon, BoldDuotoneEarthIcon, BoldDuotoneEmojiIcon,
+    BoldDuotoneListIcon, BoldDuotoneMapIcon, BoldDuotonePresaleIcon,
+    BoldDuotonePriceIcon, BoldDuotoneSettingIcon, BoldDuotoneStatisticIcon, BoldDuotoneStreetMapIcon,
     BoldDuotoneWarehouseIcon,
     BoldDuotoneWarehouseTransactionIcon,
     OutlineBoxIcon,
@@ -33,6 +33,145 @@ export type AdminMenu = {
 
 
 const adminRoutes: AdminMenu[] = [
+    {
+        key: "general",
+        title: "تنظیمات عمومی",
+        icon: <RahsazStoreLogo size={36} noAnimation/>,
+        isEnable: true,
+        sub: [
+            {
+                key: "settings",
+                title: "تنظیمات",
+                icon: <OutlineSettingIcon/>,
+                isEnable: true,
+                sub: [
+                    {
+                        key: "address",
+                        title: "تنظیمات آدرس",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "countries",
+                                title: "کشورها",
+                                icon: <BoldDuotoneEarthIcon size={64}/>,
+                                description: "مشاهده لیست کشورها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "provinces",
+                                title: "استان ها",
+                                icon: <BoldDuotoneMapIcon size={64}/>,
+                                description: "مشاهده لیست استان ها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "cities",
+                                title: "شهر ها",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "مشاهده لیست شهرها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                    {
+                        key: "assets",
+                        title: "اَسِت ها",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "icons",
+                                title: "آیکون ها",
+                                icon: <BoldDuotoneEmojiIcon size={64}/>,
+                                description: "مشاهده لیست آیکون ها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                    {
+                        key: "email",
+                        title: "تنظیمات ایمیل",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "systems",
+                                title: "سیستم های ایمیل",
+                                icon: <BoldDuotoneEarthIcon size={64}/>,
+                                description: "مشاهده لیست سیستم های ایمیل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "templates",
+                                title: "قالب ها",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "مشاهده لیست قالب های ایمیل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "addresses",
+                                title: "آدرس های ایمیل",
+                                icon: <BoldDuotoneMapIcon size={64}/>,
+                                description: "مشاهده لیست آدرس های ایمیل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "compose",
+                                title: "ارسال ایمیل",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "ارسال ایمیل",
+                                isEnable: true,
+                            },
+                            {
+                                key: "mails",
+                                title: "ایمیل ها",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "مشاهده لیست ایمیل های دریافتی و ارسالی",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                    {
+                        key: "sms",
+                        title: "تنظیمات پیامک",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "systems",
+                                title: "سیستم های پیامک",
+                                icon: <BoldDuotoneEarthIcon size={64}/>,
+                                description: "مشاهده لیست سیستم های ایمیل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "templates",
+                                title: "قالب ها",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "مشاهده لیست قالب های پیامک، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "compose",
+                                title: "ارسال پیامک",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "ارسال پیامک",
+                                isEnable: true,
+                            },
+                            {
+                                key: "message",
+                                title: "ایمیل ها",
+                                icon: <BoldDuotoneStreetMapIcon size={64}/>,
+                                description: "مشاهده لیست پیامک های دریافتی و ارسالی",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    },
     {
         key: "gate",
         title: "راهساز گیت",
@@ -325,10 +464,6 @@ const adminRoutes: AdminMenu[] = [
         isEnable: false,
     },
 ]
-
-
-
-
 
 
 export const getWorkspaceList = () => {

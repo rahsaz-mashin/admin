@@ -1,7 +1,7 @@
 import React from "react";
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
-import {FormFieldFunc, FormFieldType} from "@/stories/General/FormFieldsGenerator";
+import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {Branch} from "@/interfaces/Branch.interface";
 
 

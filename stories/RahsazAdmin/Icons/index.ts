@@ -22,6 +22,10 @@ export {Component as BoldDuotoneCampaignIcon} from "./BoldDuotoneCampaign.storie
 export {Component as BoldDuotoneDiscountIcon} from "./BoldDuotoneDiscount.stories";
 export {Component as BoldDuotoneStatisticIcon} from "./BoldDuotoneStatistic.stories";
 export {Component as BoldDuotoneSettingIcon} from "./BoldDuotoneSetting.stories";
+export {Component as BoldDuotoneEmojiIcon} from "./BoldDuotoneEmoji.stories";
+export {Component as BoldDuotoneEarthIcon} from "./BoldDuotoneEarth.stories";
+export {Component as BoldDuotoneStreetMapIcon} from "./BoldDuotoneStreetMap.stories";
+export {Component as BoldDuotoneMapIcon} from "./BoldDuotoneMap.stories";
 
 
 
