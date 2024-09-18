@@ -52,12 +52,12 @@ export const MapContainer = (props: MapProps) => {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     setTrackingLoading(false)
-                    goTo([position.coords.latitude, position.coords.longitude])
+                    goTo([position.coords.longitude, position.coords.latitude])
                 },
                 (error) => {
+                    setTrackingLoading(false)
                     toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
                     toast.error(error.message)
-                    setTrackingLoading(false)
                 }
             );
         } else {
