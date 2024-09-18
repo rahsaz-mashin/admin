@@ -133,7 +133,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
         placeholder: placeholder,
 
         fullWidth: true,
-        size: size || "lg",
+        size: size || "md",
         color: color || "default",
         variant: variant || "flat",
         labelPlacement: labelPlacement || "inside",
@@ -147,7 +147,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
 
         description: description,
 
-        isInvalid: isInvalid || fieldState.invalid,
+        isInvalid: isInvalid || !!loaderError || fieldState.invalid,
         errorMessage: errorMessage || loaderError || fieldState.error?.message,
 
         name: field.name,

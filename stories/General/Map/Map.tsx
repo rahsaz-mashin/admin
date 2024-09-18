@@ -4,7 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
 import {AutocompleteItem, Button} from "@nextui-org/react";
-import {FmdGood, MyLocation} from "@mui/icons-material";
+import {CloseOutlined, FmdGood, MyLocation, SearchOutlined} from "@mui/icons-material";
 import {Coordinate} from "@neshan-maps-platform/ol/coordinate";
 import Geolocation from '@neshan-maps-platform/ol/Geolocation.js';
 import {fromLonLat, toLonLat} from "@neshan-maps-platform/ol/proj";
@@ -12,6 +12,7 @@ import {toFixed} from "@neshan-maps-platform/ol/math";
 import {toast} from "@/lib/toast";
 import {MinorSelect} from "@/stories/General/MinorSelect";
 import {useForm} from "react-hook-form";
+import {ClickAwayListener} from "@mui/base";
 
 
 type Position = {
@@ -46,16 +47,34 @@ export const MapContainer = (props: MapProps) => {
 
     const handleMyLocation = () => {
         setTrackingLoading(true)
-        const geolocation = new Geolocation();
-        geolocation.setTracking(true);
-        geolocation.on('change', () => {
-            goTo(geolocation.getPosition()!)
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setTrackingLoading(false)
+                    goTo([position.coords.latitude, position.coords.longitude])
+                },
+                (error) => {
+                    toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
+                    toast.error(error.message)
+                    setTrackingLoading(false)
+                }
+            );
+        } else {
+            toast.error("مرورگر شما قابلیت دریافت موقعیت را پشتیبانی نمی کند")
             setTrackingLoading(false)
-        });
-        geolocation.on('error', (error) => {
-            toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
-            setTrackingLoading(false)
-        })
+        }
+        // const geolocation = new Geolocation();
+        // geolocation.setTracking(true);
+        // geolocation.on('change', () => {
+        //     goTo(geolocation.getPosition()!)
+        //     setTrackingLoading(false)
+        // })
+        // geolocation.on('error', (error) => {
+        //     toast.error("خطایی در یافتن موقعیت مکانی شما رخ داد")
+        //     setTrackingLoading(false)
+        // })
+
     }
 
 
@@ -140,6 +159,8 @@ export type LocationList = {
 };
 const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate) => void }) => {
 
+    const [isVisible, setVisible] = useState(false)
+
     const {
         control,
         watch,
@@ -155,30 +176,48 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
 
 
     return (
-        <MinorSelect
-            label="جستجوی مکان"
-            name="location"
-            control={control}
-            isSearchable
-            dynamic={{
-                route: "neshan/searchAddress",
-                filter: {
-                    lat: String(position.latitude),
-                    lng: String(position.longitude),
-                },
-                disablePagination: true,
-                withSelected: false,
-            }}
-            itemBuilder={(item) => {
-                return (
-                    <AutocompleteItem key={item.key}>
-                        <div className="flex flex-col">
-                            <h3 className="font-bold">{item.label}</h3>
-                            <span className="text-gray-600">{item.address}</span>
-                        </div>
-                    </AutocompleteItem>
-                )
-            }}
-        />
+        <ClickAwayListener onClickAway={() => setVisible(false)}>
+            <div className="flex justify-end gap-2">
+                {isVisible && (
+
+                    <MinorSelect
+                        label="جستجوی مکان"
+                        name="location"
+                        control={control}
+                        isSearchable
+                        size="sm"
+                        dynamic={{
+                            route: "neshan/searchAddress",
+                            filter: {
+                                lat: String(position.latitude),
+                                lng: String(position.longitude),
+                            },
+                            disablePagination: true,
+                            withSelected: false,
+                        }}
+                        itemBuilder={(item) => {
+                            return (
+                                <AutocompleteItem key={item.key}>
+                                    <div className="flex flex-col">
+                                        <h3 className="font-bold">{item.label}</h3>
+                                        <span className="text-gray-600">{item.address}</span>
+                                    </div>
+                                </AutocompleteItem>
+                            )
+                        }}
+                    />
+                )}
+                <Button
+                    aria-label="search location"
+                    isIconOnly
+                    color="primary"
+                    radius="md"
+                    size="sm"
+                    onPress={() => setVisible((visible) => !visible)}
+                >
+                    {isVisible ? <CloseOutlined/> : <SearchOutlined/>}
+                </Button>
+            </div>
+        </ClickAwayListener>
     )
 }

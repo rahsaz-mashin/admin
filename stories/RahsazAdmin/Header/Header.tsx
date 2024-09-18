@@ -19,7 +19,7 @@ export const Header = (props: HeaderProps) => {
     const breadCrumbs = adminContext.breadCrumbs()
 
     return (
-        <header className="w-full h-24 truncate z-50 select-none flex items-start gap-3 sticky top-0 bg-background">
+        <header className="w-full h-24 truncate z-[9999999] select-none flex items-start gap-3 sticky top-0 bg-background">
             <div
                 className="block md:hidden cursor-pointer text-primary hover:text-primary/80 transition group"
                 onClick={() => adminContext.setOpenDrawer(true)}

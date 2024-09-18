@@ -34,7 +34,7 @@ const useInfinityList = (props: UseInfinityListProps) => {
     const [hasMore, setHasMore] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
-    const [error, setError] = useState("");
+    const [error, setError] = useState<string | null>(null);
 
     const axios = axiosCoreWithAuth()
 
@@ -77,6 +77,7 @@ const useInfinityList = (props: UseInfinityListProps) => {
                 return
             }
         } catch (error: any) {
+            alert(error)
             setError("خطا: " + error?.message);
         } finally {
             setLoading(false);

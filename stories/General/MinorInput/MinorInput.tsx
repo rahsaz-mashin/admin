@@ -133,7 +133,7 @@ export const MinorInput = (props: MinorInputProps) => {
         type: type,
 
         fullWidth: true,
-        size: size || "lg",
+        size: size || "md",
 
         color: color || "default",
         variant: variant || "flat",

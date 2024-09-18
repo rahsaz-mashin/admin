@@ -73,7 +73,7 @@ export const MinorRadioBox = (props: MinorRadioBoxProps) => {
     const _props = {
         label: label,
 
-        size: size || "lg",
+        size: size || "md",
         color: color || "primary",
 
         isDisabled: isDisabled,
