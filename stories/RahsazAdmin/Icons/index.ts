@@ -6,6 +6,7 @@ export {Component as OutlineOrderIcon} from "./OutlineOrder.stories";
 export {Component as OutlineCartIcon} from "./OutlineCart.stories";
 export {Component as OutlineStatisticIcon} from "./OutlineStatistic.stories";
 export {Component as OutlineSettingIcon} from "./OutlineSetting.stories";
+export {Component as OutlineCommunicationIcon} from "./OutlineCommunication.stories";
 
 export {Component as BoldDuotoneBranchIcon} from "./BoldDuotoneBranch.stories";
 export {Component as BoldDuotoneWarehouseIcon} from "./BoldDuotoneWarehouse.stories";
@@ -26,6 +27,13 @@ export {Component as BoldDuotoneEmojiIcon} from "./BoldDuotoneEmoji.stories";
 export {Component as BoldDuotoneEarthIcon} from "./BoldDuotoneEarth.stories";
 export {Component as BoldDuotoneStreetMapIcon} from "./BoldDuotoneStreetMap.stories";
 export {Component as BoldDuotoneMapIcon} from "./BoldDuotoneMap.stories";
+export {Component as BoldDuotoneComposeMessageIcon} from "./BoldDuotoneComposeMessage.stories";
+export {Component as BoldDuotoneMessageBoxIcon} from "./BoldDuotoneMessageBox.stories";
+export {Component as BoldDuotoneEmailAddressIcon} from "./BoldDuotoneEmailAddress.stories";
+export {Component as BoldDuotoneSystemIcon} from "./BoldDuotoneSystem.stories";
+export {Component as BoldDuotoneTemplateIcon} from "./BoldDuotoneTemplate.stories";
+export {Component as BoldDuotoneLockPasswordIcon} from "./BoldDuotoneLockPassword.stories";
+export {Component as BoldDuotoneVideoLibraryIcon} from "./BoldDuotoneVideoLibrary.stories";
 
 
 

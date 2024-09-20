@@ -12,13 +12,18 @@ type T = AddressCountry
 const formInitial: T = {
     id: undefined,
     title: "",
-    icon: null,
+    icon: undefined,
 }
 
 
 
 const formSchema = z.object({
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
+    icon: z.string({message: "آیکون معتبر نیست"}).regex(/^\d+$/, "آیکون معتبر نیست")
+        .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
+        .transform(Number)
+        .nullable()
+        .optional(),
 });
 
 
@@ -29,77 +34,16 @@ const formFields: FormFieldFunc<T> = (watch) => {
             type: "input",
             label: "عنوان",
             isRequired: true,
-            className: "col-span-full xl:col-span-1",
+            className: "col-span-full",
         },
-        // {
-        //     name: "location",
-        //     type: "location",
-        //     label: "موقعیت مکانی",
-        //     className: "col-span-full",
-        // },
-        // {
-        //     name: "country",
-        //     type: "select",
-        //     label: "کشور",
-        //     dynamic: {
-        //         route: "addressCountry/sloStyle",
-        //     },
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "province",
-        //     type: "select",
-        //     label: "استان",
-        //     dynamic: {
-        //         route: "addressProvince/sloStyle",
-        //         filter: {
-        //             country: watch("country"), // watch dependencies
-        //         },
-        //     },
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "city",
-        //     type: "select",
-        //     label: "شهر",
-        //     dynamic: {
-        //         route: "addressCity/sloStyle",
-        //         filter: {
-        //             province: watch("province"),
-        //         },
-        //     },
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "address",
-        //     type: "input",
-        //     label: "آدرس کامل",
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "zipCode",
-        //     type: "input",
-        //     label: "کد پستی",
-        //     isNumeric: true,
-        //     pattern: "##########",
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "postBox",
-        //     type: "input",
-        //     label: "صندوق پستی",
-        //     isNumeric: true,
-        //     pattern: "##########",
-        //     className: "col-span-full xl:col-span-1",
-        // },
-        // {
-        //     name: "description",
-        //     type: "input",
-        //     label: "توضیحات",
-        //     isRequired: true,
-        //     isMultiline: true,
-        //     className: "col-span-full",
-        // },
+        {
+            name: "icon",
+            type: "iconLibrary",
+            label: "آیکون",
+            isRequired: false,
+            className: "col-span-full",
+        },
+
     ])
 }
 
@@ -108,8 +52,8 @@ const tableColumns: ColumnType<T>[] = [
         key: "actions",
         title: "ابزارها",
         align: "center",
-        width: "500",
-        minWidth: "500",
+        width: 120,
+        minWidth: 120,
         toolsCell: {
             editable: true,
             removable: true,
@@ -118,13 +62,26 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "id",
         title: "شناسه",
+        align: "center",
         width: 100,
+        minWidth: 100,
+        allowsSorting: true,
     },
     {
         key: "title",
         title: "عنوان",
-        width: "500",
-        minWidth: "500",
+        minWidth: 240,
+        render: (value, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    <span>{value}</span>
+                    <span
+                        className="text-primary h-6 w-6 flex justify-center items-center"
+                        dangerouslySetInnerHTML={{__html: ctx.icon?.content || ""}}
+                    />
+                </div>
+            )
+        },
     },
 ]
 
@@ -143,5 +100,6 @@ export const addressCountryContext = {
     },
     table: {
         columns: tableColumns,
+        enableTrashBox: false,
     },
 }

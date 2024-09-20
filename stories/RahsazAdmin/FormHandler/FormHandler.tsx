@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
+import {FieldValues, FormState, Path, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
@@ -60,6 +60,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         formState,
         watch,
         setValue,
+        setFocus,
     } = useForm<T>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
@@ -83,10 +84,18 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         reset(undefined, {keepDefaultValues: true})
     }
 
+    const focusToForm = () => {
+        // TODO::
+        // setFocus(f?.[0].name as Path<T>, {shouldSelect: true})
+
+    }
 
     useImperativeHandle(ref, () => ({
         reset: () => {
             resetToDefault()
+        },
+        focus: () => {
+            focusToForm()
         }
     }));
 
@@ -103,9 +112,12 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     // =========================================================================================================> separate this
 
-    // @ts-ignore
-    const location: any = watch("location")
+
     const getAddress = async () => {
+        // @ts-ignore
+        const location = watch("location") as any
+        if (!location) return
+
         const params = {lat: location.latitude, lng: location.longitude}
         const data = await axios.get("neshan/getAddress", {params})
         // @ts-ignore
@@ -118,10 +130,9 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         setValue("city", data.cityId || "")
     }
     useEffect(() => {
-        if (!!location) {
-            getAddress()
-        }
-    }, [location]);
+        getAddress()
+        // @ts-ignore
+    }, [watch("location")]);
 
     // =========================================================================================================> separate this
 
@@ -139,6 +150,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-5">
+
             {render
                 ?
                 render.map((r, idx) => {
@@ -185,7 +197,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                     {isEditing ? "ویرایش" : "ایجاد"} {title}
                 </h3>
             </CardHeader>
-            <CardBody className="gap-3 grid grid-cols-2">
+            <CardBody className="gap-3 grid grid-cols-2 content-start">
                 {children}
             </CardBody>
             <CardFooter className="gap-2 justify-end">
@@ -261,6 +273,7 @@ export type FormRender<T> = {
 
 export type FormHandlerRefType = {
     reset: () => void;
+    focus: () => void;
 }
 
 

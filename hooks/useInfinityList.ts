@@ -77,7 +77,6 @@ const useInfinityList = (props: UseInfinityListProps) => {
                 return
             }
         } catch (error: any) {
-            alert(error)
             setError("خطا: " + error?.message);
         } finally {
             setLoading(false);

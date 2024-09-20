@@ -12,6 +12,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
         mode,
         apiRoute,
         editingId,
+
     } = props
 
     const tableRef = useRef<TableListRefType>()
@@ -28,6 +29,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                     apiRoute={apiRoute}
                     editingId={editingId}
                     columns={props.tableColumns}
+                    enableTrashBox={props.enableTrashBox}
                 />
             </div>
         );
@@ -76,6 +78,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                 apiRoute={apiRoute}
                 editingId={editingId}
                 columns={props.tableColumns}
+                enableTrashBox={props.enableTrashBox}
 
                 formRef={formRef}
             />
@@ -92,6 +95,8 @@ type FormListContextCommonProps = {
 
 type FormListContextListModePureProps<T> = {
     tableColumns: ColumnType<T>[];
+
+    enableTrashBox?: boolean;
 }
 
 type FormListContextListModeProps<T> = { mode: "list" } & FormListContextListModePureProps<T>

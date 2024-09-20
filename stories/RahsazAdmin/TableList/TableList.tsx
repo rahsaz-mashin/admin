@@ -9,34 +9,45 @@ import {
     TableColumn,
     TableHeader,
     TableRow,
-    getKeyValue, Button, useDisclosure, ModalContent, ModalHeader, ModalBody, Listbox, ListboxItem, ModalFooter, Modal
+    getKeyValue,
+    Button,
+    useDisclosure,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    Listbox,
+    ListboxItem,
+    ModalFooter,
+    Modal,
+    Card, CardBody, CardFooter, SortDescriptor, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem
 } from "@nextui-org/react";
 import React, {
     forwardRef,
-    ForwardRefRenderFunction,
-    MutableRefObject,
     useContext,
     useEffect,
     useImperativeHandle,
     useState
 } from "react";
 import useSWR, {KeyedMutator} from 'swr';
-import {ColumnSize, ColumnStaticSize} from "@react-types/table";
+import {ColumnSize} from "@react-types/table";
 import {LoadingState} from "@react-types/shared";
 import {
+    ArrowDropDown,
     DeleteForeverOutlined,
-    DeleteOutlineOutlined,
-    DeleteOutlineRounded, DeleteSweepOutlined,
-    DriveFileRenameOutlineOutlined, ListOutlined, RecyclingOutlined, RefreshOutlined,
-    RefreshRounded
+    DeleteOutlined,
+    DeleteSweepOutlined,
+    DriveFileRenameOutlineOutlined,
+    ListOutlined,
+    RecyclingOutlined,
+    RefreshOutlined,
 } from "@mui/icons-material";
-import {usePathname, useRouter} from "next/navigation";
 import {AdminContext} from "@/context/admin.context";
 import {Tooltip} from "@nextui-org/tooltip";
 import {FormHandlerRefType} from "@/stories/RahsazAdmin/FormHandler";
 import {UseDisclosureReturn} from "@nextui-org/use-disclosure";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {toast} from "@/lib/toast";
+import {CardHeader} from "@nextui-org/card";
+import {Property} from "csstype";
 
 
 type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
@@ -53,8 +64,8 @@ export type ColumnType<T> = {
     isRowHeader?: boolean;
     textValue?: string;
     width?: ColumnSize | null;
-    minWidth?: ColumnStaticSize | null;
-    maxWidth?: ColumnStaticSize | null;
+    minWidth?: Property.MinWidth<string | number>;
+    maxWidth?: Property.MaxWidth<string | number>;
 
     toolsCell?: ToolsCellType<T>;
     render?: ColumnRenderType<T>;
@@ -71,6 +82,7 @@ export type TableListProps<T> = {
     columns: ColumnType<T>[];
     rowsPerPage?: number;
     editingId?: string | number | null;
+    enableTrashBox?: boolean;
 
     formRef?: React.MutableRefObject<FormHandlerRefType | undefined>;
 }
@@ -83,6 +95,9 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         columns,
         rowsPerPage = 10,
         editingId,
+        enableTrashBox = true,
+
+        formRef,
     } = props
 
     const [page, setPage] = useState(1);
@@ -118,90 +133,110 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     }
 
     useImperativeHandle(ref, () => ({
-        refresh
+        refresh: () => {
+            refresh()
+        }
     }));
 
 
     return (
-        <>
-            <Table
-                aria-label="table of items"
-                isHeaderSticky
-                topContent={
-                    <TopContent
-                        mutate={mutate}
-                        error={error}
-                        showTrashBox={showTrashBox}
-                        setShowTrashBox={setShowTrashBox}
-                    />
-                }
-                bottomContent={
-                    <BottomContent
-                        pages={pages}
-                        page={page}
-                        setPage={setPage}
-                    />
-                }
-            >
-                <TableHeader columns={columns}>
-                    {(column) => (
-                        <TableColumn
-                            align={column.align}
-                            hideHeader={column.hideHeader}
-                            allowsSorting={column.allowsSorting}
-                            isRowHeader={column.isRowHeader}
-                            textValue={column.textValue}
-                            width={column.width}
-                            minWidth={column.minWidth}
-                            maxWidth={column.maxWidth}
-                        >
-                            {column.title}
-                        </TableColumn>
-                    )}
-                </TableHeader>
-                <TableBody<T>
-                    items={items}
-                    loadingContent={<LoadingContent/>}
-                    emptyContent={<EmptyContent/>}
-                    loadingState={loadingState}
+        <Card>
+            <CardHeader>
+                <TopContent
+                    mutate={mutate}
+                    error={error}
+                    enableTrashBox={enableTrashBox}
+                    showTrashBox={showTrashBox}
+                    setShowTrashBox={setShowTrashBox}
+                />
+            </CardHeader>
+            <CardBody className="content-start">
+                <Table
+                    aria-label="table of items"
+
+                    sortDescriptor={undefined}
+                    onSortChange={(descriptor: SortDescriptor) => {
+                        console.log(descriptor)
+                    }}
+
+                    selectionMode="multiple"
+                    // selectedKeys={undefined}
+                    // onSelectionChange={undefined}
+
+                    color="primary"
+
+                    isHeaderSticky
+                    removeWrapper
                 >
-                    {(item) => {
-                        const id = getKeyValue(item, "id")
-                        const isDeleted = !!getKeyValue(item, "deletedAt")
-                        return (
-                            <TableRow
-                                key={id}
-                                className={isDeleted ? "bg-red-100" : (editingId === id + "") ? "bg-green-100" : undefined}
+                    <TableHeader columns={columns}>
+                        {(column) => (
+                            <TableColumn
+                                key={column.key}
+                                align={column.align}
+                                hideHeader={column.hideHeader}
+                                allowsSorting={column.allowsSorting}
+                                isRowHeader={column.isRowHeader}
+                                textValue={column.textValue}
+                                width={column.width}
+                                style={{minWidth: column.minWidth, maxWidth: column.maxWidth}}
                             >
-                                {(columnKey) => {
-                                    const toolsCell = columns?.find(({key}) => (key === columnKey))?.toolsCell
-                                    const render = columns?.find(({key}) => (key === columnKey))?.render
-                                    const value = getKeyValue(item, columnKey)
-                                    if (toolsCell !== undefined) {
+                                {column.title}
+                            </TableColumn>
+                        )}
+                    </TableHeader>
+                    <TableBody<T>
+                        items={items}
+                        loadingContent={<LoadingContent/>}
+                        emptyContent={<EmptyContent/>}
+                        loadingState={loadingState}
+                    >
+                        {(item) => {
+                            const id = getKeyValue(item, "id")
+                            const isDeleted = !!getKeyValue(item, "deletedAt")
+                            return (
+                                <TableRow
+                                    key={id}
+                                    className={isDeleted ? "bg-red-100" : (editingId === id + "") ? "bg-green-100" : undefined}
+                                >
+                                    {(columnKey) => {
+                                        const toolsCell = columns?.find(({key}) => (key === columnKey))?.toolsCell
+                                        const render = columns?.find(({key}) => (key === columnKey))?.render
+                                        const value = getKeyValue(item, columnKey)
+                                        if (toolsCell !== undefined) {
+                                            return (
+                                                <TableCell>
+                                                    <ToolsCell<T>
+                                                        id={id}
+                                                        item={item}
+                                                        options={toolsCell}
+                                                        apiRoute={apiRoute}
+                                                        refresh={refresh}
+                                                        enableTrashBox={enableTrashBox}
+                                                        formRef={formRef}
+                                                    />
+                                                </TableCell>
+                                            )
+                                        }
                                         return (
                                             <TableCell>
-                                                <ToolsCell<T>
-                                                    id={id}
-                                                    item={item}
-                                                    options={toolsCell}
-                                                    apiRoute={apiRoute}
-                                                    refresh={refresh}
-                                                />
+                                                {render ? render(value, item, id) : value}
                                             </TableCell>
                                         )
-                                    }
-                                    return (
-                                        <TableCell>
-                                            {render ? render(value, item, id) : value}
-                                        </TableCell>
-                                    )
-                                }}
-                            </TableRow>
-                        )
-                    }}
-                </TableBody>
-            </Table>
-        </>
+                                    }}
+                                </TableRow>
+                            )
+                        }}
+                    </TableBody>
+                </Table>
+            </CardBody>
+            <CardFooter>
+                <BottomContent
+                    pages={pages}
+                    page={page}
+                    setPage={setPage}
+                />
+            </CardFooter>
+        </Card>
     );
 })
 TableList.displayName = "TableList"
@@ -218,10 +253,13 @@ type ToolsCellPropsType<T> = {
     apiRoute: string;
     options: ToolsCellType<T>;
     refresh: () => void;
+
+    enableTrashBox?: boolean;
+    formRef?: React.MutableRefObject<FormHandlerRefType | undefined>;
 }
 
 const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
-    const {id, item, options, apiRoute, refresh} = props
+    const {id, item, options, formRef, apiRoute, refresh, enableTrashBox} = props
 
     const adminContext = useContext(AdminContext)
     const deleteModal = useDisclosure({defaultOpen: false});
@@ -293,7 +331,10 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                             variant="light"
                             color="success"
                             radius="full"
-                            onPress={() => adminContext.editItem(id)}
+                            onPress={() => {
+                                adminContext.editItem(id)
+                                formRef?.current?.focus()
+                            }}
                         >
                             <DriveFileRenameOutlineOutlined/>
                         </Button>
@@ -317,7 +358,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                             radius="full"
                             onPress={deleteModal.onOpen}
                         >
-                            <DeleteOutlineOutlined/>
+                            <DeleteOutlined/>
                         </Button>
                     </Tooltip>
                     <DeleteModal
@@ -325,6 +366,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                         state={deleteModal}
                         apiRoute={apiRoute}
                         refresh={refresh}
+                        enableTrashBox={enableTrashBox}
                     />
                 </>
             )}
@@ -344,12 +386,14 @@ type DeleteModalPropsType = {
     state: UseDisclosureReturn;
     apiRoute: string;
     refresh: () => void;
+
+    enableTrashBox?: boolean;
 }
 
 
 const DeleteModal = <T, >(props: DeleteModalPropsType) => {
 
-    const {id, state, apiRoute, refresh} = props
+    const {id, state, apiRoute, refresh, enableTrashBox} = props
 
     const [item, setItem] = useState<T | null>(null)
     const [isLoading, setLoading] = useState<boolean>(false)
@@ -377,7 +421,11 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
     const onSubmit = async ({permanent = false, restore = false}: { permanent?: boolean, restore?: boolean }) => {
         if (isLoading) return
         setLoading(true)
-        await axios.delete(`${apiRoute}/${id}?permanent=${permanent}&restore=${restore}`)
+
+
+        if (enableTrashBox) await axios.delete(`${apiRoute}/${id}?permanent=${permanent}&restore=${restore}`)
+        else await axios.delete(`${apiRoute}/${id}`)
+
         setLoading(false)
         refresh()
         state.onClose()
@@ -396,7 +444,7 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
             <ModalContent>
                 {!isLoading && (
                     <ModalHeader>
-                        {isDeleted ? "حذف همیشگی" : "حذف"}
+                        {(isDeleted || enableTrashBox) ? "حذف همیشگی" : "حذف"}
                     </ModalHeader>
                 )}
                 <ModalBody className="relative">
@@ -420,13 +468,23 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
                                     </p>
                                 </>
                                 :
-                                <>
-                                    <p>
-                                        در صورت ادامه
-                                        &nbsp;<b>{title}</b>&nbsp;
-                                        حذف شده و به زباله دان می رود.
-                                    </p>
-                                </>
+                                enableTrashBox
+                                    ?
+                                    <>
+                                        <p>
+                                            در صورت ادامه
+                                            &nbsp;<b>{title}</b>&nbsp;
+                                            حذف شده و به زباله دان می رود.
+                                        </p>
+                                    </>
+                                    :
+                                    <>
+                                        <p>
+                                            در صورت ادامه
+                                            &nbsp;<b>{title}</b>&nbsp;
+                                            برای همیشه حذف شده و غیرقابل برگشت نخواهد بود.
+                                        </p>
+                                    </>
                             }
                         </div>
                     )}
@@ -447,7 +505,7 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
                         isDisabled={isLoading}
                         onPress={() => onSubmit({permanent: isDeleted})}
                     >
-                        {isDeleted ? "حذف همیشگی" : "حذف"}
+                        {(isDeleted || !enableTrashBox) ? "حذف همیشگی" : "حذف"}
                     </Button>
                     {isDeleted && (
                         <Button
@@ -477,37 +535,65 @@ type TopContentPropsType = {
     error: any;
     showTrashBox: boolean;
     setShowTrashBox: (i: (b: boolean) => boolean) => void;
+
+    enableTrashBox: boolean;
 }
 const TopContent = (props: TopContentPropsType) => {
 
-    const {mutate, error, showTrashBox, setShowTrashBox} = props
+    const {mutate, error, enableTrashBox, showTrashBox, setShowTrashBox} = props
 
     return (
-        <div className="flex flex-row justify-between items-center gap-3">
-            <div className="text-danger font-semibold">
-                {error ? `خطا در دریافت: ${error.message}` : ""}
+        <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden empty:hidden">
+                {!!error && (
+                    <div className="text-danger font-light text-sm flex gap-1 empty:hidden">
+                        <b>خطا در دریافت: </b>
+                        <span>{error?.message}</span>
+                    </div>
+                )}
             </div>
-            <div className="flex flex-row justify-center items-center gap-2">
-                <Button
-                    // isIconOnly
-                    variant="flat"
-                    color="success"
-                    radius="full"
-                    onPress={mutate}
-                    startContent={<RefreshOutlined/>}
-                >
-                    بروزرسانی
-                </Button>
-                <Button
-                    // isIconOnly
-                    variant={showTrashBox ? "solid" : "flat"}
-                    color="primary"
-                    radius="full"
-                    onPress={() => setShowTrashBox((b) => (!b))}
-                    startContent={showTrashBox ? <ListOutlined/> : <DeleteSweepOutlined/>}
-                >
-                    {showTrashBox ? "باکس اصلی" : "زباله دان"}
-                </Button>
+            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden">
+                <div className="flex flex-row justify-center items-center gap-2">
+                    <Dropdown
+                        backdrop="blur"
+                    >
+                        <DropdownTrigger>
+                            <Button
+                                variant="flat"
+                                color="default"
+                                radius="full"
+                                endContent={<ArrowDropDown/>}
+                            >
+                                انتخاب شده ها
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu color="primary">
+                            <DropdownItem key="delete">حذف انتخاب شده ها</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="flex flex-row justify-center items-center gap-2">
+                    <Button
+                        variant="flat"
+                        color="success"
+                        radius="full"
+                        onPress={mutate}
+                        startContent={<RefreshOutlined/>}
+                    >
+                        بروزرسانی
+                    </Button>
+                    {enableTrashBox &&
+                        <Button
+                            variant={showTrashBox ? "solid" : "flat"}
+                            color="primary"
+                            radius="full"
+                            onPress={() => setShowTrashBox((b) => (!b))}
+                            startContent={showTrashBox ? <ListOutlined/> : <DeleteSweepOutlined/>}
+                        >
+                            {showTrashBox ? "باکس اصلی" : "زباله دان"}
+                        </Button>
+                    }
+                </div>
             </div>
         </div>
     )

@@ -9,6 +9,7 @@ import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
 import {Control, FieldValues, UseFormWatch} from "react-hook-form";
 import React, {ReactNode, useState} from "react";
+import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -142,10 +143,26 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             description={field.description}
                         />
                     )
+                case "iconLibrary":
+                    return (
+                        <MinorIconLibrary
+                            key={field.name}
+                            control={control}
+                            className={field.className}
+
+                            name={field.name}
+                            label={field.label}
+                            isRequired={field.isRequired}
+                            isDisabled={field.isDisabled}
+                            isReadOnly={field.isReadOnly}
+                            description={field.description}
+                        />
+                    )
                 default:
                     return (
                         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
-                            این نوع فیلد، تعریف نشده است
+                            {field.type} :
+                            این نوع فیلد تعریف نشده است
                         </div>
                     )
             }
@@ -223,6 +240,11 @@ type FromFieldTypeLocation = {
     type: "location";
 }
 
+type FromFieldTypeIconLibrary = {
+    type: "iconLibrary";
+    isRequired?: boolean;
+}
+
 type FromFieldTypeUploader = {
     type: "uploader";
 }
@@ -230,7 +252,7 @@ type FromFieldTypeUploader = {
 
 export type FormFieldType =
     FromFieldTypeCommon &
-    (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch | FromFieldTypeLocation | FromFieldTypeUploader)
+    (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch | FromFieldTypeLocation | FromFieldTypeIconLibrary | FromFieldTypeUploader)
 
 
 // @ts-ignore

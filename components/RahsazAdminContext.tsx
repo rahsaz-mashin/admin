@@ -24,6 +24,8 @@ export function RahsazAdminContext(props: PropsType) {
             editingId={id}
 
             tableColumns={context.table?.columns}
+            enableTrashBox={context.table?.enableTrashBox}
+
             formTitle={context.form?.title}
             formSchema={context.form?.schema}
             formFields={context.form?.fields}
@@ -45,13 +47,13 @@ type PropsType = {
 
 const contextConfig: any = {
     general: {
-        settings: {
+        items: {
             address: {
                 countries: addressCountryContext,
                 provinces: addressProvinceContext,
                 cities: addressCityContext,
             },
-            assets: {
+            others: {
                 icons: iconContext,
             },
         },

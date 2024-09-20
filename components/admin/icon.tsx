@@ -59,8 +59,8 @@ const tableColumns: ColumnType<T>[] = [
         key: "actions",
         title: "ابزارها",
         align: "center",
-        width: "500",
-        minWidth: "500",
+        width: 120,
+        minWidth: 120,
         toolsCell: {
             editable: true,
             removable: true,
@@ -69,25 +69,30 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "id",
         title: "شناسه",
+        align: "center",
         width: 100,
+        minWidth: 100,
+        allowsSorting: true,
     },
     {
         key: "title",
         title: "عنوان",
-        width: "500",
-        minWidth: "500",
+        minWidth: 240,
     },
     {
         key: "content",
         title: "محتوا",
-        width: "500",
-        minWidth: "500",
+        align: "center",
+        width: 100,
+        minWidth: 100,
         render: (value) => {
             return (
-                <i
-                    className="text-primary h-8 w-8 flex justify-center items-center"
-                    dangerouslySetInnerHTML={{__html: value}}
-                />
+                <div className="flex justify-center items-center">
+                    <span
+                        className="text-primary h-8 w-8 flex justify-center items-center"
+                        dangerouslySetInnerHTML={{__html: value}}
+                    />
+                </div>
             )
         },
     },
