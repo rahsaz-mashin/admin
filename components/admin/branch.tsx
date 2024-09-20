@@ -5,8 +5,6 @@ import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {Branch} from "@/interfaces/Branch.interface";
 
 
-
-
 type T = Branch
 
 
@@ -15,14 +13,39 @@ const formInitial: T = {
     title: "",
     description: "",
     phone: "",
+    country: undefined,
+    province: undefined,
+    city: undefined,
+    address: "",
+    zipCode: "",
+    postBox: "",
+    location: undefined,
 }
 
 
-
 const formSchema = z.object({
-    key: z.string({message: "کلید را وارد کنید"}).min(3, "کلید معتبر نیست"),
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
-    phone: z.string({message: "شماره را وارد کنید"}).regex(/0[0-9]{2} [0-9]{4} [0-9]{4}/, "شماره وارد شده معتبر نیست"),
+    phone: z.string({message: "شماره را وارد کنید"}).regex(/0[0-9]{2} [0-9]{4} [0-9]{4}|0[0-9]{10}/, "شماره وارد شده معتبر نیست")
+        .transform((v) => (v.replaceAll(" ", ""))),
+    country: z.string({message: "کشور معتبر نیست"}).regex(/^\d+$/, "کشور معتبر نیست")
+        .or(z.number({message: "کشور معتبر نیست"}).int({message: "کشور معتبر نیست"}).positive({message: "کشور معتبر نیست"}))
+        .transform(Number),
+    province: z.string({message: "استان معتبر نیست"}).regex(/^\d+$/, "استان معتبر نیست")
+        .or(z.number({message: "استان معتبر نیست"}).int({message: "استان معتبر نیست"}).positive({message: "استان معتبر نیست"}))
+        .transform(Number),
+    city: z.string({message: "شهر معتبر نیست"}).regex(/^\d+$/, "شهر معتبر نیست")
+        .or(z.number({message: "شهر معتبر نیست"}).int({message: "شهر معتبر نیست"}).positive({message: "شهر معتبر نیست"}))
+        .transform(Number),
+    address: z.string({message: "آدرس را وارد کنید"}).min(5, "آدرس معتبر نیست"),
+    location: z.object(
+        {
+            latitude: z.number().min(-90).max(90),
+            longitude: z.number().min(-180).max(180),
+        },
+        {message: "موقعیت مکانی نامعتبر می باشد"}
+    ),
+    zipCode: z.string({message: "کد پستی را وارد کنید"}).regex(/[0-9]{10}/, "کد پستی وارد شده معتبر نیست").or(z.string().length(0)),
+    postBox: z.string({message: "صندوق پستی را وارد کنید"}).regex(/[0-9]{10}/, "صندوق پستی وارد شده معتبر نیست").or(z.string().length(0)),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد"),
 });
 
@@ -55,6 +78,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             name: "country",
             type: "select",
             label: "کشور",
+            isRequired: true,
             dynamic: {
                 route: "addressCountry/sloStyle",
             },
@@ -64,6 +88,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             name: "province",
             type: "select",
             label: "استان",
+            isRequired: true,
             dynamic: {
                 route: "addressProvince/sloStyle",
                 filter: {
@@ -76,6 +101,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             name: "city",
             type: "select",
             label: "شهر",
+            isRequired: true,
             dynamic: {
                 route: "addressCity/sloStyle",
                 filter: {
@@ -88,6 +114,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             name: "address",
             type: "input",
             label: "آدرس کامل",
+            isRequired: true,
             className: "col-span-full xl:col-span-1",
         },
         {
@@ -156,10 +183,6 @@ const tableColumns: ColumnType<T>[] = [
         minWidth: "500",
     },
 ]
-
-
-
-
 
 
 export const branchContext = {

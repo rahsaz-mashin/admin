@@ -150,7 +150,6 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-5">
-
             {render
                 ?
                 render.map((r, idx) => {

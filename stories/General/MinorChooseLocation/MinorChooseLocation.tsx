@@ -57,6 +57,7 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
             className={"relative group flex flex-col gap-2 justify-center " + className}
             data-has-helper={hasHelper}
         >
+
             <Component
                 position={field.value}
                 zoom={15}
