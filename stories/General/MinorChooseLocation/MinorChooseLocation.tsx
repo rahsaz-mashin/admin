@@ -2,6 +2,7 @@ import React, {ReactNode, useState} from "react";
 import {Control, useController} from "react-hook-form";
 import {MapContainer} from "@/stories/General/Map";
 import dynamic from "next/dynamic";
+import {Spinner} from "@nextui-org/spinner";
 
 
 export type MinorChooseLocationProps = {
@@ -21,8 +22,17 @@ export type MinorChooseLocationProps = {
 }
 
 
-const Component = dynamic(() => import('@/stories/General/Map/Map'), { loading: () => <>loading</>, ssr: false });
-
+const Component = dynamic(
+    () => import('@/stories/General/Map/Map'),
+    {
+        loading: () => (
+            <div className="w-full flex justify-center items-center p-3">
+                <Spinner/>
+            </div>
+        ),
+        ssr: false
+    }
+);
 
 
 export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
@@ -52,17 +62,22 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
 
     const hasHelper = !!description || isInvalid || fieldState.invalid
 
+    const val = field.value?.split(",")
+    const value = val ? {latitude: +val[0], longitude: +val[1]} : undefined
+
+    const onChange = (v: any) => {
+        field.onChange(Object.values(v).join(","))
+    }
+
     return (
         <div
             className={"relative group flex flex-col gap-2 justify-center " + className}
             data-has-helper={hasHelper}
         >
-
             <Component
-                position={field.value}
+                position={value}
                 zoom={15}
-                onChange={field.onChange}
-                findOnInit
+                onChange={onChange}
                 withSearchBox
                 isDisabled={isDisabled}
                 isReadOnly={isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting}

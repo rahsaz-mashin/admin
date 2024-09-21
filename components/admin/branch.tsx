@@ -3,6 +3,7 @@ import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {Branch} from "@/interfaces/Branch.interface";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
 
 type T = Branch
@@ -37,20 +38,14 @@ const formSchema = z.object({
         .or(z.number({message: "شهر معتبر نیست"}).int({message: "شهر معتبر نیست"}).positive({message: "شهر معتبر نیست"}))
         .transform(Number),
     address: z.string({message: "آدرس را وارد کنید"}).min(5, "آدرس معتبر نیست"),
-    location: z.object(
-        {
-            latitude: z.number().min(-90).max(90),
-            longitude: z.number().min(-180).max(180),
-        },
-        {message: "موقعیت مکانی نامعتبر می باشد"}
-    ),
+    location: z.string().regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/, {message: "موقعیت مکانی نامعتبر می باشد"}),
     zipCode: z.string({message: "کد پستی را وارد کنید"}).regex(/[0-9]{10}/, "کد پستی وارد شده معتبر نیست").or(z.string().length(0)),
     postBox: z.string({message: "صندوق پستی را وارد کنید"}).regex(/[0-9]{10}/, "صندوق پستی وارد شده معتبر نیست").or(z.string().length(0)),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد"),
 });
 
 
-const formFields: FormFieldFunc<T> = (watch) => {
+const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
         {
             name: "title",
@@ -73,6 +68,23 @@ const formFields: FormFieldFunc<T> = (watch) => {
             type: "location",
             label: "موقعیت مکانی",
             className: "col-span-full",
+            dependency: async () => {
+                const axios = axiosCoreWithAuth()
+
+                const location = watch("location")
+                if (!location) return
+
+                const params = {location}
+                const data: any = await axios.get("neshan/getAddress", {params})
+
+                setValue("address", data.address)
+
+                setValue("country", data.countryId || "")
+
+                setValue("province", data.provinceId || "")
+
+                setValue("city", data.cityId || "")
+            }
         },
         {
             name: "country",

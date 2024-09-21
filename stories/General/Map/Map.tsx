@@ -24,27 +24,33 @@ export type MapProps = {
     position?: Position;
     zoom?: number;
     onChange?: (v: Position) => void;
-    findOnInit?: boolean;
     withSearchBox?: boolean;
     isDisabled?: boolean;
     isReadOnly?: boolean;
 }
 
-
+const defaultPosition = {latitude: 36.2612469, longitude: 59.6004759}
 export const MapContainer = (props: MapProps) => {
 
-    const defaultPosition = {latitude: 36.2612469, longitude: 59.6004759}
+    const _val = props.position || defaultPosition
+
 
     const mapRef = useRef<NeshanMapRef | null>(null)
-    const [position, setPosition] = useState<Position>(props.position || defaultPosition)
+    const [position, setPosition] = useState<Position>(_val)
     const [zoom, setZoom] = useState<number>(props.zoom || 15)
 
     const currentLocationRef = useRef<{ locate: () => void }>()
 
     const onInit = (map: Map) => {
         map.on('moveend', onMoveEnd);
-        if (props.findOnInit) currentLocationRef.current?.locate()
+        // TODO::
+        // if (!props.position) currentLocationRef.current?.locate()
     }
+
+    useEffect(() => {
+        goTo(Object.values(_val))
+    }, [Object.values(_val).join(",")]);
+
 
 
     const onMoveEnd = () => {
@@ -54,6 +60,7 @@ export const MapContainer = (props: MapProps) => {
 
 
         const coordinate = toLonLat(_center)
+
         const __position = {
             latitude: toFixed(coordinate[1], 7),
             longitude: toFixed(coordinate[0], 7),
@@ -65,7 +72,13 @@ export const MapContainer = (props: MapProps) => {
     }
 
 
+    /*
+    pass lat & lon to
+    then reverse it
+     */
     const goTo = (coordinate: Coordinate) => {
+
+        coordinate = coordinate.reverse()
         mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
     }
 
@@ -136,7 +149,7 @@ const CurrentLocationTool = forwardRef(({goTo}: { goTo: (c: Coordinate) => void 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     setIsLoading(false)
-                    goTo([position.coords.longitude, position.coords.latitude])
+                    goTo([position.coords.latitude, position.coords.longitude])
                 },
                 (error) => {
                     setIsLoading(false)
@@ -183,7 +196,7 @@ const SearchMap = ({position, goTo}: { position: Position; goTo: (c: Coordinate)
     const location = watch("location")
     useEffect(() => {
         if (!!location) {
-            const coordinate = location.split("_").map((v: string) => (parseFloat(v))).reverse()
+            const coordinate = location.split("_").map((v: string) => (parseFloat(v)))
             goTo(coordinate)
         }
     }, [location])

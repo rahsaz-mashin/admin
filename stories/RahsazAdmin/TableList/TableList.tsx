@@ -141,7 +141,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
 
     return (
         <Card>
-            <CardHeader>
+            <CardHeader className="p-0 overflow-hidden">
                 <TopContent
                     mutate={mutate}
                     error={error}
@@ -150,7 +150,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                     setShowTrashBox={setShowTrashBox}
                 />
             </CardHeader>
-            <CardBody className="content-start">
+            <CardBody className="content-start overflow-hidden">
                 <Table
                     aria-label="table of items"
 
@@ -167,6 +167,10 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
 
                     isHeaderSticky
                     removeWrapper
+                    className="overflow-auto"
+                    classNames={{
+                        thead: "[&>tr]:first:shadow-none"
+                    }}
                 >
                     <TableHeader columns={columns}>
                         {(column) => (
@@ -543,8 +547,8 @@ const TopContent = (props: TopContentPropsType) => {
     const {mutate, error, enableTrashBox, showTrashBox, setShowTrashBox} = props
 
     return (
-        <div className="w-full flex flex-col gap-2">
-            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden empty:hidden">
+        <div className="w-full flex flex-col p-3 pb-0">
+            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden pb-3 empty:hidden">
                 {!!error && (
                     <div className="text-danger font-light text-sm flex gap-1 empty:hidden">
                         <b>خطا در دریافت: </b>
@@ -552,7 +556,7 @@ const TopContent = (props: TopContentPropsType) => {
                     </div>
                 )}
             </div>
-            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden">
+            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden pb-3">
                 <div className="flex flex-row justify-center items-center gap-2">
                     <Dropdown
                         backdrop="blur"

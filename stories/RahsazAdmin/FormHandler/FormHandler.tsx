@@ -110,42 +110,13 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     }
 
 
-    // =========================================================================================================> separate this
-
-
-    const getAddress = async () => {
-        // @ts-ignore
-        const location = watch("location") as any
-        if (!location) return
-
-        const params = {lat: location.latitude, lng: location.longitude}
-        const data = await axios.get("neshan/getAddress", {params})
-        // @ts-ignore
-        setValue("address", data.address)
-        // @ts-ignore
-        setValue("country", data.countryId || "")
-        // @ts-ignore
-        setValue("province", data.provinceId || "")
-        // @ts-ignore
-        setValue("city", data.cityId || "")
-    }
-    useEffect(() => {
-        getAddress()
-        // @ts-ignore
-    }, [watch("location")]);
-
-    // =========================================================================================================> separate this
-
-
-
-
     if (!fields) return (
         <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
             برای این فرم هیچ فیلدی تعریف نشده است
         </div>
     )
 
-    const f = fields(watch)
+    const f = fields(watch, setValue)
 
 
     return (
@@ -157,6 +128,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                         <r.render key={idx} {...contentProps}>
                             <FormFieldsGenerator
                                 control={control}
+                                watch={watch}
                                 fields={f?.filter(({name}) => (r.fields.includes(name)))}
                             />
                         </r.render>
@@ -166,6 +138,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                 <BuiltInContent<T> {...contentProps}>
                     <FormFieldsGenerator
                         control={control}
+                        watch={watch}
                         fields={f}
                     />
                 </BuiltInContent>

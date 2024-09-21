@@ -7,13 +7,13 @@ import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
-import {Control, FieldValues, UseFormWatch} from "react-hook-form";
-import React, {ReactNode, useState} from "react";
+import {Control, FieldValues, UseFormSetValue, UseFormWatch} from "react-hook-form";
+import React, {ReactNode, useEffect, useState} from "react";
 import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
-    const {fields, control} = props
+    const {fields, control, watch} = props
 
     if (!fields?.length) return (
         <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
@@ -24,9 +24,10 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
     return <>
         {fields.map((field) => {
+            let Field: ReactNode = undefined
             switch (field.type) {
                 case "input":
-                    return (
+                    Field = (
                         <MinorInput
                             key={field.name}
                             control={control}
@@ -50,8 +51,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             isLtr={field.isLtr}
                         />
                     )
+                    break
                 case "select":
-                    return (
+                    Field = (
                         <MinorSelect
                             key={field.name}
                             control={control}
@@ -74,8 +76,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             isSearchable={field.isSearchable}
                         />
                     )
+                    break
                 case "switch":
-                    return (
+                    Field = (
                         <MinorSwitch
                             key={field.name}
                             control={control}
@@ -89,8 +92,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
                         />
                     )
+                    break
                 case "radioBox":
-                    return (
+                    Field = (
                         <MinorRadioBox
                             key={field.name}
                             control={control}
@@ -108,8 +112,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
                         />
                     )
+                    break
                 case "checkBox":
-                    return (
+                    Field = (
                         <MinorCheckBox
                             key={field.name}
                             control={control}
@@ -129,8 +134,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
                         />
                     )
+                    break
                 case "location":
-                    return (
+                    Field = (
                         <MinorChooseLocation
                             key={field.name}
                             control={control}
@@ -143,8 +149,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             description={field.description}
                         />
                     )
+                    break
                 case "iconLibrary":
-                    return (
+                    Field = (
                         <MinorIconLibrary
                             key={field.name}
                             control={control}
@@ -158,17 +165,47 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                             description={field.description}
                         />
                     )
+                    break
                 default:
-                    return (
+                    Field = (
                         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
                             {field.type} :
                             این نوع فیلد تعریف نشده است
                         </div>
                     )
+                    break
             }
+            return (
+                <FormGroup key={field.name} name={field.name} dependency={field.dependency} watch={watch}>
+                    {Field}
+                </FormGroup>
+            )
         })}
+
     </>
 
+}
+
+
+type FormGroupProps = {
+    children?: ReactNode;
+    name: string;
+    dependency?: () => void;
+    watch: UseFormWatch<any>;
+}
+
+const FormGroup = (props: FormGroupProps) => {
+
+    const {children, name, dependency, watch} = props
+    useEffect(() => {
+        if (dependency && watch(name)) dependency()
+    }, [watch(name)]);
+
+    return (
+        <>
+            {children}
+        </>
+    )
 }
 
 
@@ -179,6 +216,7 @@ type FromFieldTypeCommon = {
     isDisabled?: boolean;
     isReadOnly?: boolean;
     className?: string;
+    dependency?: () => void;
 }
 
 
@@ -256,13 +294,14 @@ export type FormFieldType =
 
 
 // @ts-ignore
-export type FormFieldFunc<T> = (watch: UseFormWatch<T>) => FormFieldType[]
+export type FormFieldFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValue<T>) => FormFieldType[]
 
 
 type FormFieldsGeneratorPropsType = {
     fields?: FormFieldType[];
     control: Control<any, any>;
+    watch: UseFormWatch<any>;
 }
-export type FormFieldsGeneratorType = ({fields, control}: FormFieldsGeneratorPropsType) => JSX.Element | null
+export type FormFieldsGeneratorType = (props: FormFieldsGeneratorPropsType) => JSX.Element | null
 
 

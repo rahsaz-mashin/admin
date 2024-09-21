@@ -85,7 +85,7 @@ const tableColumns: ColumnType<T>[] = [
         minWidth: 240,
         render: (value, ctx) => {
             return (
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center truncate">
                     <span>{ctx.province?.country?.title}</span>
                     <span>/</span>
                     <span>{ctx.province?.title}</span>

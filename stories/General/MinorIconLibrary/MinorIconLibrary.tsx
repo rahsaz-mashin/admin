@@ -77,7 +77,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
 
         value: (field.value === undefined || field.value === null) ? "none" : String(field.value),
         onChange: (e: any) => {
-            field.onChange({target: {value: (e.target.value !== "none" ? e.target.value : undefined)}})
+            field.onChange(e.target.value !== "none" ? e.target.value : undefined)
         },
         onBlur: field.onBlur,
         name: field.name,
