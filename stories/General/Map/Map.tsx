@@ -29,7 +29,7 @@ export type MapProps = {
     isReadOnly?: boolean;
 }
 
-const defaultPosition = {latitude: 36.2612469, longitude: 59.6004759}
+const defaultPosition = {latitude: 35.700153, longitude: 51.338378}
 export const MapContainer = (props: MapProps) => {
 
     const _val = props.position || defaultPosition
