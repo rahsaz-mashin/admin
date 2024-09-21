@@ -57,7 +57,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "phone",
             type: "input",
-            label: "شماره",
+            label: "شماره تماس",
             isRequired: true,
             isNumeric: true,
             pattern: "### #### ####",
@@ -78,11 +78,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 const data: any = await axios.get("neshan/getAddress", {params})
 
                 setValue("address", data.address)
-
                 setValue("country", data.countryId || "")
-
                 setValue("province", data.provinceId || "")
-
                 setValue("city", data.cityId || "")
             }
         },
@@ -161,8 +158,8 @@ const tableColumns: ColumnType<T>[] = [
         key: "actions",
         title: "ابزارها",
         align: "center",
-        width: "500",
-        minWidth: "500",
+        width: 120,
+        minWidth: 120,
         toolsCell: {
             editable: true,
             removable: true,
@@ -171,28 +168,30 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "id",
         title: "شناسه",
+        align: "center",
         width: 100,
+        minWidth: 100,
+        allowsSorting: true,
     },
     {
         key: "title",
         title: "عنوان",
-        width: "500",
-        minWidth: "500",
+        width: 160,
+        minWidth: 160,
     },
     {
         key: "phone",
-        title: "شماره",
-        width: "500",
-        minWidth: "500",
+        title: "شماره تماس",
+        width: 120,
+        minWidth: 120,
         render: (value, ctx, id) => {
-            return <div dir="ltr">{ctx.phone}</div>
+            return <div dir="ltr">{value}</div>
         }
     },
     {
         key: "description",
         title: "توضیحات",
-        width: "500",
-        minWidth: "500",
+        minWidth: 150,
     },
 ]
 
