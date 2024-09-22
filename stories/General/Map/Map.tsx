@@ -1,6 +1,6 @@
 "use client"
 
-import React, {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
+import React, {forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState} from "react";
 import NeshanMap, {NeshanMapRef} from "@neshan-maps-platform/react-openlayers";
 import {Map} from "@neshan-maps-platform/ol"
 import {AutocompleteItem, Button} from "@nextui-org/react";
@@ -32,6 +32,7 @@ export type MapProps = {
 const defaultPosition = {latitude: 35.700153, longitude: 51.338378}
 export const MapContainer = (props: MapProps) => {
 
+
     const _val = props.position || defaultPosition
 
 
@@ -52,8 +53,16 @@ export const MapContainer = (props: MapProps) => {
     }, [Object.values(_val).join(",")]);
 
 
+    const count = useRef(0)
+    const havePosition = useRef(!!props.position)
+
+    useEffect(() => {
+        havePosition.current = !!props.position
+    }, [props.position ? Object.values(props.position).join(",") : undefined]);
 
     const onMoveEnd = () => {
+        count.current++
+
         const view = mapRef.current?.map?.getView();
         const _center = view?.getCenter()!
         const _zoom = view?.getZoom()!
@@ -68,7 +77,12 @@ export const MapContainer = (props: MapProps) => {
         const __zoom = toFixed(_zoom, 3)
         setPosition(__position)
         setZoom(__zoom)
-        if (props?.onChange) props.onChange(__position)
+
+        if (count.current > 2 || (!havePosition.current && count.current > 1)) setValue(__position)
+    }
+
+    const setValue = (position: Position) => {
+        if (props?.onChange) props.onChange(position)
     }
 
 
@@ -77,7 +91,6 @@ export const MapContainer = (props: MapProps) => {
     then reverse it
      */
     const goTo = (coordinate: Coordinate) => {
-
         coordinate = coordinate.reverse()
         mapRef.current?.map?.getView().setCenter(fromLonLat(coordinate))
     }
@@ -103,7 +116,7 @@ export const MapContainer = (props: MapProps) => {
                 ref={currentLocationRef}
                 goTo={goTo}
             />
-            {props.withSearchBox && (
+            {position && props.withSearchBox && (
                 <SearchMap
                     position={position}
                     goTo={goTo}

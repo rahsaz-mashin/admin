@@ -110,6 +110,14 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     }
 
 
+    // useEffect(() => {
+    //     alert("ch")
+    //     // @ts-ignore
+    //     alert(watch("location"))
+    //     // alert(JSON.stringify(formState.))
+    //     // @ts-ignore
+    // }, [watch("location")]);
+
     if (!fields) return (
         <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
             برای این فرم هیچ فیلدی تعریف نشده است
@@ -117,6 +125,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     )
 
     const f = fields(watch, setValue)
+
 
 
     return (
@@ -128,7 +137,6 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                         <r.render key={idx} {...contentProps}>
                             <FormFieldsGenerator
                                 control={control}
-                                watch={watch}
                                 fields={f?.filter(({name}) => (r.fields.includes(name)))}
                             />
                         </r.render>
@@ -138,7 +146,6 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                 <BuiltInContent<T> {...contentProps}>
                     <FormFieldsGenerator
                         control={control}
-                        watch={watch}
                         fields={f}
                     />
                 </BuiltInContent>

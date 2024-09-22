@@ -7,13 +7,13 @@ import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
-import {Control, FieldValues, UseFormSetValue, UseFormWatch} from "react-hook-form";
+import {Control, FieldValues, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import React, {ReactNode, useEffect, useState} from "react";
 import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
-    const {fields, control, watch} = props
+    const {fields, control} = props
 
     if (!fields?.length) return (
         <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
@@ -176,7 +176,12 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                     break
             }
             return (
-                <FormGroup key={field.name} name={field.name} dependency={field.dependency} watch={watch}>
+                <FormGroup
+                    key={field.name}
+                    name={field.name}
+                    dependency={field.dependency}
+                    control={control}
+                >
                     {Field}
                 </FormGroup>
             )
@@ -191,15 +196,31 @@ type FormGroupProps = {
     children?: ReactNode;
     name: string;
     dependency?: () => void;
-    watch: UseFormWatch<any>;
+    control: Control<any, any>;
 }
 
 const FormGroup = (props: FormGroupProps) => {
 
-    const {children, name, dependency, watch} = props
+    const {
+        children,
+        name,
+        dependency,
+        control,
+    } = props
+
+    const {
+        field,
+        fieldState,
+        formState,
+    } = useController({name, control})
+
+
+
     useEffect(() => {
-        if (dependency && watch(name)) dependency()
-    }, [watch(name)]);
+        if (dependency && field.value && formState.defaultValues?.[field.name] !== field.value) {
+            dependency()
+        }
+    }, [field.value]);
 
     return (
         <>
@@ -300,7 +321,6 @@ export type FormFieldFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValu
 type FormFieldsGeneratorPropsType = {
     fields?: FormFieldType[];
     control: Control<any, any>;
-    watch: UseFormWatch<any>;
 }
 export type FormFieldsGeneratorType = (props: FormFieldsGeneratorPropsType) => JSX.Element | null
 

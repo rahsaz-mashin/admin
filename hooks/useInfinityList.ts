@@ -50,7 +50,6 @@ const useInfinityList = (props: UseInfinityListProps) => {
                 await new Promise((resolve) => setTimeout(resolve, delay));
             }
 
-            console.log(page)
             let _filter: {[key: string]: string} = {}
             Object.keys(filter).map((v, i) => {
                 if(filter[v]) _filter[v] = filter[v]

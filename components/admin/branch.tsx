@@ -38,7 +38,7 @@ const formSchema = z.object({
         .or(z.number({message: "شهر معتبر نیست"}).int({message: "شهر معتبر نیست"}).positive({message: "شهر معتبر نیست"}))
         .transform(Number),
     address: z.string({message: "آدرس را وارد کنید"}).min(5, "آدرس معتبر نیست"),
-    location: z.string().regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/, {message: "موقعیت مکانی نامعتبر می باشد"}),
+    location: z.string({message: "موقعیت مکانی را انتخاب کنید"}).regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/, {message: "موقعیت مکانی نامعتبر می باشد"}),
     zipCode: z.string({message: "کد پستی را وارد کنید"}).regex(/[0-9]{10}/, "کد پستی وارد شده معتبر نیست").or(z.string().length(0)),
     postBox: z.string({message: "صندوق پستی را وارد کنید"}).regex(/[0-9]{10}/, "صندوق پستی وارد شده معتبر نیست").or(z.string().length(0)),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد"),
@@ -72,6 +72,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 const axios = axiosCoreWithAuth()
 
                 const location = watch("location")
+
                 if (!location) return
 
                 const params = {location}

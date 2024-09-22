@@ -10,6 +10,8 @@ export interface Branch {
     phone: string;
     description: string;
 
+    // logo?: string;
+
     country?: AddressCountry | null;
     province?: AddressProvince | null;
     city?: AddressCity | null;
