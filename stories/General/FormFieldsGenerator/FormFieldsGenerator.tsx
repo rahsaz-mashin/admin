@@ -10,6 +10,7 @@ import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
 import {Control, FieldValues, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import React, {ReactNode, useEffect, useState} from "react";
 import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
+import {MinorUploader} from "@/stories/General/MinorUploader";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -166,6 +167,22 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         />
                     )
                     break
+                case "uploader":
+                    Field = (
+                        <MinorUploader
+                            key={field.name}
+                            control={control}
+                            className={field.className}
+
+                            name={field.name}
+                            label={field.label}
+                            isRequired={field.isRequired}
+                            isDisabled={field.isDisabled}
+                            isReadOnly={field.isReadOnly}
+                            description={field.description}
+                        />
+                    )
+                    break
                 default:
                     Field = (
                         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
@@ -213,7 +230,6 @@ const FormGroup = (props: FormGroupProps) => {
         fieldState,
         formState,
     } = useController({name, control})
-
 
 
     useEffect(() => {
@@ -306,12 +322,27 @@ type FromFieldTypeIconLibrary = {
 
 type FromFieldTypeUploader = {
     type: "uploader";
+    isRequired?: boolean;
+}
+
+type FromFieldTypeOther = {
+    type: "other";
 }
 
 
 export type FormFieldType =
     FromFieldTypeCommon &
-    (FromFieldTypeInput | FromFieldTypeSelect | FromFieldTypeRadioBox | FromFieldTypeCheckBox | FromFieldTypeSwitch | FromFieldTypeLocation | FromFieldTypeIconLibrary | FromFieldTypeUploader)
+    (
+        FromFieldTypeInput |
+        FromFieldTypeSelect |
+        FromFieldTypeRadioBox |
+        FromFieldTypeCheckBox |
+        FromFieldTypeSwitch |
+        FromFieldTypeLocation |
+        FromFieldTypeIconLibrary |
+        FromFieldTypeUploader |
+        FromFieldTypeOther
+        )
 
 
 // @ts-ignore

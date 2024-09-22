@@ -64,10 +64,18 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
         },
         {
+            name: "phone",
+            type: "uploader",
+            label: "آپلود تصاویر",
+            isRequired: true,
+            className: "col-span-full xl:col-span-1",
+            description: "تا حجم 2 مگابایت"
+        },
+        {
             name: "location",
             type: "location",
             label: "موقعیت مکانی",
-            className: "col-span-full",
+            className: "col-span-full xl:col-span-1",
             dependency: async () => {
                 const axios = axiosCoreWithAuth()
 

@@ -1,0 +1,1 @@
+export { MinorUploader } from "./MinorUploader";
