@@ -57,7 +57,6 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     } = props
 
 
-
     const {
         field,
         fieldState,
@@ -108,8 +107,6 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     }, [])
 
 
-
-
     const {
         getRootProps,
         getInputProps,
@@ -147,6 +144,9 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                 data-dragged={isDragActive || undefined}
                 data-isactive={(!isDisabled && !isReadOnly) || undefined}
             >
+                {"ac:" + isDragAccept}/
+                {"rj:" + isDragReject}/
+                {"active:" + isDragActive}/
                 <div
                     className="cursor-pointer group-data-[dragged]:z-[99999999] h-full p-6 flex justify-center bg-white border-2 transition duration-500 group-data-[isactive]:group-hover:bg-primary/10 group-data-[isactive]:group-hover:border-primary group-data-[dragged]:border-primary border-dashed border-gray-300 rounded-xl"
                 >
@@ -177,6 +177,17 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                                 />
                             </svg>
                         </span>
+
+                        {isDragReject && (
+                            <div className="text-danger">
+                                فایل مورد قبول نیست
+                            </div>
+                        )}
+                        {isDragAccept && (
+                            <div className="text-success">
+                                فایل مورد قبول هست
+                            </div>
+                        )}
 
                         <div
                             className="group-data-[dragged]:scale-0 overflow-hidden flex flex-col justify-center items-center transition"
@@ -246,10 +257,8 @@ export const MinorUploader = (props: MinorUploaderProps) => {
 };
 
 
-type UploaderPreviewPropsType = {
-
-}
-const UploaderPreview = (props : UploaderPreviewPropsType) => {
+type UploaderPreviewPropsType = {}
+const UploaderPreview = (props: UploaderPreviewPropsType) => {
 
     return (
         <div className="">

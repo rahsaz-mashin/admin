@@ -71,6 +71,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             description: "تا حجم 2 مگابایت",
             isDisabled: false,
+
             accept: {
                 'image/png': ['.png'],
                 'text/html': ['.html', '.htm'],
@@ -78,6 +79,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             minSize: 1000,
             maxFiles: 1,
             isMultiple: true,
+
+
             url: "upload"
         },
         {
