@@ -1,16 +1,16 @@
 import React, {ReactNode, useCallback} from "react";
 import {Control, useController} from "react-hook-form";
-import {Button} from "@nextui-org/react";
-import {Accept, DropEvent, FileRejection, useDropzone} from "react-dropzone";
-import {toast} from "@/lib/toast";
+import {Button, Modal, ModalContent} from "@nextui-org/react";
+import {useDropzone} from "react-dropzone";
 
 
-export type MinorUploaderProps = {
+export type FileManagerProps = {
     name: string;
     control: Control<any, any>;
 
     label?: string;
 
+    isRequired?: boolean;
     isDisabled?: boolean;
     isReadOnly?: boolean;
 
@@ -19,19 +19,10 @@ export type MinorUploaderProps = {
     isInvalid?: boolean;
 
     className?: string;
-
-
-    url: string;
-
-    accept?: Accept;
-    isMultiple?: boolean;
-    minSize?: number;
-    maxSize?: number;
-    maxFiles?: number;
 }
 
 
-export const MinorUploader = (props: MinorUploaderProps) => {
+export const FileManager = (props: FileManagerProps) => {
     const {
         name,
         control,
@@ -46,113 +37,19 @@ export const MinorUploader = (props: MinorUploaderProps) => {
         isInvalid,
 
         className = "",
-
-        url,
-
-        accept,
-        isMultiple,
-        minSize,
-        maxSize,
-        maxFiles,
     } = props
 
 
-
-    const {
-        field,
-        fieldState,
-        formState,
-    } = useController({name, control})
-
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        acceptedFiles.forEach((file) => {
-            const reader = new FileReader()
-            reader.onabort = () => {
-                toast.error("خواندن فایل متوقف شد")
-            }
-            reader.onerror = () => {
-                toast.error("خواندن فایل با خطا مواجه شد")
-            }
-            reader.onload = () => {
-                // Do whatever you want with the file contents
-                const binaryStr = reader.result
-                console.log(binaryStr)
-            }
-            reader.readAsArrayBuffer(file)
-        })
-    }, [])
-
-
-    const onError = useCallback((error: Error) => {
-        toast.error("خطا رخ داده")
-        toast.error(JSON.stringify(error))
-    }, [])
-
-
-    const onDropAccepted = useCallback((files: File[], event: DropEvent) => {
-        toast.info("دراپ اکسپت شد")
-    }, [])
-
-
-    const onDropRejected = useCallback((fileRejections: FileRejection[], event: DropEvent) => {
-        toast.info("دراپ ریجکت شد")
-    }, [])
-
-
-    const onFileDialogOpen = useCallback(() => {
-        toast.info("فایل منیجر باز شد")
-    }, [])
-
-    const onFileDialogCancel = useCallback(() => {
-        toast.info("فایل منیجر کنسل شد")
-    }, [])
-
-
-
-
-    const {
-        getRootProps,
-        getInputProps,
-        isDragActive,
-        open,
-        acceptedFiles,
-        fileRejections,
-        isDragAccept,
-        isDragReject,
-    } = useDropzone({
-        onDrop,
-        onError,
-        onDropAccepted,
-        onDropRejected,
-        onFileDialogOpen,
-        onFileDialogCancel,
-        disabled: isDisabled || isReadOnly,
-        accept,
-        minSize,
-        maxSize,
-        maxFiles,
-        multiple: isMultiple,
-
-    })
-
-
-    const hasHelper = !!description || isInvalid || fieldState.invalid
 
     return (
         <>
             <div
                 className={"relative h-full group flex flex-col gap-2 justify-center " + className}
-                {...getRootProps()}
-                data-has-helper={hasHelper}
-                data-dragged={isDragActive || undefined}
-                data-isactive={(!isDisabled && !isReadOnly) || undefined}
             >
                 <div
-                    className="cursor-pointer group-data-[dragged]:z-[99999999] h-full p-6 flex justify-center bg-white border-2 transition duration-500 group-data-[isactive]:group-hover:bg-primary/10 group-data-[isactive]:group-hover:border-primary group-data-[dragged]:border-primary border-dashed border-gray-300 rounded-xl"
+                    className="cursor-pointer group-data-[dragged]:z-[99999999] h-full p-6 flex justify-center bg-white border-2 transition duration-500 group-hover:bg-primary/10 group-hover:border-primary group-data-[dragged]:border-primary border-dashed border-gray-300 rounded-xl"
                 >
                     <div className="flex justify-center items-center flex-col w-full h-full">
-
-
                         <span
                             className="absolute inline-flex justify-center items-center scale-0 group-data-[dragged]:scale-100 transition duration-500 text-primary"
                         >
@@ -182,7 +79,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                             className="group-data-[dragged]:scale-0 overflow-hidden flex flex-col justify-center items-center transition"
                         >
                              <span
-                                 className="inline-flex justify-center items-center transition duration-500 group-data-[isactive]:group-hover:text-primary text-gray-700"
+                                 className="inline-flex justify-center items-center transition duration-500 group-hover:text-primary text-gray-700"
                              >
                                 <svg
                                     width="36"
@@ -208,52 +105,12 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                             <div
                                 className="mt-4 flex flex-wrap justify-center items-center text-sm leading-6 text-gray-600"
                             >
-                                <span className="pe-1 font-medium text-gray-800 dark:text-neutral-200">
-                                  فایل(ها) را اینجا رها کنید یا
-                                </span>
-                                <Button
-                                    variant="light"
-                                    color="secondary"
-                                    size="sm"
-                                    onPress={open}
-                                >
-                                    کلیک کنید
-                                </Button>
-                            </div>
-                            <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
-                                {!!description && (
-                                    <div className="text-tiny text-foreground-400">
-                                        {description}
-                                    </div>
-                                )}
-                                {!!errorMessage || fieldState.error?.message && (
-                                    <div className="text-tiny text-danger">
-                                        {errorMessage || fieldState.error?.message}
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
-                    <input {...getInputProps()}/>
                 </div>
-                <div
-                    className="group-data-[dragged]:block hidden z-[9999999] fixed backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen inset-0"
-                />
-
             </div>
         </>
     )
 };
 
-
-type UploaderPreviewPropsType = {
-
-}
-const UploaderPreview = (props : UploaderPreviewPropsType) => {
-
-    return (
-        <div className="">
-
-        </div>
-    )
-}

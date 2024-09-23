@@ -64,12 +64,21 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
         },
         {
-            name: "phone",
+            name: "pictures",
             type: "uploader",
             label: "آپلود تصاویر",
             isRequired: true,
             className: "col-span-full xl:col-span-1",
-            description: "تا حجم 2 مگابایت"
+            description: "تا حجم 2 مگابایت",
+            isDisabled: false,
+            accept: {
+                'image/png': ['.png'],
+                'text/html': ['.html', '.htm'],
+            },
+            minSize: 1000,
+            maxFiles: 1,
+            isMultiple: true,
+            url: "upload"
         },
         {
             name: "location",
@@ -86,10 +95,10 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 const params = {location}
                 const data: any = await axios.get("neshan/getAddress", {params})
 
-                setValue("address", data.address)
-                setValue("country", data.countryId || "")
-                setValue("province", data.provinceId || "")
-                setValue("city", data.cityId || "")
+                setValue("address", data.address, {shouldValidate: true})
+                setValue("country", data.countryId || "", {shouldValidate: true})
+                setValue("province", data.provinceId || "", {shouldValidate: true})
+                setValue("city", data.cityId || "", {shouldValidate: true})
             }
         },
         {

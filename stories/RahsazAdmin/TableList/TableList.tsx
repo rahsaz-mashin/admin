@@ -169,7 +169,8 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                     removeWrapper
                     className="overflow-auto"
                     classNames={{
-                        thead: "[&>tr]:first:shadow-none"
+                        thead: "[&>tr]:first:shadow-none",
+                        td: "group-data-[isdeleted]:bg-red-100 group-data-[isediting]:bg-green-100",
                     }}
                 >
                     <TableHeader columns={columns}>
@@ -197,33 +198,34 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                         {(item) => {
                             const id = getKeyValue(item, "id")
                             const isDeleted = !!getKeyValue(item, "deletedAt")
+                            const isEditing = (editingId === String(id))
                             return (
                                 <TableRow
                                     key={id}
-                                    className={isDeleted ? "bg-red-100" : (editingId === id + "") ? "bg-green-100" : undefined}
+                                    data-isdeleted={isDeleted || undefined}
+                                    data-isediting={isEditing || undefined}
                                 >
                                     {(columnKey) => {
                                         const toolsCell = columns?.find(({key}) => (key === columnKey))?.toolsCell
                                         const render = columns?.find(({key}) => (key === columnKey))?.render
                                         const value = getKeyValue(item, columnKey)
-                                        if (toolsCell !== undefined) {
-                                            return (
-                                                <TableCell>
-                                                    <ToolsCell<T>
-                                                        id={id}
-                                                        item={item}
-                                                        options={toolsCell}
-                                                        apiRoute={apiRoute}
-                                                        refresh={refresh}
-                                                        enableTrashBox={enableTrashBox}
-                                                        formRef={formRef}
-                                                    />
-                                                </TableCell>
-                                            )
-                                        }
                                         return (
                                             <TableCell>
-                                                {render ? render(value, item, id) : value}
+                                                {
+                                                    (toolsCell !== undefined)
+                                                        ?
+                                                        <ToolsCell<T>
+                                                            id={id}
+                                                            item={item}
+                                                            options={toolsCell}
+                                                            apiRoute={apiRoute}
+                                                            refresh={refresh}
+                                                            enableTrashBox={enableTrashBox}
+                                                            formRef={formRef}
+                                                        />
+                                                        :
+                                                        render ? render(value, item, id) : value
+                                                }
                                             </TableCell>
                                         )
                                     }}
@@ -258,7 +260,7 @@ type ToolsCellPropsType<T> = {
     options: ToolsCellType<T>;
     refresh: () => void;
 
-    enableTrashBox?: boolean;
+    enableTrashBox: boolean;
     formRef?: React.MutableRefObject<FormHandlerRefType | undefined>;
 }
 
@@ -313,6 +315,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                     state={deleteModal}
                     apiRoute={apiRoute}
                     refresh={refresh}
+                    enableTrashBox={enableTrashBox}
                 />
             </div>
         )
@@ -391,7 +394,7 @@ type DeleteModalPropsType = {
     apiRoute: string;
     refresh: () => void;
 
-    enableTrashBox?: boolean;
+    enableTrashBox: boolean;
 }
 
 
@@ -448,7 +451,7 @@ const DeleteModal = <T, >(props: DeleteModalPropsType) => {
             <ModalContent>
                 {!isLoading && (
                     <ModalHeader>
-                        {(isDeleted || enableTrashBox) ? "حذف همیشگی" : "حذف"}
+                        {(isDeleted || !enableTrashBox) ? "حذف همیشگی" : "حذف"}
                     </ModalHeader>
                 )}
                 <ModalBody className="relative">
@@ -548,7 +551,8 @@ const TopContent = (props: TopContentPropsType) => {
 
     return (
         <div className="w-full flex flex-col p-3 pb-0">
-            <div className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden pb-3 empty:hidden">
+            <div
+                className="w-full flex flex-row justify-between items-center gap-2 overflow-y-hidden pb-3 empty:hidden">
                 {!!error && (
                     <div className="text-danger font-light text-sm flex gap-1 empty:hidden">
                         <b>خطا در دریافت: </b>

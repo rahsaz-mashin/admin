@@ -11,6 +11,7 @@ import {Control, FieldValues, useController, UseFormSetValue, UseFormWatch} from
 import React, {ReactNode, useEffect, useState} from "react";
 import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 import {MinorUploader} from "@/stories/General/MinorUploader";
+import {Accept} from "react-dropzone";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -176,10 +177,17 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
                             name={field.name}
                             label={field.label}
-                            isRequired={field.isRequired}
                             isDisabled={field.isDisabled}
                             isReadOnly={field.isReadOnly}
                             description={field.description}
+
+
+                            url={field.url}
+                            isMultiple={field.isMultiple}
+                            accept={field.accept}
+                            minSize={field.minSize}
+                            maxSize={field.maxSize}
+                            maxFiles={field.maxFiles}
                         />
                     )
                     break
@@ -322,7 +330,12 @@ type FromFieldTypeIconLibrary = {
 
 type FromFieldTypeUploader = {
     type: "uploader";
-    isRequired?: boolean;
+    url: string;
+    accept?: Accept;
+    isMultiple?: boolean;
+    minSize?: number;
+    maxSize?: number;
+    maxFiles?: number;
 }
 
 type FromFieldTypeOther = {
