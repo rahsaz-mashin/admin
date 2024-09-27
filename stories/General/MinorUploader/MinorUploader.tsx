@@ -454,33 +454,43 @@ const UploaderPreviewItem = (props: UploaderPreviewItemPropsType) => {
 
     let icon: ReactNode
     let color: string
+    let bg: string
 
     if (mimetype.includes("image")) {
         icon = <MimetypeImageIcon/>
+        bg = "bg-[#FFA500]"
         color = "border-[#FFA500] bg-[#FFA500] hover:text-[#FFA500]"
     } else if (mimetype.includes("audio")) {
         icon = <MimetypeAudioIcon/>
+        bg = "bg-[#008080]"
         color = "border-[#008080] bg-[#008080] hover:text-[#008080]"
     } else if (mimetype.includes("video")) {
         icon = <MimetypeVideoIcon/>
+        bg = "bg-[#1E90FF]"
         color = "border-[#1E90FF] bg-[#1E90FF] hover:text-[#1E90FF]"
     } else if (mimetype.includes("pdf")) {
         icon = <MimetypePdfIcon/>
+        bg = "bg-[#FA0F00]"
         color = "border-[#FA0F00] bg-[#FA0F00] hover:text-[#FA0F00]"
     } else if (mimetype.includes("zip") || mimetype.includes("vnd.rar")) {
         icon = <MimetypeZipIcon/>
+        bg = "bg-[#800080]"
         color = "border-[#800080] bg-[#800080] hover:text-[#800080]"
     } else if (mimetype.includes("msword") || mimetype.includes("vnd.openxmlformats-officedocument.wordprocessingml.document")) {
         icon = <MimetypeWordIcon/>
+        bg = "bg-[#2B7CD3]"
         color = "border-[#2B7CD3] bg-[#2B7CD3] hover:text-[#2B7CD3]"
     } else if (mimetype.includes("vnd.ms-excel") || mimetype.includes("vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
         icon = <MimetypeExcelIcon/>
+        bg = "bg-[#217346]"
         color = "border-[#217346] bg-[#217346] hover:text-[#217346]"
     } else if (mimetype.includes("vnd.ms-powerpoint") || mimetype.includes("vnd.openxmlformats-officedocument.presentationml.presentation")) {
         icon = <MimetypePresentationIcon/>
+        bg = "bg-[#ED6C47]"
         color = "border-[#ED6C47] bg-[#ED6C47] hover:text-[#ED6C47]"
     } else {
         icon = <MimetypeOtherIcon/>
+        bg = "bg-[#708090]"
         color = "border-[#708090] bg-[#708090] hover:text-[#708090]"
     }
 
@@ -488,7 +498,7 @@ const UploaderPreviewItem = (props: UploaderPreviewItemPropsType) => {
     return (
         <div
             title={title}
-            className={`relative border group/item hover:scale-105 text-white hover:bg-white size-[4.5rem] shrink-0 rounded-lg overflow-hidden transition-all duration-500 flex flex-col gap-1 justify-center items-center ${color}`}
+            className={`relative border group/item hover:scale-105 text-white size-20 shrink-0 rounded-lg overflow-hidden transition-all duration-500 flex flex-col gap-1 justify-center items-center ${color}`}
             onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()
@@ -501,8 +511,25 @@ const UploaderPreviewItem = (props: UploaderPreviewItemPropsType) => {
             <span className="group-hover/item:opacity-0 transition-opacity truncate font-light text-xs font-sans">
                 {formatBytes(filesize)}
             </span>
+            {/*<div className={`absolute left-0 w-[20%] h-full z-20 ${bg}`}>*/}
+
+            {/*</div>*/}
+            <div className="absolute w-full h-full">
+                <Image
+                    as={NextImage}
+                    width={100}
+                    height={100}
+                    alt={file.alt}
+                    title={file.title}
+                    src={`${file.system.baseUrl}/${file.path}`}
+                    radius="none"
+                    loading="eager"
+                    className="object-fill !h-full !w-full"
+                    classNames={{wrapper: "h-full w-full"}}
+                />
+            </div>
             <div
-                className="absolute w-full h-full justify-center items-center flex transition-opacity opacity-0 group-hover/item:opacity-100"
+                className="absolute z-30 bg-white w-full h-full justify-center items-center flex transition-opacity opacity-0 group-hover/item:opacity-100"
             >
                 <Tooltip
                     color="foreground"

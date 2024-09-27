@@ -4,6 +4,7 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {Branch} from "@/interfaces/Branch.interface";
 import {axiosCoreWithAuth} from "@/lib/axios";
+import {FileState} from "react-docgen";
 
 
 type T = Branch
@@ -21,19 +22,7 @@ const formInitial: T = {
     zipCode: "",
     postBox: "",
     location: undefined,
-    pictures: [
-        {
-            "id": 74,
-            "title": "Screenshot 2023-12-09 173615.png",
-            "alt": "Screenshot 2023-12-09 173615.png",
-            "filesize": 60050,
-            "mimetype": "image/png",
-            "path": "OY7U4JBJF55DQPRGHRDFWXRENM.png",
-            "system": {
-                "baseUrl": "https://bucket.zl50.ir"
-            }
-        }
-    ]
+    pictures: []
 }
 
 
@@ -43,18 +32,19 @@ const formSchema = z.object({
         .transform((v) => (v.replaceAll(" ", ""))),
     country: z.string({message: "کشور معتبر نیست"}).regex(/^\d+$/, "کشور معتبر نیست")
         .or(z.number({message: "کشور معتبر نیست"}).int({message: "کشور معتبر نیست"}).positive({message: "کشور معتبر نیست"}))
-        .transform(Number),
+        .transform((id) => ({id: +id})),
     province: z.string({message: "استان معتبر نیست"}).regex(/^\d+$/, "استان معتبر نیست")
         .or(z.number({message: "استان معتبر نیست"}).int({message: "استان معتبر نیست"}).positive({message: "استان معتبر نیست"}))
-        .transform(Number),
+        .transform((id) => ({id: +id})),
     city: z.string({message: "شهر معتبر نیست"}).regex(/^\d+$/, "شهر معتبر نیست")
         .or(z.number({message: "شهر معتبر نیست"}).int({message: "شهر معتبر نیست"}).positive({message: "شهر معتبر نیست"}))
-        .transform(Number),
+        .transform((id) => ({id: +id})),
     address: z.string({message: "آدرس را وارد کنید"}).min(5, "آدرس معتبر نیست"),
     location: z.string({message: "موقعیت مکانی را انتخاب کنید"}).regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/, {message: "موقعیت مکانی نامعتبر می باشد"}),
     zipCode: z.string({message: "کد پستی را وارد کنید"}).regex(/[0-9]{10}/, "کد پستی وارد شده معتبر نیست").or(z.string().length(0)),
     postBox: z.string({message: "صندوق پستی را وارد کنید"}).regex(/[0-9]{10}/, "صندوق پستی وارد شده معتبر نیست").or(z.string().length(0)),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد"),
+    pictures: z.object({id: z.number()}).array().optional(),
 });
 
 
