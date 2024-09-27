@@ -4,8 +4,9 @@ import {NumericFormat, PatternFormat} from "react-number-format";
 import {Control, useController} from "react-hook-form";
 import {DateInput, TimeInput} from "@nextui-org/date-input";
 import {TimeValue} from "@react-types/datepicker";
-import {DatePicker, DateRangePicker, DateValue} from "@nextui-org/react";
+import {Button, DatePicker, DateRangePicker, DateValue} from "@nextui-org/react";
 import {I18nProvider} from "@react-aria/i18n";
+import {EyeFilledIcon, EyeSlashFilledIcon} from "@nextui-org/shared-icons";
 
 
 export type MinorInputProps = {
@@ -59,6 +60,9 @@ export type MinorInputProps = {
 
     className?: string;
     classNames?: { [key: string]: string };
+
+    isSecret?: boolean;
+
 }
 
 
@@ -116,6 +120,8 @@ export const MinorInput = (props: MinorInputProps) => {
         className = "",
         classNames,
 
+        isSecret,
+
     } = props
 
 
@@ -126,11 +132,14 @@ export const MinorInput = (props: MinorInputProps) => {
     } = useController({name, control})
 
 
+    const [isVisible, setIsVisible] = React.useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
     const _props = {
         label: label,
         dir: isLtr ? "ltr" : "rtl",
         placeholder: placeholder,
-        type: type,
+        type: isSecret ? isVisible ? "text" : "password" : type,
 
         fullWidth: true,
         size: size || "md",
@@ -299,6 +308,26 @@ export const MinorInput = (props: MinorInputProps) => {
             ref={field.ref}
             className={className}
             classNames={classNames}
+            startContent={isSecret && (
+                <div className="h-full flex justify-center items-end">
+                    <Button
+                        className="focus:outline-none"
+                        variant="light"
+                        radius="full"
+                        size="sm"
+                        isIconOnly
+                        onPress={toggleVisibility}
+                        aria-label="toggle secret visibility"
+                    >
+                        {isVisible
+                            ?
+                            (<EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none"/>)
+                            :
+                            (<EyeFilledIcon className="text-2xl text-default-400 pointer-events-none"/>)
+                        }
+                    </Button>
+                </div>
+            )}
         />
     )
 };

@@ -31,26 +31,11 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                 case "input":
                     Field = (
                         <MinorInput
+
                             key={field.name}
                             control={control}
 
-                            className={field.className}
-                            name={field.name}
-                            label={field.label}
-                            isRequired={field.isRequired}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            placeholder={field.placeholder}
-                            description={field.description}
-
-                            isNumeric={field.isNumeric}
-                            pattern={field.pattern}
-                            allowNegative={field.allowNegative}
-                            decimalScale={field.decimalScale}
-                            isMultiline={field.isMultiline}
-                            rows={field.rows}
-
-                            isLtr={field.isLtr}
+                            {...field}
                         />
                     )
                     break
@@ -59,23 +44,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorSelect
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isRequired={field.isRequired}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            placeholder={field.placeholder}
-                            description={field.description}
-
-                            items={field.items}
-                            isMultiple={field.isMultiple}
-                            isMultiline={field.isMultiline}
-
-                            dynamic={field.dynamic}
-                            withSection={field.withSection}
-                            isSearchable={field.isSearchable}
+                            {...field}
                         />
                     )
                     break
@@ -84,14 +54,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorSwitch
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
-
+                            {...field}
                         />
                     )
                     break
@@ -100,18 +64,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorRadioBox
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isRequired={field.isRequired}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
-
-                            orientation={field.orientation}
-                            items={field.items}
-
+                            {...field}
                         />
                     )
                     break
@@ -120,20 +74,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorCheckBox
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isRequired={field.isRequired}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
-
-                            orientation={field.orientation}
-                            items={field.items}
-
-                            mode={field.mode}
-
+                            {...field}
                         />
                     )
                     break
@@ -142,13 +84,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorChooseLocation
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
+                            {...field}
                         />
                     )
                     break
@@ -157,14 +94,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorIconLibrary
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isRequired={field.isRequired}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
+                            {...field}
                         />
                     )
                     break
@@ -173,21 +104,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <MinorUploader
                             key={field.name}
                             control={control}
-                            className={field.className}
 
-                            name={field.name}
-                            label={field.label}
-                            isDisabled={field.isDisabled}
-                            isReadOnly={field.isReadOnly}
-                            description={field.description}
-
-
-                            url={field.url}
-                            isMultiple={field.isMultiple}
-                            accept={field.accept}
-                            minSize={field.minSize}
-                            maxSize={field.maxSize}
-                            maxFiles={field.maxFiles}
+                            {...field}
                         />
                     )
                     break
@@ -268,6 +186,7 @@ type FromFieldTypeCommon = {
 type FromFieldTypeInput = {
     type: "input";
     isRequired?: boolean;
+    isSecret?: boolean;
     placeholder?: string;
 
     isNumeric?: boolean;
@@ -330,12 +249,12 @@ type FromFieldTypeIconLibrary = {
 
 type FromFieldTypeUploader = {
     type: "uploader";
-    url: string;
     accept?: Accept;
     isMultiple?: boolean;
     minSize?: number;
     maxSize?: number;
     maxFiles?: number;
+    withPreview?: boolean;
 }
 
 type FromFieldTypeOther = {

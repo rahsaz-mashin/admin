@@ -52,19 +52,13 @@ export const MinorSwitch = (props: MinorSwitchProps) => {
 
 
     const _props = {
-        // label: label,
-
         size: size || "md",
         color: color || "primary",
 
         isDisabled: isDisabled,
         isReadOnly: isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting,
 
-        // description: description,
-        // isInvalid: isInvalid || fieldState.invalid,
-        // errorMessage: errorMessage || fieldState.error?.message,
-
-        value: field.value,
+        isSelected: field.value,
         onChange: field.onChange,
         onBlur: field.onBlur,
         name: field.name,

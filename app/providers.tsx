@@ -9,6 +9,7 @@ import {AppProgressBar as ProgressBar} from "next-nprogress-bar";
 import {Suspense} from "react";
 import {SessionProvider} from "next-auth/react";
 import SWRProvider from "@/components/SWRProvider";
+import {FileManagerProvider} from "@/context/fileManager.context";
 
 
 export interface ProvidersProps {
@@ -23,19 +24,21 @@ export function Providers({children, themeProps}: ProvidersProps) {
         <NextUIProvider navigate={router.push}>
             <NextThemesProvider {...themeProps}>
                 <SessionProvider>
-                    <Suspense>
-                        <SWRProvider>
-                            {children}
-                            <ProgressBar
-                                height="3px"
-                                color="#FF921F"
-                                options={{showSpinner: true}}
-                                shallowRouting
-                                stopDelay={500}
-                                disableSameURL={false}
-                            />
-                        </SWRProvider>
-                    </Suspense>
+                    {/*<FileManagerProvider>*/}
+                        <Suspense>
+                            <SWRProvider>
+                                {children}
+                                <ProgressBar
+                                    height="3px"
+                                    color="#FF921F"
+                                    options={{showSpinner: true}}
+                                    shallowRouting
+                                    stopDelay={500}
+                                    disableSameURL={false}
+                                />
+                            </SWRProvider>
+                        </Suspense>
+                    {/*</FileManagerProvider>*/}
                 </SessionProvider>
             </NextThemesProvider>
         </NextUIProvider>

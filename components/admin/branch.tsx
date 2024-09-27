@@ -21,6 +21,19 @@ const formInitial: T = {
     zipCode: "",
     postBox: "",
     location: undefined,
+    pictures: [
+        {
+            "id": 74,
+            "title": "Screenshot 2023-12-09 173615.png",
+            "alt": "Screenshot 2023-12-09 173615.png",
+            "filesize": 60050,
+            "mimetype": "image/png",
+            "path": "OY7U4JBJF55DQPRGHRDFWXRENM.png",
+            "system": {
+                "baseUrl": "https://bucket.zl50.ir"
+            }
+        }
+    ]
 }
 
 
@@ -72,16 +85,15 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             description: "تا حجم 2 مگابایت",
             isDisabled: false,
 
-            accept: {
-                'image/png': ['.png'],
-                'text/html': ['.html', '.htm'],
-            },
+            // accept: {
+            //     'image/png': ['.png'],
+            // },
             minSize: 1000,
-            maxFiles: 1,
+            maxFiles: 0,
             isMultiple: true,
 
 
-            url: "upload"
+            withPreview: true
         },
         {
             name: "location",

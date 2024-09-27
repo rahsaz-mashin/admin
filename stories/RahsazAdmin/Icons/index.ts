@@ -7,6 +7,7 @@ export {Component as OutlineCartIcon} from "./OutlineCart.stories";
 export {Component as OutlineStatisticIcon} from "./OutlineStatistic.stories";
 export {Component as OutlineSettingIcon} from "./OutlineSetting.stories";
 export {Component as OutlineCommunicationIcon} from "./OutlineCommunication.stories";
+export {Component as OutlineLibraryIcon} from "./OutlineLibrary.stories";
 
 export {Component as BoldDuotoneBranchIcon} from "./BoldDuotoneBranch.stories";
 export {Component as BoldDuotoneWarehouseIcon} from "./BoldDuotoneWarehouse.stories";

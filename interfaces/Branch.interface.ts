@@ -2,6 +2,7 @@ import {Account} from "@/interfaces/Account.interface";
 import {AddressCountry} from "@/interfaces/AddressCountry.interface";
 import {AddressProvince} from "@/interfaces/AddressProvince.interface";
 import {AddressCity} from "@/interfaces/AddressCity.interface";
+import {StorageFile} from "@/interfaces/StorageFile.interface";
 
 export interface Branch {
     id?: number;
@@ -10,7 +11,7 @@ export interface Branch {
     phone: string;
     description: string;
 
-    // logo?: string;
+    pictures?: StorageFile[];
 
     country?: AddressCountry | null;
     province?: AddressProvince | null;

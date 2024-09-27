@@ -39,7 +39,7 @@ import {
     DriveFileRenameOutlineOutlined,
     ListOutlined,
     RecyclingOutlined,
-    RefreshOutlined,
+    RefreshOutlined, StarBorderOutlined, StarOutlined,
 } from "@mui/icons-material";
 import {AdminContext} from "@/context/admin.context";
 import {Tooltip} from "@nextui-org/tooltip";
@@ -52,7 +52,7 @@ import {Property} from "csstype";
 
 type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
 
-type ToolsCellType<T> = { editable?: boolean; removable?: boolean; extra?: ColumnRenderType<T>; }
+type ToolsCellType<T> = { editable?: boolean; removable?: boolean; chooseDefault?: boolean; extra?: ColumnRenderType<T>; }
 
 
 export type ColumnType<T> = {
@@ -270,8 +270,21 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
     const adminContext = useContext(AdminContext)
     const deleteModal = useDisclosure({defaultOpen: false});
 
-    // @ts-ignore
-    if (item.deletedAt) {
+    const [isDefaultLoading, setDefaultLoading] = useState(false)
+
+    const axios = axiosCoreWithAuth()
+    const defaultHandler = async () => {
+        if(isDefault) return
+        setDefaultLoading(true)
+        await axios.patch(`${apiRoute}/${id}/default`)
+        setDefaultLoading(false)
+        refresh()
+    }
+
+    const isDefault = getKeyValue(item, "isDefault")
+    const isDeleted = getKeyValue(item, "deletedAt")
+
+    if (isDeleted) {
         return (
             <div className="flex flex-row gap-1 justify-center items-center">
                 <Tooltip
@@ -321,8 +334,33 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
         )
     }
 
+
+
     return (
         <div className="flex flex-row gap-1 justify-center items-center">
+            {!!options?.chooseDefault && (
+                <>
+                    <Tooltip
+                        color={isDefault ? "primary" : "foreground"}
+                        placement="bottom"
+                        showArrow
+                        content={isDefault ? "پیش فرض می باشد!" : "پیش فرض شود؟"}
+                        className="select-none"
+                        radius="sm"
+                    >
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            color="primary"
+                            radius="full"
+                            isLoading={isDefaultLoading}
+                            onPress={defaultHandler}
+                        >
+                            {isDefault ? <StarOutlined/> : <StarBorderOutlined/>}
+                        </Button>
+                    </Tooltip>
+                </>
+            )}
             {!!options?.editable && (
                 <>
                     <Tooltip
@@ -348,7 +386,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                     </Tooltip>
                 </>
             )}
-            {!!options?.removable && (
+            {!isDefault && !!options?.removable && (
                 <>
                     <Tooltip
                         color="foreground"

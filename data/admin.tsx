@@ -27,7 +27,7 @@ import {
     OutlineCartIcon,
     OutlineCommunicationIcon,
     OutlineDashboardIcon,
-    OutlinedUsersGroupIcon,
+    OutlinedUsersGroupIcon, OutlineLibraryIcon,
     OutlineOrderIcon,
     OutlineSettingIcon,
     OutlineStatisticIcon,
@@ -105,6 +105,29 @@ const adminRoutes: AdminMenu[] = [
                 ],
             },
             {
+                key: "file_management",
+                title: "مدیریت فایل",
+                icon: <OutlineLibraryIcon/>,
+                isEnable: true,
+                sub: [
+                    {
+                        key: "storage",
+                        title: "ذخیره سازی",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "systems",
+                                title: "سیستم ها",
+                                icon: <BoldDuotoneSystemIcon size={64}/>,
+                                description: "مشاهده لیست سیستم های ذخیره سازی فایل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
                 key: "communication",
                 title: "ارتباطات",
                 icon: <OutlineCommunicationIcon/>,
@@ -118,7 +141,7 @@ const adminRoutes: AdminMenu[] = [
                         sub: [
                             {
                                 key: "systems",
-                                title: "سیستم های ایمیل",
+                                title: "سیستم ها",
                                 icon: <BoldDuotoneSystemIcon size={64}/>,
                                 description: "مشاهده لیست سیستم های ایمیل، ایجاد و مدیریت آن ها",
                                 isEnable: true,
@@ -132,7 +155,7 @@ const adminRoutes: AdminMenu[] = [
                             },
                             {
                                 key: "addresses",
-                                title: "آدرس های ایمیل",
+                                title: "آدرس ها",
                                 icon: <BoldDuotoneEmailAddressIcon size={64}/>,
                                 description: "مشاهده لیست آدرس های ایمیل، ایجاد و مدیریت آن ها",
                                 isEnable: true,
@@ -155,13 +178,13 @@ const adminRoutes: AdminMenu[] = [
                     },
                     {
                         key: "sms",
-                        title: "تنظیمات پیامک",
+                        title: "پیامک",
                         icon: null,
                         isEnable: true,
                         sub: [
                             {
                                 key: "systems",
-                                title: "سیستم های پیامک",
+                                title: "سیستم ها",
                                 icon: <BoldDuotoneSystemIcon size={64}/>,
                                 description: "مشاهده لیست سیستم های ایمیل، ایجاد و مدیریت آن ها",
                                 isEnable: true,
@@ -191,7 +214,7 @@ const adminRoutes: AdminMenu[] = [
                     },
                     {
                         key: "social",
-                        title: "تنظیمات شبکه های اجتماعی",
+                        title: "شبکه های اجتماعی",
                         icon: null,
                         isEnable: true,
                         sub: [
