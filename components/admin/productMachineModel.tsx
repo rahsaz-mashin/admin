@@ -1,41 +1,51 @@
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {AddressProvince} from "@/interfaces/AddressProvince.interface";
+import {ProductMachineModel} from "@/interfaces/ProductMachineModel.interface";
 
 
-type T = AddressProvince
+
+
+type T = ProductMachineModel
 
 
 const formInitial: T = {
     id: undefined,
     title: "",
+    slug: "",
+    description: "",
+    tags: [],
     icon: undefined,
-    country: undefined,
+    brand: null,
 }
 
 
+
 const formSchema = z.object({
-    country: z.string({message: "کشور معتبر نیست"}).regex(/^\d+$/, "کشور معتبر نیست")
-        .or(z.number({message: "کشور معتبر نیست"}).int({message: "کشور معتبر نیست"}).positive({message: "کشور معتبر نیست"}))
-        .transform(Number),
-    title: z.string().min(3, "نام معتبر نیست"),
+    brand: z.string({message: "برند معتبر نیست"}).regex(/^\d+$/, "برند معتبر نیست")
+        .or(z.number({message: "برند معتبر نیست"}).int({message: "برند معتبر نیست"}).positive({message: "برند معتبر نیست"}))
+        .transform((id) => ({id: +id})),
+    title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
+    slug: z.string({message: "شناسه اینترنتی را وارد کنید"}).min(3, "شناسه اینترنتی معتبر نیست"),
     icon: z.string({message: "آیکون معتبر نیست"}).regex(/^\d+$/, "آیکون معتبر نیست")
         .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
-        .transform(Number)
+        .transform((id) => ({id: +id}))
         .nullable()
         .optional(),
+    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
+    tags: z.string({message: "برچسب ها را وارد کنید"}).transform((tags) => (tags.split(","))),
 });
+
 
 
 const formFields: FormFieldFunc<T> = (watch) => {
     return ([
         {
-            name: "country",
+            name: "brand",
             type: "select",
-            label: "کشور",
+            label: "برند",
             dynamic: {
-                route: "addressCountry/sloStyle",
+                route: "product/machineBrand/sloStyle",
             },
             isRequired: true,
             className: "col-span-full",
@@ -45,7 +55,14 @@ const formFields: FormFieldFunc<T> = (watch) => {
             type: "input",
             label: "عنوان",
             isRequired: true,
-            className: "col-span-full ",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
+            name: "slug",
+            type: "input",
+            label: "شناسه اینترنتی",
+            isRequired: true,
+            className: "col-span-full xl:col-span-1",
         },
         {
             name: "icon",
@@ -53,6 +70,23 @@ const formFields: FormFieldFunc<T> = (watch) => {
             label: "آیکون",
             isRequired: false,
             className: "col-span-full",
+        },
+        {
+            name: "description",
+            type: "input",
+            label: "توضیحات",
+            isRequired: false,
+            isMultiline: true,
+            className: "col-span-full",
+        },
+        {
+            name: "tags",
+            type: "input",
+            label: "برچسب ها",
+            isRequired: false,
+            isMultiline: true,
+            className: "col-span-full",
+            description: "با , از هم جدا شوند"
         },
     ])
 }
@@ -84,7 +118,7 @@ const tableColumns: ColumnType<T>[] = [
         render: (value, ctx) => {
             return (
                 <div className="flex gap-2 items-center">
-                    <span>{ctx.country?.title}</span>
+                    <span>{ctx.brand?.title}</span>
                     <span>/</span>
                     <span>{value}</span>
                     <span
@@ -98,10 +132,10 @@ const tableColumns: ColumnType<T>[] = [
 ]
 
 
-export const addressProvinceContext = {
-    apiRoute: "addressProvince",
+export const productMachineModelContext = {
+    apiRoute: "product/machineModel",
     form: {
-        title: "استان",
+        title: "مدل ماشین",
         schema: formSchema,
         fields: formFields,
         initial: formInitial,

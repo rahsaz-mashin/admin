@@ -61,6 +61,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         watch,
         setValue,
         setFocus,
+
     } = useForm<T>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
@@ -126,7 +127,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     const f = fields(watch, setValue)
 
-
+    console.log({formErrors: formState.errors})
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-5">

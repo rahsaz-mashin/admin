@@ -40,6 +40,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             dynamic: {
                 route: "addressProvince/sloStyle",
             },
+            isRequired: true,
             className: "col-span-full",
         },
         {

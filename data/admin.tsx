@@ -334,6 +334,20 @@ const adminRoutes: AdminMenu[] = [
                         isEnable: true,
                         sub: [
                             {
+                                key: "machine_brand",
+                                title: "برند ماشین",
+                                icon: <BoldDuotoneCategoryBrandIcon size={64}/>,
+                                description: "مشاهده لیست برندهای ماشین ها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "machine_model",
+                                title: "مدل ماشین",
+                                icon: <BoldDuotoneCategoryBrandIcon size={64}/>,
+                                description: "مشاهده لیست مدل های ماشین ها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
                                 key: "subjective",
                                 title: "دسته بندی موضوعی",
                                 icon: <BoldDuotoneCategoryListIcon size={64}/>,
@@ -341,15 +355,8 @@ const adminRoutes: AdminMenu[] = [
                                 isEnable: true,
                             },
                             {
-                                key: "model",
-                                title: "مدل های ماشین",
-                                icon: <BoldDuotoneCategoryBrandIcon size={64}/>,
-                                description: "مشاهده لیست برندها و مدل های ماشین ها، ایجاد و مدیریت آن ها",
-                                isEnable: true,
-                            },
-                            {
                                 key: "manufacture",
-                                title: "برندهای سازنده",
+                                title: "برند سازنده",
                                 icon: <BoldDuotoneCategoryManufactureIcon size={64}/>,
                                 description: "مشاهده لیست برندهای سازنده کالاها، ایجاد و مدیریت آن ها",
                                 isEnable: true,
