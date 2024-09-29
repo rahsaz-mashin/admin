@@ -43,6 +43,15 @@ const formSchema = z.object({
 const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
         {
+            name: "parent",
+            type: "select",
+            label: "مادر",
+            dynamic: {
+                route: "product/category/sloStyle",
+            },
+            className: "col-span-full",
+        },
+        {
             name: "title",
             type: "input",
             label: "عنوان",
@@ -65,15 +74,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "iconLibrary",
             label: "آیکون",
             isRequired: false,
-            className: "col-span-full",
-        },
-        {
-            name: "parent",
-            type: "select",
-            label: "مادر",
-            dynamic: {
-                route: "product/category/sloStyle",
-            },
             className: "col-span-full",
         },
         {
