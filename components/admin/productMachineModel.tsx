@@ -33,7 +33,7 @@ const formSchema = z.object({
         .nullable()
         .optional(),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
-    tags: z.string({message: "برچسب ها را وارد کنید"}).transform((tags) => (tags.split(","))),
+    tags: z.string({message: "برچسب ها را وارد کنید"}).regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\s\-:]+$/, "علائم غیر مجاز وارد نکنید").array().max(10, {message: "حداکثر 10 برچسب وارد کنید"}),
 });
 
 
@@ -81,12 +81,11 @@ const formFields: FormFieldFunc<T> = (watch) => {
         },
         {
             name: "tags",
-            type: "input",
+            type: "tag",
             label: "برچسب ها",
             isRequired: false,
-            isMultiline: true,
-            className: "col-span-full",
-            description: "با , از هم جدا شوند"
+            className: "col-span-full xl:col-span-1",
+            description: "حداکثر 10 برچسب وارد شود"
         },
     ])
 }
