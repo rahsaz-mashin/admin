@@ -3,11 +3,12 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {ProductMachineBrand} from "@/interfaces/ProductMachineBrand.interface";
 import slugify from "slugify-persian";
+import {ProductManufacture} from "@/interfaces/ProductManufacture.interface";
 
 
 
 
-type T = ProductMachineBrand
+type T = ProductManufacture
 
 
 const formInitial: T = {
@@ -129,10 +130,10 @@ const tableColumns: ColumnType<T>[] = [
 
 
 
-export const productMachineBrandContext = {
-    apiRoute: "product/machineBrand",
+export const productManufactureContext = {
+    apiRoute: "product/manufacture",
     form: {
-        title: "برند ماشین",
+        title: "سازنده قطعه",
         schema: formSchema,
         fields: formFields,
         initial: formInitial,

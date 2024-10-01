@@ -8,6 +8,7 @@ import {storageSystemsContext} from "@/components/admin/storageSystems";
 import {productCategoryContext} from "@/components/admin/productCategory";
 import {productMachineModelContext} from "@/components/admin/productMachineModel";
 import {productMachineBrandContext} from "@/components/admin/productMachineBrand";
+import {productManufactureContext} from "@/components/admin/productManufacture";
 
 export const adminContextConfig: any = {
     general: {
@@ -36,7 +37,7 @@ export const adminContextConfig: any = {
                 machine_brand: productMachineBrandContext,
                 machine_model: productMachineModelContext,
                 subjective: productCategoryContext,
-                // manufacture: productManufactureContext,
+                manufacture: productManufactureContext,
             },
             product: {
                 add: addProductContext,

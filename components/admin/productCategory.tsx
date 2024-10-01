@@ -90,7 +90,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "برچسب ها",
             isRequired: false,
             className: "col-span-full xl:col-span-1",
-            description: "فقط حروف و اعداد فارسی و انگلیسی و علامت - و فاصله مجاز می باشد و حداکثر 10 برچسب"
+            description: "با زدن Enter از هم جدا کنید"
         },
     ])
 }
