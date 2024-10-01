@@ -132,6 +132,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
                                 page={currentPage}
                                 total={totalPages}
                                 onChange={setPage}
+                                hidden={totalPages < 2}
                                 classNames={{wrapper: "rtl:flex-row-reverse", item: "[&:not([data-active=true])]:hidden"}}
                             />
                             <Button

@@ -22,7 +22,7 @@ import {
     Card, CardBody, CardFooter, SortDescriptor, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem
 } from "@nextui-org/react";
 import React, {
-    forwardRef,
+    forwardRef, Key,
     useContext,
     useEffect,
     useImperativeHandle,
@@ -39,7 +39,7 @@ import {
     DriveFileRenameOutlineOutlined,
     ListOutlined,
     RecyclingOutlined,
-    RefreshOutlined, StarBorderOutlined, StarOutlined,
+    RefreshOutlined, StarBorderOutlined, StarOutlined, ViewColumn, ViewColumnRounded,
 } from "@mui/icons-material";
 import {AdminContext} from "@/context/admin.context";
 import {Tooltip} from "@nextui-org/tooltip";
@@ -49,6 +49,8 @@ import {axiosCoreWithAuth} from "@/lib/axios";
 import {CardHeader} from "@nextui-org/card";
 import {Property} from "csstype";
 import {PaginationResponse} from "@/types/PaginationResponse";
+import {Input} from "@nextui-org/input";
+import {convertFilterToQueryString} from "@/lib/convertFilterObjectToQuery";
 
 
 type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
@@ -106,6 +108,8 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         formRef,
     } = props
 
+    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
+
     const [loadingState, setLoadingState] = useState<LoadingState>("idle");
     const [showTrashBox, setShowTrashBox] = useState(false);
 
@@ -113,16 +117,18 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     const [perPage, setPerPage] = useState(defaultPerPage);
 
     const [filtering, setFiltering] = useState<any>({id: {$btw: "10,18"}});
-    const [sorting, setSorting] = useState<any>({});
+    const [sorting, setSorting] = useState<string>();
 
 
     const query = new URLSearchParams()
     query.set('page', String(page))
     query.set('limit', String(perPage))
     query.set('trash', String(showTrashBox))
-
-    // query.set('filter', filtering)
-    // query.set('sort', sorting)
+    if (sorting) query.set('sortBy', sorting)
+    if(filtering) {
+        const ff = convertFilterToQueryString(filtering)
+        // query.set('filter.gg', "")
+    }
 
 
     const {
@@ -136,6 +142,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     const items = (data?.data || [])
     const currentPage = data?.meta?.currentPage || 0
     const totalPages = data?.meta?.totalPages || 0
+    const sortBy = data?.meta?.sortBy || []
 
     useEffect(() => {
         if (isLoading) setLoadingState("loading")
@@ -154,7 +161,14 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         }
     }));
 
-
+    let sortDescriptor: SortDescriptor | undefined = undefined
+    if (sortBy?.[0]) {
+        const [columnKey, direction] = sortBy[0]
+        sortDescriptor = {
+            column: columnKey as Key,
+            direction: direction === "DESC" ? "descending" : "ascending"
+        }
+    }
     return (
         <Card>
             <CardHeader className="p-0 overflow-hidden">
@@ -170,14 +184,15 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                 <Table
                     aria-label="table of items"
 
-                    sortDescriptor={undefined}
-                    onSortChange={(descriptor: SortDescriptor) => {
-                        console.log(descriptor)
+                    sortDescriptor={sortDescriptor}
+                    onSortChange={({column, direction}: SortDescriptor) => {
+                        setSorting(`${column}:${(direction === "descending" ? "DESC" : "ASC")}`)
                     }}
 
+                    disabledKeys={["filtering"]}
                     selectionMode="multiple"
-                    // selectedKeys={undefined}
-                    // onSelectionChange={undefined}
+                    selectedKeys={selectedKeys}
+                    onSelectionChange={(keys) => setSelectedKeys(keys as Set<string>)}
 
                     color="primary"
 
@@ -206,12 +221,32 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                         )}
                     </TableHeader>
                     <TableBody<T>
-                        items={items}
+                        items={[{filterRow: true},...items] as T[]}
                         loadingContent={<LoadingContent/>}
                         emptyContent={<EmptyContent/>}
                         loadingState={loadingState}
                     >
                         {(item) => {
+                            const filterRow = getKeyValue(item, "filterRow")
+                            if(filterRow) {
+                                return (
+                                    <TableRow
+                                        key="filtering"
+                                    >
+                                        {(columnKey) => {
+                                            return (
+                                                <TableCell>
+                                                    <Input
+                                                        size="sm"
+                                                        color="primary"
+                                                        variant="bordered"
+                                                    />
+                                                </TableCell>
+                                            )
+                                        }}
+                                    </TableRow>
+                                )
+                            }
                             const id = getKeyValue(item, "id")
                             const isDeleted = !!getKeyValue(item, "deletedAt")
                             const isEditing = (editingId === String(id))
@@ -621,17 +656,44 @@ const TopContent = (props: TopContentPropsType) => {
                         <DropdownTrigger>
                             <Button
                                 variant="flat"
-                                color="default"
+                                color="secondary"
                                 radius="full"
-                                endContent={<ArrowDropDown/>}
+                                startContent={<ViewColumnRounded/>}
                             >
-                                انتخاب شده ها
+                                نمایش ستون ها
                             </Button>
                         </DropdownTrigger>
-                        <DropdownMenu color="primary">
-                            <DropdownItem key="delete">حذف انتخاب شده ها</DropdownItem>
+                        <DropdownMenu
+                            aria-label="Multiple selection example"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="multiple"
+                            selectedKeys={new Set(["id", "title", "content"])}
+                            // onSelectionChange={setSelectedKeys}
+                        >
+                            <DropdownItem key="id">شناسه</DropdownItem>
+                            <DropdownItem key="title">عنوان</DropdownItem>
+                            <DropdownItem key="content">محتوا</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
+                    {/*<Dropdown*/}
+                    {/*    backdrop="blur"*/}
+                    {/*>*/}
+                    {/*    <DropdownTrigger>*/}
+                    {/*        <Button*/}
+                    {/*            variant="flat"*/}
+                    {/*            color="default"*/}
+                    {/*            radius="full"*/}
+                    {/*            endContent={<ArrowDropDown/>}*/}
+                    {/*        >*/}
+                    {/*            انتخاب شده ها*/}
+                    {/*        </Button>*/}
+                    {/*    </DropdownTrigger>*/}
+                    {/*    <DropdownMenu color="primary">*/}
+                    {/*        <DropdownItem key="delete">حذف انتخاب شده ها</DropdownItem>*/}
+                    {/*    </DropdownMenu>*/}
+                    {/*</Dropdown>*/}
                 </div>
                 <div className="flex flex-row justify-center items-center gap-2">
                     <Button

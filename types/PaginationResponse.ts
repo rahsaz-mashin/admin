@@ -1,15 +1,15 @@
-export type PaginationResponseMeta = {
+export type PaginationResponseMeta<T> = {
     currentPage: number;
     itemsPerPage: number;
     totalItems: number;
     totalPages: number;
 
-    sortBy: [string, string][];
+    sortBy: [keyof T, "DESC" | "ASC"][];
 }
 
 
 export type PaginationResponse<T> = {
     data: T[];
     links: {};
-    meta: PaginationResponseMeta;
+    meta: PaginationResponseMeta<T>;
 }
