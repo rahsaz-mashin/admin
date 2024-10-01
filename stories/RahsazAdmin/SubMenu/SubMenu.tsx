@@ -38,7 +38,7 @@ export const SubMenu = (props: SubMenuType) => {
                                     {category.sub.map((menu) => {
                                             return (
                                                 <SubMenuItem
-                                                    key={menu.key}
+                                                    key={category.key + "-" + menu.key}
                                                     id={menu.key}
                                                     label={menu.title}
                                                     description={menu.description}

@@ -9,6 +9,7 @@ import {productCategoryContext} from "@/components/admin/productCategory";
 import {productMachineModelContext} from "@/components/admin/productMachineModel";
 import {productMachineBrandContext} from "@/components/admin/productMachineBrand";
 import {productManufactureContext} from "@/components/admin/productManufacture";
+import {warehouseContext} from "@/components/admin/warehouse";
 
 export const adminContextConfig: any = {
     general: {
@@ -33,12 +34,16 @@ export const adminContextConfig: any = {
             branch: {
                 list: branchContext,
             },
+            warehouse: {
+                list: warehouseContext,
+            },
             category: {
                 machine_brand: productMachineBrandContext,
                 machine_model: productMachineModelContext,
                 subjective: productCategoryContext,
                 manufacture: productManufactureContext,
             },
+
             product: {
                 add: addProductContext,
             },

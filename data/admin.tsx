@@ -324,7 +324,7 @@ const adminRoutes: AdminMenu[] = [
                                 title: "تراکنش های انبار",
                                 icon: <BoldDuotoneWarehouseTransactionIcon size={64}/>,
                                 description: "مشاهده تراکنش های انبارها و مدیریت آن ها",
-                                isEnable: true,
+                                isEnable: false,
                             },
                         ],
                     },
