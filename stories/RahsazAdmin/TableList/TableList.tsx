@@ -48,11 +48,17 @@ import {UseDisclosureReturn} from "@nextui-org/use-disclosure";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {CardHeader} from "@nextui-org/card";
 import {Property} from "csstype";
+import {PaginationResponse} from "@/types/PaginationResponse";
 
 
 type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
 
-type ToolsCellType<T> = { editable?: boolean; removable?: boolean; chooseDefault?: boolean; extra?: ColumnRenderType<T>; }
+type ToolsCellType<T> = {
+    editable?: boolean;
+    removable?: boolean;
+    chooseDefault?: boolean;
+    extra?: ColumnRenderType<T>;
+}
 
 
 export type ColumnType<T> = {
@@ -80,7 +86,7 @@ export type TableListRefType = {
 export type TableListProps<T> = {
     apiRoute: string;
     columns: ColumnType<T>[];
-    rowsPerPage?: number;
+    defaultPerPage?: number;
     editingId?: string | number | null;
     enableTrashBox?: boolean;
 
@@ -93,28 +99,43 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     const {
         apiRoute,
         columns,
-        rowsPerPage = 10,
+        defaultPerPage = 10,
         editingId,
         enableTrashBox = true,
 
         formRef,
     } = props
 
-    const [page, setPage] = useState(1);
     const [loadingState, setLoadingState] = useState<LoadingState>("idle");
     const [showTrashBox, setShowTrashBox] = useState(false);
 
-    const [filtering, setFiltering] = useState<any>({});
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(defaultPerPage);
+
+    const [filtering, setFiltering] = useState<any>({id: {$btw: "10,18"}});
     const [sorting, setSorting] = useState<any>({});
 
-    const filter = new URLSearchParams(filtering).toString()
-    const sort = new URLSearchParams(sorting).toString()
-    const params = filter + ((filter && sort) ? `&${sort}` : "")
-    const {data, error, isLoading, isValidating, mutate} = useSWR<[T[], number]>(`/${apiRoute}?${params}`)
 
-    const items = (data?.[0] ?? [])
-    const count = data?.[1] || 0
-    const pages = Math.ceil(count / rowsPerPage);
+    const query = new URLSearchParams()
+    query.set('page', String(page))
+    query.set('limit', String(perPage))
+    query.set('trash', String(showTrashBox))
+
+    // query.set('filter', filtering)
+    // query.set('sort', sorting)
+
+
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useSWR<PaginationResponse<T>>(`/${apiRoute}?${query.toString()}`)
+
+    const items = (data?.data || [])
+    const currentPage = data?.meta?.currentPage || 0
+    const totalPages = data?.meta?.totalPages || 0
 
     useEffect(() => {
         if (isLoading) setLoadingState("loading")
@@ -122,11 +143,6 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         else setLoadingState("idle")
     }, [isLoading, isValidating])
 
-
-    useEffect(() => {
-        if (showTrashBox) setFiltering((old: any) => ({...old, trash: true}))
-        else setFiltering(({trash, ...old}: any) => ({...old}))
-    }, [showTrashBox])
 
     const refresh = async () => {
         await mutate()
@@ -237,8 +253,8 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
             </CardBody>
             <CardFooter>
                 <BottomContent
-                    pages={pages}
-                    page={page}
+                    pages={totalPages}
+                    page={currentPage}
                     setPage={setPage}
                 />
             </CardFooter>
@@ -274,7 +290,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
 
     const axios = axiosCoreWithAuth()
     const defaultHandler = async () => {
-        if(isDefault) return
+        if (isDefault) return
         setDefaultLoading(true)
         await axios.patch(`${apiRoute}/${id}/default`)
         setDefaultLoading(false)
@@ -333,7 +349,6 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
             </div>
         )
     }
-
 
 
     return (
@@ -671,7 +686,7 @@ const BottomContent = (props: BottomContentPropsType) => {
                 page={page}
                 total={pages}
                 onChange={setPage}
-                dir="ltr"
+                classNames={{wrapper: "rtl:flex-row-reverse"}}
             />
         </div>
     )

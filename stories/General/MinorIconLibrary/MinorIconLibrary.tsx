@@ -7,6 +7,10 @@ import {axiosCoreWithAuth} from "@/lib/axios";
 import {Icon} from "@/interfaces/Icon.interface";
 import {Spinner} from "@nextui-org/spinner";
 import {Tooltip} from "@nextui-org/tooltip";
+import {PaginationResponse, PaginationResponseMeta} from "@/types/PaginationResponse";
+import useSWR from "swr";
+import {RefreshOutlined} from "@mui/icons-material";
+import {Button, Pagination} from "@nextui-org/react";
 
 
 export type MinorIconLibraryProps = {
@@ -60,6 +64,28 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
     } = useController({name, control})
 
 
+    const [perPage, setPerPage] = useState(20)
+    const [page, setPage] = useState(1)
+
+
+    const query = new URLSearchParams()
+    query.set('page', String(page))
+    query.set('limit', String(perPage))
+
+
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+    } = useSWR<PaginationResponse<Icon>>(`icon/library?${query.toString()}`)
+
+
+    const currentPage = data?.meta.currentPage || 0
+    const totalPages = data?.meta.totalPages || 0
+
+
     const _props = {
         label: label,
 
@@ -71,7 +97,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
 
         description: description,
         isInvalid: isInvalid || fieldState.invalid,
-        errorMessage: errorMessage || fieldState.error?.message,
+        errorMessage: errorMessage || fieldState.error?.message || error,
 
         isRequired,
 
@@ -83,23 +109,45 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
         name: field.name,
     }
 
-    const axios = axiosCoreWithAuth()
-    const [isLoading, setLoading] = useState(true)
-    const [items, setItems] = useState<Icon[]>([])
-
-    const getList = async () => {
-        const data: any = await axios.get("icon/library")
-        setItems(data[0])
-        setLoading(false)
-    }
-    useEffect(() => {
-        getList()
-    }, [])
-
 
     return (
         <RadioGroup
             {..._props}
+            label={(
+                <div className="flex justify-between items-center gap-3 overflow-y-hidden w-full pb-2">
+                    <div className="flex justify-center items-center gap-2">
+                        <h1>{props.label}</h1>
+                        {!!data?.meta.totalItems && (<span>({data.meta.totalItems})</span>)}
+                    </div>
+                    {!isLoading && (
+                        <div className="flex justify-center items-center gap-2">
+                            <Pagination
+                                isCompact
+                                showControls
+                                showShadow={false}
+                                siblings={1}
+                                radius="full"
+                                size="sm"
+                                color="primary"
+                                page={currentPage}
+                                total={totalPages}
+                                onChange={setPage}
+                                classNames={{wrapper: "rtl:flex-row-reverse", item: "[&:not([data-active=true])]:hidden"}}
+                            />
+                            <Button
+                                isIconOnly
+                                variant="flat"
+                                color="success"
+                                radius="full"
+                                size="sm"
+                                onPress={() => mutate()}
+                            >
+                                <RefreshOutlined/>
+                            </Button>
+                        </div>
+                    )}
+                </div>
+            )}
             orientation="horizontal"
             className={"bg-default-100 w-full rounded-xl p-3 " + className}
         >
@@ -113,7 +161,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
                     icon={"×"}
                 />
             )}
-            {!isLoading && items.map(({id, title, content}) => (
+            {!isLoading && data?.data.map(({id, title, content}) => (
                     <RadioIcon
                         key={id}
                         title={title}
