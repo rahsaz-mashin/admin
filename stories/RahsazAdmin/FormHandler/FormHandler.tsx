@@ -111,14 +111,6 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     }
 
 
-    // useEffect(() => {
-    //     alert("ch")
-    //     // @ts-ignore
-    //     alert(watch("location"))
-    //     // alert(JSON.stringify(formState.))
-    //     // @ts-ignore
-    // }, [watch("location")]);
-
     if (!fields) return (
         <div className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
             برای این فرم هیچ فیلدی تعریف نشده است

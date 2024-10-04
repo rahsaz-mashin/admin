@@ -35,7 +35,7 @@ export {Component as BoldDuotoneSystemIcon} from "./BoldDuotoneSystem.stories";
 export {Component as BoldDuotoneTemplateIcon} from "./BoldDuotoneTemplate.stories";
 export {Component as BoldDuotoneLockPasswordIcon} from "./BoldDuotoneLockPassword.stories";
 export {Component as BoldDuotoneVideoLibraryIcon} from "./BoldDuotoneVideoLibrary.stories";
-
+export {Component as BoldDuotoneFeaturesIcon} from "./BoldDuotoneFeatures.stories";
 
 
 

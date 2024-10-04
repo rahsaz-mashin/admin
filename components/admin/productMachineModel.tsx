@@ -18,6 +18,7 @@ const formInitial: T = {
     tags: [],
     icon: undefined,
     brand: null,
+
 }
 
 
@@ -63,7 +64,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             dependency: () => {
                 const title = watch("title")
-                setValue("slug", slugify(title, {lower: true}))
+                setValue("slug", slugify(title, {lower: true}), {shouldValidate: true})
             },
         },
         {
@@ -95,7 +96,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "برچسب ها",
             isRequired: false,
             className: "col-span-full xl:col-span-1",
-            description: "با زدن Enter از هم جدا کنید"
+            description: "بعد افزودن هر مورد کلید Enter را فشار دهید"
         },
     ])
 }

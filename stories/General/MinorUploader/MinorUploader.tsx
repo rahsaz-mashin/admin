@@ -223,7 +223,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     return (
         <>
             <div
-                className={"relative h-full outline-none group flex flex-col gap-2 justify-center min-h-72 " + className}
+                className={"relative h-full w-full outline-none group flex flex-col gap-2 justify-center min-h-72 " + className}
                 {...getRootProps()}
                 data-has-helper={hasHelper}
                 data-dragged={isDragActive || undefined}

@@ -13,6 +13,7 @@ import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 import {MinorUploader} from "@/stories/General/MinorUploader";
 import {Accept} from "react-dropzone";
 import {MinorTag} from "@/stories/General/MinorTag";
+import {MinorEditor} from "@/stories/General/MinorEditor/MinorEditor";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -113,6 +114,16 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                 case "tag":
                     Field = (
                         <MinorTag
+                            key={field.name}
+                            control={control}
+
+                            {...field}
+                        />
+                    )
+                    break
+                case "editor":
+                    Field = (
+                        <MinorEditor
                             key={field.name}
                             control={control}
 
@@ -279,6 +290,12 @@ type FromFieldTypeTag = {
     isLtr?: boolean;
 }
 
+type FromFieldTypeEditor = {
+    type: "editor";
+
+
+}
+
 type FromFieldTypeOther = {
     type: "other";
 }
@@ -296,6 +313,7 @@ export type FormFieldType =
         FromFieldTypeIconLibrary |
         FromFieldTypeUploader |
         FromFieldTypeTag |
+        FromFieldTypeEditor |
         FromFieldTypeOther
         )
 

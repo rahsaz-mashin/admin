@@ -123,7 +123,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
     } = useInfinityList({
         ...dynamic,
         filter: {search, ...dynamic?.filter},
-        selected: String(field.value)?.split(",") || [],
+        selected: !!field.value ? String(field.value).split(",") : [],
         isEnable: isDynamic
     });
 

@@ -1,14 +1,14 @@
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {ProductMachineBrand} from "@/interfaces/ProductMachineBrand.interface";
 import slugify from "slugify-persian";
-import {ProductManufacture} from "@/interfaces/ProductManufacture.interface";
+import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
+import {Chip} from "@nextui-org/chip";
 
 
 
 
-type T = ProductManufacture
+type T = ProductFeatures
 
 
 const formInitial: T = {
@@ -18,11 +18,15 @@ const formInitial: T = {
     description: "",
     tags: [],
     icon: undefined,
+    category: null,
 }
 
 
 
 const formSchema = z.object({
+    category: z.string({message: "دسته معتبر نیست"}).regex(/^\d+$/, "دسته معتبر نیست")
+        .or(z.number({message: "دسته معتبر نیست"}).int({message: "دسته معتبر نیست"}).positive({message: "دسته معتبر نیست"}))
+        .transform((id) => ({id: +id})),
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
     slug: z.string({message: "شناسه اینترنتی را وارد کنید"})
         .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - مجاز می باشد")
@@ -43,6 +47,16 @@ const formSchema = z.object({
 const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
         {
+            name: "category",
+            type: "select",
+            label: "دسته",
+            dynamic: {
+                route: "product/featuresCategory/sloStyle",
+            },
+            isRequired: true,
+            className: "col-span-full",
+        },
+        {
             name: "title",
             type: "input",
             label: "عنوان",
@@ -50,7 +64,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             dependency: () => {
                 const title = watch("title")
-                setValue("slug", slugify(title, {lower: true}))
+                setValue("slug", slugify(title, {lower: true}), {shouldValidate: true})
             },
         },
         {
@@ -82,7 +96,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "برچسب ها",
             isRequired: false,
             className: "col-span-full xl:col-span-1",
-            description: "با زدن Enter از هم جدا کنید"
+            description: "بعد افزودن هر مورد کلید Enter را فشار دهید"
         },
     ])
 }
@@ -114,6 +128,7 @@ const tableColumns: ColumnType<T>[] = [
         render: (value, ctx) => {
             return (
                 <div className="flex gap-2 items-center">
+                    <Chip size="sm" variant="shadow" color="primary">{ctx.category?.title}</Chip>
                     <span>{value}</span>
                     <span
                         className="text-primary h-6 w-6 flex justify-center items-center"
@@ -130,10 +145,10 @@ const tableColumns: ColumnType<T>[] = [
 
 
 
-export const productManufactureContext = {
-    apiRoute: "product/manufacture",
+export const productFeaturesContext = {
+    apiRoute: "product/features",
     form: {
-        title: "سازنده قطعه",
+        title: "ویژگی",
         schema: formSchema,
         fields: formFields,
         initial: formInitial,

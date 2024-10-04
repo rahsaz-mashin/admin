@@ -145,20 +145,20 @@ export const MinorTag = (props: MinorTagProps) => {
                     <Chip
                         key={idx}
                         size="sm"
-                        color="secondary"
-                        variant="flat"
+                        color="primary"
+                        variant="shadow"
                         className="select-none cursor-pointer"
                         endContent={(
                             <Button
                                 isIconOnly
-                                color="danger"
+                                color="default"
                                 size="sm"
                                 radius="full"
                                 variant="light"
                                 onPress={() => handleRemove(idx)}
-                                className="min-w-4 w-4 h-4"
+                                className="min-w-4 w-4 h-4 text-white"
                             >
-                                <Clear className="w-3 h-3"/>
+                                <Clear style={{fontSize: "1em"}}/>
                             </Button>
                         )}
                     >

@@ -1,4 +1,6 @@
 import {Account} from "@/interfaces/Account.interface";
+import {ProductCategory} from "@/interfaces/ProductCategory.interface";
+import {ProductMachineModel} from "@/interfaces/ProductMachineModel.interface";
 
 
 
@@ -7,7 +9,12 @@ import {Account} from "@/interfaces/Account.interface";
 export interface Product {
     id?: number;
     title: string;
-    // title: string;
+    slug: string;
+    names: string[];
+    tags: string[];
+
+    categories: ProductCategory[];
+    machinery: ProductMachineModel[];
 
 
     createdBy?: Account;

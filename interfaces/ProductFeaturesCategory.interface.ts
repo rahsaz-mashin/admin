@@ -1,13 +1,13 @@
 import {Icon} from "@/interfaces/Icon.interface";
 import {Account} from "@/interfaces/Account.interface";
+import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
 
-export interface ProductManufacture {
+export interface ProductFeaturesCategory {
     id?: number;
     title: string;
     slug: string;
-    description?: string | null;
-    tags: string[];
     icon?: Icon | null;
+    features: ProductFeatures[];
 
     createdBy?: Account;
     createdAt?: Date;
