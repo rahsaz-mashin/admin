@@ -4,7 +4,7 @@ import {Select, SelectItem, SelectSection} from "@nextui-org/select";
 import {useInfinityList} from "@/hooks/useInfinityList";
 import {useInfiniteScroll} from "@nextui-org/use-infinite-scroll";
 import {CollectionChildren} from "@react-types/shared";
-import {Autocomplete, AutocompleteItem, AutocompleteSection, MenuTriggerAction} from "@nextui-org/react";
+import {Autocomplete, AutocompleteItem, AutocompleteSection, getKeyValue, MenuTriggerAction} from "@nextui-org/react";
 import {useFilter} from "@react-aria/i18n";
 
 
@@ -31,7 +31,7 @@ export type MinorSelectProps = {
     isReadOnly?: boolean;
 
 
-    items?: Iterable<any>;
+    items?: Iterable<any> | object;
     isMultiple?: boolean;
     disabledKeys?: Iterable<React.Key>;
 
@@ -161,8 +161,11 @@ export const MinorSelect = (props: MinorSelectProps) => {
         onLoadMore,
     });
 
+    const enumToArray = (val: object) => {
+        return Object.keys(val).map((id) => ({key: id, label: getKeyValue(val, id)}))
+    }
 
-    const itemList: any[] = Array.from(isDynamic ? list : items || [])
+    const itemList: any[] = Array.from(isDynamic ? list : (Array.isArray(items) ? items : enumToArray(items!)) || [])
         .map((v) => (!v.section ? {...v, section: "بدون دسته"} : {...v}))
 
 

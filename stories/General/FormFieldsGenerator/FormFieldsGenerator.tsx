@@ -229,7 +229,7 @@ type FromFieldTypeSelect = {
     isMultiline?: boolean;
     isMultiple?: boolean;
 
-    items?: { key: string; label: any; }[];
+    items?: { key: string; label: any; }[] | object;
 
     dynamic?: DynamicSelectType;
     withSection?: boolean;
