@@ -71,6 +71,7 @@ const tableColumns: ColumnType<T>[] = [
         toolsCell: {
             editable: true,
             removable: true,
+            chooseDefault: true,
         },
     },
     {
