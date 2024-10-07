@@ -13,6 +13,7 @@ import {productFeaturesCategoryContext} from "@/components/admin/productFeatures
 import {productFeaturesContext} from "@/components/admin/productFeatures";
 import {currencyContext} from "@/components/admin/currency";
 import {priceListContext} from "@/components/admin/priceList";
+import {productListContext} from "@/components/admin/productList";
 
 export const adminContextConfig: any = {
     general: {
@@ -51,6 +52,7 @@ export const adminContextConfig: any = {
             },
             product: {
                 add: addProductContext,
+                list: productListContext,
             },
             price: {
                 currency: currencyContext,
