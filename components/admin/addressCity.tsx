@@ -27,7 +27,8 @@ const formSchema = z.object({
         .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
         .transform(Number)
         .nullable()
-        .optional(),
+        .optional()
+        .transform(value => value ? value : null),
 });
 
 

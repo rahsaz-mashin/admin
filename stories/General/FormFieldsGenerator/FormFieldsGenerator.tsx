@@ -14,6 +14,8 @@ import {MinorUploader} from "@/stories/General/MinorUploader";
 import {Accept} from "react-dropzone";
 import {MinorTag} from "@/stories/General/MinorTag";
 import {MinorEditor} from "@/stories/General/MinorEditor/MinorEditor";
+import {TimeValue} from "@react-types/datepicker";
+import {DateValue} from "@nextui-org/react";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -33,7 +35,6 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                 case "input":
                     Field = (
                         <MinorInput
-
                             key={field.name}
                             control={control}
 
@@ -215,10 +216,16 @@ type FromFieldTypeInput = {
     pattern?: string;
     allowNegative?: boolean;
     decimalScale?: number;
+    allowLeadingZeros?: boolean;
+    minValue?: number | TimeValue | DateValue;
+    maxValue?: number | TimeValue | DateValue;
 
     isMultiline?: boolean;
     rows?: number | [number, number];
     isLtr?: boolean;
+
+    startContent?: ReactNode;
+    endContent?: ReactNode;
 }
 
 type FromFieldTypeSelect = {

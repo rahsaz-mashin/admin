@@ -2,6 +2,9 @@ import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {PriceList, pricingPolicyEnum} from "@/interfaces/PriceList.interface";
+import {useEffect, useState} from "react";
+import {Currency} from "@/interfaces/Currency.interface";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
 
 type T = PriceList
@@ -14,13 +17,13 @@ const formInitial: T = {
     description: "",
     icon: undefined,
 
-    pricingPolicy: pricingPolicyEnum.constantPercent,
-    value: 1,
-
     primaryCurrency: undefined,
     secondaryCurrency: undefined,
 
-    ratio: 1,
+    ratio: 1000,
+
+    pricingPolicy: pricingPolicyEnum.none,
+    value: 0,
 
     isDefault: false,
 }
@@ -28,12 +31,99 @@ const formInitial: T = {
 
 const formSchema = z.object({
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
-    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),    endpoint: z.string({message: "آدرس وبسرویس را وارد کنید"}).regex(/^.+?[^\/:](?=[?\/]|$)/, "آدرس وبسرویس معتبر نیست"),
+    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
+    icon: z.string({message: "آیکون معتبر نیست"}).regex(/^\d+$/, "آیکون معتبر نیست")
+        .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
+        .transform((id) => ({id: +id}))
+        .nullable()
+        .optional()
+        .transform(value => value ? value : null),
+    primaryCurrency: z.string({message: "ارز معتبر نیست"}).regex(/^\d+$/, "ارز معتبر نیست")
+        .or(z.number({message: "ارز معتبر نیست"}).int({message: "ارز معتبر نیست"}).positive({message: "ارز معتبر نیست"}))
+        .transform((id) => ({id: +id})),
+    secondaryCurrency: z.string({message: "ارز معتبر نیست"}).regex(/^\d+$/, "ارز معتبر نیست")
+        .or(z.number({message: "ارز معتبر نیست"}).int({message: "ارز معتبر نیست"}).positive({message: "ارز معتبر نیست"}))
+        .transform((id) => ({id: +id})),
+    ratio: z.string({message: "قیمت هر واحد را وارد کنید"})
+        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "قیمت معتبر نیست"})
+        .transform((val) => (+(val.replaceAll(",", ""))))
+        .or(z.number({message: "قیمت معتبر نیست"}).positive({message: "قیمت معتبر نیست"})),
+    pricingPolicy: z.nativeEnum(pricingPolicyEnum, {message: "سیاست قیمت گذاری نامعتبر است"}),
+    value: z.string().or(z.number()).optional(),
+}).superRefine((data, ctx) => {
+    const v = +String(data.value).replaceAll(",", "")
+    if (data.pricingPolicy === pricingPolicyEnum.none) {
 
+    } else if (data.pricingPolicy === pricingPolicyEnum.constantPercent && (v <= 0 || v >= 100)) {
+        ctx.addIssue({
+            path: ["value"],
+            code: z.ZodIssueCode.too_big,
+            maximum: 100,
+            type: "number",
+            inclusive: true,
+            message: 'درصد معتبر نیست'
+        });
+    } else if (data.pricingPolicy === pricingPolicyEnum.constantNumber && (v <= 0)) {
+        ctx.addIssue({
+            path: ["value"],
+            code: z.ZodIssueCode.too_small,
+            minimum: 0,
+            type: "number",
+            inclusive: true,
+            message: 'مقدار معتبر نیست',
+        });
+    }
+    data.value = v
 });
 
+const pricingPolicyItems = [
+    {
+        key: pricingPolicyEnum.none,
+        label: "بدون سیاست",
+    },
+    {
+        key: pricingPolicyEnum.constantNumber,
+        label: "مقدار ثابت",
+    },
+    {
+        key: pricingPolicyEnum.constantPercent,
+        label: "درصد ثابت",
+    },
+]
 
-const formFields: FormFieldFunc<T> = (watch) => {
+const FormFields: FormFieldFunc<T> = (watch, setValue) => {
+
+    const [primaryCurrency, setPrimaryCurrency] = useState<Currency>()
+    const [secondaryCurrency, setSecondaryCurrency] = useState<Currency>()
+
+    const valueLabel = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "درصد کاهش" : "مقدار کاهش"
+    // const valuePattern = (watch("pricingPolicy") === pricingPolicyEnum.constantPercent) ? "##" : undefined
+    const valueEndContent = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "%" : (primaryCurrency ? primaryCurrency.iso : "")
+
+    const ratioLabel = "قیمت هر واحد ارز اولیه به ارز نهایی"
+    const ratioEndContent = secondaryCurrency ? secondaryCurrency.iso : ""
+
+    const axios = axiosCoreWithAuth()
+
+
+    const getPrimaryCurrency = async (id: number) => {
+        const data: Currency = await axios.get(`currency/${id}`)
+        setPrimaryCurrency(data)
+    }
+    const getSecondaryCurrency = async (id: number) => {
+        const data: Currency = await axios.get(`currency/${id}`)
+        setSecondaryCurrency(data)
+    }
+    useEffect(() => {
+        const v = watch("primaryCurrency")
+        if (v) getPrimaryCurrency(v as any as number)
+    }, [watch("primaryCurrency")]);
+    useEffect(() => {
+        const v = watch("secondaryCurrency")
+        if (v) getSecondaryCurrency(v as any as number)
+    }, [watch("secondaryCurrency")]);
+
+
     return ([
         {
             name: "title",
@@ -45,7 +135,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
         {
             name: "primaryCurrency",
             type: "select",
-            label: "ارز مبداء",
+            label: "ارز اولیه",
             dynamic: {
                 route: "currency/sloStyle",
             },
@@ -55,7 +145,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
         {
             name: "secondaryCurrency",
             type: "select",
-            label: "ارز مقصد",
+            label: "ارز نهایی",
             dynamic: {
                 route: "currency/sloStyle",
             },
@@ -63,22 +153,17 @@ const formFields: FormFieldFunc<T> = (watch) => {
             className: "col-span-full xl:col-span-1",
         },
         {
-            name: "primaryAmount",
+            name: "ratio",
             type: "input",
-            label: "مقدار",
+            label: ratioLabel,
             isNumeric: true,
             isRequired: true,
-            pattern: "##",
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "secondaryAmount",
-            type: "input",
-            label: "مقدار",
-            isNumeric: true,
-            isRequired: true,
-            pattern: "##",
-            className: "col-span-full xl:col-span-1",
+            allowNegative: false,
+            decimalScale: 2,
+            allowLeadingZeros: false,
+            minValue: 1,
+            endContent: ratioEndContent,
+            className: "col-span-full",
         },
         {
             name: "pricingPolicy",
@@ -86,25 +171,24 @@ const formFields: FormFieldFunc<T> = (watch) => {
             label: "سیاست قیمت گذاری",
             isRequired: true,
             className: "col-span-full xl:col-span-1",
-            items: [
-                {
-                    key: pricingPolicyEnum.constantNumber,
-                    label: "مقدار ثابت",
-                },
-                {
-                    key: pricingPolicyEnum.constantPercent,
-                    label: "درصد ثابت",
-                },
-            ],
+            items: pricingPolicyItems,
+            dependency: () => {
+                setValue("value", 0)
+            }
         },
         {
             name: "value",
             type: "input",
-            label: watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "درصد کاهش" : "مقدار کاهش",
+            label: valueLabel,
             isNumeric: true,
             isRequired: true,
-            pattern: "##",
+            allowNegative: false,
+            decimalScale: 2,
+            allowLeadingZeros: false,
+            minValue: 0,
+            endContent: valueEndContent,
             className: "col-span-full xl:col-span-1",
+            isDisabled: watch("pricingPolicy") === pricingPolicyEnum.none,
         },
         {
             name: "icon",
@@ -145,24 +229,65 @@ const tableColumns: ColumnType<T>[] = [
         allowsSorting: true,
     },
     {
-        key: "key",
-        title: "کلید شناسایی",
-        width: 160,
-        minWidth: 160,
-        render: (value) => {
-            return <pre dir="ltr" className="text-center">{value}</pre>
-        }
-    },
-    {
         key: "title",
         title: "عنوان",
         width: 160,
         minWidth: 160,
+        render: (value, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    <span>{value}</span>
+                    <span
+                        className="text-primary h-6 w-6 flex justify-center items-center"
+                        dangerouslySetInnerHTML={{__html: ctx.icon?.content || ""}}
+                    />
+                </div>
+            )
+        },
     },
     {
-        key: "description",
-        title: "توضیحات",
+        key: "primaryCurrency",
+        title: "ارز اولیه",
+        width: 160,
+        minWidth: 160,
+        render: (value: Currency, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    <span>{value?.title}</span>
+                    <span className="font-bold">({value?.iso})</span>
+                </div>
+            )
+        },
+    },
+    {
+        key: "secondaryCurrency",
+        title: "ارز نهایی",
+        width: 160,
+        minWidth: 160,
+        render: (value: Currency, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    <span>{value?.title}</span>
+                    <span className="font-bold">({value?.iso})</span>
+                </div>
+            )
+        },
+    },
+    {
+        key: "pricingPolicy",
+        title: "سیاست قیمت گذاری",
+        width: 150,
         minWidth: 150,
+        render: (value, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    <span>{pricingPolicyItems.find((v) => (v.key === value))?.label}</span>
+                    {value !== pricingPolicyEnum.none && (
+                        <span>({ctx.value}{value === pricingPolicyEnum.constantNumber ? ctx.primaryCurrency?.iso : "%"})</span>
+                    )}
+                </div>
+            )
+        },
     },
 ]
 
@@ -172,7 +297,7 @@ export const priceListContext = {
     form: {
         title: "دسته قیمتی",
         schema: formSchema,
-        fields: formFields,
+        fields: FormFields,
         initial: formInitial,
     },
     table: {

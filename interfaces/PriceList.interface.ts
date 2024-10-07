@@ -5,9 +5,11 @@ import {Currency} from "@/interfaces/Currency.interface";
 
 
 export enum pricingPolicyEnum {
+    none = 'none',
     constantPercent = 'constantPercent',
     constantNumber = 'constantNumber',
 }
+
 
 export interface PriceList {
     id?: number;

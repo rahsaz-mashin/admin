@@ -38,14 +38,15 @@ export type MinorInputProps = {
     isNumeric?: boolean;
     pattern?: string;
     allowNegative?: boolean;
+    allowLeadingZeros?: boolean;
     decimalScale?: number;
 
     isMultiline?: boolean;
     rows?: number | [number, number];
 
     isTimeInput?: boolean;
-    minValue?: TimeValue | DateValue;
-    maxValue?: TimeValue | DateValue;
+    minValue?: number | TimeValue | DateValue;
+    maxValue?: number | TimeValue | DateValue;
     hourCycle?: 12 | 24;
     granularity?: 'day' | 'hour' | 'minute' | 'second';
     placeholderValue?: TimeValue | DateValue;
@@ -63,6 +64,8 @@ export type MinorInputProps = {
 
     isSecret?: boolean;
 
+    startContent?: ReactNode;
+    endContent?: ReactNode;
 }
 
 
@@ -97,6 +100,7 @@ export const MinorInput = (props: MinorInputProps) => {
         pattern,
         allowNegative,
         decimalScale,
+        allowLeadingZeros,
 
         isMultiline,
         rows,
@@ -121,6 +125,9 @@ export const MinorInput = (props: MinorInputProps) => {
         classNames,
 
         isSecret,
+
+        startContent,
+        endContent,
 
     } = props
 
@@ -156,6 +163,17 @@ export const MinorInput = (props: MinorInputProps) => {
         isRequired: isRequired,
 
         description: description,
+
+        startContent: !!startContent && (
+            <div className="h-full flex justify-center items-end text-small pe-2 font-bold text-primary select-none">
+                {startContent}
+            </div>
+        ),
+        endContent: !!endContent && (
+            <div className="h-full flex justify-center items-end text-small ps-2 font-bold text-primary select-none">
+                {endContent}
+            </div>
+        ),
 
         isInvalid: isInvalid || fieldState.invalid,
         errorMessage: errorMessage || fieldState.error?.message,
@@ -281,7 +299,7 @@ export const MinorInput = (props: MinorInputProps) => {
         )
     }
 
-    if (isNumeric) {
+    if (isNumeric ) {
         return (
             // @ts-ignore
             <NumericFormat
@@ -292,6 +310,9 @@ export const MinorInput = (props: MinorInputProps) => {
                 decimalSeparator="."
                 allowNegative={allowNegative}
                 decimalScale={decimalScale}
+                allowLeadingZeros={allowLeadingZeros}
+                min={minValue as number}
+                max={maxValue as number}
 
                 customInput={Input}
                 getInputRef={field.ref}
@@ -311,7 +332,7 @@ export const MinorInput = (props: MinorInputProps) => {
             startContent={isSecret && (
                 <div className="h-full flex justify-center items-end">
                     <Button
-                        className="focus:outline-none"
+                        className="focus:outline-none h-5 w-5 min-w-5"
                         variant="light"
                         radius="full"
                         size="sm"

@@ -30,7 +30,8 @@ const formSchema = z.object({
         .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
         .transform((id) => ({id: +id}))
         .nullable()
-        .optional(),
+        .optional()
+        .transform(value => value ? value : null),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
     tags: z.string({message: "برچسب ها را وارد کنید"})
         .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\s\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - و فاصله مجاز می باشد")
