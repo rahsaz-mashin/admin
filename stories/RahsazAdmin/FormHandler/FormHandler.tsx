@@ -1,7 +1,7 @@
 "use client"
 
 import React, {
-    forwardRef,
+    forwardRef, Key,
     MutableRefObject,
     ReactNode,
     useContext,
@@ -11,7 +11,7 @@ import React, {
 } from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {FieldValues, FormState, Path, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
+import {Control, FieldValues, FormState, Path, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
@@ -23,6 +23,7 @@ import {
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
+import {Tab, Tabs} from "@nextui-org/tabs";
 
 
 export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandlerProps<T>, ref: any) => {
@@ -32,11 +33,13 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         title,
         apiRoute,
         schema,
-        fields,
 
         editingId,
         initialValue,
+
         render,
+        fields,
+
         tableRef,
 
     } = props
@@ -128,10 +131,19 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                 render.map((r, idx) => {
                     return (
                         <r.render key={idx} {...contentProps}>
-                            <FormFieldsGenerator
-                                control={control}
-                                fields={f?.filter(({name}) => (r.fields.includes(name)))}
-                            />
+                            {r?.sections && (
+                                <SectionForm<T>
+                                    sections={r.sections}
+                                    control={control}
+                                    fields={f}
+                                />
+                            )}
+                            {r?.fields && (
+                                <FormFieldsGenerator
+                                    control={control}
+                                    fields={f?.filter(({name}) => (r.fields?.includes(name)))}
+                                />
+                            )}
                         </r.render>
                     )
                 })
@@ -147,6 +159,55 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     )
 })
 FormHandler.displayName = "FormHandler"
+
+
+const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
+
+    const {
+        sections,
+        control,
+        fields,
+    } = props
+
+    const [selectedTab, setSelectedTab] = useState<Key>(sections[0].key)
+
+    const currentSection = sections.find((v) => (v.key === selectedTab))
+
+    return (
+        <>
+            <Tabs
+                color="primary"
+                variant="bordered"
+                size="lg"
+                classNames={{base: "justify-center w-full", panel: "w-full"}}
+                selectedKey={selectedTab}
+                onSelectionChange={setSelectedTab}
+                items={sections}
+            >
+                {(tab) => {
+                    return (
+                        <Tab
+                            key={tab.key}
+                            title={tab.title}
+                        />
+                    )
+                }}
+            </Tabs>
+            <Card
+                shadow="none"
+                fullWidth
+                classNames={{body: "items-start text-start"}}
+            >
+                <CardBody className="gap-3 grid grid-cols-2 content-start">
+                    <FormFieldsGenerator
+                        control={control}
+                        fields={fields?.filter(({name}: {name: any}) => (currentSection?.fields?.includes(name)))}
+                    />
+                </CardBody>
+            </Card>
+        </>
+    )
+}
 
 
 const BuiltInContent: FormContentType = ({children, ...props}) => {
@@ -224,6 +285,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
 *
 */
 
+
 type FormContentPropsType<T> = {
     title?: string;
     isEditing?: boolean;
@@ -238,10 +300,29 @@ export type FormContentType = <T>(props: FormContentPropsType<T> & {
 }) => JSX.Element | null
 
 
-export type FormRender<T> = {
-    render: (props: FormContentPropsType<T> & { children: ReactNode }) => JSX.Element,
-    fields: string[]
+export type FormRenderSection<T> = {
+    key: string;
+    title: ReactNode;
+    fields: (keyof T)[];
 }
+
+
+export type FormRenderCommon<T> = {
+    render: (props: FormContentPropsType<T> & { children: ReactNode }) => JSX.Element;
+}
+
+export type FormRenderWithSection<T> = {
+    sections: FormRenderSection<T>[];
+    fields?: undefined;
+}
+
+export type FormRenderSimple<T> = {
+    fields: (keyof T)[];
+    sections?: undefined;
+}
+
+export type FormRender<T> = FormRenderCommon<T> & (FormRenderSimple<T> | FormRenderWithSection<T>)
+
 
 export type FormHandlerRefType = {
     reset: () => void;
@@ -259,4 +340,11 @@ export type FormHandlerProps<T> = {
     render?: FormRender<T>[]
 
     tableRef?: React.MutableRefObject<TableListRefType | undefined>;
+}
+
+
+export type SectionFormPropsType<T> = {
+    control: Control<any, any>;
+    sections: FormRenderSection<T>[];
+    fields: FormFieldType<T>[];
 }

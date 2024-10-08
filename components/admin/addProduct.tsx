@@ -1,4 +1,4 @@
-import React, {Key, useState} from "react";
+import React, {Key, useEffect, useState} from "react";
 import {z} from "zod";
 import {FormRender} from "@/stories/RahsazAdmin/FormHandler";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
@@ -6,15 +6,15 @@ import {Product} from "@/interfaces/Product.interface";
 import {Card, CardHeader} from "@nextui-org/card";
 import {Button, CardBody} from "@nextui-org/react";
 import slugify from "slugify-persian";
-import {Tab, Tabs} from "@nextui-org/tabs";
 import {
     OutlinedBasketIcon,
-    OutlinedCreditCardIcon,
     OutlinedDocumentIcon,
     OutlinedNotebookBookmarkIcon,
     OutlinedRulerPenIcon,
-    OutlinedShopIcon, OutlinedWalletIcon
+    OutlinedWalletIcon
 } from "@/stories/Icons";
+import {PriceList} from "@/interfaces/PriceList.interface";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
 
 type T = Product
@@ -98,7 +98,6 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
     )
 }
 
-
 const CategoriesBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
@@ -146,99 +145,14 @@ const PicturesBox: FormRender<T>['render'] = ({children, formState, watch, isEdi
 
 const DetailBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
 
-    const [selectedTab, setSelectedTab] = useState<Key>("intro")
-
     return (
         <Card
             className="col-span-full lg:col-span-6 xl:col-span-8"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
-            <CardBody className="gap-2">
-                <Tabs
-                    color="primary"
-                    variant="bordered"
-                    size="lg"
-                    classNames={{base: "justify-center w-full", panel: "w-full"}}
-                    selectedKey={selectedTab}
-                    onSelectionChange={setSelectedTab}
-                >
-                    <Tab
-                        key="intro"
-                        title={(
-                            <div className="flex items-center gap-2">
-                                <OutlinedNotebookBookmarkIcon size={20}/>
-                                <span>معرفی کلی</span>
-                            </div>
-                        )}
-                    >
-                        <Card shadow="none" fullWidth>
-                            <CardBody>
-                                {children}
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                    <Tab
-                        key="features"
-                        title={(
-                            <div className="flex items-center gap-2">
-                                <OutlinedDocumentIcon size={20}/>
-                                <span>ویژگی ها</span>
-                            </div>
-                        )}
-                    >
-                        <Card shadow="none" fullWidth>
-                            <CardBody>
-                                {children}
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                    <Tab
-                        key="technical"
-                        title={(
-                            <div className="flex items-center gap-2">
-                                <OutlinedRulerPenIcon size={20}/>
-                                <span>مشخصات فنی</span>
-                            </div>
-                        )}
-                    >
-                        <Card shadow="none" fullWidth>
-                            <CardBody>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                    <Tab
-                        key="pricing"
-                        title={(
-                            <div className="flex items-center gap-2">
-                                <OutlinedWalletIcon size={20}/>
-                                <span>قیمت گذاری</span>
-                            </div>
-                        )}
-                    >
-                        <Card shadow="none" fullWidth>
-                            <CardBody>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                    <Tab
-                        key="inventory"
-                        title={(
-                            <div className="flex items-center gap-2">
-                                <OutlinedBasketIcon size={20}/>
-                                <span>موجودی</span>
-                            </div>
-                        )}
-                    >
-                        <Card shadow="none" fullWidth>
-                            <CardBody>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                            </CardBody>
-                        </Card>
-                    </Tab>
-                </Tabs>
+            <CardBody className="gap-2 flex-col items-center">
+                {children}
             </CardBody>
         </Card>
     )
@@ -254,6 +168,17 @@ const formInitial: T = {
     tags: [],
     categories: [],
     machinery: [],
+    intro: "",
+
+    featuresCategory: null,
+    features: null,
+
+    technical: [],
+
+    priceList: null,
+    price: 0,
+
+    pictures: [],
 }
 
 
@@ -274,6 +199,65 @@ const formRender: FormRender<T>[] = [
         fields: []
     },
     {
+        render: DetailBox,
+        sections: [
+            {
+                key: "intro",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedNotebookBookmarkIcon size={20}/>
+                        <span>معرفی کلی</span>
+                    </div>
+                ),
+                fields: ["intro"],
+            },
+            {
+                key: "features",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedDocumentIcon size={20}/>
+                        <span>ویژگی ها</span>
+                    </div>
+                ),
+                fields: ["features"],
+            },
+            {
+                key: "technical",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedRulerPenIcon size={20}/>
+                        <span>مشخصات فنی</span>
+                    </div>
+                ),
+                fields: ["technical"],
+            },
+            {
+                key: "pricing",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedWalletIcon size={20}/>
+                        <span>قیمت گذاری</span>
+                    </div>
+                ),
+                fields:  ["price"],
+            },
+            {
+                key: "inventory",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedBasketIcon size={20}/>
+                        <span>موجودی</span>
+                    </div>
+                ),
+                fields: ["isActiveInventoryManagement", "warehouse", "inventory", "minimumInventoryWarn"],
+            },
+        ],
+    },
+    {
+        render: PicturesBox,
+        fields: ["pictures"]
+    },
+    {
         render: CategoriesBox,
         fields: ["categories"]
     },
@@ -281,18 +265,26 @@ const formRender: FormRender<T>[] = [
         render: MachineryBox,
         fields: ["machinery"]
     },
-    {
-        render: PicturesBox,
-        fields: ["pictures"]
-    },
-    {
-        render: DetailBox,
-        fields: ["intro", "features"]
-    },
 ]
 
 
 const formFields: FormFieldFunc<T> = (watch, setValue) => {
+
+    const [priceList, setPriceList] = useState<PriceList>()
+    const priceEndContent = priceList?.primaryCurrency?.iso || "~"
+
+    const axios = axiosCoreWithAuth()
+
+    const getPriceList = async (id: number) => {
+        const data: PriceList = await axios.get(`priceList/getInfo/${id}`)
+        setPriceList(data)
+    }
+
+    useEffect(() => {
+        const v = watch("priceList")
+        if (v) getPriceList(v as any as number)
+    }, [watch("priceList")]);
+
     return ([
         {
             name: "title",
@@ -370,17 +362,126 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "intro",
             type: "editor",
-            // label: "معرفی کلی محصول",
-            // description: "تا حجم 2 مگابایت",
+            className: "col-span-full",
         },
-
-
+        {
+            name: "features",
+            type: "array",
+            fields: [
+                {
+                    name: "key",
+                    type: "select",
+                    label: "نوع ویژگی",
+                    dynamic: {
+                        route: "product/featuresCategory/sloStyle",
+                    },
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
+                    name: "value",
+                    type: "select",
+                    label: "مقدار ویژگی",
+                    dynamic: {
+                        route: "product/features/sloStyle",
+                        filter: {category: watch("featuresCategory")}
+                    },
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+            ],
+        },
+        {
+            name: "technical",
+            type: "array",
+            fields: [
+                {
+                    name: "key",
+                    type: "input",
+                    label: "عنوان مشخصه فنی",
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
+                    name: "value",
+                    type: "input",
+                    label: "مقدار مشخصه فنی",
+                    isMultiline: true,
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+            ]
+        },
+        {
+            name: "price",
+            type: "array",
+            fields: [
+                {
+                    name: "priceList",
+                    type: "select",
+                    label: "لیست قیمتی",
+                    dynamic: {
+                        route: "priceList/sloStyle",
+                    },
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
+                    name: "amount",
+                    type: "input",
+                    label: "قیمت",
+                    isNumeric: true,
+                    isRequired: true,
+                    endContent: priceEndContent,
+                    className: "col-span-full xl:col-span-1",
+                },
+            ],
+        },
+        {
+            name: "isActiveInventoryManagement",
+            type: "switch",
+            label: "مدیریت موجودی محصول",
+            className: "col-span-full",
+        },
+        {
+            name: "minimumInventoryWarn",
+            type: "input",
+            label: "اعلان موجودی کم",
+            isNumeric: true,
+            isRequired: false,
+            className: "col-span-full",
+            description: "در صورتی که موجودی کل محصول از این عدد کمتر شود، در محصول لیبلی با این عنوان نمایش داده خواهد شد",
+        },
+        {
+            name: "inventory",
+            type: "array",
+            fields: [
+                {
+                    name: "warehouse",
+                    type: "select",
+                    label: "انبار",
+                    dynamic: {
+                        route: "warehouse/sloStyle",
+                    },
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
+                    name: "inventory",
+                    type: "input",
+                    label: "تعداد موجود در این انبار",
+                    isNumeric: true,
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+            ],
+        },
     ])
 }
 
 
 export const addProductContext = {
-    apiRoute: "branch",
+    apiRoute: "product",
     form: {
         title: "کالا",
         schema: formSchema,

@@ -70,12 +70,12 @@ export const MinorEditor = (props: MinorTagProps) => {
 
     return (
         <div
-            className={"group relative flex flex-col gap-3 items-start " + className}
+            className={"group relative flex flex-col gap-3 items-start min-h-60 " + className}
             data-has-helper={hasHelper}
             data-loading={isLoading || undefined}
         >
             <div
-                className="absolute z-10 flex-col justify-center items-center gap-5 w-full h-full bg-white/40 min-h-60 hidden group-data-[loading]:flex">
+                className="absolute z-10 flex-col justify-center items-center gap-5 w-full h-full bg-white/40 hidden group-data-[loading]:flex">
                 <Spinner/>
                 <span>در حال بارگذاری ادیتور ...</span>
             </div>

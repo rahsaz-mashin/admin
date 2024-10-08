@@ -7,7 +7,7 @@ import {MinorRadioBox} from "@/stories/General/MinorRadioBox";
 import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
 import {MinorChooseLocation} from "@/stories/General/MinorChooseLocation";
 import {DynamicSelectType} from "@/stories/General/MinorSelect/MinorSelect";
-import {Control, FieldValues, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
+import {Control, FieldValues, useController, useFieldArray, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import React, {ReactNode, useEffect, useState} from "react";
 import {MinorIconLibrary} from "@/stories/General/MinorIconLibrary";
 import {MinorUploader} from "@/stories/General/MinorUploader";
@@ -15,7 +15,10 @@ import {Accept} from "react-dropzone";
 import {MinorTag} from "@/stories/General/MinorTag";
 import {MinorEditor} from "@/stories/General/MinorEditor/MinorEditor";
 import {TimeValue} from "@react-types/datepicker";
-import {DateValue} from "@nextui-org/react";
+import {Button, DateValue} from "@nextui-org/react";
+import {Chip} from "@nextui-org/chip";
+import {DeleteIcon} from "@storybook/icons";
+import {DeleteOutline} from "@mui/icons-material";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -30,7 +33,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 
     return <>
         {fields.map((field) => {
-            let Field: ReactNode = undefined
+            let Field: ReactNode
             switch (field.type) {
                 case "input":
                     Field = (
@@ -132,6 +135,16 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         />
                     )
                     break
+                case "array":
+                    Field = (
+                        <FieldArray
+                            key={field.name}
+                            control={control}
+                            name={field.name}
+                            fields={field.fields}
+                        />
+                    )
+                    break
                 default:
                     Field = (
                         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
@@ -158,6 +171,78 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 }
 
 
+
+
+
+
+type FieldArrayPropsType<T> = {
+    name: string;
+    control: Control<any, any>;
+    fields: FormFieldType<T>[];
+}
+
+
+const FieldArray = <T,>(props: FieldArrayPropsType<T>) => {
+
+    const {
+        name,
+        control,
+        fields,
+    } = props
+
+
+    const {
+        fields: _fields,
+        append,
+        remove,
+
+    } = useFieldArray({
+        control,
+        name,
+    });
+
+
+    return (
+        <>
+            {_fields.map((field, index) => (
+                <div className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 hover:bg-gray-300 min-h-32 transition rounded-2xl">
+                    <div className="grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center">
+                        <FormFieldsGenerator
+                            control={control}
+                            fields={fields.map((v) => ({...v, name: `${name}.${index}.${v.name}`}))}
+                        />
+                    </div>
+                    <div className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col">
+                        <div className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full">
+                            {index + 1}
+                        </div>
+                        <Button
+                            onPress={() => remove(index)}
+                            size="sm"
+                            variant="solid"
+                            color="danger"
+                            radius="full"
+                            isIconOnly
+                        >
+                            <DeleteOutline/>
+                        </Button>
+                    </div>
+                </div>
+            ))}
+            <Button
+                onPress={() => append({ name: "" })}
+                color="primary"
+                variant="solid"
+                className="col-span-full"
+            >
+                افزودن
+            </Button>
+        </>
+    )
+}
+
+
+
 type FormGroupProps = {
     children?: ReactNode;
     name: string;
@@ -180,6 +265,11 @@ const FormGroup = (props: FormGroupProps) => {
         formState,
     } = useController({name, control})
 
+    // const { fields, append, remove } = useFieldArray({
+    //     control,
+    //     name: name
+    // });
+
 
     useEffect(() => {
         if (dependency && field.value && formState.defaultValues?.[field.name] !== field.value) {
@@ -195,7 +285,7 @@ const FormGroup = (props: FormGroupProps) => {
 }
 
 
-type FromFieldTypeCommon = {
+type FromFieldTypeCommon<T> = {
     name: string;
     label?: string;
     description?: ReactNode;
@@ -206,7 +296,7 @@ type FromFieldTypeCommon = {
 }
 
 
-type FromFieldTypeInput = {
+type FromFieldTypeInput<T> = {
     type: "input";
     isRequired?: boolean;
     isSecret?: boolean;
@@ -228,7 +318,7 @@ type FromFieldTypeInput = {
     endContent?: ReactNode;
 }
 
-type FromFieldTypeSelect = {
+type FromFieldTypeSelect<T> = {
     type: "select";
     isRequired?: boolean;
     placeholder?: string;
@@ -243,7 +333,7 @@ type FromFieldTypeSelect = {
     isSearchable?: boolean;
 }
 
-type FromFieldTypeRadioBox = {
+type FromFieldTypeRadioBox<T> = {
     type: "radioBox";
     isRequired?: boolean;
 
@@ -252,7 +342,7 @@ type FromFieldTypeRadioBox = {
     orientation?: "vertical" | "horizontal";
 }
 
-type FromFieldTypeCheckBox = {
+type FromFieldTypeCheckBox<T> = {
     type: "checkBox";
     isRequired?: boolean;
 
@@ -263,20 +353,20 @@ type FromFieldTypeCheckBox = {
     mode?: "group" | "single";
 }
 
-type FromFieldTypeSwitch = {
+type FromFieldTypeSwitch<T> = {
     type: "switch";
 }
 
-type FromFieldTypeLocation = {
+type FromFieldTypeLocation<T> = {
     type: "location";
 }
 
-type FromFieldTypeIconLibrary = {
+type FromFieldTypeIconLibrary<T> = {
     type: "iconLibrary";
     isRequired?: boolean;
 }
 
-type FromFieldTypeUploader = {
+type FromFieldTypeUploader<T> = {
     type: "uploader";
     accept?: Accept;
     isMultiple?: boolean;
@@ -287,7 +377,7 @@ type FromFieldTypeUploader = {
 }
 
 
-type FromFieldTypeTag = {
+type FromFieldTypeTag<T> = {
     type: "tag";
 
     isRequired?: boolean;
@@ -297,42 +387,47 @@ type FromFieldTypeTag = {
     isLtr?: boolean;
 }
 
-type FromFieldTypeEditor = {
+type FromFieldTypeEditor<T> = {
     type: "editor";
-
-
 }
 
-type FromFieldTypeOther = {
+type FromFieldTypeArray<T> = {
+    type: "array";
+
+    fields: FormFieldType<T>[]
+}
+
+type FromFieldTypeOther<T> = {
     type: "other";
 }
 
 
-export type FormFieldType =
-    FromFieldTypeCommon &
+export type FormFieldType<T> =
+    FromFieldTypeCommon<T> &
     (
-        FromFieldTypeInput |
-        FromFieldTypeSelect |
-        FromFieldTypeRadioBox |
-        FromFieldTypeCheckBox |
-        FromFieldTypeSwitch |
-        FromFieldTypeLocation |
-        FromFieldTypeIconLibrary |
-        FromFieldTypeUploader |
-        FromFieldTypeTag |
-        FromFieldTypeEditor |
-        FromFieldTypeOther
+        FromFieldTypeInput<T> |
+        FromFieldTypeSelect<T> |
+        FromFieldTypeRadioBox<T> |
+        FromFieldTypeCheckBox<T> |
+        FromFieldTypeSwitch<T> |
+        FromFieldTypeLocation<T> |
+        FromFieldTypeIconLibrary<T> |
+        FromFieldTypeUploader<T> |
+        FromFieldTypeTag<T> |
+        FromFieldTypeEditor<T> |
+        FromFieldTypeOther<T> |
+        FromFieldTypeArray<T>
         )
 
 
 // @ts-ignore
-export type FormFieldFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValue<T>) => FormFieldType[]
+export type FormFieldFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValue<T>) => FormFieldType<T>[]
 
 
-type FormFieldsGeneratorPropsType = {
-    fields?: FormFieldType[];
+type FormFieldsGeneratorPropsType<T> = {
+    fields?: FormFieldType<T>[];
     control: Control<any, any>;
 }
-export type FormFieldsGeneratorType = (props: FormFieldsGeneratorPropsType) => JSX.Element | null
+export type FormFieldsGeneratorType = <T,>(props: FormFieldsGeneratorPropsType<T>) => JSX.Element | null
 
 
