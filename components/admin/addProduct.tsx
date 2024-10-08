@@ -268,7 +268,7 @@ const formRender: FormRender<T>[] = [
 ]
 
 
-const formFields: FormFieldFunc<T> = (watch, setValue) => {
+const FormFields: FormFieldFunc<T> = (watch, setValue) => {
 
     const [priceList, setPriceList] = useState<PriceList>()
     const priceEndContent = priceList?.primaryCurrency?.iso || "~"
@@ -485,7 +485,7 @@ export const addProductContext = {
     form: {
         title: "کالا",
         schema: formSchema,
-        fields: formFields,
+        fields: FormFields,
         initial: formInitial,
         render: formRender,
     },
