@@ -97,10 +97,29 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
     const [secondaryCurrency, setSecondaryCurrency] = useState<Currency>()
 
     const valueLabel = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "درصد کاهش" : "مقدار کاهش"
-    const valueEndContent = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "%" : (primaryCurrency ? primaryCurrency.iso : "")
+    const valueEndContent = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "%" : (
+        primaryCurrency ? (
+            primaryCurrency.icon
+                ?
+                <span
+                    className="text-primary h-6 w-6 flex justify-center items-center"
+                    dangerouslySetInnerHTML={{__html: primaryCurrency.icon?.content || ""}}
+                />
+                :
+                primaryCurrency.iso
+        ) : "")
 
     const ratioLabel = "قیمت هر واحد ارز اولیه به ارز نهایی"
-    const ratioEndContent = secondaryCurrency ? secondaryCurrency.iso : ""
+    const ratioEndContent = secondaryCurrency ? (
+        secondaryCurrency.icon
+            ?
+            <span
+                className="text-primary h-6 w-6 flex justify-center items-center"
+                dangerouslySetInnerHTML={{__html: secondaryCurrency.icon?.content || ""}}
+            />
+            :
+            secondaryCurrency.iso
+    ) : ""
 
     const axios = axiosCoreWithAuth()
 
@@ -253,6 +272,10 @@ const tableColumns: ColumnType<T>[] = [
             return (
                 <div className="flex gap-2 items-center">
                     <span>{value?.title}</span>
+                    <span
+                        className="text-primary h-6 w-6 flex justify-center items-center"
+                        dangerouslySetInnerHTML={{__html: value.icon?.content || ""}}
+                    />
                     <span className="font-bold">({value?.iso})</span>
                 </div>
             )
@@ -267,6 +290,10 @@ const tableColumns: ColumnType<T>[] = [
             return (
                 <div className="flex gap-2 items-center">
                     <span>{value?.title}</span>
+                    <span
+                        className="text-primary h-6 w-6 flex justify-center items-center"
+                        dangerouslySetInnerHTML={{__html: value.icon?.content || ""}}
+                    />
                     <span className="font-bold">({value?.iso})</span>
                 </div>
             )

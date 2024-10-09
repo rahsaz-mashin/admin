@@ -15,6 +15,8 @@ import {
 } from "@/stories/Icons";
 import {PriceList} from "@/interfaces/PriceList.interface";
 import {axiosCoreWithAuth} from "@/lib/axios";
+import {NumericFormat} from "react-number-format";
+import {Input} from "@nextui-org/input";
 
 
 type T = Product
@@ -420,8 +422,82 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     label: "قیمت",
                     isNumeric: true,
                     isRequired: true,
-                    endContent: watch(`price.${index}.info`)?.primaryCurrency?.iso || "~",
+                    endContent: (
+                        watch(`price.${index}.info`)?.primaryCurrency?.icon
+                            ?
+                            <span
+                                className="text-primary h-6 w-6 flex justify-center items-center"
+                                dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.primaryCurrency?.icon.content || ""}}
+                            />
+                            :
+                            (watch(`price.${index}.info`)?.primaryCurrency?.iso || "~")
+                    ),
                     className: "col-span-full xl:col-span-1",
+                },
+                {
+                    name: "calc",
+                    type: "custom",
+                    className: "col-span-full",
+                    children: (
+                        <div className="flex flex-col gap-2 truncate text-sm">
+                            <div className="flex gap-2">
+                                <div className="">
+                                    قیمت نهایی:
+                                </div>
+                                <div className="flex gap-1 items-end font-bold">
+                                    <NumericFormat
+                                        value={22222}
+                                        thousandSeparator=","
+                                        decimalSeparator="."
+                                        allowNegative={false}
+                                        decimalScale={0}
+                                        allowLeadingZeros={false}
+                                        displayType="text"
+                                    />
+                                    <span className="text-xs font-bold text-primary">
+                                        {(
+                                            watch(`price.${index}.info`)?.secondaryCurrency?.icon
+                                                ?
+                                                <span
+                                                    className="text-primary h-6 w-6 flex justify-center items-center"
+                                                    dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.secondaryCurrency?.icon.content || ""}}
+                                                />
+                                                :
+                                                (watch(`price.${index}.info`)?.secondaryCurrency?.iso || "~")
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex gap-2">
+                                <div className="">
+                                    قیمت نهایی (با احتساب ارزش افزوده):
+                                </div>
+                                <div className="flex gap-1 items-end font-bold">
+                                    <NumericFormat
+                                        value={22222}
+                                        thousandSeparator=","
+                                        decimalSeparator="."
+                                        allowNegative={false}
+                                        decimalScale={0}
+                                        allowLeadingZeros={false}
+                                        displayType="text"
+                                    />
+                                    <span className="text-xs font-bold text-primary">
+                                        {(
+                                            watch(`price.${index}.info`)?.secondaryCurrency?.icon
+                                                ?
+                                                <span
+                                                    className="text-primary h-6 w-6 flex justify-center items-center"
+                                                    dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.secondaryCurrency?.icon.content || ""}}
+                                                />
+                                                :
+                                                (watch(`price.${index}.info`)?.secondaryCurrency?.iso || "~")
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    )
                 },
             ],
         },
