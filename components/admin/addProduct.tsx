@@ -332,7 +332,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: true,
             description: "تا حجم 2 مگابایت",
             isDisabled: false,
-
             // accept: {
             //     'image/png': ['.png'],
             // },
@@ -368,7 +367,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     label: "مقدار ویژگی",
                     dynamic: {
                         route: "product/features/sloStyle",
-                        filter: {category: watch("featuresCategory")}
+                        filter: {category: watch(`features.${index}.category`)}
                     },
                     isRequired: true,
                     className: "col-span-full xl:col-span-1",

@@ -3,9 +3,10 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {ProductCategory} from "@/interfaces/ProductCategory.interface";
 import slugify from "slugify-persian";
+import {CountingUnit} from "@/interfaces/CountingUnit.interface";
 
 
-type T = ProductCategory
+type T = CountingUnit
 
 
 const formInitial: T = {
@@ -13,17 +14,11 @@ const formInitial: T = {
     title: "",
     slug: "",
     description: "",
-    tags: [],
     icon: undefined,
-    parent: null,
 }
 
 
 const formSchema = z.object({
-    parent: z.string({message: "مادر معتبر نیست"}).regex(/^\d+$/, "مادر معتبر نیست")
-        .or(z.number({message: "مادر معتبر نیست"}).int({message: "مادر معتبر نیست"}).positive({message: "مادر معتبر نیست"}))
-        .transform((id) => ({id: +id}))
-        .nullable(),
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
     slug: z.string({message: "شناسه اینترنتی را وارد کنید"})
         .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - مجاز می باشد")
@@ -35,23 +30,11 @@ const formSchema = z.object({
         .optional()
         .transform(value => value ? value : null),
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
-    tags: z.string({message: "برچسب ها را وارد کنید"})
-        .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\s\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - و فاصله مجاز می باشد")
-        .array().max(10, {message: "حداکثر 10 برچسب وارد کنید"}),
 });
 
 
 const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
-        {
-            name: "parent",
-            type: "select",
-            label: "مادر",
-            dynamic: {
-                route: "product/category/sloStyle",
-            },
-            className: "col-span-full",
-        },
         {
             name: "title",
             type: "input",
@@ -83,15 +66,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "توضیحات",
             isRequired: false,
             isMultiline: true,
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "tags",
-            type: "tag",
-            label: "برچسب ها",
-            isRequired: false,
-            className: "col-span-full xl:col-span-1",
-            description: "بعد افزودن هر مورد کلید Enter را فشار دهید"
+            className: "col-span-full",
         },
     ])
 }
@@ -123,12 +98,6 @@ const tableColumns: ColumnType<T>[] = [
         render: (value, ctx) => {
             return (
                 <div className="flex gap-2 items-center">
-                    {!!ctx.parent && (
-                        <>
-                            <span>{ctx.parent?.title}</span>
-                            <span>/</span>
-                        </>
-                    )}
                     <span>{value}</span>
                     <span
                         className="text-primary h-6 w-6 flex justify-center items-center"
@@ -141,10 +110,10 @@ const tableColumns: ColumnType<T>[] = [
 ]
 
 
-export const productCategoryContext = {
-    apiRoute: "product/category",
+export const countingUnitContext = {
+    apiRoute: "countingUnit",
     form: {
-        title: "دسته بندی موضوعی",
+        title: "واحد شمارش",
         schema: formSchema,
         fields: formFields,
         initial: formInitial,

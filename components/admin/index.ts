@@ -14,6 +14,7 @@ import {productFeaturesContext} from "@/components/admin/productFeatures";
 import {currencyContext} from "@/components/admin/currency";
 import {priceListContext} from "@/components/admin/priceList";
 import {productListContext} from "@/components/admin/productList";
+import {countingUnitContext} from "@/components/admin/countingUnit";
 
 export const adminContextConfig: any = {
     general: {
@@ -40,6 +41,7 @@ export const adminContextConfig: any = {
             },
             warehouse: {
                 list: warehouseContext,
+                counting_unit: countingUnitContext
             },
             category: {
                 machine_brand: productMachineBrandContext,

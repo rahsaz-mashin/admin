@@ -320,7 +320,7 @@ const adminRoutes: AdminMenu[] = [
                                 isEnable: true,
                             },
                             {
-                                key: "counting_units",
+                                key: "counting_unit",
                                 title: "واحدهای شمارش",
                                 icon: <BoldDuotoneCountingIcon size={64}/>,
                                 description: "مشاهده لیست واحدهای شمارش، ایجاد و مدیریت آن ها",
