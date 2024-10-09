@@ -219,9 +219,11 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                         />
                     </div>
                     <div
-                        className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col">
+                        className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col"
+                    >
                         <div
-                            className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full">
+                            className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full"
+                        >
                             {index + 1}
                         </div>
                         <Button
@@ -238,7 +240,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                 </div>
             ))}
             <Button
-                onPress={() => append()}
+                onPress={() => append({})}
                 color="primary"
                 variant="solid"
                 className="col-span-full"
