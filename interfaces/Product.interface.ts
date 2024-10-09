@@ -20,18 +20,30 @@ export interface Product {
 
     intro: string | null;
 
-    featuresCategory: ProductFeaturesCategory | null;
-    features: ProductFeatures | null;
+    features?: {
+        category: ProductFeaturesCategory | number | null;
+        value: ProductFeatures | number | null;
+    }[],
 
-    technical: { key: string; value: string }[];
+    technical?: {
+        title: string;
+        value: string;
+    }[];
 
-    priceList: PriceList | null;
-    price: number;
+    price?: {
+        priceList: PriceList | number | null;
+        amount: number;
+        info?: PriceList;
+    }[],
+
 
     isActiveInventoryManagement?: boolean;
-    warehouse?: Warehouse | null;
-    inventory?: number;
     minimumInventoryWarn?: number;
+
+    inventory: {
+        warehouse?: Warehouse | number | null;
+        inventory?: number;
+    }[];
 
     pictures: FileStorage[]
 

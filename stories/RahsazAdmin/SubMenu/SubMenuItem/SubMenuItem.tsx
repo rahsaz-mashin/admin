@@ -60,39 +60,13 @@ export const SubMenuItem = (props: SubMenuItemType) => {
                 className="select-none group p-4 gap-3"
                 isDisabled={!isEnable}
             >
-                <CardBody className="overflow-visible p-0 transition flex items-center text-blue-950 group-hover:text-primary">
+                <CardBody className="overflow-visible p-0 transition flex items-center text-blue-950 group-[&:not([data-disabled])]:group-hover:text-primary">
                     <div className="w-16 h-16 flex justify-center items-center">
                         {icon}
                     </div>
                 </CardBody>
                 <CardFooter className="text-small justify-between p-0">
                     <b className="truncate w-full text-center">{label}</b>
-                    {/*<Tooltip*/}
-                    {/*    content={tooltipContent}*/}
-                    {/*    color="foreground"*/}
-                    {/*    placement="bottom"*/}
-                    {/*    isOpen={showHelp}*/}
-                    {/*    isKeyboardDismissDisabled*/}
-                    {/*    isDismissable*/}
-                    {/*>*/}
-                    {/*    <Button*/}
-                    {/*        as="div"*/}
-                    {/*        isIconOnly*/}
-                    {/*        size="sm"*/}
-                    {/*        color="secondary"*/}
-                    {/*        radius="full"*/}
-                    {/*        variant="light"*/}
-                    {/*        isDisabled={!isEnable}*/}
-                    {/*        onPress={() => {*/}
-                    {/*            setShowHelp(true)*/}
-                    {/*            setTimeout(() => {*/}
-                    {/*                setShowHelp(false)*/}
-                    {/*            }, 1000)*/}
-                    {/*        }}*/}
-                    {/*    >*/}
-                    {/*        <HelpOutlineIcon size={24}/>*/}
-                    {/*    </Button>*/}
-                    {/*</Tooltip>*/}
                 </CardFooter>
             </Card>
         </Tooltip>

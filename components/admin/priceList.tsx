@@ -97,14 +97,12 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
     const [secondaryCurrency, setSecondaryCurrency] = useState<Currency>()
 
     const valueLabel = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "درصد کاهش" : "مقدار کاهش"
-    // const valuePattern = (watch("pricingPolicy") === pricingPolicyEnum.constantPercent) ? "##" : undefined
     const valueEndContent = watch("pricingPolicy") === pricingPolicyEnum.constantPercent ? "%" : (primaryCurrency ? primaryCurrency.iso : "")
 
     const ratioLabel = "قیمت هر واحد ارز اولیه به ارز نهایی"
     const ratioEndContent = secondaryCurrency ? secondaryCurrency.iso : ""
 
     const axios = axiosCoreWithAuth()
-
 
     const getPrimaryCurrency = async (id: number) => {
         const data: Currency = await axios.get(`currency/${id}`)
@@ -118,6 +116,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
         const v = watch("primaryCurrency")
         if (v) getPrimaryCurrency(v as any as number)
     }, [watch("primaryCurrency")]);
+
     useEffect(() => {
         const v = watch("secondaryCurrency")
         if (v) getSecondaryCurrency(v as any as number)

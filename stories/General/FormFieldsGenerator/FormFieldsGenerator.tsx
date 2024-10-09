@@ -145,6 +145,13 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         />
                     )
                     break
+                case "custom":
+                    Field = (
+                        <div key={field.name} className={field.className}>
+                            {field.children}
+                        </div>
+                    )
+                    break
                 default:
                     Field = (
                         <div key={field.name} className="bg-danger-50 text-danger p-3 rounded-xl border border-danger">
@@ -171,18 +178,14 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 }
 
 
-
-
-
-
 type FieldArrayPropsType<T> = {
     name: string;
     control: Control<any, any>;
-    fields: FormFieldType<T>[];
+    fields: (index: number) => FormFieldType<T>[];
 }
 
 
-const FieldArray = <T,>(props: FieldArrayPropsType<T>) => {
+const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
 
     const {
         name,
@@ -205,15 +208,20 @@ const FieldArray = <T,>(props: FieldArrayPropsType<T>) => {
     return (
         <>
             {_fields.map((field, index) => (
-                <div className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 hover:bg-gray-300 min-h-32 transition rounded-2xl">
+                <div
+                    key={`${name}.${index}`}
+                    className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 hover:bg-gray-300 min-h-32 transition rounded-2xl"
+                >
                     <div className="grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center">
                         <FormFieldsGenerator
                             control={control}
-                            fields={fields.map((v) => ({...v, name: `${name}.${index}.${v.name}`}))}
+                            fields={fields(index).map((v) => ({...v, name: `${name}.${index}.${v.name}`}))}
                         />
                     </div>
-                    <div className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col">
-                        <div className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full">
+                    <div
+                        className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col">
+                        <div
+                            className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full">
                             {index + 1}
                         </div>
                         <Button
@@ -230,7 +238,7 @@ const FieldArray = <T,>(props: FieldArrayPropsType<T>) => {
                 </div>
             ))}
             <Button
-                onPress={() => append({ name: "" })}
+                onPress={() => append()}
                 color="primary"
                 variant="solid"
                 className="col-span-full"
@@ -242,11 +250,10 @@ const FieldArray = <T,>(props: FieldArrayPropsType<T>) => {
 }
 
 
-
 type FormGroupProps = {
     children?: ReactNode;
     name: string;
-    dependency?: () => void;
+    dependency?: (value: any, name: string) => void;
     control: Control<any, any>;
 }
 
@@ -265,15 +272,10 @@ const FormGroup = (props: FormGroupProps) => {
         formState,
     } = useController({name, control})
 
-    // const { fields, append, remove } = useFieldArray({
-    //     control,
-    //     name: name
-    // });
-
 
     useEffect(() => {
         if (dependency && field.value && formState.defaultValues?.[field.name] !== field.value) {
-            dependency()
+            dependency(field.value, name)
         }
     }, [field.value]);
 
@@ -292,7 +294,7 @@ type FromFieldTypeCommon<T> = {
     isDisabled?: boolean;
     isReadOnly?: boolean;
     className?: string;
-    dependency?: () => void;
+    dependency?: (value: any, name: string) => void;
 }
 
 
@@ -393,8 +395,12 @@ type FromFieldTypeEditor<T> = {
 
 type FromFieldTypeArray<T> = {
     type: "array";
+    fields: (index: number) => FormFieldType<T>[]
+}
 
-    fields: FormFieldType<T>[]
+type FromFieldTypeCustom<T> = {
+    type: "custom";
+    children: ReactNode;
 }
 
 type FromFieldTypeOther<T> = {
@@ -416,7 +422,8 @@ export type FormFieldType<T> =
         FromFieldTypeTag<T> |
         FromFieldTypeEditor<T> |
         FromFieldTypeOther<T> |
-        FromFieldTypeArray<T>
+        FromFieldTypeArray<T> |
+        FromFieldTypeCustom<T>
         )
 
 
@@ -428,6 +435,6 @@ type FormFieldsGeneratorPropsType<T> = {
     fields?: FormFieldType<T>[];
     control: Control<any, any>;
 }
-export type FormFieldsGeneratorType = <T,>(props: FormFieldsGeneratorPropsType<T>) => JSX.Element | null
+export type FormFieldsGeneratorType = <T, >(props: FormFieldsGeneratorPropsType<T>) => JSX.Element | null
 
 

@@ -159,7 +159,6 @@ const DetailBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 }
 
 
-
 const formInitial: T = {
     id: undefined,
     title: "",
@@ -168,15 +167,15 @@ const formInitial: T = {
     tags: [],
     categories: [],
     machinery: [],
+
     intro: "",
-
-    featuresCategory: null,
-    features: null,
-
+    features: [],
     technical: [],
+    price: [],
+    inventory: [],
 
-    priceList: null,
-    price: 0,
+    isActiveInventoryManagement: true,
+    minimumInventoryWarn: 0,
 
     pictures: [],
 }
@@ -239,7 +238,7 @@ const formRender: FormRender<T>[] = [
                         <span>قیمت گذاری</span>
                     </div>
                 ),
-                fields:  ["price"],
+                fields: ["price"],
             },
             {
                 key: "inventory",
@@ -249,7 +248,7 @@ const formRender: FormRender<T>[] = [
                         <span>موجودی</span>
                     </div>
                 ),
-                fields: ["isActiveInventoryManagement", "warehouse", "inventory", "minimumInventoryWarn"],
+                fields: ["isActiveInventoryManagement", "minimumInventoryWarn", "inventory"],
             },
         ],
     },
@@ -268,22 +267,7 @@ const formRender: FormRender<T>[] = [
 ]
 
 
-const FormFields: FormFieldFunc<T> = (watch, setValue) => {
-
-    const [priceList, setPriceList] = useState<PriceList>()
-    const priceEndContent = priceList?.primaryCurrency?.iso || "~"
-
-    const axios = axiosCoreWithAuth()
-
-    const getPriceList = async (id: number) => {
-        const data: PriceList = await axios.get(`priceList/getInfo/${id}`)
-        setPriceList(data)
-    }
-
-    useEffect(() => {
-        const v = watch("priceList")
-        if (v) getPriceList(v as any as number)
-    }, [watch("priceList")]);
+const formFields: FormFieldFunc<T> = (watch, setValue) => {
 
     return ([
         {
@@ -367,9 +351,9 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "features",
             type: "array",
-            fields: [
+            fields: (index) => [
                 {
-                    name: "key",
+                    name: "category",
                     type: "select",
                     label: "نوع ویژگی",
                     dynamic: {
@@ -394,9 +378,9 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "technical",
             type: "array",
-            fields: [
+            fields: (index) => [
                 {
-                    name: "key",
+                    name: "title",
                     type: "input",
                     label: "عنوان مشخصه فنی",
                     isRequired: true,
@@ -415,7 +399,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "price",
             type: "array",
-            fields: [
+            fields: (index) => [
                 {
                     name: "priceList",
                     type: "select",
@@ -425,6 +409,11 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
                     },
                     isRequired: true,
                     className: "col-span-full xl:col-span-1",
+                    dependency: async (value, name) => {
+                        const axios = axiosCoreWithAuth()
+                        const data: PriceList = await axios.get(`priceList/getInfo/${value}`)
+                        setValue(`price.${index}.info`, data)
+                    },
                 },
                 {
                     name: "amount",
@@ -432,7 +421,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
                     label: "قیمت",
                     isNumeric: true,
                     isRequired: true,
-                    endContent: priceEndContent,
+                    endContent: watch(`price.${index}.info`)?.primaryCurrency?.iso || "~",
                     className: "col-span-full xl:col-span-1",
                 },
             ],
@@ -455,7 +444,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "inventory",
             type: "array",
-            fields: [
+            fields: (index) => [
                 {
                     name: "warehouse",
                     type: "select",
@@ -485,7 +474,7 @@ export const addProductContext = {
     form: {
         title: "کالا",
         schema: formSchema,
-        fields: FormFields,
+        fields: formFields,
         initial: formInitial,
         render: formRender,
     },

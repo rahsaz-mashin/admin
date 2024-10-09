@@ -7,7 +7,7 @@ import {
     BoldDuotoneCategoryBrandIcon,
     BoldDuotoneCategoryListIcon,
     BoldDuotoneCategoryManufactureIcon,
-    BoldDuotoneComposeMessageIcon,
+    BoldDuotoneComposeMessageIcon, BoldDuotoneCountingIcon,
     BoldDuotoneCurrencyIcon,
     BoldDuotoneDiscountIcon,
     BoldDuotoneEarthIcon,
@@ -317,6 +317,13 @@ const adminRoutes: AdminMenu[] = [
                                 title: "انبارها",
                                 icon: <BoldDuotoneWarehouseIcon size={64}/>,
                                 description: "مشاهده لیست انبارها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "counting_units",
+                                title: "واحدهای شمارش",
+                                icon: <BoldDuotoneCountingIcon size={64}/>,
+                                description: "مشاهده لیست واحدهای شمارش، ایجاد و مدیریت آن ها",
                                 isEnable: true,
                             },
                             {
