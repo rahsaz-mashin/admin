@@ -54,8 +54,8 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     const axios = axiosCoreWithAuth()
 
     const initialData: () => Promise<T> = async () => {
-        if(upsert) {
-            const d = await axios.get(`${apiRoute}`)
+        if (upsert) {
+            const d: T = await axios.get(`${apiRoute}`)
             return !!d ? d : initialValue as T
         }
         if (!isEditing) return initialValue as T
@@ -80,8 +80,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
             if (upsert) {
                 const d = await axios.patch(`${apiRoute}`, data)
                 reset(d)
-            }
-            else if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
+            } else if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
             else await axios.post(`${apiRoute}`, data)
             resetToDefault()
             tableRef?.current?.refresh()
@@ -210,7 +209,7 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
                 <CardBody className="gap-3 grid grid-cols-2 content-start">
                     <FormFieldsGenerator
                         control={control}
-                        fields={fields?.filter(({name}: {name: any}) => (currentSection?.fields?.includes(name)))}
+                        fields={fields?.filter(({name}: { name: any }) => (currentSection?.fields?.includes(name)))}
                     />
                 </CardBody>
             </Card>

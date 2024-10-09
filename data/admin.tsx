@@ -429,10 +429,25 @@ const adminRoutes: AdminMenu[] = [
                         ],
                     },
                     {
+                        key: "settings",
+                        title: "تنظیمات",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "product",
+                                title: "تنظیمات کالا",
+                                icon: <BoldDuotoneSettingIcon size={64}/>,
+                                description: "تنظیمات مربوط به کالا",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                    {
                         key: "campaign",
                         title: "مدیریت کمپین ها",
                         icon: null,
-                        isEnable: true,
+                        isEnable: false,
                         sub: [
                             {
                                 key: "presale",
@@ -454,7 +469,7 @@ const adminRoutes: AdminMenu[] = [
                         key: "discount",
                         title: "مدیریت تخفیف ها",
                         icon: null,
-                        isEnable: true,
+                        isEnable: false,
                         sub: [
                             {
                                 key: "public",
@@ -476,7 +491,7 @@ const adminRoutes: AdminMenu[] = [
                         key: "statistics",
                         title: "آمار و گزارشات",
                         icon: null,
-                        isEnable: true,
+                        isEnable: false,
                         sub: [
                             {
                                 key: "add",
@@ -501,21 +516,7 @@ const adminRoutes: AdminMenu[] = [
                             },
                         ],
                     },
-                    {
-                        key: "settings",
-                        title: "تنظیمات",
-                        icon: null,
-                        isEnable: true,
-                        sub: [
-                            {
-                                key: "product",
-                                title: "تنظیمات کالا",
-                                icon: <BoldDuotoneSettingIcon size={64}/>,
-                                description: "تنظیمات مربوط به کالا",
-                                isEnable: true,
-                            },
-                        ],
-                    },
+
                 ],
             },
             {
