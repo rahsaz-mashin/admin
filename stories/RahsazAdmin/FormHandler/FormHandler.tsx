@@ -42,6 +42,8 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
         tableRef,
 
+        upsert,
+
     } = props
 
     const isEditing = editingId !== undefined && editingId !== null
@@ -52,6 +54,10 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     const axios = axiosCoreWithAuth()
 
     const initialData: () => Promise<T> = async () => {
+        if(upsert) {
+            const d = await axios.get(`${apiRoute}`)
+            return !!d ? d : initialValue as T
+        }
         if (!isEditing) return initialValue as T
         return await axios.get(`${apiRoute}/${editingId}`)
     }
@@ -64,16 +70,18 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         watch,
         setValue,
         setFocus,
-
     } = useForm<T>({
         resolver: zodResolver(schema),
         defaultValues: initialData,
-
     });
 
     const onSubmit: SubmitHandler<T> = async (data) => {
         try {
-            if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
+            if (upsert) {
+                const d = await axios.patch(`${apiRoute}`, data)
+                reset(d)
+            }
+            else if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
             else await axios.post(`${apiRoute}`, data)
             resetToDefault()
             tableRef?.current?.refresh()
@@ -111,6 +119,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         watch,
         cancel: adminContext.backToList,
         reset: resetToDefault,
+        upsert,
     }
 
 
@@ -217,6 +226,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
         cancel,
         reset,
         formState,
+        upsert,
     } = props
 
     return (
@@ -227,7 +237,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
         >
             <CardHeader>
                 <h3 className="font-bold">
-                    {isEditing ? "ویرایش" : "ایجاد"} {title}
+                    {!upsert && (isEditing ? "ویرایش" : "ایجاد")} {title}
                 </h3>
             </CardHeader>
             <CardBody className="gap-3 grid grid-cols-2 content-start">
@@ -244,7 +254,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                 >
                     ریست
                 </Button>
-                {isEditing && (
+                {!upsert && isEditing && (
                     <Button
                         aria-label="Cancel Form"
                         type="button"
@@ -263,7 +273,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                     isLoading={formState?.isValidating || formState?.isSubmitting}
                     isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                 >
-                    {isEditing ? "ویرایش" : "ایجاد"}
+                    {upsert ? "بروزرسانی" : (isEditing ? "ویرایش" : "ایجاد")}
                 </Button>
             </CardFooter>
             <div
@@ -293,6 +303,7 @@ type FormContentPropsType<T> = {
     reset?: () => void;
     watch: UseFormWatch<T & FieldValues>;
     formState: FormState<T & FieldValues>;
+    upsert?: boolean;
 }
 
 export type FormContentType = <T>(props: FormContentPropsType<T> & {
@@ -337,7 +348,8 @@ export type FormHandlerProps<T> = {
     fields?: FormFieldFunc<T>;
     editingId?: string | number | null;
     initialValue?: T;
-    render?: FormRender<T>[]
+    render?: FormRender<T>[];
+    upsert?: boolean;
 
     tableRef?: React.MutableRefObject<TableListRefType | undefined>;
 }

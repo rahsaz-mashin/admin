@@ -15,6 +15,7 @@ import {currencyContext} from "@/components/admin/currency";
 import {priceListContext} from "@/components/admin/priceList";
 import {productListContext} from "@/components/admin/productList";
 import {countingUnitContext} from "@/components/admin/countingUnit";
+import {productSettingsContext} from "@/components/admin/productSettings";
 
 export const adminContextConfig: any = {
     general: {
@@ -59,6 +60,9 @@ export const adminContextConfig: any = {
             price: {
                 currency: currencyContext,
                 price_list: priceListContext,
+            },
+            settings: {
+                product: productSettingsContext,
             }
         },
     },

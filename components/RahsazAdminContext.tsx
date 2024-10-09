@@ -32,6 +32,7 @@ export function RahsazAdminContext(props: PropsType) {
             formFields={context.form?.fields}
             formInitialValue={context.form?.initial}
             formRender={context.form?.render}
+            formUpsert={context.form?.upsert}
         />
     )
 }

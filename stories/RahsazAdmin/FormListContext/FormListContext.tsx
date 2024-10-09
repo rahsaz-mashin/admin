@@ -49,6 +49,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                     footer={props.formFooter}
                     initialValue={props.formInitialValue}
                     render={props.formRender}
+                    upsert={props.formUpsert}
                 />
             </div>
         );
@@ -68,6 +69,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                 footer={props.formFooter}
                 initialValue={props.formInitialValue}
                 render={props.formRender}
+                upsert={props.formUpsert}
 
                 tableRef={tableRef}
             />
@@ -107,6 +109,7 @@ type FormListContextFormModePureProps<T> = {
     formSchema: ZodType<any, any, any>;
     formFields?: FormFieldFunc<T>;
     formInitialValue?: T;
+    formUpsert?: boolean;
     formRender?: FormRender<T>[];
 }
 

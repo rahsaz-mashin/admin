@@ -502,16 +502,16 @@ const adminRoutes: AdminMenu[] = [
                         ],
                     },
                     {
-                        key: "setting",
+                        key: "settings",
                         title: "تنظیمات",
                         icon: null,
                         isEnable: true,
                         sub: [
                             {
-                                key: "vat",
-                                title: "ارزش افزوده",
+                                key: "product",
+                                title: "تنظیمات کالا",
                                 icon: <BoldDuotoneSettingIcon size={64}/>,
-                                description: "مدیریت ارزش افزوده (مالیات و عوارض)",
+                                description: "تنظیمات مربوط به کالا",
                                 isEnable: true,
                             },
                         ],
