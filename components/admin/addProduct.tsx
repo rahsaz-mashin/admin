@@ -17,6 +17,7 @@ import {PriceList} from "@/interfaces/PriceList.interface";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {NumericFormat} from "react-number-format";
 import {Input} from "@nextui-org/input";
+import {Currency} from "@/interfaces/Currency.interface";
 
 
 type T = Product
@@ -412,7 +413,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const data: PriceList = await axios.get(`priceList/getInfo/${value}`)
+                        const data: { primaryCurrency: Currency, secondaryCurrency: Currency, finalPrice: number, finalPriceWithVat: number } = await axios.get(`product/calculatePrice?priceList=${value}&price=${watch(`price.${index}.amount`).replaceAll(",", "")}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -433,6 +434,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             (watch(`price.${index}.info`)?.primaryCurrency?.iso || "~")
                     ),
                     className: "col-span-full xl:col-span-1",
+                    dependency: async (value, name) => {
+                        const axios = axiosCoreWithAuth()
+                        const data: { primaryCurrency: Currency, secondaryCurrency: Currency, finalPrice: number, finalPriceWithVat: number } = await axios.get(`product/calculatePrice?priceList=${watch(`price.${index}.priceList`)}&price=${value.replaceAll(",", "")}`)
+                        setValue(`price.${index}.info`, data)
+                    },
                 },
                 {
                     name: "calc",
@@ -440,13 +446,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full",
                     children: (
                         <div className="flex flex-col gap-2 truncate text-sm">
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 items-center">
                                 <div className="">
                                     قیمت نهایی:
                                 </div>
-                                <div className="flex gap-1 items-end font-bold">
+                                <div className="flex gap-1 font-bold">
                                     <NumericFormat
-                                        value={22222}
+                                        value={watch(`price.${index}.info`)?.finalPrice || 0}
                                         thousandSeparator=","
                                         decimalSeparator="."
                                         allowNegative={false}
@@ -468,13 +474,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 items-center">
                                 <div className="">
                                     قیمت نهایی (با احتساب ارزش افزوده):
                                 </div>
-                                <div className="flex gap-1 items-end font-bold">
+                                <div className="flex gap-1 font-bold">
                                     <NumericFormat
-                                        value={22222}
+                                        value={watch(`price.${index}.info`)?.finalPriceWithVat || 0}
                                         thousandSeparator=","
                                         decimalSeparator="."
                                         allowNegative={false}
