@@ -315,18 +315,28 @@ const formRender: FormRender<T>[] = [
             },
         ],
     },
-    {
-        render: PicturesBox,
-        fields: ["pictures"]
-    },
+
     {
         render: CategoriesBox,
         fields: ["categories"]
     },
     {
+        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/> ,
+        fields: []
+    },
+    {
         render: MachineryBox,
         fields: ["machinery"]
     },
+    {
+        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/> ,
+        fields: []
+    },
+    {
+        render: PicturesBox,
+        fields: ["pictures"]
+    },
+
 ]
 
 
