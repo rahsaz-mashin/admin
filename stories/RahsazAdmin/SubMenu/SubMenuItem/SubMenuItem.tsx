@@ -17,6 +17,7 @@ export type SubMenuItemType = {
     category: string;
     icon?: ReactNode;
     isEnable?: boolean;
+    hidden?: boolean;
 }
 
 export const SubMenuItem = (props: SubMenuItemType) => {
@@ -30,9 +31,11 @@ export const SubMenuItem = (props: SubMenuItemType) => {
         section,
         category,
         icon,
-        isEnable
+        isEnable,
+        hidden
     } = props
 
+    if(hidden) return null
 
     const tooltipContent = (
         <div className="px-1 py-2 max-w-52">

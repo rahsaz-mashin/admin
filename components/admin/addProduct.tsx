@@ -18,6 +18,7 @@ import {axiosCoreWithAuth} from "@/lib/axios";
 import {NumericFormat} from "react-number-format";
 import {Input} from "@nextui-org/input";
 import {Currency} from "@/interfaces/Currency.interface";
+import moment from "jalali-moment";
 
 
 type T = Product
@@ -45,19 +46,25 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
             <CardBody className="gap-5">
-                <div className="flex flex-col gap-1 text-sm">
-                    <div className="flex flex-row gap-1 items-center">
-                        <b>زمان ایجاد:</b>
-                        <span dir="ltr">{watch("createdAt")?.toString() || "-"}</span>
-                    </div>
-                    <div className="flex flex-row gap-1 items-center">
-                        <b>آخرین ویرایش:</b>
-                        <span dir="ltr">{watch("updatedAt")?.toString() || "-"}</span>
-                    </div>
-                    <div className="flex flex-row gap-1 items-center">
-                        <b>زمان تایید:</b>
-                        <span dir="ltr">1403/08/23 12:22</span>
-                    </div>
+                <div className="flex flex-col gap-1 text-sm empty:hidden">
+                    {watch("createdAt") && (
+                        <div className="flex flex-row gap-1 items-center">
+                            <b>زمان ایجاد:</b>
+                            <span
+                                dir="ltr">{moment(watch("createdAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}</span>
+                        </div>
+                    )}
+                    {watch("updatedAt") && (
+                        <div className="flex flex-row gap-1 items-center">
+                            <b>آخرین ویرایش:</b>
+                            <span
+                                dir="ltr">{moment(watch("updatedAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}</span>
+                        </div>
+                    )}
+                    {/*<div className="flex flex-row gap-1 items-center">*/}
+                    {/*    <b>زمان تایید:</b>*/}
+                    {/*    <span dir="ltr">1403/08/23 12:22</span>*/}
+                    {/*</div>*/}
                 </div>
                 <div className="flex flex-col gap-3 w-full">
                     {isEditing && (
@@ -67,6 +74,7 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                             color="default"
                             size="md"
                             fullWidth
+                            onPress={() => {}}
                             isLoading={formState?.isValidating || formState?.isSubmitting}
                             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                         >
@@ -321,7 +329,7 @@ const formRender: FormRender<T>[] = [
         fields: ["categories"]
     },
     {
-        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/> ,
+        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/>,
         fields: []
     },
     {
@@ -329,7 +337,7 @@ const formRender: FormRender<T>[] = [
         fields: ["machinery"]
     },
     {
-        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/> ,
+        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/>,
         fields: []
     },
     {
@@ -493,7 +501,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             secondaryCurrency: Currency,
                             finalPrice: number,
                             finalPriceWithVat: number
-                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g,"") || 0}`)
+                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -524,7 +532,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             secondaryCurrency: Currency,
                             finalPrice: number,
                             finalPriceWithVat: number,
-                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g,"") || 0}`)
+                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },

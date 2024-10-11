@@ -15,6 +15,7 @@ const tableColumns: ColumnType<T>[] = [
         minWidth: 160,
         toolsCell: {
             editable: true,
+            editRoute: "edit",
             removable: true,
         },
     },

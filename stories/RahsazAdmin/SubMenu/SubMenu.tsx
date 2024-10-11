@@ -13,7 +13,7 @@ export type SubMenuType = {
 
 export const SubMenu = (props: SubMenuType) => {
 
-    const { workspace, section } = props
+    const {workspace, section} = props
     const categoriesList = getCategoryList(workspace, section)
 
     if (!categoriesList?.length) return null
@@ -47,6 +47,7 @@ export const SubMenu = (props: SubMenuType) => {
                                                     section={section}
                                                     category={category.key}
                                                     isEnable={menu.isEnable}
+                                                    hidden={menu.hidden}
                                                 />
                                             )
                                         }

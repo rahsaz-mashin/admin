@@ -129,9 +129,9 @@ export const AdminProvider = ({children, initial}: ProviderPropsType) => {
         router.push(["", "admin", workspace, section, category, menu].join("/"));
     }
 
-    const editItem = (id: string | number) => {
+    const editItem = (id: string | number, route?: string = activeMenu) => {
         const a = [
-            "", "admin", activeWorkspace, activeSection, activeCategory, activeMenu, id
+            "", "admin", activeWorkspace, activeSection, activeCategory, route, id
         ]
         router.push(a.join("/"));
     }

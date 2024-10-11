@@ -57,6 +57,7 @@ type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => 
 
 type ToolsCellType<T> = {
     editable?: boolean;
+    editRoute?: string;
     removable?: boolean;
     chooseDefault?: boolean;
     extra?: ColumnRenderType<T>;
@@ -427,7 +428,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                             color="success"
                             radius="full"
                             onPress={() => {
-                                adminContext.editItem(id)
+                                adminContext.editItem(id, options?.editRoute)
                                 formRef?.current?.focus()
                             }}
                         >
