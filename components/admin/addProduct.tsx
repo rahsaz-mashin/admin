@@ -234,6 +234,21 @@ const formSchema = z.object({
         .transform((val) => (+(val.replaceAll(",", ""))))
         .or(z.number({message: "اعلان موجودی معتبر نیست"}).positive({message: "اعلان موجودی معتبر نیست"})),
 
+    pictures: z.object({id: z.number()}).array().optional(),
+    categories: z.string({message: "دسته بندی معتبر نیست"})
+        .regex(/^(\d+(,\d+)*)$/, "دسته بندی معتبر نیست")
+        .transform((ids) => (ids?.toString().split(",")))
+        .or(z.number({message: "دسته بندی معتبر نیست"}).int({message: "دسته بندی معتبر نیست"}).positive({message: "دسته بندی معتبر نیست"}).array())
+        .transform((ids) => (ids?.map((id) => ({id: +id})) || []))
+        .nullable()
+        .optional(),
+    machinery: z.string({message: "ماشین آلات معتبر نیست"})
+        .regex(/^(\d+(,\d+)*)$/, "ماشین آلات معتبر نیست")
+        .transform((ids) => (ids?.toString().split(",")))
+        .or(z.number({message: "ماشین آلات معتبر نیست"}).int({message: "ماشین آلات معتبر نیست"}).positive({message: " معتبر نیست"}).array())
+        .transform((ids) => (ids?.map((id) => ({id: +id})) || []))
+        .nullable()
+        .optional(),
 });
 
 const formRender: FormRender<T>[] = [

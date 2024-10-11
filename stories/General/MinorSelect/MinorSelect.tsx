@@ -233,7 +233,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
 
     const onSelectionChange = (key: any) => {
         if (!isSearchable) {
-            field.onChange(Array.from(key?.values()).join(","))
+            field.onChange(Array.from(Array.from(key?.values()).filter((v) => (!!v))).join(","))
         } else {
             const selected = itemList.find((option) => option.key === key);
             field.onChange(key || null)

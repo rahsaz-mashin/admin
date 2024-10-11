@@ -6,6 +6,7 @@ import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
 import {PriceList} from "@/interfaces/PriceList.interface";
 import {Warehouse} from "@/interfaces/Warehouse.interface";
 import {FileStorage} from "@/interfaces/FileStorage.interface";
+import {Currency} from "@/interfaces/Currency.interface";
 
 
 export interface Product {
@@ -33,7 +34,12 @@ export interface Product {
     price?: {
         priceList: PriceList | number | null;
         amount: number;
-        info?: PriceList;
+        info?: {
+            primaryCurrency: Currency,
+            secondaryCurrency: Currency,
+            finalPrice: number,
+            finalPriceWithVat: number
+        };
     }[],
 
 
