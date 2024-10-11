@@ -392,6 +392,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "product/category/sloStyle",
             },
+            withSection: true,
         },
         {
             name: "machinery",
@@ -401,6 +402,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "product/machineModel/sloStyle",
             },
+            withSection: true,
         },
         {
             name: "pictures",
