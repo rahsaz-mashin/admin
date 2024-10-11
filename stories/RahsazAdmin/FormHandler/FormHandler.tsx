@@ -78,7 +78,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     const onSubmit: SubmitHandler<T> = async (data) => {
         try {
             if (upsert) {
-                const d = await axios.patch(`${apiRoute}`, data)
+                const d: T = await axios.patch(`${apiRoute}`, data)
                 reset(d)
             } else if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
             else await axios.post(`${apiRoute}`, data)

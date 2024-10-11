@@ -59,13 +59,13 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                         <span dir="ltr">1403/08/23 12:22</span>
                     </div>
                 </div>
-                <div className="flex flex-row gap-3 w-full">
+                <div className="flex flex-col gap-3 w-full">
                     {isEditing && (
                         <Button
                             type="button"
                             variant="flat"
                             color="default"
-                            size="lg"
+                            size="md"
                             fullWidth
                             isLoading={formState?.isValidating || formState?.isSubmitting}
                             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
@@ -77,7 +77,7 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                         type="submit"
                         variant="shadow"
                         color="primary"
-                        size="lg"
+                        size="md"
                         fullWidth
                         isLoading={formState?.isValidating || formState?.isSubmitting}
                         isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
@@ -88,7 +88,7 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                         type="submit"
                         variant="shadow"
                         color="primary"
-                        size="lg"
+                        size="md"
                         fullWidth
                         isLoading={formState?.isValidating || formState?.isSubmitting}
                         isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
@@ -508,7 +508,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             ?
                             <span
                                 className="text-primary h-6 w-6 flex justify-center items-center"
-                                dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.primaryCurrency?.icon.content || ""}}
+                                dangerouslySetInnerHTML={{__html: (watch(`price.${index}.info`)?.primaryCurrency?.icon?.content || "")}}
                             />
                             :
                             (watch(`price.${index}.info`)?.primaryCurrency?.iso || "~")
@@ -554,7 +554,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                                                 ?
                                                 <span
                                                     className="text-primary h-6 w-6 flex justify-center items-center"
-                                                    dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.secondaryCurrency?.icon.content || ""}}
+                                                    dangerouslySetInnerHTML={{__html: (watch(`price.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
                                                 />
                                                 :
                                                 (watch(`price.${index}.info`)?.secondaryCurrency?.iso || "~")
@@ -582,7 +582,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                                                 ?
                                                 <span
                                                     className="text-primary h-6 w-6 flex justify-center items-center"
-                                                    dangerouslySetInnerHTML={{__html: watch(`price.${index}.info`)?.secondaryCurrency?.icon.content || ""}}
+                                                    dangerouslySetInnerHTML={{__html: (watch(`price.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
                                                 />
                                                 :
                                                 (watch(`price.${index}.info`)?.secondaryCurrency?.iso || "~")
