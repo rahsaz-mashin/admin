@@ -460,13 +460,15 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        if (!value || !watch(`price.${index}.amount`)) return
+                        const amount = watch(`price.${index}.amount`).toString()
+                        const priceList = value
+                        if (!priceList) return
                         const data: {
                             primaryCurrency: Currency,
                             secondaryCurrency: Currency,
                             finalPrice: number,
                             finalPriceWithVat: number
-                        } = await axios.get(`product/calculatePrice?priceList=${value}&price=${watch(`price.${index}.amount`)?.replaceAll(",", "") || 0}`)
+                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g,"") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -489,13 +491,15 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        if (!watch(`price.${index}.priceList`) || !value) return
+                        const amount = value.toString()
+                        const priceList = watch(`price.${index}.priceList`)
+                        if (!priceList) return
                         const data: {
                             primaryCurrency: Currency,
                             secondaryCurrency: Currency,
                             finalPrice: number,
-                            finalPriceWithVat: number
-                        } = await axios.get(`product/calculatePrice?priceList=${watch(`price.${index}.priceList`)}&price=${value?.replaceAll(",", "") || 0}`)
+                            finalPriceWithVat: number,
+                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g,"") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
