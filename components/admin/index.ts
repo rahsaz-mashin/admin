@@ -55,6 +55,7 @@ export const adminContextConfig: any = {
             },
             product: {
                 add: addProductContext,
+                edit: addProductContext,
                 list: productListContext,
             },
             price: {

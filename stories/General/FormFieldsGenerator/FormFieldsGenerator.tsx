@@ -140,8 +140,8 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                         <FieldArray
                             key={field.name}
                             control={control}
-                            name={field.name}
-                            fields={field.fields}
+
+                            {...field}
                         />
                     )
                     break
@@ -181,6 +181,15 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
 type FieldArrayPropsType<T> = {
     name: string;
     control: Control<any, any>;
+
+
+    label?: string;
+    isDisabled?: boolean;
+    isReadOnly?: boolean;
+    description?: ReactNode;
+    errorMessage?: ReactNode;
+    className?: string;
+
     fields: (index: number) => FormFieldType<T>[];
 }
 
@@ -191,6 +200,14 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
         name,
         control,
         fields,
+
+        label,
+        isDisabled,
+        isReadOnly,
+        description,
+        errorMessage,
+        className = "",
+
     } = props
 
 
@@ -198,15 +215,25 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
         fields: _fields,
         append,
         remove,
-
     } = useFieldArray({
         control,
         name,
     });
 
+    const {
+        field,
+        fieldState,
+        formState,
+    } = useController({name, control})
 
+
+    const hasHelper = !!description || fieldState.invalid
     return (
-        <>
+        <div
+            className={"group relative flex flex-col gap-2 " + className}
+            data-has-helper={hasHelper}
+        >
+            {label && (<label className="block text-black font-medium ps-2 z-10 subpixel-antialiased pointer-events-none cursor-pointer will-change-auto origin-top-left rtl:origin-top-right max-w-full text-ellipsis overflow-hidden">{label}</label>)}
             {_fields.map((field, index) => (
                 <div
                     key={`${name}.${index}`}
@@ -219,7 +246,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                         />
                     </div>
                     <div
-                        className="bg-black/20 h-full flex justify-between items-center flex-row gap-2 p-2 xl:flex-col"
+                        className="bg-black/20 flex justify-between items-center flex-row gap-2 p-2 xl:flex-col"
                     >
                         <div
                             className="bg-primary font-bold text-white min-w-8 min-h-8 flex items-center justify-center rounded-full"
@@ -239,15 +266,28 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                     </div>
                 </div>
             ))}
+            <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
+                {!!description && (
+                    <div className="text-tiny text-foreground-400">
+                        {description}
+                    </div>
+                )}
+                {!!errorMessage || fieldState.error?.message && (
+                    <div className="text-tiny text-danger">
+                        {errorMessage || fieldState.error?.message}
+                    </div>
+                )}
+            </div>
             <Button
                 onPress={() => append({})}
                 color="primary"
                 variant="solid"
                 className="col-span-full"
+                isDisabled={isDisabled || isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting}
             >
                 افزودن
             </Button>
-        </>
+        </div>
     )
 }
 
@@ -276,7 +316,7 @@ const FormGroup = (props: FormGroupProps) => {
 
 
     useEffect(() => {
-        if (dependency && field.value && formState.defaultValues?.[field.name] !== field.value) {
+        if (dependency && field.value !== undefined && formState.defaultValues?.[field.name] !== field.value) {
             dependency(field.value, name)
         }
     }, [field.value]);

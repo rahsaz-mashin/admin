@@ -177,7 +177,7 @@ const formInitial: T = {
     price: [],
     inventory: [],
 
-    isActiveInventoryManagement: true,
+    isActiveInventoryManagement: false,
     minimumInventoryWarn: 0,
 
     pictures: [],
@@ -189,6 +189,51 @@ const formSchema = z.object({
     slug: z.string({message: "شناسه اینترنتی را وارد کنید"})
         .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - مجاز می باشد")
         .min(3, "شناسه اینترنتی معتبر نیست"),
+    names: z.string({message: "نام ها را وارد کنید"})
+        .array(),
+    tags: z.string({message: "برچسب ها را وارد کنید"})
+        .regex(/^[a-zA-Z0-9\u0600-\u06FF\u0660-\u0669\s\-]+$/, "فقط حروف و اعداد فارسی و انگلیسی و علامت - و فاصله مجاز می باشد")
+        .array().max(10, {message: "حداکثر 10 برچسب وارد کنید"}),
+
+
+    intro: z.string({message: "معرفی کالا را وارد کنید"}).optional(),
+    technical: z.object({
+        title: z.string({message: "عنوان مشخصه را وارد کنید"}).min(3, "عنوان مشخصه معتبر نیست"),
+        value: z.string({message: "مقدار مشخصه را وارد کنید"}).min(3, "مقدار مشخصه معتبر نیست"),
+    }, {message: "مشخصات فنی معتبر نیست"}).array(),
+    features: z.object({
+        category: z.string({message: "نوع ویژگی معتبر نیست"}).regex(/^\d+$/, "نوع ویژگی معتبر نیست")
+            .or(z.number({message: "نوع ویژگی معتبر نیست"}).int({message: "نوع ویژگی معتبر نیست"}).positive({message: "نوع ویژگی معتبر نیست"}))
+            .transform((id) => ({id: +id})),
+        value: z.string({message: "مقدار ویژگی معتبر نیست"}).regex(/^\d+$/, "مقدار ویژگی معتبر نیست")
+            .or(z.number({message: "مقدار ویژگی معتبر نیست"}).int({message: "مقدار ویژگی معتبر نیست"}).positive({message: "مقدار ویژگی معتبر نیست"}))
+            .transform((id) => ({id: +id})),
+    }, {message: "ویژگی ها معتبر نیست"}).array(),
+    price: z.object({
+        priceList: z.string({message: "دسته قیمتی معتبر نیست"}).regex(/^\d+$/, "دسته قیمتی معتبر نیست")
+            .or(z.number({message: "دسته قیمتی معتبر نیست"}).int({message: "دسته قیمتی معتبر نیست"}).positive({message: "دسته قیمتی معتبر نیست"}))
+            .transform((id) => ({id: +id})),
+        amount: z.string({message: "قیمت را وارد کنید"})
+            .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "قیمت معتبر نیست"})
+            .transform((val) => (+(val.replaceAll(",", ""))))
+            .or(z.number({message: "قیمت معتبر نیست"}).positive({message: "قیمت معتبر نیست"})),
+    }, {message: "قیمت گذاری معتبر نیست"}).array(),
+    inventory: z.object({
+        warehouse: z.string({message: "انبار معتبر نیست"}).regex(/^\d+$/, "انبار معتبر نیست")
+            .or(z.number({message: "انبار معتبر نیست"}).int({message: "انبار معتبر نیست"}).positive({message: "انبار معتبر نیست"}))
+            .transform((id) => ({id: +id})),
+        inventory: z.string({message: "موجودی را وارد کنید"})
+            .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "موجودی معتبر نیست"})
+            .transform((val) => (+(val.replaceAll(",", ""))))
+            .or(z.number({message: "موجودی معتبر نیست"}).positive({message: "موجودی معتبر نیست"})),
+    }, {message: "قیمت گذاری معتبر نیست"}).array(),
+
+    isActiveInventoryManagement: z.boolean({message: "وضعیت مدیریت موجودی محصول را مشخص کنید"}),
+    minimumInventoryWarn: z.string({message: "اعلان موجودی را وارد کنید"})
+        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اعلان موجودی معتبر نیست"})
+        .transform((val) => (+(val.replaceAll(",", ""))))
+        .or(z.number({message: "اعلان موجودی معتبر نیست"}).positive({message: "اعلان موجودی معتبر نیست"})),
+
 });
 
 const formRender: FormRender<T>[] = [
@@ -295,8 +340,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "names",
             type: "tag",
-            label: "نام های محصول",
-            isRequired: false,
+            label: "نام های کالا",
             className: "col-span-full xl:col-span-1",
             description: "بعد افزودن هر مورد کلید Enter را فشار دهید"
         },
@@ -304,7 +348,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             name: "tags",
             type: "tag",
             label: "برچسب ها",
-            isRequired: false,
             className: "col-span-full xl:col-span-1",
             description: "بعد افزودن هر مورد کلید Enter را فشار دهید"
         },
@@ -316,7 +359,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "product/category/sloStyle",
             },
-            isRequired: true,
         },
         {
             name: "machinery",
@@ -326,13 +368,12 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "product/machineModel/sloStyle",
             },
-            isRequired: true,
         },
         {
             name: "pictures",
             type: "uploader",
             label: "آپلود تصاویر",
-            isRequired: true,
+            isRequired: false,
             description: "تا حجم 2 مگابایت",
             isDisabled: false,
             // accept: {
@@ -353,6 +394,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "features",
             type: "array",
+            description: "برای افزودن ویژگی، دکمه افزودن را کلیک کنید",
+            className: "col-span-full",
             fields: (index) => [
                 {
                     name: "category",
@@ -380,6 +423,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "technical",
             type: "array",
+            description: "برای مشخص کردن مشخصات فنی، دکمه افزودن را کلیک کنید",
+            className: "col-span-full",
             fields: (index) => [
                 {
                     name: "title",
@@ -401,6 +446,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "price",
             type: "array",
+            description: "برای مشخص کردن قیمت، دکمه افزودن را کلیک کنید",
+            className: "col-span-full",
             fields: (index) => [
                 {
                     name: "priceList",
@@ -413,7 +460,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const data: { primaryCurrency: Currency, secondaryCurrency: Currency, finalPrice: number, finalPriceWithVat: number } = await axios.get(`product/calculatePrice?priceList=${value}&price=${watch(`price.${index}.amount`).replaceAll(",", "")}`)
+                        if (!value || !watch(`price.${index}.amount`)) return
+                        const data: {
+                            primaryCurrency: Currency,
+                            secondaryCurrency: Currency,
+                            finalPrice: number,
+                            finalPriceWithVat: number
+                        } = await axios.get(`product/calculatePrice?priceList=${value}&price=${watch(`price.${index}.amount`)?.replaceAll(",", "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -436,7 +489,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const data: { primaryCurrency: Currency, secondaryCurrency: Currency, finalPrice: number, finalPriceWithVat: number } = await axios.get(`product/calculatePrice?priceList=${watch(`price.${index}.priceList`)}&price=${value.replaceAll(",", "")}`)
+                        if (!watch(`price.${index}.priceList`) || !value) return
+                        const data: {
+                            primaryCurrency: Currency,
+                            secondaryCurrency: Currency,
+                            finalPrice: number,
+                            finalPriceWithVat: number
+                        } = await axios.get(`product/calculatePrice?priceList=${watch(`price.${index}.priceList`)}&price=${value?.replaceAll(",", "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -525,6 +584,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
         {
             name: "inventory",
             type: "array",
+            description: "برای مشخص کردن موجودی، دکمه افزودن را کلیک کنید",
+            className: "col-span-full",
             fields: (index) => [
                 {
                     name: "warehouse",
