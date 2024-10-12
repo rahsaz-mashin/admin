@@ -45,7 +45,7 @@ export type AdminContextType = {
 
     breadCrumbs: () => { title?: string, url?: string }[] | undefined
 
-    editItem: (id: string| number) => void,
+    editItem: (id: string| number, route?: string) => void,
     backToList: () => void,
 }
 
