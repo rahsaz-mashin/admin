@@ -74,7 +74,8 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                             color="default"
                             size="md"
                             fullWidth
-                            onPress={() => {}}
+                            onPress={() => {
+                            }}
                             isLoading={formState?.isValidating || formState?.isSubmitting}
                             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                         >
@@ -209,52 +210,139 @@ const formSchema = z.object({
         title: z.string({message: "عنوان مشخصه را وارد کنید"}).min(3, "عنوان مشخصه معتبر نیست"),
         value: z.string({message: "مقدار مشخصه را وارد کنید"}).min(3, "مقدار مشخصه معتبر نیست"),
     }, {message: "مشخصات فنی معتبر نیست"}).array(),
-    features: z.object({
-        category: z.string({message: "نوع ویژگی معتبر نیست"}).regex(/^\d+$/, "نوع ویژگی معتبر نیست")
-            .or(z.number({message: "نوع ویژگی معتبر نیست"}).int({message: "نوع ویژگی معتبر نیست"}).positive({message: "نوع ویژگی معتبر نیست"}))
-            .transform((id) => ({id: +id})),
-        value: z.string({message: "مقدار ویژگی معتبر نیست"}).regex(/^\d+$/, "مقدار ویژگی معتبر نیست")
-            .or(z.number({message: "مقدار ویژگی معتبر نیست"}).int({message: "مقدار ویژگی معتبر نیست"}).positive({message: "مقدار ویژگی معتبر نیست"}))
-            .transform((id) => ({id: +id})),
-    }, {message: "ویژگی ها معتبر نیست"}).array(),
-    price: z.object({
-        priceList: z.string({message: "دسته قیمتی معتبر نیست"}).regex(/^\d+$/, "دسته قیمتی معتبر نیست")
-            .or(z.number({message: "دسته قیمتی معتبر نیست"}).int({message: "دسته قیمتی معتبر نیست"}).positive({message: "دسته قیمتی معتبر نیست"}))
-            .transform((id) => ({id: +id})),
-        amount: z.string({message: "قیمت را وارد کنید"})
-            .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "قیمت معتبر نیست"})
-            .transform((val) => (+(val.replaceAll(",", ""))))
-            .or(z.number({message: "قیمت معتبر نیست"}).positive({message: "قیمت معتبر نیست"})),
-    }, {message: "قیمت گذاری معتبر نیست"}).array(),
-    inventory: z.object({
-        warehouse: z.string({message: "انبار معتبر نیست"}).regex(/^\d+$/, "انبار معتبر نیست")
-            .or(z.number({message: "انبار معتبر نیست"}).int({message: "انبار معتبر نیست"}).positive({message: "انبار معتبر نیست"}))
-            .transform((id) => ({id: +id})),
-        inventory: z.string({message: "موجودی را وارد کنید"})
-            .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "موجودی معتبر نیست"})
-            .transform((val) => (+(val.replaceAll(",", ""))))
-            .or(z.number({message: "موجودی معتبر نیست"}).positive({message: "موجودی معتبر نیست"})),
-    }, {message: "قیمت گذاری معتبر نیست"}).array(),
+
+
+    features: z.array(
+        z.object({
+                category: z.union([
+                    z.string({message: "نوع ویژگی را انتخاب کنید"})
+                        .regex(/^\d+$/, "نوع ویژگی معتبر نیست")
+                        .transform((val) => ({id: +val})),
+                    z.number({message: "نوع ویژگی را انتخاب کنید"})
+                        .int("نوع ویژگی معتبر نیست")
+                        .positive("نوع ویژگی معتبر نیست")
+                        .transform((val) => ({id: val})),
+                ]),
+                value: z.union([
+                    z.string({message: "مقدار ویژگی را انتخاب کنید"})
+                        .regex(/^\d+$/, "مقدار ویژگی معتبر نیست")
+                        .transform((val) => ({id: +val})),
+                    z.number({message: "مقدار ویژگی را انتخاب کنید"})
+                        .int("مقدار ویژگی معتبر نیست")
+                        .positive("مقدار ویژگی معتبر نیست")
+                        .transform((val) => ({id: val})),
+                ]),
+            },
+            {message: "ویژگی ها معتبر نیست"}
+        ),
+        {message: "ویژگی ها معتبر نیست"}
+    ).refine(
+        (ctx) => {
+            const cat = ctx.map(p => p.category.id);
+            const unique = new Set(cat);
+            return cat.length === unique.size;
+        },
+        "نوع ویژگی ها نباید تکراری باشند"
+    ),
+
+    price: z.array(
+        z.object({
+                priceList: z.union([
+                    z.string({message: "دسته قیمتی را انتخاب کنید"})
+                        .regex(/^\d+$/, "دسته قیمتی معتبر نیست")
+                        .transform((val) => ({id: +val})),
+                    z.number({message: "دسته قیمتی را انتخاب کنید"})
+                        .int("دسته قیمتی معتبر نیست")
+                        .positive("دسته قیمتی معتبر نیست")
+                        .transform((val) => ({id: val})),
+                ]),
+                amount: z.union([
+                    z.string({message: "قیمت را وارد کنید"})
+                        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "قیمت معتبر نیست"})
+                        .transform((val) => +(val.replace(/,/g, ""))),
+                    z.number({message: "قیمت معتبر نیست"}).nonnegative({message: "قیمت معتبر نیست"}),
+                ]),
+            },
+            {message: "قیمت گذاری معتبر نیست"}
+        ),
+        {message: "قیمت گذاری معتبر نیست"}
+    ).refine(
+        (ctx) => {
+            const cat = ctx.map(p => p.priceList.id);
+            const unique = new Set(cat);
+            return cat.length === unique.size;
+        },
+        "دسته های قیمتی نباید تکراری باشند"
+    ),
+
+    inventory: z.array(
+        z.object({
+                warehouse: z.union([
+                    z.string({message: "انبار را انتخاب کنید"})
+                        .regex(/^\d+$/, "انبار معتبر نیست")
+                        .transform((val) => ({id: +val})),
+                    z.number({message: "انبار را انتخاب کنید"})
+                        .int("انبار معتبر نیست")
+                        .positive("انبار معتبر نیست")
+                        .transform((val) => ({id: val})),
+                ]),
+                inventory: z.union([
+                    z.string({message: "موجودی را وارد کنید"})
+                        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "موجودی معتبر نیست"})
+                        .transform((val) => +(val.replace(/,/g, ""))),
+                    z.number({message: "موجودی معتبر نیست"}).nonnegative({message: "موجودی معتبر نیست"}),
+                ]),
+            },
+            {message: "موجودی معتبر نیست"}
+        ),
+        {message: "موجودی معتبر نیست"}
+    ).refine(
+        (ctx) => {
+            const cat = ctx.map(p => p.warehouse.id);
+            const unique = new Set(cat);
+            return cat.length === unique.size;
+        },
+        "انبار نباید تکراری باشند"
+    ),
 
     isActiveInventoryManagement: z.boolean({message: "وضعیت مدیریت موجودی محصول را مشخص کنید"}),
-    minimumInventoryWarn: z.string({message: "اعلان موجودی را وارد کنید"})
-        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اعلان موجودی معتبر نیست"})
-        .transform((val) => (+(val.replaceAll(",", ""))))
-        .or(z.number({message: "اعلان موجودی معتبر نیست"}).positive({message: "اعلان موجودی معتبر نیست"})),
+    minimumInventoryWarn: z.union(
+        [
+            z.string({message: "اعلان موجودی را وارد کنید"})
+                .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اعلان موجودی معتبر نیست"})
+                .transform((val) => +(val.replace(/,/g, ""))),
+            z.number({message: "اعلان موجودی معتبر نیست"}).nonnegative({message: "اعلان موجودی معتبر نیست"}),
+        ]
+    ),
 
     pictures: z.object({id: z.number()}).array().optional(),
-    categories: z.string({message: "دسته بندی معتبر نیست"})
-        .regex(/^(\d+(,\d+)*)$/, "دسته بندی معتبر نیست")
-        .transform((ids) => (ids?.toString().split(",")))
-        .or(z.number({message: "دسته بندی معتبر نیست"}).int({message: "دسته بندی معتبر نیست"}).positive({message: "دسته بندی معتبر نیست"}).array())
-        .transform((ids) => (ids?.map((id) => ({id: +id})) || []))
+
+    categories: z.union(
+        [
+            z.string({message: "دسته بندی معتبر نیست"})
+                .regex(/^(\d+(,\d+)*)$/, {message: "دسته بندی معتبر نیست"})
+                .transform((ids) => ids?.toString().split(",")),
+            z.number({message: "دسته بندی معتبر نیست"})
+                .int({message: "دسته بندی معتبر نیست"})
+                .positive({message: "دسته بندی معتبر نیست"})
+                .array()
+        ]
+    )
+        .transform((ids) => ids?.map((id) => ({id: +id})) || [])
         .nullable()
         .optional(),
-    machinery: z.string({message: "ماشین آلات معتبر نیست"})
-        .regex(/^(\d+(,\d+)*)$/, "ماشین آلات معتبر نیست")
-        .transform((ids) => (ids?.toString().split(",")))
-        .or(z.number({message: "ماشین آلات معتبر نیست"}).int({message: "ماشین آلات معتبر نیست"}).positive({message: " معتبر نیست"}).array())
-        .transform((ids) => (ids?.map((id) => ({id: +id})) || []))
+    machinery: z.union(
+        [
+            z.string({message: "ماشین آلات معتبر نیست"})
+                .regex(/^(\d+(,\d+)*)$/, {message: "ماشین آلات معتبر نیست"})
+                .transform((ids) => ids?.toString().split(",")),
+            z.number({message: "ماشین آلات معتبر نیست"})
+                .int({message: "ماشین آلات معتبر نیست"})
+                .positive({message: "ماشین آلات معتبر نیست"})
+                .array()
+        ]
+    )
+        .transform((ids) => ids?.map((id) => ({id: +id})) || [])
         .nullable()
         .optional(),
 });
@@ -495,7 +583,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const amount = watch(`price.${index}.amount`).toString()
+                        const amount = (watch(`price.${index}.amount`) || 0)?.toString()
                         const priceList = value
                         if (!priceList) return
                         const data: {
@@ -526,7 +614,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const amount = value.toString()
+                        const amount = (value || 0).toString()
                         const priceList = watch(`price.${index}.priceList`)
                         if (!priceList) return
                         const data: {

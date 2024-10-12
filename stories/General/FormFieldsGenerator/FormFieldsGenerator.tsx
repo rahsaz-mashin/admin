@@ -228,16 +228,18 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
 
 
     const hasHelper = !!description || fieldState.invalid
+    console.log({gg: fieldState.error})
     return (
         <div
             className={"group relative flex flex-col gap-2 " + className}
             data-has-helper={hasHelper}
+            data-invalid={fieldState.invalid || undefined}
         >
             {label && (<label className="block text-black font-medium ps-2 z-10 subpixel-antialiased pointer-events-none cursor-pointer will-change-auto origin-top-left rtl:origin-top-right max-w-full text-ellipsis overflow-hidden">{label}</label>)}
             {_fields.map((field, index) => (
                 <div
                     key={`${name}.${index}`}
-                    className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 hover:bg-gray-300 min-h-32 transition rounded-2xl"
+                    className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 group-data-[invalid]:bg-danger-100 hover:bg-gray-300 min-h-32 transition rounded-2xl"
                 >
                     <div className="grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center">
                         <FormFieldsGenerator
@@ -267,14 +269,14 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                 </div>
             ))}
             <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
-                {!!description && (
+                {(!!description && !(!!errorMessage || fieldState.error?.message || fieldState.error?.root?.message)) && (
                     <div className="text-tiny text-foreground-400">
                         {description}
                     </div>
                 )}
-                {!!errorMessage || fieldState.error?.message && (
+                {(!!errorMessage || fieldState.error?.message || fieldState.error?.root?.message) && (
                     <div className="text-tiny text-danger">
-                        {errorMessage || fieldState.error?.message}
+                        {errorMessage || fieldState.error?.message || fieldState.error?.root?.message}
                     </div>
                 )}
             </div>
