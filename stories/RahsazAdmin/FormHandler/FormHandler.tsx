@@ -1,25 +1,20 @@
 "use client"
 
 import React, {
-    forwardRef, Key,
-    MutableRefObject,
+    forwardRef,
+    Key,
     ReactNode,
     useContext,
-    useEffect,
     useImperativeHandle,
-    useState
+    useState,
 } from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {Control, FieldValues, FormState, Path, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
+import {Control, FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
-import {
-    FormFieldFunc,
-    FormFieldsGenerator,
-    FormFieldType
-} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
+import {FormFieldFunc, FormFieldsGenerator, FormFieldType} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
@@ -27,7 +22,6 @@ import {Tab, Tabs} from "@nextui-org/tabs";
 
 
 export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandlerProps<T>, ref: any) => {
-
 
     const {
         title,
@@ -43,7 +37,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         tableRef,
 
         upsert,
-
+        className,
     } = props
 
     const isEditing = editingId !== undefined && editingId !== null
@@ -130,10 +124,10 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     const f = fields(watch, setValue)
 
-    console.log({formErrors: formState.errors})
+    // console.log({formErrors: formState.errors})
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-12 gap-5">
+        <form onSubmit={handleSubmit(onSubmit)} className={"grid gap-5" + (className ? ` ${className}` : "")}>
             {render
                 ?
                 render.map((r, idx) => {
@@ -343,6 +337,7 @@ export type FormHandlerRefType = {
 export type FormHandlerProps<T> = {
     title?: string;
     apiRoute: string;
+    className?: string;
     schema: ZodType<any, any, any>;
     fields?: FormFieldFunc<T>;
     editingId?: string | number | null;

@@ -13,10 +13,8 @@ import {
     OutlinedRulerPenIcon,
     OutlinedWalletIcon
 } from "@/stories/Icons";
-import {PriceList} from "@/interfaces/PriceList.interface";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {NumericFormat} from "react-number-format";
-import {Input} from "@nextui-org/input";
 import {Currency} from "@/interfaces/Currency.interface";
 import moment from "jalali-moment";
 
@@ -27,7 +25,7 @@ type T = Product
 const InfoBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-8"
+            className="area-[info]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -41,12 +39,12 @@ const InfoBox: FormRender<T>['render'] = ({children, formState, watch, isEditing
 const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-4 order-last xl:order-none"
+            className="area-[submit] sticky bottom-5 z-50 lg:relative lg:bottom-auto"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
-            <CardBody className="gap-5">
-                <div className="flex flex-col gap-1 text-sm empty:hidden">
+            <CardBody className="gap-5 justify-between">
+                <div className="flex flex-col gap-1 text-sm">
                     {watch("createdAt") && (
                         <div className="flex flex-row gap-1 items-center">
                             <b>زمان ایجاد:</b>
@@ -113,7 +111,7 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 const CategoriesBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-4"
+            className="area-[categories]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -128,7 +126,7 @@ const CategoriesBox: FormRender<T>['render'] = ({children, formState, watch, isE
 const MachineryBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-4"
+            className="area-[machinery]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -143,7 +141,7 @@ const MachineryBox: FormRender<T>['render'] = ({children, formState, watch, isEd
 const PicturesBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-4"
+            className="area-[pictures]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -159,7 +157,7 @@ const DetailBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 
     return (
         <Card
-            className="col-span-full lg:col-span-6 xl:col-span-8"
+            className="area-[detail]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -353,10 +351,6 @@ const formRender: FormRender<T>[] = [
         fields: ["title", "slug", "names", "tags"]
     },
     {
-        render: SubmitBox,
-        fields: []
-    },
-    {
         render: DetailBox,
         sections: [
             {
@@ -417,22 +411,17 @@ const formRender: FormRender<T>[] = [
         fields: ["categories"]
     },
     {
-        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/>,
-        fields: []
-    },
-    {
         render: MachineryBox,
         fields: ["machinery"]
-    },
-    {
-        render: () => <div className="hidden xl:block lg:col-span-6 xl:col-span-8"/>,
-        fields: []
     },
     {
         render: PicturesBox,
         fields: ["pictures"]
     },
-
+    {
+        render: SubmitBox,
+        fields: []
+    },
 ]
 
 
@@ -746,5 +735,12 @@ export const addProductContext = {
         fields: formFields,
         initial: formInitial,
         render: formRender,
+        className: "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 grid-rows-auto" +
+            " " +
+            "grid-areas-[info,detail,categories,machinery,pictures,submit]" +
+            " " +
+            "lg:grid-areas-[info_info,detail_detail,categories_machinery,pictures_submit]" +
+            " " +
+            "xl:grid-areas-[info_info_submit,detail_detail_categories,detail_detail_machinery,detail_detail_pictures]"
     },
 }

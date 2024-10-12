@@ -1,29 +1,7 @@
 import {nextui} from '@nextui-org/theme'
 const plugin = require('tailwindcss/plugin')
+import { gridAreas } from "tailwindcss-grid-areas";
 
-// const backfaceVisibility = plugin(function({addUtilities}) {
-//     addUtilities({
-//         '.backface-visible': {
-//             'backface-visibility': 'visible',
-//             '-webkit-backface-visibility': 'visible',
-//         },
-//         '.backface-hidden': {
-//             'backface-visibility': 'hidden',
-//             '-webkit-backface-visibility': 'hidden',
-//         }
-//     })
-// });
-//
-// const transformStyle = plugin(function({addUtilities}) {
-//     addUtilities({
-//         '.transform-preserve-3d': {
-//             'transform-style': 'preserve-3d',
-//         },
-//         '.transform-flat': {
-//             'transform-style': 'flat',
-//         },
-//     })
-// });
 
 
 /** @type {import('tailwindcss').Config} */
@@ -123,8 +101,7 @@ module.exports = {
             },
         }),
         require('tailwind-scrollbar')({nocompatible: true, preferredStrategy: 'pseudoelements'}),
-        require("@xpd/tailwind-3dtransforms")
-        // backfaceVisibility,
-        // transformStyle
+        require("@xpd/tailwind-3dtransforms"),
+        gridAreas(),
     ],
 }

@@ -50,6 +50,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                     initialValue={props.formInitialValue}
                     render={props.formRender}
                     upsert={props.formUpsert}
+                    className={props.formClassName}
                 />
             </div>
         );
@@ -70,6 +71,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                 initialValue={props.formInitialValue}
                 render={props.formRender}
                 upsert={props.formUpsert}
+                className={props.formClassName}
 
                 tableRef={tableRef}
             />
@@ -111,6 +113,7 @@ type FormListContextFormModePureProps<T> = {
     formInitialValue?: T;
     formUpsert?: boolean;
     formRender?: FormRender<T>[];
+    formClassName?: string;
 }
 
 type FormListContextFormModeProps<T> = { mode: "form" } & FormListContextFormModePureProps<T>
@@ -124,6 +127,8 @@ type FormListContextBothModeProps<T> =
 
 export type FormListContextProps<T> =
     FormListContextCommonProps &
-    (FormListContextListModeProps<T>
+    (
+        FormListContextListModeProps<T>
         | FormListContextFormModeProps<T>
-        | FormListContextBothModeProps<T>);
+        | FormListContextBothModeProps<T>
+        );
