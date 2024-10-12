@@ -41,6 +41,7 @@ export type AdminMenu = {
     description?: string;
     icon?: ReactNode;
     isEnable?: boolean;
+    hidden?: boolean;
     sub?: AdminMenu[];
 }
 
