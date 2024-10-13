@@ -228,7 +228,6 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
 
 
     const hasHelper = !!description || fieldState.invalid
-    console.log({gg: fieldState.error})
     return (
         <div
             className={"group relative flex flex-col gap-2 " + className}

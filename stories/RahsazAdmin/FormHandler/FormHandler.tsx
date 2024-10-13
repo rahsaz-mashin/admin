@@ -14,11 +14,16 @@ import {Control, FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} f
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
-import {FormFieldFunc, FormFieldsGenerator, FormFieldType} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
+import {
+    FormFieldFunc,
+    FormFieldsGenerator,
+    FormFieldType
+} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
 import {Tab, Tabs} from "@nextui-org/tabs";
+import {useRouter} from "next/navigation";
 
 
 export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandlerProps<T>, ref: any) => {
@@ -45,6 +50,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     const adminContext = useContext(AdminContext)
 
 
+    const router = useRouter()
     const axios = axiosCoreWithAuth()
 
     const initialData: () => Promise<T> = async () => {
@@ -69,16 +75,27 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         defaultValues: initialData,
     });
 
-    const onSubmit: SubmitHandler<T> = async (data) => {
+    const onSubmit: (stay?: boolean, listRoute?: string, editRoute?: string) => SubmitHandler<T> = (stay = false, listRoute?: string, editRoute?: string) => async (data) => {
         try {
+            let dd: any = null
             if (upsert) {
                 const d: T = await axios.patch(`${apiRoute}`, data)
                 reset(d)
-            } else if (isEditing) await axios.patch(`${apiRoute}/${editingId}`, data)
-            else await axios.post(`${apiRoute}`, data)
-            resetToDefault()
-            tableRef?.current?.refresh()
-            adminContext.backToList()
+            } else if (isEditing) dd = await axios.patch(`${apiRoute}/${editingId}`, data)
+            else dd = await axios.post(`${apiRoute}`, data)
+            if (stay) {
+                if (isEditing) router.refresh()
+                else {
+                    if (dd) {
+                        if (editRoute) router.push(`${editRoute}/${dd.id}`)
+                        else router.push(`${dd.id}`)
+                    }
+                }
+            } else {
+                resetToDefault()
+                tableRef?.current?.refresh()
+                adminContext.backToList(listRoute)
+            }
         } catch (e) {
 
         }
@@ -110,7 +127,8 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
         isEditing,
         formState,
         watch,
-        cancel: adminContext.backToList,
+        cancel: (listRoute?: string) => adminContext.backToList(listRoute),
+        submit: (stay, listRoute, editRoute) => handleSubmit(onSubmit(stay, listRoute, editRoute))(),
         reset: resetToDefault,
         upsert,
     }
@@ -124,10 +142,10 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     const f = fields(watch, setValue)
 
-    // console.log({formErrors: formState.errors})
+    console.log({formErrors: formState.errors})
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={"grid gap-5" + (className ? ` ${className}` : "")}>
+        <form onSubmit={handleSubmit(onSubmit())} className={"grid gap-5" + (className ? ` ${className}` : "")}>
             {render
                 ?
                 render.map((r, idx) => {
@@ -218,6 +236,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
         isEditing,
         cancel,
         reset,
+        submit,
         formState,
         upsert,
     } = props
@@ -253,7 +272,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                         type="button"
                         variant="flat"
                         color="default"
-                        onPress={cancel}
+                        onPress={() => cancel()}
                         isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                     >
                         انصراف
@@ -265,6 +284,7 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
                     color="primary"
                     isLoading={formState?.isValidating || formState?.isSubmitting}
                     isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
+                    onPress={() => submit()}
                 >
                     {upsert ? "بروزرسانی" : (isEditing ? "ویرایش" : "ایجاد")}
                 </Button>
@@ -292,8 +312,9 @@ const BuiltInContent: FormContentType = ({children, ...props}) => {
 type FormContentPropsType<T> = {
     title?: string;
     isEditing?: boolean;
-    cancel?: () => void;
-    reset?: () => void;
+    cancel: (listRoute?: string) => void;
+    submit: (stay?: boolean, listRoute?: string, editRoute?: string) => void;
+    reset: () => void;
     watch: UseFormWatch<T & FieldValues>;
     formState: FormState<T & FieldValues>;
     upsert?: boolean;

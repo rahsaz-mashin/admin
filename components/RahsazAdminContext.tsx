@@ -1,11 +1,5 @@
 import {FormListContext} from "@/stories/RahsazAdmin/FormListContext";
 import {Branch} from "@/interfaces/Branch.interface";
-import {branchContext} from "@/components/admin/branch";
-import {addProductContext} from "@/components/admin/addProduct";
-import {addressCountryContext} from "@/components/admin/addressCountry";
-import {addressProvinceContext} from "@/components/admin/addressProvince";
-import {addressCityContext} from "@/components/admin/addressCity";
-import {iconContext} from "@/components/admin/icon";
 import {adminContextConfig} from "@/components/admin";
 
 export function RahsazAdminContext(props: PropsType) {

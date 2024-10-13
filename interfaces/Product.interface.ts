@@ -52,7 +52,7 @@ export interface Product {
     }[];
 
     pictures: FileStorage[];
-    thumbnail: FileStorage | null;
+    thumbnail?: FileStorage | null;
 
     createdBy?: Account;
     createdAt?: Date;

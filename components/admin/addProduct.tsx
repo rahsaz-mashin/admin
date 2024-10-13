@@ -36,7 +36,7 @@ const InfoBox: FormRender<T>['render'] = ({children, formState, watch, isEditing
     )
 }
 
-const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
+const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing, cancel, submit}) => {
     return (
         <Card
             className="area-[submit] sticky bottom-5 z-50 lg:relative lg:bottom-auto"
@@ -73,31 +73,31 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                             color="default"
                             size="md"
                             fullWidth
-                            onPress={() => {
-                            }}
-                            isLoading={formState?.isValidating || formState?.isSubmitting}
+                            onPress={() => cancel("list")}
                             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                         >
                             انصراف
                         </Button>
                     )}
                     <Button
-                        type="submit"
+                        type="button"
                         variant="shadow"
                         color="primary"
                         size="md"
                         fullWidth
+                        onPress={() => submit(false, "list", "edit")}
                         isLoading={formState?.isValidating || formState?.isSubmitting}
                         isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                     >
                         {isEditing ? "ویرایش و برگشت به لیست" : "ثبت و برگشت به لیست"}
                     </Button>
                     <Button
-                        type="submit"
+                        type="button"
                         variant="shadow"
                         color="primary"
                         size="md"
                         fullWidth
+                        onPress={() => submit(true, "list", "edit")}
                         isLoading={formState?.isValidating || formState?.isSubmitting}
                         isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
                     >
@@ -331,7 +331,7 @@ const formSchema = z.object({
     ),
 
     pictures: z.object({id: z.number()}).array().optional(),
-    thumbnail: z.object({id: z.number()}).optional(),
+    thumbnail: z.object({id: z.number()}).nullable().optional(),
 
     categories: z.union(
         [
@@ -457,7 +457,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             dependency: () => {
                 const title = watch("title")
-                setValue("slug", slugify(title, {lower: true, trim: true, remove: /[*+~.()'"%^&$#?؟×/!:@]/g }), {shouldValidate: true})
+                setValue("slug", slugify(title, {
+                    lower: true,
+                    trim: true,
+                    remove: /[*+~.()'"%^&$#?؟×/!:@]/g
+                }), {shouldValidate: true})
             },
         },
         {

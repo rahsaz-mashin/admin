@@ -397,7 +397,6 @@ type UploaderPreviewPropsType = {
 const UploaderPreview = (props: UploaderPreviewPropsType) => {
     const {previewFile, files} = props
 
-    console.log({nnn: files})
     if (!files?.length) return null
     return (
         <div

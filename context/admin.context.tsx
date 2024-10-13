@@ -46,7 +46,7 @@ export type AdminContextType = {
     breadCrumbs: () => { title?: string, url?: string }[] | undefined
 
     editItem: (id: string| number, route?: string) => void,
-    backToList: () => void,
+    backToList: (route?: string) => void,
 }
 
 
@@ -136,9 +136,9 @@ export const AdminProvider = ({children, initial}: ProviderPropsType) => {
         router.push(a.join("/"));
     }
 
-    const backToList = () => {
+    const backToList = (route: string = activeMenu) => {
         const a = [
-            "", "admin", activeWorkspace, activeSection, activeCategory, activeMenu
+            "", "admin", activeWorkspace, activeSection, activeCategory, route
         ]
         router.push(a.join("/"));
     }
