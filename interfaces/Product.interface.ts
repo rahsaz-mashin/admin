@@ -9,6 +9,34 @@ import {FileStorage} from "@/interfaces/FileStorage.interface";
 import {Currency} from "@/interfaces/Currency.interface";
 
 
+export interface ProductFeaturesList {
+    id?: number | null;
+    category: ProductFeaturesCategory | number | null;
+    value: ProductFeatures | number | null;
+}
+
+export interface ProductTechnical {
+    title: string;
+    value: string;
+}
+
+export interface ProductPrice {
+    priceList: PriceList | number | null;
+    amount: number;
+    info?: {
+        primaryCurrency: Currency,
+        secondaryCurrency: Currency,
+        finalPrice: number,
+        finalPriceWithVat: number
+    };
+}
+
+export interface ProductInventory {
+    warehouse?: Warehouse | number | null;
+    inventory?: number;
+}
+
+
 export interface Product {
     id?: number;
     title: string;
@@ -21,35 +49,15 @@ export interface Product {
 
     intro: string | null;
 
-    features?: {
-        category: ProductFeaturesCategory | number | null;
-        value: ProductFeatures | number | null;
-    }[],
-
-    technical?: {
-        title: string;
-        value: string;
-    }[];
-
-    price?: {
-        priceList: PriceList | number | null;
-        amount: number;
-        info?: {
-            primaryCurrency: Currency,
-            secondaryCurrency: Currency,
-            finalPrice: number,
-            finalPriceWithVat: number
-        };
-    }[],
+    features?: ProductFeaturesList[],
+    technical?: ProductTechnical[];
+    price?: ProductPrice[],
 
 
     isActiveInventoryManagement?: boolean;
     minimumInventoryWarn?: number;
 
-    inventory: {
-        warehouse?: Warehouse | number | null;
-        inventory?: number;
-    }[];
+    inventory?: ProductInventory[];
 
     pictures: FileStorage[];
     thumbnail?: FileStorage | null;
