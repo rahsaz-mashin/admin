@@ -50,7 +50,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             dependency: () => {
                 const title = watch("title")
-                setValue("slug", slugify(title, {lower: true}), {shouldValidate: true})
+                setValue("slug", slugify(title, {lower: true, trim: true, remove: /[*+~.()'"%^&$#?؟×/!:@]/g }), {shouldValidate: true})
             },
         },
         {

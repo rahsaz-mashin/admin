@@ -72,7 +72,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
         className = "",
 
         accept,
-        isMultiple,
+        isMultiple = true,
         minSize,
         maxSize,
         maxFiles,
@@ -88,8 +88,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     } = useController({name, control, defaultValue: []})
 
 
-
-    const [oldValue, setOldValue] = useState<FileStorage[]>();
+    const [oldValue, setOldValue] = useState<FileStorage[] | FileStorage>();
 
     const axios = axiosCoreWithAuth()
     const upload = async (file: File, title?: string, alt?: string) => {
@@ -99,23 +98,19 @@ export const MinorUploader = (props: MinorUploaderProps) => {
             if (title) formData.set('title', title)
             if (alt) formData.set('alt', alt)
             const result: FileStorage[] = await axios.postForm('fileStorage', formData)
-            setOldValue((prev) => ([...(prev || []), ...result]))
+            if (isMultiple) setOldValue((prev) => ([...(prev as FileStorage[] || []), ...result]))
+            else setOldValue(result[0])
             resolve(true)
         })
     }
 
     useEffect(() => {
-        if(oldValue) field.onChange([...oldValue])
-    }, [oldValue]);
+        if (oldValue) field.onChange(oldValue)
+    }, [JSON.stringify(oldValue)]);
 
     useEffect(() => {
-       if(!oldValue && !!field.value.length) setOldValue(field.value)
-    }, [field.value]);
-
-
-
-
-
+        if (!oldValue && (isMultiple && !!field.value.length) || (!isMultiple && !!field.value)) setOldValue(field.value)
+    }, [JSON.stringify(field.value)]);
 
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -181,11 +176,11 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     })
 
     const removeFile = (id: number) => {
-        const a: FileStorage[] = [...field.value]
-        const idx = a.findIndex((file) => (file.id === id))
+        const v: FileStorage[] = !!field.value && Array.isArray(field.value) ? field.value : [field.value]
+        const idx = v.findIndex((file) => (file.id === id))
         if (idx >= 0) {
-            a.splice(idx, 1)
-            setOldValue([...a])
+            v.splice(idx, 1)
+            setOldValue([...v])
         }
         previewModal.onClose()
     }
@@ -196,7 +191,8 @@ export const MinorUploader = (props: MinorUploaderProps) => {
 
     const previewFile = (id: number) => {
         previewModal.onOpen()
-        setPreview((field.value as FileStorage[]).find((file) => (file.id === id)))
+        const v: FileStorage[] = !!field.value && Array.isArray(field.value) ? field.value : [field.value]
+        setPreview(v.find((file) => (file.id === id)))
     }
 
     useEffect(() => {
@@ -204,7 +200,8 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     }, [previewModal.isOpen]);
 
     const downloadFile = async (id: number) => {
-        const file = (field.value as FileStorage[]).find((file) => (file.id === id))
+        const v: FileStorage[] = !!field.value && Array.isArray(field.value) ? field.value : [field.value]
+        const file = v.find((file) => (file.id === id))
         if (file) {
             const response = await fetch(`${file.system.baseUrl}/${file.path}`);
             const blob = await response.blob();
@@ -232,7 +229,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                 data-isactive={(!isDisabled && !isReadOnly) || undefined}
                 data-filedialog-active={isFileDialogActive || undefined}
                 data-with-preview={withPreview || undefined}
-                data-have-file={!!field.value.length || undefined}
+                data-have-file={(Array.isArray(field.value) ? !!field.value?.length : !!field.value) || undefined}
             >
                 <div
                     className="relative group-data-[dragged]:z-[99999999] h-full p-4 flex flex-col gap-8 justify-between items-center bg-white border-2 transition duration-500 group-data-[isactive]:cursor-pointer group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:bg-primary-50 group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:border-primary group-data-[drag-accept]:border-success group-data-[drag-accept]:bg-success-50 group-data-[drag-reject]:border-danger group-data-[drag-reject]:bg-danger-50 group-data-[filedialog-active]:group-[&:not([data-dragged])]:border-primary border-dashed border-gray-300 rounded-xl"
@@ -272,64 +269,9 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                             <span
                                 className="absolute flex flex-col gap-3 justify-center items-center scale-0 group-data-[drag-accept]:scale-100 transition duration-500 text-success"
                             >
-                            <svg
-                                width="60"
-                                height="60"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className=""
-                            >
-                                <path
-                                    opacity="0.5"
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M3 14.25C3.41421 14.25 3.75 14.5858 3.75 15C3.75 16.4354 3.75159 17.4365 3.85315 18.1919C3.9518 18.9257 4.13225 19.3142 4.40901 19.591C4.68577 19.8678 5.07435 20.0482 5.80812 20.1469C6.56347 20.2484 7.56459 20.25 9 20.25H15C16.4354 20.25 17.4365 20.2484 18.1919 20.1469C18.9257 20.0482 19.3142 19.8678 19.591 19.591C19.8678 19.3142 20.0482 18.9257 20.1469 18.1919C20.2484 17.4365 20.25 16.4354 20.25 15C20.25 14.5858 20.5858 14.25 21 14.25C21.4142 14.25 21.75 14.5858 21.75 15V15.0549C21.75 16.4225 21.75 17.5248 21.6335 18.3918C21.5125 19.2919 21.2536 20.0497 20.6517 20.6516C20.0497 21.2536 19.2919 21.5125 18.3918 21.6335C17.5248 21.75 16.4225 21.75 15.0549 21.75H8.94513C7.57754 21.75 6.47522 21.75 5.60825 21.6335C4.70814 21.5125 3.95027 21.2536 3.34835 20.6517C2.74643 20.0497 2.48754 19.2919 2.36652 18.3918C2.24996 17.5248 2.24998 16.4225 2.25 15.0549C2.25 15.0366 2.25 15.0183 2.25 15C2.25 14.5858 2.58579 14.25 3 14.25Z"
-                                />
-                                <path
-                                    fillRule="evenodd"
-                                    clipRule="evenodd"
-                                    d="M12 2.25C12.2106 2.25 12.4114 2.33852 12.5535 2.49392L16.5535 6.86892C16.833 7.17462 16.8118 7.64902 16.5061 7.92852C16.2004 8.20802 15.726 8.18678 15.4465 7.88108L12.75 4.9318V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V4.9318L8.55353 7.88108C8.27403 8.18678 7.79963 8.20802 7.49393 7.92852C7.18823 7.64902 7.16698 7.17462 7.44648 6.86892L11.4465 2.49392C11.5886 2.33852 11.7894 2.25 12 2.25Z"
-                                />
-                            </svg>
-                            <div className="font-bold">
-                                رها کنید تا آپلود شوند
-                            </div>
-                        </span>
-                            <span
-                                className="absolute flex flex-col gap-3 justify-center items-center scale-0 group-data-[drag-reject]:scale-100 transition duration-500 text-danger"
-                            >
-                            <svg
-                                width="60"
-                                height="60"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    opacity="0.5"
-                                    d="M12 3C9.68925 3 8.23007 5.58716 5.31171 10.7615L4.94805 11.4063C2.52291 15.7061 1.31034 17.856 2.40626 19.428C3.50217 21 6.21356 21 11.6363 21H12.3637C17.7864 21 20.4978 21 21.5937 19.428C22.6897 17.856 21.4771 15.7061 19.0519 11.4063L18.6883 10.7615C15.7699 5.58716 14.3107 3 12 3Z"
-                                />
-                                <path
-                                    d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V8C11.25 7.58579 11.5858 7.25 12 7.25Z"
-                                />
-                                <path
-                                    d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"
-                                />
-                            </svg>
-                            <div className="font-bold">
-                                همه یا برخی از فایل ها مجاز به آپلود نیستند
-                            </div>
-                        </span>
-                            <div
-                                className="group-[&:not([data-isactive])]:scale-0 group-data-[filedialog-active]:scale-0 group-data-[dragged]:scale-0 overflow-hidden flex flex-col justify-center items-center transition"
-                            >
-                             <span
-                                 className="inline-flex justify-center items-center transition duration-500 group-data-[isactive]:group-hover:text-primary text-gray-700"
-                             >
                                 <svg
-                                    width="36"
-                                    height="36"
+                                    width="60"
+                                    height="60"
                                     viewBox="0 0 24 24"
                                     fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -347,18 +289,71 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                                         d="M12 2.25C12.2106 2.25 12.4114 2.33852 12.5535 2.49392L16.5535 6.86892C16.833 7.17462 16.8118 7.64902 16.5061 7.92852C16.2004 8.20802 15.726 8.18678 15.4465 7.88108L12.75 4.9318V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V4.9318L8.55353 7.88108C8.27403 8.18678 7.79963 8.20802 7.49393 7.92852C7.18823 7.64902 7.16698 7.17462 7.44648 6.86892L11.4465 2.49392C11.5886 2.33852 11.7894 2.25 12 2.25Z"
                                     />
                                 </svg>
+                                <div className="font-bold">
+                                    رها کنید تا آپلود شوند
+                                </div>
                             </span>
+                            <span
+                                className="absolute flex flex-col gap-3 justify-center items-center scale-0 group-data-[drag-reject]:scale-100 transition duration-500 text-danger"
+                            >
+                                <svg
+                                    width="60"
+                                    height="60"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        opacity="0.5"
+                                        d="M12 3C9.68925 3 8.23007 5.58716 5.31171 10.7615L4.94805 11.4063C2.52291 15.7061 1.31034 17.856 2.40626 19.428C3.50217 21 6.21356 21 11.6363 21H12.3637C17.7864 21 20.4978 21 21.5937 19.428C22.6897 17.856 21.4771 15.7061 19.0519 11.4063L18.6883 10.7615C15.7699 5.58716 14.3107 3 12 3Z"
+                                    />
+                                    <path
+                                        d="M12 7.25C12.4142 7.25 12.75 7.58579 12.75 8V13C12.75 13.4142 12.4142 13.75 12 13.75C11.5858 13.75 11.25 13.4142 11.25 13V8C11.25 7.58579 11.5858 7.25 12 7.25Z"
+                                    />
+                                    <path
+                                        d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"
+                                    />
+                                </svg>
+                                <div className="font-bold">
+                                    همه یا برخی از فایل ها مجاز به آپلود نیستند
+                                </div>
+                            </span>
+                            <div
+                                className="group-[&:not([data-isactive])]:scale-0 group-data-[filedialog-active]:scale-0 group-data-[dragged]:scale-0 overflow-hidden flex flex-col justify-center items-center transition"
+                            >
+                                 <span
+                                     className="inline-flex justify-center items-center transition duration-500 group-data-[isactive]:group-hover:text-primary text-gray-700"
+                                 >
+                                    <svg
+                                        width="36"
+                                        height="36"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className=""
+                                    >
+                                        <path
+                                            opacity="0.5"
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
+                                            d="M3 14.25C3.41421 14.25 3.75 14.5858 3.75 15C3.75 16.4354 3.75159 17.4365 3.85315 18.1919C3.9518 18.9257 4.13225 19.3142 4.40901 19.591C4.68577 19.8678 5.07435 20.0482 5.80812 20.1469C6.56347 20.2484 7.56459 20.25 9 20.25H15C16.4354 20.25 17.4365 20.2484 18.1919 20.1469C18.9257 20.0482 19.3142 19.8678 19.591 19.591C19.8678 19.3142 20.0482 18.9257 20.1469 18.1919C20.2484 17.4365 20.25 16.4354 20.25 15C20.25 14.5858 20.5858 14.25 21 14.25C21.4142 14.25 21.75 14.5858 21.75 15V15.0549C21.75 16.4225 21.75 17.5248 21.6335 18.3918C21.5125 19.2919 21.2536 20.0497 20.6517 20.6516C20.0497 21.2536 19.2919 21.5125 18.3918 21.6335C17.5248 21.75 16.4225 21.75 15.0549 21.75H8.94513C7.57754 21.75 6.47522 21.75 5.60825 21.6335C4.70814 21.5125 3.95027 21.2536 3.34835 20.6517C2.74643 20.0497 2.48754 19.2919 2.36652 18.3918C2.24996 17.5248 2.24998 16.4225 2.25 15.0549C2.25 15.0366 2.25 15.0183 2.25 15C2.25 14.5858 2.58579 14.25 3 14.25Z"
+                                        />
+                                        <path
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
+                                            d="M12 2.25C12.2106 2.25 12.4114 2.33852 12.5535 2.49392L16.5535 6.86892C16.833 7.17462 16.8118 7.64902 16.5061 7.92852C16.2004 8.20802 15.726 8.18678 15.4465 7.88108L12.75 4.9318V16C12.75 16.4142 12.4142 16.75 12 16.75C11.5858 16.75 11.25 16.4142 11.25 16V4.9318L8.55353 7.88108C8.27403 8.18678 7.79963 8.20802 7.49393 7.92852C7.18823 7.64902 7.16698 7.17462 7.44648 6.86892L11.4465 2.49392C11.5886 2.33852 11.7894 2.25 12 2.25Z"
+                                        />
+                                    </svg>
+                                </span>
                                 <div
                                     className="mt-4 flex flex-wrap justify-center items-center text-sm leading-6 text-gray-600"
                                 >
-                                <span className="pe-1 font-medium text-gray-800 dark:text-neutral-200">
-                                  فایل(ها) را اینجا رها کنید یا
-                                </span>
-                                    <span
-                                        className="text-secondary"
-                                    >
-                                    کلیک کنید
-                                </span>
+                                    <span className="pe-1 font-medium text-gray-800 dark:text-neutral-200">
+                                      {isMultiple ? "فایل ها را اینجا رها کنید یا" : "فایل را اینجا رها کنید یا"}
+                                    </span>
+                                    <span className="text-secondary">
+                                        کلیک کنید
+                                    </span>
                                 </div>
                                 <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
                                     {!!description && (
@@ -371,7 +366,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                         </div>
                         {withPreview && (
                             <UploaderPreview
-                                files={field.value}
+                                files={!!field.value && Array.isArray(field.value) ? field.value : (field.value ? [field.value] : [])}
                                 previewFile={previewFile}
                             />
                         )}
@@ -382,7 +377,6 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                     className="group-data-[dragged]:block hidden z-[9999999] fixed backdrop-blur-md backdrop-saturate-150 bg-overlay/30 w-screen h-screen inset-0"
                 />
             </div>
-
             <PreviewModal
                 state={previewModal}
                 file={preview}
@@ -393,15 +387,17 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     )
 };
 
+
 type UploaderPreviewPropsType = {
-    files?: FileStorage[]
     previewFile: (id: number) => void;
+    files?: FileStorage[];
 }
 
+
 const UploaderPreview = (props: UploaderPreviewPropsType) => {
-    const {files, previewFile} = props
+    const {previewFile, files} = props
 
-
+    console.log({nnn: files})
     if (!files?.length) return null
     return (
         <div
@@ -443,8 +439,10 @@ type UploaderPreviewItemPropsType = {
 const UploaderPreviewItem = (props: UploaderPreviewItemPropsType) => {
     const {file, preview} = props
 
+    // console.log({mm: file})
+    // return null
     const {
-        system: {baseUrl},
+        system,
         mimetype,
         path,
         filesize,

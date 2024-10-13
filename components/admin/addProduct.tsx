@@ -1,4 +1,4 @@
-import React, {Key, useEffect, useState} from "react";
+import React from "react";
 import {z} from "zod";
 import {FormRender} from "@/stories/RahsazAdmin/FormHandler";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
@@ -40,6 +40,7 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
     return (
         <Card
             className="area-[submit] sticky bottom-5 z-50 lg:relative lg:bottom-auto"
+            shadow="lg"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -145,7 +146,22 @@ const PicturesBox: FormRender<T>['render'] = ({children, formState, watch, isEdi
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
-            <CardHeader className="font-bold">تصاویر</CardHeader>
+            <CardHeader className="font-bold">گالری تصاویر</CardHeader>
+            <CardBody className="gap-5">
+                {children}
+            </CardBody>
+        </Card>
+    )
+}
+
+const ThumbnailBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
+    return (
+        <Card
+            className="area-[thumbnail]"
+            classNames={{body: "items-start text-start"}}
+            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
+        >
+            <CardHeader className="font-bold">تصویر کالا</CardHeader>
             <CardBody className="gap-5">
                 {children}
             </CardBody>
@@ -157,7 +173,7 @@ const DetailBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 
     return (
         <Card
-            className="area-[detail]"
+            className="area-[detail] max-h-[600px]"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
         >
@@ -188,6 +204,7 @@ const formInitial: T = {
     minimumInventoryWarn: 0,
 
     pictures: [],
+    thumbnail: null,
 }
 
 
@@ -314,6 +331,7 @@ const formSchema = z.object({
     ),
 
     pictures: z.object({id: z.number()}).array().optional(),
+    thumbnail: z.object({id: z.number()}).optional(),
 
     categories: z.union(
         [
@@ -405,7 +423,6 @@ const formRender: FormRender<T>[] = [
             },
         ],
     },
-
     {
         render: CategoriesBox,
         fields: ["categories"]
@@ -413,6 +430,10 @@ const formRender: FormRender<T>[] = [
     {
         render: MachineryBox,
         fields: ["machinery"]
+    },
+    {
+        render: ThumbnailBox,
+        fields: ["thumbnail"]
     },
     {
         render: PicturesBox,
@@ -436,7 +457,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             dependency: () => {
                 const title = watch("title")
-                setValue("slug", slugify(title, {lower: true}), {shouldValidate: true})
+                setValue("slug", slugify(title, {lower: true, trim: true, remove: /[*+~.()'"%^&$#?؟×/!:@]/g }), {shouldValidate: true})
             },
         },
         {
@@ -482,20 +503,35 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             withSection: true,
         },
         {
+            name: "thumbnail",
+            type: "uploader",
+            label: "تصویر اصلی",
+            isRequired: false,
+            description: "تا حجم 5 مگابایت",
+            isDisabled: false,
+            accept: {
+                'image/png': ['.png', '.PNG'],
+                'image/jpg': ['.jpg', '.JPG', '.jpeg', '.JPEG'],
+            },
+            minSize: 1000,
+            maxFiles: 5242880,
+            isMultiple: false,
+            withPreview: true
+        },
+        {
             name: "pictures",
             type: "uploader",
-            label: "آپلود تصاویر",
+            label: "گالری تصاویر",
             isRequired: false,
-            description: "تا حجم 2 مگابایت",
+            description: "تا حجم 5 مگابایت",
             isDisabled: false,
-            // accept: {
-            //     'image/png': ['.png'],
-            // },
+            accept: {
+                'image/png': ['.png', '.PNG'],
+                'image/jpg': ['.jpg', '.JPG', '.jpeg', '.JPEG'],
+            },
             minSize: 1000,
-            maxFiles: 0,
+            maxFiles: 5242880,
             isMultiple: true,
-
-
             withPreview: true
         },
         {
@@ -735,12 +771,10 @@ export const addProductContext = {
         fields: formFields,
         initial: formInitial,
         render: formRender,
-        className: "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 grid-rows-auto" +
-            " " +
-            "grid-areas-[info,detail,categories,machinery,pictures,submit]" +
-            " " +
-            "lg:grid-areas-[info_info,detail_detail,categories_machinery,pictures_submit]" +
-            " " +
-            "xl:grid-areas-[info_info_submit,detail_detail_categories,detail_detail_machinery,detail_detail_pictures]"
+        className:
+            "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 grid-rows-auto" + " " +
+            "grid-areas-[info,detail,categories,machinery,thumbnail,pictures,submit]" + " " +
+            "lg:grid-areas-[info_info,detail_detail,categories_machinery,thumbnail_pictures,submit_submit]" + " " +
+            "xl:grid-areas-[info_info_submit,detail_detail_categories,detail_detail_machinery,detail_detail_thumbnail,detail_detail_pictures]"
     },
 }

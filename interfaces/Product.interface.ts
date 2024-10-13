@@ -51,8 +51,8 @@ export interface Product {
         inventory?: number;
     }[];
 
-    pictures: FileStorage[]
-
+    pictures: FileStorage[];
+    thumbnail: FileStorage | null;
 
     createdBy?: Account;
     createdAt?: Date;
