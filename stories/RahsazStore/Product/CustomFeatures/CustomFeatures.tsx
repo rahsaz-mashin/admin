@@ -2,15 +2,20 @@ import React from "react";
 import {Card, CardBody, CardHeader, CardFooter} from "@nextui-org/card";
 import {OutlinedSettingIcon} from "@/stories/Icons";
 import Link from "next/link";
+import {ProductFeaturesList} from "@/interfaces/Product.interface";
+import {ProductFeaturesCategory} from "@/interfaces/ProductFeaturesCategory.interface";
+import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
 
-export type ProductCustomFeaturesProps = {}
+export type ProductCustomFeaturesProps = {
+    features?:  ProductFeaturesList[];
+}
 
 
-export const ProductCustomFeatures = (
-    {}
-        :
-        ProductCustomFeaturesProps
-) => {
+export const ProductCustomFeatures = (props: ProductCustomFeaturesProps) => {
+
+    const {
+        features
+    } = props
 
     const items = [
         {
@@ -48,11 +53,13 @@ export const ProductCustomFeatures = (
         },
     ]
 
+    if(!features?.length) return null
+
     return (
-        <div className="items-center gap-5 grid grid-cols-1 md:grid-cols-2 select-none">
-            {items.map((v, i) => {
+        <div className="items-center gap-3 grid grid-cols-1 md:grid-cols-2 select-none">
+            {features.map(({id, category, value}, i) => {
                 return (
-                    <div key={v.key} className="relative flex pt-2 group odd:ps-2 even:pe-2 cursor-pointer">
+                    <div key={id} className="relative flex pt-2 group odd:ps-2 even:pe-2 cursor-pointer">
                         <div
                             className="bg-primary transition group-hover:bg-primary-400 h-12 w-12 absolute top-0 group-odd:start-0 group-even:end-0 z-10 group-odd:rounded-tr-lg group-even:rounded-tl-lg rounded-3xl text-white p-2"
                         >
@@ -68,11 +75,11 @@ export const ProductCustomFeatures = (
                             className="border-2 border-primary rounded-[1.75rem] w-full"
                         >
                             <CardHeader className="font-bold py-2.5 ps-12">
-                                {v.current.title}
+                                {(category as ProductFeaturesCategory)?.title}
                             </CardHeader>
                             <CardFooter className="font-bold py-2.5 text-primary gap-1">
-                                {v.title}
-                                <span>({v.itemsCount})</span>
+                                {(value as ProductFeatures)?.title}
+                                {/*<span>({v.itemsCount})</span>*/}
                             </CardFooter>
                         </Card>
                     </div>

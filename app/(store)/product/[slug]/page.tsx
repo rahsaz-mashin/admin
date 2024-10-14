@@ -1,12 +1,3 @@
-import {ProductBreadcrumbs} from "@/stories/RahsazStore/Product/Breadcrumbs";
-import {ProductTitle} from "@/stories/RahsazStore/Product/Title";
-import {ProductRateSummary} from "@/stories/RahsazStore/Product/RateSummary/RateSummary";
-import {ProductOfferPack} from "@/stories/RahsazStore/Product/OfferPack/OfferPack";
-import {ProductAvailableInStock} from "@/stories/RahsazStore/Product/AvailableInStock/AvailableInStock";
-import {ProductAvailableInMarketPlace} from "@/stories/RahsazStore/Product/AvailableInMarketPlace";
-import {ProductFreeDelivery} from "@/stories/RahsazStore/Product/FreeDelivery";
-import {ProductWithGift} from "@/stories/RahsazStore/Product/WithGift";
-import {ProductCampaign} from "@/stories/RahsazStore/Product/Campaign/Campaign";
 import {ProductCustomFeatures} from "@/stories/RahsazStore/Product/CustomFeatures";
 import {ProductFeaturesBox} from "@/stories/RahsazStore/Product/FeaturesBox";
 import {ProductMarketplaceBox} from "@/stories/RahsazStore/Product/MarketplaceBox/MarketplaceBox";
@@ -18,33 +9,28 @@ import {ProductTechnicalMagBox} from "@/stories/RahsazStore/Product/TechnicalMag
 import {ProductRahsazOnlinePostsBox} from "@/stories/RahsazStore/Product/RahsazOnlinePostsBox";
 import {ProductCommentsBox} from "@/stories/RahsazStore/Product/CommentsBox";
 import {ProductQABox} from "@/stories/RahsazStore/Product/QABox";
-import {ProductPriceBox} from "@/stories/RahsazStore/Product/PriceBox";
-import {ProductTabContents} from "@/stories/RahsazStore/Product/TabContents";
 import {ProductInfoBox} from "@/stories/RahsazStore/Product/InfoBox";
+import {axiosServerCoreWithAuth} from "@/lib/axiosServerCore";
+import {Product} from "@/interfaces/Product.interface";
+import {auth} from "@/auth";
 
-export default function Page({params}: { params: { key: string } }) {
 
-    const product = {
-        id: 444,
-        title: "کولر روغن موتور شانگهای دیزل هزار سوراخ دو سربوش",
-        categories: [
-            {
-                id: 8585,
-                key: "engine",
-                title: "موتور",
 
-            }
-        ],
-        rate: 4.3,
-        rateCount: 38,
-    }
+
+export default async function Page({params: {slug}}: { params: { slug: string } }) {
+
+    const session = await auth()
+    const axiosServer = axiosServerCoreWithAuth(session?.accessToken)
+    const product: Product = await axiosServer.get(`/product/${slug}`)
+
+
 
     return (
         <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
             <section className="col-span-2 relative">
                 <div className="flex flex-col p-4 gap-3 relative">
                     <ProductInfoBox title={product.title}/>
-                    <ProductCustomFeatures/>
+                    <ProductCustomFeatures features={product.features}/>
                     <ProductFeaturesBox/>
                     <ProductMarketplaceBox/>
                     <ProductRahsazBox/>

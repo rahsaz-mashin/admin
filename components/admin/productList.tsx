@@ -191,7 +191,7 @@ const tableColumns: ColumnType<T>[] = [
 ]
 
 export const productListContext = {
-    apiRoute: "product",
+    apiRoute: "admin/product",
     table: {
         columns: tableColumns
     }

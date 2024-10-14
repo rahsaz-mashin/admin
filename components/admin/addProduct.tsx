@@ -768,7 +768,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
 
 
 export const addProductContext = {
-    apiRoute: "product",
+    apiRoute: "admin/product",
     form: {
         title: "کالا",
         schema: formSchema,
