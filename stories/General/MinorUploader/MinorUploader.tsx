@@ -105,7 +105,19 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     }
 
     useEffect(() => {
-        if (oldValue) field.onChange(oldValue)
+        if (isMultiple) {
+            if (!!oldValue && !!(oldValue as FileStorage[])?.length) {
+                field.onChange(oldValue)
+            } else {
+                field.onChange([])
+            }
+        } else {
+            if (!!oldValue) {
+                field.onChange(oldValue)
+            } else {
+                field.onChange(null)
+            }
+        }
     }, [JSON.stringify(oldValue)]);
 
     useEffect(() => {
@@ -176,11 +188,15 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     })
 
     const removeFile = (id: number) => {
-        const v: FileStorage[] = !!field.value && Array.isArray(field.value) ? field.value : [field.value]
-        const idx = v.findIndex((file) => (file.id === id))
-        if (idx >= 0) {
-            v.splice(idx, 1)
-            setOldValue([...v])
+        if (isMultiple) {
+            const v: FileStorage[] = !!field.value && Array.isArray(field.value) ? field.value : [field.value]
+            const idx = v.findIndex((file) => (file.id === id))
+            if (idx >= 0) {
+                v.splice(idx, 1)
+                setOldValue([...v])
+            }
+        } else {
+            setOldValue(undefined)
         }
         previewModal.onClose()
     }
@@ -216,13 +232,14 @@ export const MinorUploader = (props: MinorUploaderProps) => {
     }
 
     const hasHelper = !!description || isInvalid || fieldState.invalid
-
+    const hasError = (!!errorMessage || !!fieldState.error?.message || !!fieldState.error?.root?.message)
     return (
         <>
             <div
                 className={"relative h-full w-full outline-none group flex flex-col gap-2 justify-center min-h-72 " + className}
                 {...getRootProps()}
-                data-has-helper={hasHelper}
+                data-has-helper={hasHelper || undefined}
+                data-invalid={hasError || undefined}
                 data-dragged={isDragActive || undefined}
                 data-drag-accept={isDragAccept || undefined}
                 data-drag-reject={isDragReject || undefined}
@@ -232,7 +249,7 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                 data-have-file={(Array.isArray(field.value) ? !!field.value?.length : !!field.value) || undefined}
             >
                 <div
-                    className="relative group-data-[dragged]:z-[99999999] h-full p-4 flex flex-col gap-8 justify-between items-center bg-white border-2 transition duration-500 group-data-[isactive]:cursor-pointer group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:bg-primary-50 group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:border-primary group-data-[drag-accept]:border-success group-data-[drag-accept]:bg-success-50 group-data-[drag-reject]:border-danger group-data-[drag-reject]:bg-danger-50 group-data-[filedialog-active]:group-[&:not([data-dragged])]:border-primary border-dashed border-gray-300 rounded-xl"
+                    className="relative group-data-[dragged]:z-[99999999] h-full p-4 flex flex-col gap-8 justify-between items-center bg-white border-2 transition duration-500 group-data-[isactive]:cursor-pointer group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:bg-primary-50 group-data-[isactive]:group-[&:not([data-filedialog-active])]:group-[&:not([data-dragged])]:group-hover:border-primary group-data-[invalid]:border-danger group-data-[invalid]:bg-danger-50 group-data-[drag-accept]:border-success group-data-[drag-accept]:bg-success-50 group-data-[drag-reject]:border-danger group-data-[drag-reject]:bg-danger-50 group-data-[filedialog-active]:group-[&:not([data-dragged])]:border-primary border-dashed border-gray-300 rounded-xl"
                 >
                     <div className="relative flex justify-center items-center flex-col w-full h-full">
                         <div
@@ -356,9 +373,14 @@ export const MinorUploader = (props: MinorUploaderProps) => {
                                     </span>
                                 </div>
                                 <div className="hidden group-data-[has-helper=true]:flex p-1 relative flex-col gap-1.5">
-                                    {!!description && (
+                                    {(!!description && !(!!errorMessage || fieldState.error?.message || fieldState.error?.root?.message)) && (
                                         <div className="text-tiny text-foreground-400">
                                             {description}
+                                        </div>
+                                    )}
+                                    {(!!errorMessage || fieldState.error?.message || fieldState.error?.root?.message) && (
+                                        <div className="text-tiny text-danger">
+                                            {errorMessage || fieldState.error?.message || fieldState.error?.root?.message}
                                         </div>
                                     )}
                                 </div>

@@ -58,6 +58,7 @@ const tableColumns: ColumnType<T>[] = [
                         <span className="font-bold text-base">{value}</span>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="font-medium truncate">دیگر نام ها:</span>
+                            {!ctx?.names?.length && "-"}
                             {ctx?.names?.map((v, idx) => {
                                 return (
                                     <Chip key={idx} size="sm" variant="flat" color="secondary">
@@ -68,6 +69,7 @@ const tableColumns: ColumnType<T>[] = [
                         </div>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="font-medium truncate">برچسب ها:</span>
+                            {!ctx?.tags?.length && "-"}
                             {ctx?.tags?.map((v, idx) => {
                                 return (
                                     <Chip key={idx} size="sm" variant="flat" color="primary">

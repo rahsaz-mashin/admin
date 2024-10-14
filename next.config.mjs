@@ -56,6 +56,18 @@ export default withPWA({
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'storage.zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'storage1.zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
         ],
     }
 });

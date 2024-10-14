@@ -220,7 +220,7 @@ const formSchema = z.object({
         .array().max(10, {message: "حداکثر 10 برچسب وارد کنید"}),
 
 
-    intro: z.string({message: "معرفی کالا را وارد کنید"}).optional(),
+    intro: z.string({message: "معرفی کالا را وارد کنید"}).optional().nullable(),
     technical: z.object({
         title: z.string({message: "عنوان مشخصه را وارد کنید"}).min(3, "عنوان مشخصه معتبر نیست"),
         value: z.string({message: "مقدار مشخصه را وارد کنید"}).min(3, "مقدار مشخصه معتبر نیست"),
@@ -330,8 +330,8 @@ const formSchema = z.object({
         ]
     ),
 
-    pictures: z.object({id: z.number()}).array().optional(),
-    thumbnail: z.object({id: z.number()}).nullable().optional(),
+    pictures: z.object({id: z.number()}, {message: "تصاویر را وارد کنید"}).array().optional(),
+    thumbnail: z.object({id: z.number()}, {message: "تصویر را وارد کنید"}).nullable().optional(),
 
     categories: z.union(
         [
