@@ -1,22 +1,27 @@
 import React from "react";
-import {Card, CardBody, CardHeader, CardFooter} from "@nextui-org/card";
+import {Card, CardBody, CardHeader, } from "@nextui-org/card";
 import {Button} from "@nextui-org/react";
 import Link from "next/link";
+import {ProductTechnical} from "@/interfaces/Product.interface";
 
 
-export type ProductFeaturesBoxProps = {}
+export type ProductFeaturesBoxProps = {
+    technical?: ProductTechnical[];
+}
 
 
 export const ProductFeaturesBox = (
-    {}
-        :
-        ProductFeaturesBoxProps
+    props: ProductFeaturesBoxProps
 ) => {
+    const {
+        technical
+    } = props
 
+    if(!technical?.length) return null
 
     return (
         <Card shadow="none" className="bg-gray-100" id="features">
-            <Link href="#features" className="outline-none">
+            <Link href="#technical" className="outline-none">
                 <CardHeader className="flex justify-between py-2">
                     <h3 className="font-bold text-lg">ویژگی ها</h3>
                     <Button
@@ -30,22 +35,14 @@ export const ProductFeaturesBox = (
                 </CardHeader>
             </Link>
             <CardBody className="text-start py-3 flex-col">
-                <div className="flex items-center gap-2">
-                    <span>قطر میله درونی:</span>
-                    <span>3 میلی متر</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span>قطر میله بیرونی:</span>
-                    <span>9 میلی متر</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span>طول میله درونی:</span>
-                    <span>46 میلی متر</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <span>طول میله بیرونی:</span>
-                    <span>85 میلی متر</span>
-                </div>
+                {technical.map(({title, value}) => {
+                    return (
+                        <div className="flex items-center gap-2">
+                            <span className="after:content-[':']">{title}</span>
+                            <span>{value}</span>
+                        </div>
+                    )
+                })}
             </CardBody>
         </Card>
     );

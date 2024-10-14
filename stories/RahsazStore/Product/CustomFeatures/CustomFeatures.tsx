@@ -17,42 +17,6 @@ export const ProductCustomFeatures = (props: ProductCustomFeaturesProps) => {
         features
     } = props
 
-    const items = [
-        {
-            id: 123,
-            key: "quality",
-            title: "جنس",
-            current: {
-                id: 475,
-                key: "main",
-                title: "اصلی"
-            },
-            itemsCount: 4,
-        },
-        {
-            id: 456,
-            key: "country",
-            title: "کشور سازنده",
-            current: {
-                id: 478,
-                key: "japan",
-                title: "ژاپن"
-            },
-            itemsCount: 8,
-        },
-        {
-            id: 985,
-            key: "manufacture",
-            title: "برند",
-            current: {
-                id: 472,
-                key: "pmsco",
-                title: "PMSCO"
-            },
-            itemsCount: 3,
-        },
-    ]
-
     if(!features?.length) return null
 
     return (

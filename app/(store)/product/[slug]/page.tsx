@@ -31,7 +31,7 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                 <div className="flex flex-col p-4 gap-3 relative">
                     <ProductInfoBox title={product.title}/>
                     <ProductCustomFeatures features={product.features}/>
-                    <ProductFeaturesBox/>
+                    <ProductFeaturesBox technical={product.technical}/>
                     <ProductMarketplaceBox/>
                     <ProductRahsazBox/>
                     <ProductRelatedProductsBox/>
