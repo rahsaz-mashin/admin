@@ -46,7 +46,7 @@ const tableColumns: ColumnType<T>[] = [
                             height={100}
                             alt={ctx.thumbnail?.alt}
                             title={ctx.thumbnail?.title}
-                            src={`${ctx.thumbnail?.system.baseUrl}/${ctx.thumbnail?.path}`}
+                            src={`${ctx.thumbnail ? (ctx.thumbnail.system.baseUrl + "/" + ctx.thumbnail?.path) : ""}`}
                             radius="md"
                             loading="eager"
                             className="object-fill !h-full !w-full"
@@ -57,7 +57,7 @@ const tableColumns: ColumnType<T>[] = [
                     <div className="flex flex-col gap-3">
                         <span className="font-bold text-base">{value}</span>
                         <div className="flex flex-row gap-2 items-center">
-                            <span className="font-medium">دیگر نام ها:</span>
+                            <span className="font-medium truncate">دیگر نام ها:</span>
                             {ctx?.names?.map((v, idx) => {
                                 return (
                                     <Chip key={idx} size="sm" variant="flat" color="secondary">
@@ -67,7 +67,7 @@ const tableColumns: ColumnType<T>[] = [
                             })}
                         </div>
                         <div className="flex flex-row gap-2 items-center">
-                            <span className="font-medium">برچسب ها:</span>
+                            <span className="font-medium truncate">برچسب ها:</span>
                             {ctx?.tags?.map((v, idx) => {
                                 return (
                                     <Chip key={idx} size="sm" variant="flat" color="primary">
