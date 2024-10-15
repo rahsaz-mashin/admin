@@ -115,7 +115,8 @@ export const Header = (props: HeaderProps) => {
                         <Breadcrumbs
                             underline="hover"
                             color="secondary"
-                            className="ps-12"
+                            className="ps-12  w-full "
+                            classNames={{base: "inline-grid", list: "flex-nowrap w-full overflow-y-hidden pb-2"}}
                             separator={<SeparatorIcon size={20}/>}
                         >
                             {breadCrumbs.map(({title, url}, idx) => (

@@ -84,7 +84,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
 
     const isDrawerOpen = searchParams.get("drawer") !== null
     const onOpenDrawer = () => {
-        if(!isDrawerOpen) {
+        if (!isDrawerOpen) {
             const u = new URLSearchParams(searchParams)
             u.set("drawer", "")
             router.push(pathname + "?" + u.toString())
@@ -92,7 +92,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
     }
 
     const onCloseDrawer = () => {
-        if(isDrawerOpen) {
+        if (isDrawerOpen) {
             const u = new URLSearchParams(searchParams)
             u.delete("drawer")
             router.push(pathname + "?" + u.toString())
@@ -123,7 +123,8 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         className="h-[3px]"
                     />
                 </div>
-                <main className="flex w-full h-full min-h-full min-w-full flex-col bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
+                <main
+                    className="flex w-full h-full min-h-full min-w-full flex-col bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
                     <nav className="hidden w-32 fixed md:flex flex-col h-full">
                         <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
                             <Logo size={60}/>
@@ -149,7 +150,6 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         <section
                             className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
                         >
-                            <FixedContent/>
                             <Scrollbar
                                 wrapperProps={{
                                     renderer: (props) => {
@@ -175,7 +175,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                             <div
                                                 ref={elementRef}
                                                 {...restProps}
-                                                className={props.className + " scroll-smooth"}
+                                                className={props.className + " scroll-smooth !ml-0 md:!ml-[-17px]"}
                                                 key="scrollbarScroller"
                                             />
                                         );
@@ -252,9 +252,9 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                                     {children}
                                 </div>
                             </Scrollbar>
-                            <BottomNavigation />
+                            <BottomNavigation/>
                         </section>
-                        <Footer />
+                        <Footer/>
                     </aside>
                 </main>
             </Drawer>

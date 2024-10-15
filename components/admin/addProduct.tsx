@@ -39,7 +39,7 @@ const InfoBox: FormRender<T>['render'] = ({children, formState, watch, isEditing
 const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing, cancel, submit}) => {
     return (
         <Card
-            className="area-[submit] sticky bottom-5 z-50 lg:relative lg:bottom-auto"
+            className="area-[submit]"
             shadow="lg"
             classNames={{body: "items-start text-start"}}
             isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}

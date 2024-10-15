@@ -9,9 +9,16 @@ import {AnimatePresence, motion} from "framer-motion";
 import {ClickAwayListener} from "@mui/base";
 
 
-export type BottomNavigationProps = {}
+export type BottomNavigationProps = {
 
-export const BottomNavigation = ({}: BottomNavigationProps) => {
+}
+
+export const BottomNavigation = (props: BottomNavigationProps) => {
+
+    const {
+
+    } = props
+
     const pathname = usePathname()
     const m = pathname.split("/")
     const [searchVisible, setSearchVisible] = useState(false)

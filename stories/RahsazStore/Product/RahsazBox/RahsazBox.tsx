@@ -3,14 +3,16 @@ import {Card, CardBody, CardHeader, CardFooter} from "@nextui-org/card";
 import {CardPaymentIcon, FastDeliveryIcon, ReverseProductIcon, SupportIcon, WalletIcon} from "@/stories/Icons";
 
 
-export type ProductRahsazBoxProps = {}
+export type ProductRahsazBoxProps = {
+
+}
 
 
-export const ProductRahsazBox = (
-    {}
-        :
-        ProductRahsazBoxProps
-) => {
+export const ProductRahsazBox = (props: ProductRahsazBoxProps) => {
+
+    const {
+
+    } = props
 
     const items = [
         {
@@ -42,24 +44,26 @@ export const ProductRahsazBox = (
 
 
     return (
-        <div className="flex items-center gap-4 overflow-y-hidden px-0.5 hide-scrollbar select-none">
-            {items.map((v, i) => {
-                return (
-                    <div key={i} className="flex-shrink-0 relative flex items-center ps-5">
-                        <div className="absolute h-10 w-10 text-primary -start-0 z-20">
-                            <v.icon />
+        <div className="pt-4" id="rahsaz">
+            <div className="flex items-center gap-4 overflow-y-hidden px-0.5 hide-scrollbar select-none">
+                {items.map((v, i) => {
+                    return (
+                        <div key={i} className="flex-shrink-0 relative flex items-center ps-5">
+                            <div className="absolute h-10 w-10 text-primary -start-0 z-20">
+                                <v.icon/>
+                            </div>
+                            <Card shadow="none" className="bg-zinc-300">
+                                <CardHeader className="font-bold text-sm text-green-600 pb-1 ps-6">
+                                    {v.title}
+                                </CardHeader>
+                                <CardBody className="font-light text-xs text-gray-600 pt-1 ps-6">
+                                    {v.description}
+                                </CardBody>
+                            </Card>
                         </div>
-                        <Card shadow="none" className="bg-zinc-300">
-                            <CardHeader className="font-bold text-sm text-green-600 pb-1 ps-6">
-                                {v.title}
-                            </CardHeader>
-                            <CardBody className="font-light text-xs text-gray-600 pt-1 ps-6">
-                                {v.description}
-                            </CardBody>
-                        </Card>
-                    </div>
-                )
-            })}
+                    )
+                })}
+            </div>
         </div>
     );
 };

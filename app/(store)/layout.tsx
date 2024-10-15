@@ -2,11 +2,12 @@ import {Metadata} from "next";
 import React from "react";
 import RahsazStoreMainLayout from "@/components/RahsazStoreMainLayout";
 import {Providers} from "@/app/(store)/providers";
+import {rootConfig} from "@/config/root";
 
 export const metadata: Metadata = {
-    title: "صفحه اصلی",
-    icons: {
-        icon: "/favicon.ico",
+    title: {
+        default: rootConfig.name,
+        template: `${rootConfig.name} | %s`,
     },
 };
 

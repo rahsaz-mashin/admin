@@ -3,32 +3,47 @@
 import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 import React from "react";
 import {SeparatorIcon} from "@/stories/Icons";
+import {ProductCategory} from "@/interfaces/ProductCategory.interface";
 
 export type BreadcrumbsProps = {
-
+    categories?: ProductCategory[];
 }
 
 
-export const ProductBreadcrumbs = (
-    {
+export const ProductBreadcrumbs = (props: BreadcrumbsProps) => {
 
-    }: BreadcrumbsProps
-) => {
+    const {
+        categories,
+    } = props
+
 
     const items = [
         {
             key: "home",
-            title: "راهساز ماشین"
-        },
-        {
-            key: "category-engine",
-            title: "موتور"
-        },
-        {
-            key: "category-engine-old-shanghai",
-            title: "شانگهای قدیم"
+            title: "راهساز ماشین",
+            url: "/"
         },
     ]
+
+    if (categories?.length) {
+        if(categories[0]?.parent?.title) {
+            items.push({
+                key: categories[0]?.parent?.slug,
+                title: categories[0]?.parent?.title,
+                url: `/category/${categories[0]?.parent?.slug}`
+            })
+            items.push({
+                key: categories[0]?.slug,
+                title: categories[0]?.title,
+                url: `/category/${categories[0]?.slug}`
+            })
+            items.push({
+                key: "",
+                title: "",
+                url: ""
+            })
+        }
+    }
 
 
     return (
@@ -37,11 +52,12 @@ export const ProductBreadcrumbs = (
                 color="secondary"
                 separator={<SeparatorIcon size={20}/>}
             >
-                {items.map(({key, title}) => {
+                {items.map(({key, title, url}) => {
                     return (
                         <BreadcrumbItem
                             key={key}
                             className="font-bold"
+                            href={url}
                         >
                             {title}
                         </BreadcrumbItem>

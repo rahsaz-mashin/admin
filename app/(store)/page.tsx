@@ -1,10 +1,14 @@
-import Link from "next/link";
 import React from "react";
 import {Stories} from "@/stories/RahsazStore/Stories";
 import {HomeSlider} from "@/stories/RahsazStore/HomeSlider";
 import {Shortcuts} from "@/stories/RahsazStore/Shortcuts";
 import {ProductCategoryShortcut} from "@/stories/RahsazStore/ProductCategoryShortcut";
+import {Metadata} from "next";
 
+
+export const metadata: Metadata = {
+    title: "صفحه اصلی",
+};
 
 export default function Page() {
     return (
@@ -20,6 +24,7 @@ export default function Page() {
                 className="font-normal text-black flex flex-col gap-4 py-4 bg-gray-100 overflow-hidden"
             >
                 <ProductCategoryShortcut/>
+                <div className="pb-24 md:pb-0"/>
             </section>
         </>
     );

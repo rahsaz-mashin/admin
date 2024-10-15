@@ -23,10 +23,10 @@ export const FixedContent = () => {
                             </div>
                         </div>
                         <div className="absolute top-0 end-0">
-                            <ProductTabContents/>
+
                         </div>
                         <div className="absolute bottom-0 w-full">
-                            <ProductPriceBox/>
+                            {/*<ProductPriceBox/>*/}
                         </div>
                     </section>
                 </div>

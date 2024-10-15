@@ -1,49 +1,53 @@
 import React from "react";
-import {Card, CardBody, CardHeader, } from "@nextui-org/card";
-import {Button} from "@nextui-org/react";
-import Link from "next/link";
-import {ProductTechnical} from "@/interfaces/Product.interface";
-
+import {Card, CardBody, CardHeader, CardFooter} from "@nextui-org/card";
+import {OutlinedSettingIcon} from "@/stories/Icons";
+import {ProductFeaturesList} from "@/interfaces/Product.interface";
+import {ProductFeaturesCategory} from "@/interfaces/ProductFeaturesCategory.interface";
+import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
 
 export type ProductFeaturesBoxProps = {
-    technical?: ProductTechnical[];
+    features?: ProductFeaturesList[];
 }
 
 
-export const ProductFeaturesBox = (
-    props: ProductFeaturesBoxProps
-) => {
+export const ProductFeaturesBox = (props: ProductFeaturesBoxProps) => {
+
     const {
-        technical
+        features
     } = props
 
-    if(!technical?.length) return null
+    if (!features?.length) return null
 
     return (
-        <Card shadow="none" className="bg-gray-100" id="features">
-            <Link href="#technical" className="outline-none">
-                <CardHeader className="flex justify-between py-2">
-                    <h3 className="font-bold text-lg">ویژگی ها</h3>
-                    <Button
-                        variant="light"
-                        color="secondary"
-                        size="sm"
-                        className="text-sm font-bold"
-                    >
-                        اطلاعات بیشتر
-                    </Button>
-                </CardHeader>
-            </Link>
-            <CardBody className="text-start py-3 flex-col">
-                {technical.map(({title, value}) => {
-                    return (
-                        <div className="flex items-center gap-2">
-                            <span className="after:content-[':']">{title}</span>
-                            <span>{value}</span>
+        <div className="items-center gap-3 grid grid-cols-1 xs:grid-cols-2 select-none">
+            {features.map(({id, category, value}, i) => {
+                return (
+                    <div key={id} className="relative flex pt-2 group odd:ps-2 even:pe-2 cursor-pointer">
+                        <div
+                            className="bg-primary transition group-hover:bg-primary-400 h-12 w-12 absolute top-0 group-odd:start-0 group-even:end-0 z-10 group-odd:rounded-tr-lg group-even:rounded-tl-lg rounded-3xl text-white p-2"
+                        >
+                            <OutlinedSettingIcon/>
                         </div>
-                    )
-                })}
-            </CardBody>
-        </Card>
+                        <Card
+
+                            isHoverable
+                            isPressable
+                            disableRipple
+                            radius="lg"
+                            shadow="none"
+                            className="border-2 border-primary rounded-[1.75rem] w-full"
+                        >
+                            <CardHeader className="font-bold py-2.5 ps-12">
+                                {(category as ProductFeaturesCategory)?.title}
+                            </CardHeader>
+                            <CardFooter className="font-bold py-2.5 text-primary gap-1">
+                                {(value as ProductFeatures)?.title}
+                                {/*<span>({v.itemsCount})</span>*/}
+                            </CardFooter>
+                        </Card>
+                    </div>
+                )
+            })}
+        </div>
     );
 };
