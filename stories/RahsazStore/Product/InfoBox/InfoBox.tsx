@@ -22,10 +22,6 @@ import {ProductGallery} from "@/stories/RahsazStore/Product/Gallery/Gallery";
 export type ProductInfoBoxProps = {
     title: string;
     slug: string;
-    features?: ProductFeaturesList[];
-    categories?: ProductCategory[];
-    machinery?: ProductMachineModel[];
-    pictures?: FileStorage[];
 }
 
 
@@ -34,10 +30,6 @@ export const ProductInfoBox = (props: ProductInfoBoxProps) => {
     const {
         title,
         slug,
-        features,
-        categories,
-        machinery,
-        pictures,
     } = props
 
     return (

@@ -11,12 +11,12 @@ import {axiosServerCoreWithAuth} from "@/lib/axiosServerCore";
 import {Product} from "@/interfaces/Product.interface";
 import {auth} from "@/auth";
 import {ProductTechnicalBox} from "@/stories/RahsazStore/Product/TechnicalBox";
-import {Metadata, ResolvingMetadata} from "next";
+import {Metadata} from "next";
 import {rootConfig} from "@/config/root";
 import React from "react";
 import {ProductGallery} from "@/stories/RahsazStore/Product/Gallery/Gallery";
 import {ProductFeaturesBox} from "@/stories/RahsazStore/Product/FeaturesBox";
-import {ProductBreadcrumbs} from "@/stories/RahsazStore/Product/Breadcrumbs";
+import {ProductPriceBox} from "@/stories/RahsazStore/Product/PriceBox";
 
 
 const getProduct = async (slug: string) => {
@@ -55,8 +55,8 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
 
 
     return (
-        <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
-            <section className="col-span-2 flex flex-col relative">
+        <main className="grid grid-cols-6">
+            <section className="col-span-6 lg:col-span-3 xl:col-span-2 flex flex-col relative">
                 <ProductGallery
                     title={product.title}
                     slug={product.slug}
@@ -69,9 +69,6 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     <ProductInfoBox
                         title={product.title}
                         slug={product.slug}
-                        features={product.features}
-                        categories={product.categories}
-                        pictures={product.pictures}
                     />
                     <ProductFeaturesBox
                         features={product.features}
@@ -100,8 +97,20 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     />
                     <ProductQABox
                     />
-                    <div className="pb-24 md:pb-0"/>
+                    <div className="bg-white sticky bottom-0 z-30">
+                        <ProductPriceBox mobile/>
+                        <div className="pb-24 md:pb-0"/>
+                    </div>
                 </div>
+
+            </section>
+            <section className="hidden lg:col-span-3 xl:col-span-4 bg-red-600 lg:flex flex-col">
+                <div className="pt-0 px-4 bg-primary sticky top-0 z-30">
+                    <div className="flex flex-col gap-2 w-full py-3">
+                        تصویر
+                    </div>
+                </div>
+                <ProductPriceBox/>
             </section>
         </main>
     );
