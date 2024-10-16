@@ -41,14 +41,8 @@ export const ProductInfoBox = (props: ProductInfoBoxProps) => {
     } = props
 
     return (
-        <div className="pt-0" id="info">
-            <ProductBreadcrumbs
-                categories={categories}
-            />
-            <ProductGallery
-                pictures={pictures}
-            />
-            <div className="flex flex-col gap-2 py-3 bg-white sticky top-0 z-30">
+        <div className="pt-0 px-4 bg-white sticky top-0 z-30" id="info">
+            <div className="flex flex-col gap-2 w-full py-3">
                 <ProductTitle
                     title={title}
                     slug={slug}
@@ -59,12 +53,9 @@ export const ProductInfoBox = (props: ProductInfoBoxProps) => {
                     <ProductAvailableInMarketPlace/>
                     <ProductFreeDelivery/>
                     <ProductWithGift/>
-                    {/*<ProductCampaign/>*/}
                 </div>
+                <ProductCampaign/>
             </div>
-            <ProductFeaturesBox
-                features={features}
-            />
         </div>
     );
 };

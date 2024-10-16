@@ -14,6 +14,8 @@ import {ProductTechnicalBox} from "@/stories/RahsazStore/Product/TechnicalBox";
 import {Metadata, ResolvingMetadata} from "next";
 import {rootConfig} from "@/config/root";
 import React from "react";
+import {ProductGallery} from "@/stories/RahsazStore/Product/Gallery/Gallery";
+import {ProductFeaturesBox} from "@/stories/RahsazStore/Product/FeaturesBox";
 
 
 const getProduct = async (slug: string) => {
@@ -53,14 +55,21 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
 
     return (
         <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
-            <section className="col-span-2 relative">
-                <div className="flex flex-col px-4 pb-4 gap-0 relative">
+            <section className="col-span-2 flex flex-col relative">
+                <ProductGallery
+                    pictures={product.pictures}
+                    categories={product.categories}
+                />
+                <div className="flex flex-col pb-4 gap-0 relative bg-white shadow-[0px_0px_24px_8px_#00000069] lg:shadow-none">
                     <ProductInfoBox
                         title={product.title}
                         slug={product.slug}
                         features={product.features}
                         categories={product.categories}
                         pictures={product.pictures}
+                    />
+                    <ProductFeaturesBox
+                        features={product.features}
                     />
                     <ProductTechnicalBox
                         summary

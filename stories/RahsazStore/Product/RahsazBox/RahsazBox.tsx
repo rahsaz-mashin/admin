@@ -44,7 +44,7 @@ export const ProductRahsazBox = (props: ProductRahsazBoxProps) => {
 
 
     return (
-        <div className="pt-4" id="rahsaz">
+        <div className="pt-4 px-4" id="rahsaz">
             <div className="flex items-center gap-4 overflow-y-hidden px-0.5 hide-scrollbar select-none">
                 {items.map((v, i) => {
                     return (

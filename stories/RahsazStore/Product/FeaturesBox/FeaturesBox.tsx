@@ -19,7 +19,7 @@ export const ProductFeaturesBox = (props: ProductFeaturesBoxProps) => {
     if (!features?.length) return null
 
     return (
-        <div className="items-center gap-3 grid grid-cols-1 xs:grid-cols-2 select-none">
+        <div className="items-center px-4 gap-3 grid grid-cols-1 xs:grid-cols-2 select-none">
             {features.map(({id, category, value}, i) => {
                 return (
                     <div key={id} className="relative flex pt-2 group odd:ps-2 even:pe-2 cursor-pointer">

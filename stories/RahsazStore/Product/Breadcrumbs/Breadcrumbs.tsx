@@ -37,20 +37,22 @@ export const ProductBreadcrumbs = (props: BreadcrumbsProps) => {
                 title: categories[0]?.title,
                 url: `/category/${categories[0]?.slug}`
             })
-            items.push({
-                key: "",
-                title: "",
-                url: ""
-            })
+            // items.push({
+            //     key: "",
+            //     title: "",
+            //     url: ""
+            // })
         }
     }
 
 
     return (
-        <div className="select-none absolute py-4 w-full z-20">
+        <div className="select-none px-4 absolute top-4 z-20">
             <Breadcrumbs
                 color="secondary"
                 separator={<SeparatorIcon size={20}/>}
+                className="backdrop-blur-lg bg-white/20 rounded-lg py-1 px-2"
+                classNames={{base: "inline-grid", list: "flex-nowrap w-full overflow-y-hidden"}}
             >
                 {items.map(({key, title, url}) => {
                     return (

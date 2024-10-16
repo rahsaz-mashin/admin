@@ -18,7 +18,7 @@ export const ProductIntroBox = (props: ProductIntroBoxProps) => {
     if (!intro) return null
 
     return (
-        <div className="pt-4" id="intro">
+        <div className="pt-4 px-4" id="intro">
             <Card shadow="none" className="bg-gray-100">
                 <Link href="#intro" className="outline-none">
                     <CardHeader className="flex justify-between py-2">

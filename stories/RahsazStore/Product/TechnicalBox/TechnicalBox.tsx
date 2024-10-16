@@ -26,7 +26,7 @@ export const ProductTechnicalBox = (props: ProductTechnicalBoxProps) => {
 
 
     return (
-        <div className="pt-4" id={summary ? "summary-tech" : "technical"}>
+        <div className="pt-4 px-4" id={summary ? "summary-tech" : "technical"}>
             <Card shadow="none" className="bg-gray-100">
                 <Link href={summary ? "#summary-tech" : "#technical"} className="outline-none">
                     <CardHeader className="flex justify-between">

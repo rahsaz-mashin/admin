@@ -19,7 +19,7 @@ export const ProductRelatedProductsBox = (props: ProductRelatedProductsBoxProps)
     // return null
 
     return (
-        <div className="pt-4" id="related">
+        <div className="pt-4 px-4" id="related">
             <Card shadow="none" className="bg-transparent">
                 <Link href="#related" className="outline-none">
                     <CardHeader className="flex justify-between py-2">

@@ -3,11 +3,11 @@ import React from "react";
 export type ProductCampaignProps = {}
 
 
-export const ProductCampaign = (
-    {}
-        :
-        ProductCampaignProps
-) => {
+export const ProductCampaign = (props: ProductCampaignProps) => {
+
+    const {
+
+    } = props
 
     return (
         <div className="flex items-center gap-1 text-sm text-[#800080]">
