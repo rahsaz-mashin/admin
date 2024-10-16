@@ -51,7 +51,7 @@ export const ProductBreadcrumbs = (props: BreadcrumbsProps) => {
             <Breadcrumbs
                 color="secondary"
                 separator={<SeparatorIcon size={20}/>}
-                className="backdrop-blur-lg bg-white/20 rounded-lg py-1 px-2"
+                className="py-1 px-2"
                 classNames={{base: "inline-grid", list: "flex-nowrap w-full overflow-y-hidden"}}
             >
                 {items.map(({key, title, url}) => {

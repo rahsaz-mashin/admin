@@ -16,6 +16,7 @@ import {rootConfig} from "@/config/root";
 import React from "react";
 import {ProductGallery} from "@/stories/RahsazStore/Product/Gallery/Gallery";
 import {ProductFeaturesBox} from "@/stories/RahsazStore/Product/FeaturesBox";
+import {ProductBreadcrumbs} from "@/stories/RahsazStore/Product/Breadcrumbs";
 
 
 const getProduct = async (slug: string) => {
@@ -57,6 +58,8 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
         <main className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 3xl:grid-cols-7">
             <section className="col-span-2 flex flex-col relative">
                 <ProductGallery
+                    title={product.title}
+                    slug={product.slug}
                     pictures={product.pictures}
                     categories={product.categories}
                 />
