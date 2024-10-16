@@ -12,6 +12,11 @@ import {ProductFeaturesBox} from "@/stories/RahsazStore/Product/FeaturesBox";
 import {ProductFeaturesList} from "@/interfaces/Product.interface";
 import {ProductCategory} from "@/interfaces/ProductCategory.interface";
 import {ProductMachineModel} from "@/interfaces/ProductMachineModel.interface";
+import { ProductAvailableInMarketPlace } from "../AvailableInMarketPlace";
+import { ProductFreeDelivery } from "../FreeDelivery";
+import { ProductWithGift } from "../WithGift";
+import {FileStorage} from "@/interfaces/FileStorage.interface";
+import {ProductGallery} from "@/stories/RahsazStore/Product/Gallery/Gallery";
 
 
 export type ProductInfoBoxProps = {
@@ -19,7 +24,8 @@ export type ProductInfoBoxProps = {
     slug: string;
     features?: ProductFeaturesList[];
     categories?: ProductCategory[];
-    machinery?: ProductMachineModel[]
+    machinery?: ProductMachineModel[];
+    pictures?: FileStorage[];
 }
 
 
@@ -31,31 +37,34 @@ export const ProductInfoBox = (props: ProductInfoBoxProps) => {
         features,
         categories,
         machinery,
+        pictures,
     } = props
 
     return (
-        <div className="pt-4" id="info">
+        <div className="pt-0" id="info">
             <ProductBreadcrumbs
                 categories={categories}
             />
-            <div className="flex flex-col gap-2 top-0 z-30 py-3 bg-white">
+            <ProductGallery
+                pictures={pictures}
+            />
+            <div className="flex flex-col gap-2 py-3 bg-white sticky top-0 z-30">
                 <ProductTitle
                     title={title}
                     slug={slug}
                 />
-                <div className="flex items-center gap-3">
-                    <ProductRateSummary/>
+                <div className="flex items-center gap-3 flex-row flex-wrap">
                     <ProductOfferPack/>
                     <ProductAvailableInStock/>
-                    {/*<ProductAvailableInMarketPlace/>*/}
-                    {/*<ProductFreeDelivery/>*/}
-                    {/*<ProductWithGift/>*/}
+                    <ProductAvailableInMarketPlace/>
+                    <ProductFreeDelivery/>
+                    <ProductWithGift/>
+                    {/*<ProductCampaign/>*/}
                 </div>
-                {/*<ProductCampaign/>*/}
-                <ProductFeaturesBox
-                    features={features}
-                />
             </div>
+            <ProductFeaturesBox
+                features={features}
+            />
         </div>
     );
 };

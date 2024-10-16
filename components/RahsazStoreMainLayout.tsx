@@ -74,8 +74,8 @@ const menuItems = [
 const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
 
     const [scroll, setScroll] = useState(0)
-    const onScroll: any = (v: ScrollState, pv: ScrollState) => {
-        const m = v.scrollTop / (v.scrollHeight - v.clientHeight) * 100
+    const onScroll: any = (v: any) => {
+        const m = v.target.scrollTop / (v.target.scrollHeight - v.target.clientHeight) * 100
         setScroll(m)
     }
 

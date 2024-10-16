@@ -4,11 +4,9 @@ import {OutlinedGiftIcon, OutlinedWalletIcon} from "@/stories/Icons";
 export type ProductWithGiftProps = {}
 
 
-export const ProductWithGift = (
-    {}
-        :
-        ProductWithGiftProps
-) => {
+export const ProductWithGift = (props: ProductWithGiftProps) => {
+
+    const {} = props
 
     return (
         <div className="flex items-center gap-1 text-sm text-orange-600">

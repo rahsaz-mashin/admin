@@ -60,6 +60,7 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                         slug={product.slug}
                         features={product.features}
                         categories={product.categories}
+                        pictures={product.pictures}
                     />
                     <ProductTechnicalBox
                         summary

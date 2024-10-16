@@ -47,7 +47,7 @@ export const ProductBreadcrumbs = (props: BreadcrumbsProps) => {
 
 
     return (
-        <div className="select-none">
+        <div className="select-none absolute py-4 w-full z-20">
             <Breadcrumbs
                 color="secondary"
                 separator={<SeparatorIcon size={20}/>}
