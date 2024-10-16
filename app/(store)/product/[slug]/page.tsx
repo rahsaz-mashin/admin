@@ -60,7 +60,9 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     pictures={product.pictures}
                     categories={product.categories}
                 />
-                <div className="flex flex-col pb-4 gap-0 relative bg-white shadow-[0px_0px_24px_8px_#00000069] lg:shadow-none">
+                <div
+                    className="flex flex-col pb-4 gap-0 relative bg-white shadow-[0px_0px_24px_8px_#00000069] lg:shadow-none"
+                >
                     <ProductInfoBox
                         title={product.title}
                         slug={product.slug}
@@ -95,8 +97,8 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     />
                     <ProductQABox
                     />
+                    <div className="pb-24 md:pb-0"/>
                 </div>
-                <div className="pb-24 md:pb-0"/>
             </section>
         </main>
     );
