@@ -1,12 +1,10 @@
 "use client"
 
-import {Breadcrumbs, BreadcrumbItem, Image, Card, CardBody, Button} from "@nextui-org/react";
+import { Image} from "@nextui-org/react";
 import React, {useState} from "react";
-import {SeparatorIcon} from "@/stories/Icons";
 import {ProductCategory} from "@/interfaces/ProductCategory.interface";
 import {FileStorage} from "@/interfaces/FileStorage.interface";
 import NextImage from "next/image";
-import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {useKeenSlider} from "keen-slider/react";
 import { ProductBreadcrumbs } from "../Breadcrumbs";
 
