@@ -201,7 +201,7 @@ const RadioIcon = (props: { title: string; value: string; icon: string }) => {
                 classNames={{
                     base: cn(
                         "inline-flex m-0 transition bg-content1 hover:bg-primary-50 items-center justify-between",
-                        "flex-row-reverse cursor-pointer rounded-lg gap-4 p-4 border-2 border-transparent",
+                        "flex-row-reverse cursor-pointer rounded-lg gap-4 p-3 border-2 border-transparent",
                         "data-[selected=true]:border-primary data-[selected=true]:bg-primary-50"
                     ),
                     wrapper: "hidden",
