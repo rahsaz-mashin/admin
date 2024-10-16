@@ -23,6 +23,7 @@ import {Footer} from "@/stories/RahsazStore/Footer";
 import {FixedContent} from "@/stories/RahsazStore/FixedContent";
 import {useContainerDimensions} from "@/hooks/useContainerDimentions";
 import {ContainerDimensionsContext, ContainerDimensionsProvider} from "@/context/containerDimensions.context";
+import {ScrollShadow} from "@nextui-org/react";
 
 
 const menuItems = [
@@ -150,108 +151,19 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                         <section
                             className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
                         >
-                            <Scrollbar
-                                wrapperProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, style, ...restProps} = props;
-                                        return (
-                                            <div
-                                                {...restProps}
-                                                ref={elementRef}
-                                                style={{
-                                                    overflow: "hidden",
-                                                    position: "absolute",
-                                                    inset: "0px 0px 0px 0px"
-                                                }}
-                                                key="scrollbarWrapper"
-                                            />
-                                        );
-                                    },
-                                }}
-                                scrollerProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, ...restProps} = props;
-                                        return (
-                                            <div
-                                                ref={elementRef}
-                                                {...restProps}
-                                                className={props.className + " scroll-smooth !ml-0 md:!ml-[-17px]"}
-                                                key="scrollbarScroller"
-                                            />
-                                        );
-                                    }
-                                }}
-                                trackXProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, style, ...restProps} = props;
-                                        return (
-                                            <div
-                                                {...restProps}
-                                                ref={elementRef}
-                                                className="!bg-scrolltrack"
-                                                style={{
-                                                    ...style,
-                                                    height: "0px",
-                                                    left: "0px",
-                                                    bottom: "0px",
-                                                    width: "100%",
-                                                    borderRadius: "8px"
-                                                }}
-                                                key="scrollbarTrackX"
-                                            />
-                                        );
-                                    },
-                                }}
-                                thumbXProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, style, ...restProps} = props;
-                                        return <div
-                                            key="scrollbarThumbX"
-                                            {...restProps}
-                                            ref={elementRef}
-                                            className="!bg-scrollthumb rounded-lg"
-                                        />;
-                                    },
-                                }}
-                                trackYProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, style, ...restProps} = props;
-                                        return (
-                                            <div
-                                                key="scrollbarTrackY"
-                                                {...restProps}
-                                                ref={elementRef}
-                                                className="!bg-scrolltrack"
-                                                style={{
-                                                    ...style,
-                                                    width: "0px",
-                                                    left: "0px",
-                                                    top: "0px",
-                                                    height: "100%",
-                                                    borderRadius: "8px"
-                                                }}
-                                            />
-                                        );
-                                    },
-                                }}
-                                thumbYProps={{
-                                    renderer: (props) => {
-                                        const {elementRef, style, ...restProps} = props;
-                                        return <div
-                                            key="scrollbarThumbY"
-                                            {...restProps}
-                                            ref={elementRef}
-                                            className="!bg-scrollthumb rounded-lg"
-                                        />;
-                                    },
-                                }}
+                            <ScrollShadow
+                                className="h-full w-full scroll-smooth"
                                 onScroll={onScroll}
-                                className="!h-full !w-full"
+                                size={0}
+                                hideScrollBar
                             >
-                                <div ref={containerRef} className="select-text mb-20 md:mb-0 absolute h-full w-full">
+                                <div
+                                    ref={containerRef}
+                                    className="select-text mb-20 md:mb-0 h-full w-full"
+                                >
                                     {children}
                                 </div>
-                            </Scrollbar>
+                            </ScrollShadow>
                             <BottomNavigation/>
                         </section>
                         <Footer/>

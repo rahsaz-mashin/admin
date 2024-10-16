@@ -742,6 +742,7 @@ const BottomContent = (props: BottomContentPropsType) => {
     return (
         <div className="flex w-full justify-center">
             <Pagination
+                dir="ltr"
                 isCompact
                 showControls
                 showShadow
@@ -749,7 +750,7 @@ const BottomContent = (props: BottomContentPropsType) => {
                 page={page}
                 total={pages}
                 onChange={setPage}
-                classNames={{wrapper: "rtl:flex-row-reverse"}}
+                classNames={{wrapper: ""}}
             />
         </div>
     )

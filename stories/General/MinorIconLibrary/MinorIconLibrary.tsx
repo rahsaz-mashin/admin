@@ -122,6 +122,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
                     {!isLoading && (
                         <div className="flex justify-center items-center gap-2">
                             <Pagination
+                                dir="ltr"
                                 isCompact
                                 showControls
                                 showShadow={false}
@@ -133,7 +134,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
                                 total={totalPages}
                                 onChange={setPage}
                                 hidden={totalPages < 2}
-                                classNames={{wrapper: "rtl:flex-row-reverse", item: "[&:not([data-active=true])]:hidden"}}
+                                classNames={{ item: "[&:not([data-active=true])]:hidden"}}
                             />
                             <Button
                                 isIconOnly

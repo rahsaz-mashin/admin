@@ -13,7 +13,6 @@ export type RahsazAdminMainLayoutProps = {
 }
 
 
-
 const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
     const {children, session} = props
 
@@ -27,7 +26,11 @@ const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
                             <div
                                 {...restProps}
                                 ref={elementRef}
-                                style={{overflow: "hidden", position: "absolute", inset: "0px 0px 0px 0px"}}
+                                style={{
+                                    overflow: "hidden",
+                                    position: "absolute",
+                                    inset: "0px 0px 0px 0px"
+                                }}
                                 key="scrollbarWrapper"
                             />
                         );
@@ -41,7 +44,13 @@ const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
                                 {...restProps}
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
-                                style={{...style, height: "4px", left: 0, width: "100%", borderRadius: 0}}
+                                style={{
+                                    ...style,
+                                    height: "4px",
+                                    left: 0,
+                                    width: "100%",
+                                    borderRadius: 0,
+                                }}
                                 key="scrollbarTrackX"
                             />
                         );
@@ -50,7 +59,14 @@ const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
                 thumbXProps={{
                     renderer: (props) => {
                         const {elementRef, style, ...restProps} = props;
-                        return <div key="scrollbarThumbX" {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                        return (
+                            <div
+                                key="scrollbarThumbX"
+                                {...restProps}
+                                ref={elementRef}
+                                className="!bg-scrollthumb"
+                            />
+                        )
                     },
                 }}
                 // ========================
@@ -63,15 +79,28 @@ const RahsazAdminMainLayout = (props: RahsazAdminMainLayoutProps) => {
                                 {...restProps}
                                 ref={elementRef}
                                 className="!bg-scrolltrack"
-                                style={{...style, width: "4px", top: 0, height: "100%", borderRadius: 0}}
+                                style={{
+                                    ...style,
+                                    width: "4px",
+                                    top: 0,
+                                    height: "100%",
+                                    borderRadius: 0,
+                                }}
                             />
-                        );
+                        )
                     },
                 }}
                 thumbYProps={{
                     renderer: (props) => {
                         const {elementRef, style, ...restProps} = props;
-                        return <div key="scrollbarThumbY" {...restProps} ref={elementRef} className="!bg-scrollthumb"/>;
+                        return (
+                            <div
+                                key="scrollbarThumbY"
+                                {...restProps}
+                                ref={elementRef}
+                                className="!bg-scrollthumb"
+                            />
+                        )
                     },
                 }}
                 className="!fixed !h-full"
