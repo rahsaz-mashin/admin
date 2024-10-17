@@ -64,7 +64,7 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     categories={product.categories}
                 />
                 <div
-                    className="flex flex-col pb-4 gap-0 relative bg-white shadow-[0px_0px_24px_8px_#00000069] lg:shadow-none"
+                    className="flex flex-col gap-0 relative bg-white shadow-[0px_0px_24px_8px_#00000069] lg:shadow-none"
                 >
                     <ProductInfoBox
                         title={product.title}
@@ -98,7 +98,13 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                     <ProductQABox
                     />
                     <div className="bg-white sticky bottom-0 z-30">
-                        <ProductPriceBox mobile/>
+                        <ProductPriceBox
+                            mobile
+                            price={product.price}
+                            inventory={product.inventory}
+                            isActiveInventoryManagement={product.isActiveInventoryManagement}
+                            minimumInventoryWarn={product.minimumInventoryWarn}
+                        />
                         <div className="pb-24 md:pb-0"/>
                     </div>
                 </div>

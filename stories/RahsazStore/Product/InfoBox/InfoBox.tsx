@@ -42,9 +42,9 @@ export const ProductInfoBox = (props: ProductInfoBoxProps) => {
                 <div className="flex items-center gap-3 flex-row flex-wrap">
                     <ProductOfferPack/>
                     <ProductAvailableInStock/>
-                    <ProductAvailableInMarketPlace/>
-                    <ProductFreeDelivery/>
-                    <ProductWithGift/>
+                    {/*<ProductAvailableInMarketPlace/>*/}
+                    {/*<ProductFreeDelivery/>*/}
+                    {/*<ProductWithGift/>*/}
                 </div>
                 <ProductCampaign/>
             </div>
