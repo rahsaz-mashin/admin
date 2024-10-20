@@ -19,7 +19,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy package.json and install only production dependencies
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /package*.json ./
 RUN npm install --production
 
 # Copy the build from the first stage
