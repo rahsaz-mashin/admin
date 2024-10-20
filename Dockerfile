@@ -18,9 +18,11 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package.json and install only production dependencies
-#COPY --from=builder /app/package*.json ./
-#RUN npm install --production
+# Copy package.json and package-lock.json from the builder stage
+COPY --from=builder /app/package.json /app/package-lock.json ./
+
+# Install only production dependencies
+RUN npm install --production
 
 # Copy the build from the first stage
 COPY --from=builder /app/.next /app/.next
