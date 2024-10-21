@@ -16,30 +16,6 @@ export default withPWA({
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'nextui.org',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'dkstatics-public.digikala.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'www.arshiarahsazmachine.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'api.arshiarahsazmachine.com',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
                 hostname: 'zl50.ir',
                 port: '',
                 pathname: '/**',
@@ -65,6 +41,12 @@ export default withPWA({
             {
                 protocol: 'https',
                 hostname: 'storage1.zl50.ir',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'storage.rahsazmashin.com',
                 port: '',
                 pathname: '/**',
             },
