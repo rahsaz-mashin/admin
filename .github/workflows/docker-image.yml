@@ -32,4 +32,23 @@ jobs:
       run: docker tag rahsaz-app:latest registry.rahsazmashin.com/rahsaz-app:latest
 
     - name: Push the image to Docker Hub
-      run: docker push registry.rahsazmashin.com/rahsaz-app:latest
+      run:  |
+        retry() {
+          local retries=$1
+          shift
+          local count=0
+          until "$@"; do
+            exit=$?
+            wait=$((2 ** count))
+            count=$((count + 1))
+            if [ $count -lt $retries ]; then
+              echo "Retry $count/$retries failed, waiting $wait seconds..."
+              sleep $wait
+            else
+              echo "Retry $count/$retries failed, no more retries left."
+              return $exit
+            fi
+          done
+          return 0
+        }
+        retry 3 docker push registry.rahsazmashin.com/rahsaz-app:latest
