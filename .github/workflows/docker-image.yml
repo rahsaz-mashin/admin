@@ -25,10 +25,10 @@ jobs:
         registry: registry.rahsazmashin.com
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag rahsaz-core:latest
+      run: docker build . --file Dockerfile --tag rahsaz-app:latest
 
     - name: Tag the image
-      run: docker tag rahsaz-core:latest registry.rahsazmashin.com/rahsaz-app:7575
+      run: docker tag rahsaz-app:latest registry.rahsazmashin.com/rahsaz-app:latest
 
     - name: Push the image to Docker Hub
-      run: docker push registry.rahsazmashin.com/rahsaz-app:7575
+      run: docker push registry.rahsazmashin.com/rahsaz-app:latest
