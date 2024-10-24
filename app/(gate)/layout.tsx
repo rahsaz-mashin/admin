@@ -19,8 +19,10 @@ export default function Layout({children}: { children: React.ReactNode }) {
                 >
                     <div className="h-full w-full z-10 relative flex flex-col lg:flex-row items-center justify-end">
                         <div className="flex-1 max-h-96 max-w-80 w-full overflow-x-hidden lg:bg-white/70 lg:rounded-3xl z-10 ps-0 pe-0 py-3">
+                            123456
                             {children}
                         </div>
+
                         <div
                             className="absolute end-0 top-0 hidden justify-center items-center lg:flex"
                         >
