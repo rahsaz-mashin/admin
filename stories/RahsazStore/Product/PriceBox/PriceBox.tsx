@@ -1,8 +1,7 @@
 "use client"
 
-import React, {CSSProperties, useContext,} from "react";
+import React, {useContext,} from "react";
 import {Card, CardBody, CardHeader} from "@nextui-org/card";
-import {Chip} from "@nextui-org/react";
 import {ContainerDimensionsContext} from "@/context/containerDimensions.context";
 import {ProductInventory, ProductPrice} from "@/interfaces/Product.interface";
 import {ProductCounter} from "@/stories/RahsazStore/Product/Counter";
@@ -30,49 +29,10 @@ export const ProductPriceBox = (props: ProductPriceBoxProps) => {
 
     const containerDimensionsContext = useContext(ContainerDimensionsContext)
 
-
-    const prices = [
-        {
-            key: "diamond",
-            title: "الماسی",
-            textColor: "rgb(178,224,250)",
-            bgColor: "rgba(178,224,250,0.2)",
-            price: "7000",
-        },
-        {
-            key: "golden",
-            title: "طلایی",
-            textColor: "rgba(255,181,14,1.0)",
-            bgColor: "rgba(255,181,14,0.2)",
-            price: "7000",
-        },
-        {
-            key: "contribute",
-            title: "همکار",
-            textColor: "rgb(255,14,50)",
-            bgColor: "rgba(255,14,50,0.2)",
-            price: "7000",
-        },
-        {
-            key: "bronze",
-            title: "برنزی",
-            textColor: "rgb(255,111,40)",
-            bgColor: "rgba(255,111,40,0.2)",
-            price: "7000",
-        },
-        {
-            key: "silver",
-            title: "نقره ای",
-            textColor: "rgb(206,206,206)",
-            bgColor: "rgba(206,206,206,0.2)",
-            price: "7000",
-        },
-    ]
-
-    const activePrice = "diamond"
-
     const h = containerDimensionsContext?.dimensions?.height
 
+
+    if (!price?.length) return null
 
     return (
         <div className="sticky" style={{top: mobile ? undefined : h ? (h - 120) : 0}}>

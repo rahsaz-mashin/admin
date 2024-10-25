@@ -22,6 +22,8 @@ const tableColumns: ColumnType<T>[] = [
             editable: true,
             editRoute: "edit",
             removable: true,
+            displayable: true,
+            displayRout: "product"
         },
     },
     {

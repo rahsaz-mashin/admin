@@ -15,8 +15,7 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    Listbox,
-    ListboxItem,
+
     ModalFooter,
     Modal,
     Card, CardBody, CardFooter, SortDescriptor, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem
@@ -39,7 +38,7 @@ import {
     DriveFileRenameOutlineOutlined,
     ListOutlined,
     RecyclingOutlined,
-    RefreshOutlined, StarBorderOutlined, StarOutlined, ViewColumn, ViewColumnRounded,
+    RefreshOutlined, StarBorderOutlined, StarOutlined, ViewColumn, ViewColumnRounded, VisibilityOutlined,
 } from "@mui/icons-material";
 import {AdminContext} from "@/context/admin.context";
 import {Tooltip} from "@nextui-org/tooltip";
@@ -51,6 +50,7 @@ import {Property} from "csstype";
 import {PaginationResponse} from "@/types/PaginationResponse";
 import {Input} from "@nextui-org/input";
 import {convertFilterToQueryString} from "@/lib/convertFilterObjectToQuery";
+import Link from "next/link";
 
 
 type ColumnRenderType<T> = (value: any, ctx: T, id?: string | number | null) => JSX.Element
@@ -59,6 +59,8 @@ type ToolsCellType<T> = {
     editable?: boolean;
     editRoute?: string;
     removable?: boolean;
+    displayable?: boolean;
+    displayRout?: string;
     chooseDefault?: boolean;
     extra?: ColumnRenderType<T>;
 }
@@ -126,7 +128,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     query.set('limit', String(perPage))
     query.set('trash', String(showTrashBox))
     if (sorting) query.set('sortBy', sorting)
-    if(filtering) {
+    if (filtering) {
         const ff = convertFilterToQueryString(filtering)
         // query.set('filter.gg', "")
     }
@@ -222,14 +224,14 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                         )}
                     </TableHeader>
                     <TableBody<T>
-                        items={[{filterRow: true},...items] as T[]}
+                        items={[{filterRow: true}, ...items] as T[]}
                         loadingContent={<LoadingContent/>}
                         emptyContent={<EmptyContent/>}
                         loadingState={loadingState}
                     >
                         {(item) => {
                             const filterRow = getKeyValue(item, "filterRow")
-                            if(filterRow) {
+                            if (filterRow) {
                                 return (
                                     <TableRow
                                         key="filtering"
@@ -412,6 +414,30 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                     </Tooltip>
                 </>
             )}
+            {!!options?.displayable && (
+                <>
+                    <Tooltip
+                        color="foreground"
+                        placement="bottom"
+                        showArrow
+                        content="نمایش"
+                        className="select-none"
+                        radius="sm"
+                    >
+                        <Button
+                            isIconOnly
+                            variant="light"
+                            color="secondary"
+                            radius="full"
+                            as={Link}
+                            target="_blank"
+                            href={`/${options?.displayRout}/${getKeyValue(item, "slug") || id}`}
+                        >
+                            <VisibilityOutlined/>
+                        </Button>
+                    </Tooltip>
+                </>
+            )}
             {!!options?.editable && (
                 <>
                     <Tooltip
@@ -437,6 +463,7 @@ const ToolsCell = <T, >(props: ToolsCellPropsType<T>) => {
                     </Tooltip>
                 </>
             )}
+
             {!isDefault && !!options?.removable && (
                 <>
                     <Tooltip
