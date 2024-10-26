@@ -41,6 +41,8 @@ export {Component as BoldDuotoneAddUserIcon} from "./BoldDuotoneAddUser.stories"
 export {Component as BoldDuotoneUsersIcon} from "./BoldDuotoneUsers.stories";
 export {Component as BoldDuotoneIdentityDocumentIcon} from "./BoldDuotoneIdentityDocument.stories";
 export {Component as BoldDuotoneIntroductionMethodIcon} from "./BoldDuotoneIntroductionMethod.stories";
+export {Component as BoldDuotonePermissionGroupIcon} from "./BoldDuotonePermissionGroup.stories";
+export {Component as BoldDuotonePermissionCategoryIcon} from "./BoldDuotonePermissionCategory.stories";
 export {Component as BoldDuotonePermissionIcon} from "./BoldDuotonePermission.stories";
 
 

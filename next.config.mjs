@@ -28,6 +28,12 @@ export default withPWA({
             },
             {
                 protocol: 'https',
+                hostname: 'dkstatics-public.digikala.com',
+                port: '',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
                 hostname: 'bucket.zl50.ir',
                 port: '',
                 pathname: '/**',

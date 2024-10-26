@@ -1,30 +1,19 @@
-'use client' 
- 
-import { useEffect } from 'react'
- 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error
-  reset: () => void
-}) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error)
-  }, [error])
- 
-  return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
-    </div>
-  )
+'use client'
+
+export default function Error({error, reset}: { error: Error, reset: () => void }) {
+
+    return (
+        <div>
+            <h2>مشکلی به وجود اومده</h2>
+            <pre dir="ltr" className="select-all">{error.message}</pre>
+            <button
+                onClick={
+                    // Attempt to recover by trying to re-render the segment
+                    () => reset()
+                }
+            >
+                تلاش مجدد
+            </button>
+        </div>
+    )
 }

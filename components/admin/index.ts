@@ -18,6 +18,9 @@ import {countingUnitContext} from "@/components/admin/countingUnit";
 import {productSettingsContext} from "@/components/admin/productSettings";
 import {accountListContext} from "@/components/admin/accountList";
 import {addAccountContext} from "@/components/admin/addAccount";
+import {accountPermissionCategoryContext} from "@/components/admin/accountPermissionCategory";
+import {accountPermissionContext} from "@/components/admin/accountPermission";
+import {accountPermissionGroupContext} from "@/components/admin/accountPermissionGroup";
 
 export const adminContextConfig: any = {
     general: {
@@ -43,6 +46,11 @@ export const adminContextConfig: any = {
                 add: addAccountContext,
                 edit: addAccountContext,
                 list: accountListContext,
+            },
+            permission: {
+                category: accountPermissionCategoryContext,
+                permission: accountPermissionContext,
+                group: accountPermissionGroupContext,
             },
         },
     },

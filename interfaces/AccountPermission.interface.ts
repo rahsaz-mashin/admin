@@ -5,21 +5,10 @@ import {AccountPermissionCategory} from "@/interfaces/AccountPermissionCategory.
 
 
 export interface AccountPermission {
-    id: number;
-
-    key: string;
+    id?: number;
     title: string;
-
-    description: string | null;
-
-    icon: Icon | null;
-
-    category: AccountPermissionCategory;
-
-    groups: AccountPermissionGroup[];
-
-    createdBy: Account;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
+    description?: string | null;
+    icon?: Icon | null;
+    category?: AccountPermissionCategory | number;
+    groups?: AccountPermissionGroup[];
 }

@@ -4,23 +4,15 @@ import {AccountPermission} from "@/interfaces/AccountPermission.interface";
 
 
 export interface AccountPermissionGroup {
-    id: number;
-
-    key: string;
+    id?: number;
     title: string;
+    description?: string | null;
+    icon?: Icon | null;
 
-    description: string | null;
-
-    icon: Icon | null;
     permissions: AccountPermission[];
 
-    accounts: Account[];
-    isDefault: boolean;
+    accounts?: Account[];
 
-    isActive: boolean;
-
-    createdBy: Account;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
+    isDefault?: boolean;
+    isActive?: boolean;
 }

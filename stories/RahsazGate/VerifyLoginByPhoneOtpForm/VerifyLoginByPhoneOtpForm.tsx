@@ -22,7 +22,6 @@ export type VerifyLoginByPhoneOtpFormType = {
     otp2: string;
     otp3: string;
     otp4: string;
-    otp5: string;
     token: string;
 };
 
@@ -37,8 +36,6 @@ const schema = z.object(
 export const VerifyLoginByPhoneOtpForm = () => {
     const router = useRouter()
     const searchParams = useSearchParams()
-
-    const [isPending, startTransition] = useTransition()
 
     const initialValues = {
         phoneNumber: searchParams?.get("phoneNumber") || ""
@@ -65,8 +62,6 @@ export const VerifyLoginByPhoneOtpForm = () => {
     const {ref: otp2FieldRef, ...otp2Field} = register("otp2")
     const {ref: otp3FieldRef, ...otp3Field} = register("otp3")
     const {ref: otp4FieldRef, ...otp4Field} = register("otp4")
-    const {ref: tokenFieldRef, ...tokenField} = register("token")
-
 
     // =========================================================================================================================> submit
     const onSubmit: SubmitHandler<VerifyLoginByPhoneOtpFormType> = async (_data) => {
@@ -95,11 +90,20 @@ export const VerifyLoginByPhoneOtpForm = () => {
     }
 
 
+    const resetToken = () => {
+        setValue("otp1", "")
+        setValue("otp2", "")
+        setValue("otp3", "")
+        setValue("otp4", "")
+    }
+
+
     const submit = async (data: any) => {
         const result = await authSignIn(data)
         if (!result?.ok && !!result?.error) {
             setError("root", {message: result?.error})
             toast.error(result?.error)
+            // resetToken()
             return
         }
         toast.success("با موفقیت وارد شدید!")
@@ -153,6 +157,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
                             <ResendToken
                                 phoneNumber={phoneNumber || ""}
                                 isDisabled={isSubmitSuccessful || isSubmitting}
+                                resetToken={resetToken}
                             />
                             <TokenFields
                                 isDisabled={isSubmitSuccessful}
@@ -196,7 +201,7 @@ export const VerifyLoginByPhoneOtpForm = () => {
 };
 
 
-export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; phoneNumber: string }) => {
+export const ResendToken = ({isDisabled, phoneNumber, resetToken}: { isDisabled: boolean; phoneNumber: string; resetToken: () => void }) => {
 
     const [isLoading, setLoading] = useState(false)
 
@@ -211,6 +216,7 @@ export const ResendToken = ({isDisabled, phoneNumber}: { isDisabled: boolean; ph
             const result: any = await axiosCore().post('/auth/phoneOtp', {phone: phoneNumber})
             // result.sendAgainAt
             toast.success("کد یکبار مصرف ارسال شد")
+            // resetToken()
             setLoading(false)
             return
         } catch (e: any) {
