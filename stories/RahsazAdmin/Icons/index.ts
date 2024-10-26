@@ -37,7 +37,11 @@ export {Component as BoldDuotoneLockPasswordIcon} from "./BoldDuotoneLockPasswor
 export {Component as BoldDuotoneVideoLibraryIcon} from "./BoldDuotoneVideoLibrary.stories";
 export {Component as BoldDuotoneFeaturesIcon} from "./BoldDuotoneFeatures.stories";
 export {Component as BoldDuotoneCountingIcon} from "./BoldDuotoneCounting.stories";
-
+export {Component as BoldDuotoneAddUserIcon} from "./BoldDuotoneAddUser.stories";
+export {Component as BoldDuotoneUsersIcon} from "./BoldDuotoneUsers.stories";
+export {Component as BoldDuotoneIdentityDocumentIcon} from "./BoldDuotoneIdentityDocument.stories";
+export {Component as BoldDuotoneIntroductionMethodIcon} from "./BoldDuotoneIntroductionMethod.stories";
+export {Component as BoldDuotonePermissionIcon} from "./BoldDuotonePermission.stories";
 
 
 

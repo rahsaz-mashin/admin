@@ -16,6 +16,8 @@ import {priceListContext} from "@/components/admin/priceList";
 import {productListContext} from "@/components/admin/productList";
 import {countingUnitContext} from "@/components/admin/countingUnit";
 import {productSettingsContext} from "@/components/admin/productSettings";
+import {accountListContext} from "@/components/admin/accountList";
+import {addAccountContext} from "@/components/admin/addAccount";
 
 export const adminContextConfig: any = {
     general: {
@@ -32,6 +34,15 @@ export const adminContextConfig: any = {
         file_management: {
             storage: {
                 systems: storageSystemsContext,
+            },
+        },
+    },
+    gate: {
+        account: {
+            account: {
+                add: addAccountContext,
+                edit: addAccountContext,
+                list: accountListContext,
             },
         },
     },
