@@ -5,7 +5,7 @@ import {AccountEmailAddress} from "@/interfaces/AccountEmailAddress.interface";
 import {AccountPermissionGroup} from "@/interfaces/AccountPermissionGroup.interface";
 
 export interface Account {
-    id: number;
+    id?: number;
     isActive: boolean;
 
     identity: Identity | null;
@@ -16,8 +16,7 @@ export interface Account {
 
     permissions: AccountPermissionGroup[];
 
-    token: string;
-    secret: string;
+    token?: string;
 
     isRestricted: boolean;
     restrictedAt: Date | null;
@@ -25,8 +24,8 @@ export interface Account {
     restrictionExpireAt: Date | null;
     restrictionText: string | null;
 
-    createdBy: Account | null;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
+    createdBy?: Account;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
 }

@@ -24,6 +24,7 @@ import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
 import {Tab, Tabs} from "@nextui-org/tabs";
 import {useRouter} from "next/navigation";
+import {DeepKeys} from "@/lib/DeepKeys";
 
 
 export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandlerProps<T>, ref: any) => {
@@ -328,7 +329,7 @@ export type FormContentType = <T>(props: FormContentPropsType<T> & {
 export type FormRenderSection<T> = {
     key: string;
     title: ReactNode;
-    fields: (keyof T)[];
+    fields: DeepKeys<T>[];
 }
 
 
@@ -342,7 +343,7 @@ export type FormRenderWithSection<T> = {
 }
 
 export type FormRenderSimple<T> = {
-    fields: (keyof T)[];
+    fields: DeepKeys<T>[];
     sections?: undefined;
 }
 

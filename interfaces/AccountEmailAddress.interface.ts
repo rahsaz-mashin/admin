@@ -16,10 +16,6 @@ export interface AccountEmailAddress {
     confirmedAt: Date | null;
     confirmedBy: Account | null;
 
-
-    // secret
-    secret: string;
-
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;

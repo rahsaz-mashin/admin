@@ -19,6 +19,7 @@ import {Button, DateValue} from "@nextui-org/react";
 import {Chip} from "@nextui-org/chip";
 import {DeleteIcon} from "@storybook/icons";
 import {DeleteOutline} from "@mui/icons-material";
+import {DeepKeys} from "@/lib/DeepKeys";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -243,7 +244,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                     <div className="grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center">
                         <FormFieldsGenerator
                             control={control}
-                            fields={fields(index).map((v) => ({...v, name: `${name}.${index}.${v.name}`}))}
+                            fields={fields(index).map((v) => ({...v, name: `${name}.${index}.${v.name}` as DeepKeys<T>}))}
                         />
                     </div>
                     <div
@@ -331,7 +332,7 @@ const FormGroup = (props: FormGroupProps) => {
 
 
 type FromFieldTypeCommon<T> = {
-    name: string;
+    name: DeepKeys<T>;
     label?: string;
     description?: ReactNode;
     isDisabled?: boolean;
@@ -419,6 +420,7 @@ type FromFieldTypeUploader<T> = {
     maxSize?: number;
     maxFiles?: number;
     withPreview?: boolean;
+    isAvatar?: boolean;
 }
 
 

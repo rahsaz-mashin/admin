@@ -27,12 +27,12 @@ const formSchema = z.object({
     description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
     permissions: z.union(
         [
-            z.string({message: "مجوز4ها معتبر نیست"})
-                .regex(/^(\d+(,\d+)*)$/, {message: "مجوزه5ا معتبر نیست"})
+            z.string({message: "مجوزها معتبر نیست"})
+                .regex(/^(\d+(,\d+)*)$/, {message: "مجوزها معتبر نیست"})
                 .transform((ids) => ids?.toString().split(",")),
-            z.number({message: "مجوزها3 معتبر نیست"})
-                .int({message: "مجوزها2 معتبر نیست"})
-                .positive({message: "مجوزه4ا معتبر نیست"})
+            z.number({message: "مجوزها معتبر نیست"})
+                .int({message: "مجوزها معتبر نیست"})
+                .positive({message: "مجوزها معتبر نیست"})
                 .array()
         ]
     ).transform((ids) => ids?.map((id) => ({id: +id})) || []),
