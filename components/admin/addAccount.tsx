@@ -8,6 +8,13 @@ import {Account} from "@/interfaces/Account.interface";
 import {Snippet} from "@nextui-org/snippet";
 import {CardHeader} from "@nextui-org/card";
 import {BoldDuotonePermissionGroupIcon} from "@/stories/RahsazAdmin/Icons";
+import {
+    OutlinedBasketIcon,
+    OutlinedDocumentIcon,
+    OutlinedNotebookBookmarkIcon,
+    OutlinedRulerPenIcon,
+    OutlinedWalletIcon
+} from "@/stories/Icons";
 
 
 type T = Account
@@ -109,6 +116,60 @@ const PermissionsBox: FormRender<T>['render'] = ({children, formState, watch, is
         </Card>
     )
 }
+
+
+const IdentityBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
+    return (
+        <Card
+            className="area-[identity] max-h-[600px]"
+            classNames={{body: "items-start text-start"}}
+            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
+        >
+            <CardHeader className="justify-between items-center">
+                <h3 className="font-bold">
+                    هویت
+                </h3>
+            </CardHeader>
+            <CardBody className="gap-2 flex-col items-center">
+                {children}
+            </CardBody>
+        </Card>
+    )
+}
+
+
+const CategoriesBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
+    return (
+        <Card
+            className="area-[categories]"
+            classNames={{body: "items-start text-start"}}
+            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
+        >
+            <CardHeader className="font-bold">دسته بندی</CardHeader>
+            <CardBody className="gap-5">
+                {children}
+            </CardBody>
+        </Card>
+    )
+}
+
+
+const GradeBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
+    return (
+        <Card
+            className="area-[grade]"
+            classNames={{body: "items-start text-start"}}
+            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
+        >
+            <CardHeader className="font-bold">سطح بندی</CardHeader>
+            <CardBody className="gap-5">
+                {children}
+            </CardBody>
+        </Card>
+    )
+}
+
+
 
 
 const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing, cancel, submit}) => {
@@ -225,6 +286,99 @@ const formRender: FormRender<T>[] = [
         fields: ["permissions", "isActive"]
     },
     {
+        render: IdentityBox,
+        sections: [
+            {
+                key: "identity",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedNotebookBookmarkIcon size={20}/>
+                        <span>مشخصات هویتی</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "additional",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedDocumentIcon size={20}/>
+                        <span>اطلاعات تکمیلی</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "phones",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedRulerPenIcon size={20}/>
+                        <span>تماس</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "emails",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedWalletIcon size={20}/>
+                        <span>ایمیل</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "addresses",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedBasketIcon size={20}/>
+                        <span>آدرس</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "documents",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedBasketIcon size={20}/>
+                        <span>مدارک هویتی</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "personnel",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedBasketIcon size={20}/>
+                        <span>پرسنل</span>
+                    </div>
+                ),
+                fields: [],
+            },
+            {
+                key: "companies",
+                title: (
+                    <div className="flex items-center gap-2">
+                        <OutlinedBasketIcon size={20}/>
+                        <span>شرکت ها</span>
+                    </div>
+                ),
+                fields: [],
+            },
+        ],
+    },
+    {
+        render: CategoriesBox,
+        fields: []
+    },
+    {
+        render: GradeBox,
+        fields: []
+    },
+    {
         render: SubmitBox,
         fields: []
     },
@@ -331,8 +485,8 @@ export const addAccountContext = {
         render: formRender,
         className:
             "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 grid-rows-auto" + " " +
-            "grid-areas-[general,phone,email,permissions,submit]" + " " +
-            "lg:grid-areas-[general_general,phone_email,permissions_permissions,submit_submit]" + " " +
-            "xl:grid-areas-[general_general_submit,email_phone_permissions]"
+            "grid-areas-[general,phone,email,permissions,identity,grade,categories,submit]" + " " +
+            "lg:grid-areas-[general_general,phone_email,permissions_permissions,identity_identity,grade_categories,submit_submit]" + " " +
+            "xl:grid-areas-[general_general_submit,email_phone_permissions,identity_identity_grade,identity_identity_categories]"
     },
 }
