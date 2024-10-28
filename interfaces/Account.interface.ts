@@ -3,6 +3,7 @@ import {AccountAvatar} from "@/interfaces/AccountAvatar.interface";
 import {AccountPhoneNumber} from "@/interfaces/AccountPhoneNumber.interface";
 import {AccountEmailAddress} from "@/interfaces/AccountEmailAddress.interface";
 import {AccountPermissionGroup} from "@/interfaces/AccountPermissionGroup.interface";
+import {FileStorage} from "@/interfaces/FileStorage.interface";
 
 export interface Account {
     id?: number;
@@ -12,17 +13,17 @@ export interface Account {
 
     email: AccountEmailAddress | null;
     phone: AccountPhoneNumber | null;
-    avatar: AccountAvatar | null;
+    avatar: FileStorage | null;
 
     permissions: AccountPermissionGroup[];
 
     token?: string;
 
-    isRestricted: boolean;
-    restrictedAt: Date | null;
-    restrictedBy: Account | null;
-    restrictionExpireAt: Date | null;
-    restrictionText: string | null;
+    isRestricted?: boolean;
+    restrictedAt?: Date | null;
+    restrictedBy?: Account | null;
+    restrictionExpireAt?: Date | null;
+    restrictionText?: string | null;
 
     createdBy?: Account;
     createdAt?: Date;

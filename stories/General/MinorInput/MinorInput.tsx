@@ -39,6 +39,7 @@ export type MinorInputProps = {
     pattern?: string;
     allowNegative?: boolean;
     allowLeadingZeros?: boolean;
+    allowEmptyFormatting?: boolean;
     decimalScale?: number;
 
     isMultiline?: boolean;
@@ -101,6 +102,7 @@ export const MinorInput = (props: MinorInputProps) => {
         allowNegative,
         decimalScale,
         allowLeadingZeros,
+        allowEmptyFormatting,
 
         isMultiline,
         rows,
@@ -288,7 +290,7 @@ export const MinorInput = (props: MinorInputProps) => {
                 dir="ltr"
                 format={pattern}
                 mask=" "
-                allowEmptyFormatting={false}
+                allowEmptyFormatting={allowEmptyFormatting || false}
 
                 customInput={Input}
                 getInputRef={field.ref}

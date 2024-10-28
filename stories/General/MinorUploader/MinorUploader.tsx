@@ -602,7 +602,7 @@ const UploaderPreviewItem = (props: UploaderPreviewItemPropsType) => {
                     radius="none"
                     loading="eager"
                     className="object-fill !h-full !w-full"
-                    classNames={{wrapper: "h-full w-full max-width-none"}}
+                    classNames={{wrapper: "h-full w-full !max-w-none"}}
                 />
             </div>
             <div

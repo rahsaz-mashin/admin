@@ -307,6 +307,14 @@ const adminRoutes: AdminMenu[] = [
                                 description: "مشاهده لیست کاربران و مدیریت آن ها",
                                 isEnable: true,
                             },
+                            {
+                                key: "edit",
+                                title: "ویرایش کاربری",
+                                icon: <BoldDuotoneUsersIcon size={64}/>,
+                                description: "ویرایش کاربری",
+                                hidden: true,
+                                isEnable: false,
+                            },
                         ],
                     },
                     {

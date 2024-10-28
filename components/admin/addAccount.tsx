@@ -170,8 +170,6 @@ const GradeBox: FormRender<T>['render'] = ({children, formState, watch, isEditin
 }
 
 
-
-
 const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditing, cancel, submit}) => {
     return (
         <Card
@@ -246,27 +244,51 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 
 const formInitial: T = {
     id: undefined,
-
     isActive: true,
 
     identity: null,
-    email: null,
-    phone: null,
+    email: {
+        value: "",
+        isConfirmed: false,
+    },
+    phone: {
+        value: "",
+        isConfirmed: false,
+    },
     avatar: null,
-
     permissions: [],
 
     token: undefined,
-
-    isRestricted: false,
-    restrictedAt: null,
-    restrictedBy: null,
-    restrictionExpireAt: null,
-    restrictionText: null,
 }
 
 
-const formSchema = z.object({});
+const formSchema = z.object({
+    avatar: z.object({id: z.number()}, {message: "تصویر را وارد کنید"})
+        .nullable().optional(),
+    phone: z.object({
+        value: z.string().regex(/\+98 9[0-9]{2} [0-9]{3} [0-9]{4}|\+989\d{2}\d{3}\d{4}/, "شماره وارد شده معتبر نیست")
+            .transform((val) => val.replaceAll(" ", ""))
+            .nullable().optional().or(z.string().length(0)),
+        isConfirmed: z.boolean().nullable().optional(),
+    }).transform((v) => (!v.value ? null : v)),
+    email: z.object({
+        value: z.string().email("ایمیل وارد شده معتبر نیست").nullable().optional().or(z.string().length(0)),
+        isConfirmed: z.boolean().nullable().optional(),
+    }).transform((v) => (!v.value ? null : v)),
+    permissions: z.union([
+        z.string({message: "دسترسی ها معتبر نیست"})
+            .regex(/^(\d+(,\d+)*)$/, {message: "دسترسی ها معتبر نیست"})
+            .transform((ids) => ids?.toString().split(",")),
+        z.number({message: "دسترسی ها معتبر نیست"})
+            .int({message: "دسترسی ها معتبر نیست"})
+            .positive({message: "دسترسی ها معتبر نیست"})
+            .array(),
+    ]).transform((ids) => ids?.map((id) => ({id: +id})) || []),
+    isActive: z.boolean({message: "وضعیت را مشخص کنید"}),
+}).transform((v) => {
+    console.log({v})
+    return v
+});
 
 const formRender: FormRender<T>[] = [
     {
@@ -285,99 +307,99 @@ const formRender: FormRender<T>[] = [
         render: PermissionsBox,
         fields: ["permissions", "isActive"]
     },
-    {
-        render: IdentityBox,
-        sections: [
-            {
-                key: "identity",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedNotebookBookmarkIcon size={20}/>
-                        <span>مشخصات هویتی</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "additional",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedDocumentIcon size={20}/>
-                        <span>اطلاعات تکمیلی</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "phones",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedRulerPenIcon size={20}/>
-                        <span>تماس</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "emails",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedWalletIcon size={20}/>
-                        <span>ایمیل</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "addresses",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedBasketIcon size={20}/>
-                        <span>آدرس</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "documents",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedBasketIcon size={20}/>
-                        <span>مدارک هویتی</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "personnel",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedBasketIcon size={20}/>
-                        <span>پرسنل</span>
-                    </div>
-                ),
-                fields: [],
-            },
-            {
-                key: "companies",
-                title: (
-                    <div className="flex items-center gap-2">
-                        <OutlinedBasketIcon size={20}/>
-                        <span>شرکت ها</span>
-                    </div>
-                ),
-                fields: [],
-            },
-        ],
-    },
-    {
-        render: CategoriesBox,
-        fields: []
-    },
-    {
-        render: GradeBox,
-        fields: []
-    },
+    // {
+    //     render: IdentityBox,
+    //     sections: [
+    //         {
+    //             key: "identity",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedNotebookBookmarkIcon size={20}/>
+    //                     <span>مشخصات هویتی</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "additional",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedDocumentIcon size={20}/>
+    //                     <span>اطلاعات تکمیلی</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "phones",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedRulerPenIcon size={20}/>
+    //                     <span>تماس</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "emails",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedWalletIcon size={20}/>
+    //                     <span>ایمیل</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "addresses",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedBasketIcon size={20}/>
+    //                     <span>آدرس</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "documents",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedBasketIcon size={20}/>
+    //                     <span>مدارک هویتی</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "personnel",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedBasketIcon size={20}/>
+    //                     <span>پرسنل</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //         {
+    //             key: "companies",
+    //             title: (
+    //                 <div className="flex items-center gap-2">
+    //                     <OutlinedBasketIcon size={20}/>
+    //                     <span>شرکت ها</span>
+    //                 </div>
+    //             ),
+    //             fields: [],
+    //         },
+    //     ],
+    // },
+    // {
+    //     render: CategoriesBox,
+    //     fields: []
+    // },
+    // {
+    //     render: GradeBox,
+    //     fields: []
+    // },
     {
         render: SubmitBox,
         fields: []
@@ -443,7 +465,9 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "شماره موبایل",
             isRequired: true,
             isNumeric: true,
-            pattern: "#### ### ####",
+            pattern: "+## ### ### ####",
+            description: "به این صورت وارد شود: 989212728307",
+            allowEmptyFormatting: true,
             className: "col-span-full",
         },
         {

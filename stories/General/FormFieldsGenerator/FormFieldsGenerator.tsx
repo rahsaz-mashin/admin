@@ -353,6 +353,7 @@ type FromFieldTypeInput<T> = {
     allowNegative?: boolean;
     decimalScale?: number;
     allowLeadingZeros?: boolean;
+    allowEmptyFormatting?: boolean;
     minValue?: number | TimeValue | DateValue;
     maxValue?: number | TimeValue | DateValue;
 
