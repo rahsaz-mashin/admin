@@ -1,47 +1,46 @@
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {AddressCity} from "@/interfaces/AddressCity.interface";
+import {IdentityCategory} from "@/interfaces/IdentityCategory.interface";
 
 
-
-
-type T = AddressCity
+type T = IdentityCategory
 
 
 const formInitial: T = {
     id: undefined,
     title: "",
+    description: "",
     icon: undefined,
-    province: undefined,
+    parent: null,
 }
 
 
-
 const formSchema = z.object({
-    province: z.string({message: "استان معتبر نیست"}).regex(/^\d+$/, "استان معتبر نیست")
-        .or(z.number({message: "استان معتبر نیست"}).int({message: "استان معتبر نیست"}).positive({message: "استان معتبر نیست"}))
-        .transform(Number),
+    parent: z.string({message: "مادر معتبر نیست"}).regex(/^\d+$/, "مادر معتبر نیست")
+        .or(z.number({message: "مادر معتبر نیست"}).int({message: "مادر معتبر نیست"}).positive({message: "مادر معتبر نیست"}))
+        .transform((id) => ({id: +id}))
+        .nullable(),
     title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
     icon: z.string({message: "آیکون معتبر نیست"}).regex(/^\d+$/, "آیکون معتبر نیست")
         .or(z.number({message: "آیکون معتبر نیست"}).int({message: "آیکون معتبر نیست"}).positive({message: "آیکون معتبر نیست"}))
-        .transform(Number)
+        .transform((id) => ({id: +id}))
         .nullable()
         .optional()
         .transform(value => value ? value : null),
+    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").or(z.string().length(0)),
 });
 
 
-const formFields: FormFieldFunc<T> = (watch) => {
+const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
         {
-            name: "province",
+            name: "parent",
             type: "select",
-            label: "استان",
+            label: "مادر",
             dynamic: {
-                route: "addressProvince/sloStyle",
+                route: "identity/category/sloStyle",
             },
-            isRequired: true,
             className: "col-span-full",
         },
         {
@@ -56,6 +55,14 @@ const formFields: FormFieldFunc<T> = (watch) => {
             type: "iconLibrary",
             label: "آیکون",
             isRequired: false,
+            className: "col-span-full",
+        },
+        {
+            name: "description",
+            type: "input",
+            label: "توضیحات",
+            isRequired: false,
+            isMultiline: true,
             className: "col-span-full",
         },
     ])
@@ -87,11 +94,13 @@ const tableColumns: ColumnType<T>[] = [
         minWidth: 240,
         render: (value, ctx) => {
             return (
-                <div className="flex gap-2 items-center truncate">
-                    <span>{ctx.province?.country?.title}</span>
-                    <span>/</span>
-                    <span>{ctx.province?.title}</span>
-                    <span>/</span>
+                <div className="flex gap-2 items-center">
+                    {!!ctx.parent && (
+                        <>
+                            <span>{ctx.parent?.title}</span>
+                            <span>/</span>
+                        </>
+                    )}
                     <span>{value}</span>
                     <span
                         className="text-primary h-6 w-6 flex justify-center items-center"
@@ -104,20 +113,15 @@ const tableColumns: ColumnType<T>[] = [
 ]
 
 
-
-
-
-
-export const addressCityContext = {
-    apiRoute: "addressCity",
+export const identityCategoryContext = {
+    apiRoute: "identity/category",
     form: {
-        title: "شهر",
+        title: "دسته بندی هویت",
         schema: formSchema,
         fields: formFields,
         initial: formInitial,
     },
     table: {
         columns: tableColumns,
-        enableTrashBox: false,
     },
 }

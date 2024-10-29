@@ -21,6 +21,13 @@ import {addAccountContext} from "@/components/admin/addAccount";
 import {accountPermissionCategoryContext} from "@/components/admin/accountPermissionCategory";
 import {accountPermissionContext} from "@/components/admin/accountPermission";
 import {accountPermissionGroupContext} from "@/components/admin/accountPermissionGroup";
+import {identityCategoryContext} from "@/components/admin/identityCategory";
+import {identityGradeContext} from "@/components/admin/identityGrade";
+import {identityPhoneTypeContext} from "@/components/admin/identityPhoneNumberType";
+import {identityEmailTypeContext} from "@/components/admin/identityEmailAddressType";
+import {identityAddressTypeContext} from "@/components/admin/identityAddressType";
+import {introductionMethodContext} from "@/components/admin/introductionMethod";
+import {identityDocumentContext} from "@/components/admin/identityDocument";
 
 export const adminContextConfig: any = {
     general: {
@@ -51,6 +58,21 @@ export const adminContextConfig: any = {
                 category: accountPermissionCategoryContext,
                 permission: accountPermissionContext,
                 group: accountPermissionGroupContext,
+            },
+        },
+        identity: {
+            category: {
+                category: identityCategoryContext,
+                grade: identityGradeContext,
+            },
+            document: {
+                document: identityDocumentContext,
+            },
+            others: {
+                phone_type: identityPhoneTypeContext,
+                email_type: identityEmailTypeContext,
+                address_type: identityAddressTypeContext,
+                introduction_method: introductionMethodContext,
             },
         },
     },

@@ -1,7 +1,6 @@
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {ProductCategory} from "@/interfaces/ProductCategory.interface";
 import slugify from "slugify-persian";
 import {CountingUnit} from "@/interfaces/CountingUnit.interface";
 

@@ -109,5 +109,6 @@ export const addressProvinceContext = {
     },
     table: {
         columns: tableColumns,
+        enableTrashBox: false,
     },
 }

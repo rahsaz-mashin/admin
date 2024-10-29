@@ -420,12 +420,34 @@ const adminRoutes: AdminMenu[] = [
                         isEnable: true,
                         sub: [
                             {
-                                key: "introductionMethod",
+                                key: "phone_type",
+                                title: "نوع های شماره",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست نوع های شماره، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "email_type",
+                                title: "نوع های ایمیل",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست نوع های ایمیل، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "address_type",
+                                title: "نوع های آدرس",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست نوع های آدرس، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "introduction_method",
                                 title: "روش های آشنایی",
                                 icon: <BoldDuotoneIntroductionMethodIcon size={64}/>,
                                 description: "مشاهده لیست روش های آشنایی، ایجاد و مدیریت آن ها",
                                 isEnable: true,
                             },
+
                         ],
                     },
                 ],
