@@ -28,6 +28,8 @@ import {identityEmailTypeContext} from "@/components/admin/identityEmailAddressT
 import {identityAddressTypeContext} from "@/components/admin/identityAddressType";
 import {introductionMethodContext} from "@/components/admin/introductionMethod";
 import {identityDocumentContext} from "@/components/admin/identityDocument";
+import {addIdentityContext} from "@/components/admin/addIdentity";
+import {identityListContext} from "@/components/admin/identityList";
 
 export const adminContextConfig: any = {
     general: {
@@ -61,6 +63,11 @@ export const adminContextConfig: any = {
             },
         },
         identity: {
+            identity: {
+                add: addIdentityContext,
+                edit: addIdentityContext,
+                list: identityListContext,
+            },
             category: {
                 category: identityCategoryContext,
                 grade: identityGradeContext,

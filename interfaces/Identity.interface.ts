@@ -15,11 +15,11 @@ export enum identityTypesEnum {
 
 
 export interface Identity {
-    id: number;
+    id?: number;
 
     isVerified: boolean;
 
-    account: Account | null;
+    account?: Account | null;
 
 
 
@@ -50,7 +50,7 @@ export interface Identity {
     // @JoinColumn()
     // grade: IdentityGrade | null;
 
-    identityType: identityTypesEnum;
+    identityType?: identityTypesEnum;
 
     // // introductionMethod
     // @ManyToOne(() => IntroductionMethod, (doc) => doc.identities, { nullable: true })
@@ -70,23 +70,23 @@ export interface Identity {
 
 
     // ===============================================================================> real identity name
-    namePrefix: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    nameSuffix: string | null;
-    birthday: Date | null;
-    gender: gendersEnum;
+    namePrefix?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    nameSuffix?: string | null;
+    birthday?: Date | null;
+    gender?: gendersEnum;
 
 
     // ===============================================================================> legal identity name
-    legalName: string | null;
-    tradeMark: string | null;
-    registrationNumber: string | null;
+    legalName?: string | null;
+    tradeMark?: string | null;
+    registrationNumber?: string | null;
 
     // ===============================================================================> common
-    nationalCode: string | null;
-    website: string | null;
-    economicCode: string | null;
+    nationalCode?: string | null;
+    website?: string | null;
+    economicCode?: string | null;
 
 
 
@@ -102,8 +102,8 @@ export interface Identity {
 
 
 
-    createdBy: Account;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
+    createdBy?: Account;
+    createdAt?: Date;
+    updatedAt?: Date;
+    deletedAt?: Date | null;
 }
