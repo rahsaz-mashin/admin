@@ -1,10 +1,5 @@
 import React, {ReactNode, useRef, useState} from "react";
-import {Input, Textarea} from "@nextui-org/input";
 import {Control, useController} from "react-hook-form";
-import {TimeValue} from "@react-types/datepicker";
-import {Button, DateValue} from "@nextui-org/react";
-import {Chip} from "@nextui-org/chip";
-import {Clear} from "@mui/icons-material";
 import {Editor} from "@tinymce/tinymce-react";
 import {Spinner} from "@nextui-org/spinner";
 
@@ -87,7 +82,7 @@ export const MinorEditor = (props: MinorTagProps) => {
                 </label>
             )}
             <Editor
-                apiKey="c5202p0ybgpmcrokfgwn78asoww5xabm9hxbqxxvzxwgsmhg"
+                apiKey="80cvbr49rra761bpxqawp8pke7wra7a7gq0vewnssywohw3c"
                 onEditorChange={field.onChange}
                 textareaName={field.name}
                 value={field.value}
