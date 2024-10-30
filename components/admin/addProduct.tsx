@@ -620,7 +620,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             secondaryCurrency: Currency,
                             finalPrice: number,
                             finalPriceWithVat: number
-                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
+                        } = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -651,7 +651,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             secondaryCurrency: Currency,
                             finalPrice: number,
                             finalPriceWithVat: number,
-                        } = await axios.get(`product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
+                        } = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
