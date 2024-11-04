@@ -285,9 +285,6 @@ const formSchema = z.object({
             .array(),
     ]).transform((ids) => ids?.map((id) => ({id: +id})) || []),
     isActive: z.boolean({message: "وضعیت را مشخص کنید"}),
-}).transform((v) => {
-    console.log({v})
-    return v
 });
 
 const formRender: FormRender<T>[] = [
@@ -466,7 +463,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: true,
             isNumeric: true,
             pattern: "+## ### ### ####",
-            description: "به این صورت وارد شود: 989212728307",
+            description: "به این صورت وارد شود: 989212728307+",
             allowEmptyFormatting: true,
             className: "col-span-full",
         },

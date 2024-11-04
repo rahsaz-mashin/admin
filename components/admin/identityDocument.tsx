@@ -51,6 +51,12 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
         },
         {
+            name: "withTextarea",
+            type: "switch",
+            label: "نوشتن متن",
+            className: "col-span-full xl:col-span-1",
+        },
+        {
             name: "acceptAttachment",
             type: "input",
             label: "فایل های مجاز",
@@ -58,12 +64,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: false,
             isMultiline: true,
             isDisabled: !watch("withAttachment"),
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "withTextarea",
-            type: "switch",
-            label: "نوشتن متن",
             className: "col-span-full xl:col-span-1",
         },
     ])

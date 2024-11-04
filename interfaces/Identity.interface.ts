@@ -1,4 +1,11 @@
 import {Account} from "@/interfaces/Account.interface";
+import {IdentityPhoneNumber} from "@/interfaces/IdentityPhoneNumber.interface";
+import {IdentityEmailAddress} from "@/interfaces/IdentityEmailAddress.interface";
+import {IdentityAddress} from "@/interfaces/IdentityAddess.interface";
+import {IdentityCategory} from "@/interfaces/IdentityCategory.interface";
+import {IdentityGrade} from "@/interfaces/IdentityGrade.interface";
+import {IntroductionMethod} from "@/interfaces/IntroductionMethod.interface";
+import {IdentityDocumentData} from "@/interfaces/IdentityDocumentData.interface";
 
 
 export enum gendersEnum {
@@ -21,59 +28,28 @@ export interface Identity {
 
     account?: Account | null;
 
+    phones: IdentityPhoneNumber[];
+    emails: IdentityEmailAddress[];
+    addresses: IdentityAddress[];
 
-
-
-    // model: IdentityModel;
-    //
-    //
-    // // phones
-    // @OneToMany(() => IdentityPhoneNumber, (doc) => doc.identity)
-    // phones: IdentityPhoneNumber[];
-    //
-    // // emails
-    // @OneToMany(() => IdentityEmailAddress, (doc) => doc.identity)
-    // emails: IdentityEmailAddress[];
-    //
-    // // addresses
-    // @OneToMany(() => IdentityAddress, (doc) => doc.identity)
-    // addresses: IdentityAddress[];
-    //
-    //
-    // // categories
-    // @ManyToMany(() => IdentityCategory, doc => doc.identities)
-    // @JoinTable()
-    // categories: IdentityCategory[];
-    //
-    // // grade
-    // @ManyToOne(() => IdentityGrade, (doc) => doc.identities, { nullable: true })
-    // @JoinColumn()
-    // grade: IdentityGrade | null;
+    categories: IdentityCategory[];
+    grade: IdentityGrade | null;
 
     identityType?: identityTypesEnum;
 
-    // // introductionMethod
-    // @ManyToOne(() => IntroductionMethod, (doc) => doc.identities, { nullable: true })
-    // @JoinColumn()
-    // introductionMethod: IntroductionMethod | null;
-    //
-    // // color
-    // @Column({ type: 'varchar', length: 64, nullable: true })
-    // color: string | null;
-    //
-    // // identityDocuments
-    // @OneToMany(() => IdentityDocumentData, doc => doc.identity)
-    // identityDocuments: IdentityDocumentData[];
-    //
-    // @Column({ type: 'varchar', length: 512, nullable: true })
-    // description: string | null;
+    introductionMethod: IntroductionMethod | null;
+
+    color: string | null;
+
+
+    identityDocuments: IdentityDocumentData[];
+
+    description: string | null;
 
 
     // ===============================================================================> real identity name
-    namePrefix?: string | null;
     firstName?: string | null;
     lastName?: string | null;
-    nameSuffix?: string | null;
     birthday?: Date | null;
     gender?: gendersEnum;
 

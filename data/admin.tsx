@@ -777,7 +777,39 @@ const adminRoutes: AdminMenu[] = [
                 key: "orders",
                 title: "سفارشات",
                 icon: <OutlineOrderIcon/>,
-                isEnable: false,
+                isEnable: true,
+                sub: [
+                    {
+                        key: "order",
+                        title: "مدیریت سفارشات",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "add",
+                                title: "ثبت سفارش جدید",
+                                icon: <BoldDuotoneAddIcon size={64}/>,
+                                description: "ثبت سفارش جدید",
+                                isEnable: true,
+                            },
+                            {
+                                key: "list",
+                                title: "لیست سفارشات",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست سفارشات و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "edit",
+                                title: "ویرایش سفارش",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "ویرایش سفارش",
+                                hidden: true,
+                                isEnable: false,
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 key: "wallet",

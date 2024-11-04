@@ -24,10 +24,8 @@ export type DashboardIdentityProps = {
 export type RealIdentityInfoFormType = {
     identityType?: identityTypesEnum;
 
-    namePrefix?: string | null;
     firstName?: string | null;
     lastName?: string | null;
-    nameSuffix?: string | null;
     birthday?: Date | null;
     gender?: gendersEnum;
 
@@ -151,10 +149,8 @@ const RealIdentity = ({identity}: { identity: Identity }) => {
 
     const schema = z.object({
         identityType: z.literal(identityTypesEnum.real),
-        namePrefix: z.string({message: "پیشوند خود را به درستی وارد کنید"}).min(3, "پیشوند معتبر نیست").optional(),
         firstName: z.string({message: "نام خود را وارد کنید"}).min(3, "نام معتبر نیست"),
         lastName: z.string({message: "نام خانوادگی خود را وارد کنید"}).min(3, "نام خانوادگی معتبر نیست"),
-        nameSuffix: z.string({message: "پسوند خود را به درستی وارد کنید"}).min(3, "پسوند معتبر نیست").optional(),
         birthday: z.date({message: "تاریخ تولد معتبر نیست"}).optional(),
         gender: z.nativeEnum(gendersEnum, {message: "جنسیت نامعتبر است"}).optional(),
         nationalCode: z.string({message: "کد ملی را وارد کنید"}).regex(/^\d{10}$/, "کد ملی معتبر نیست"),
@@ -167,10 +163,8 @@ const RealIdentity = ({identity}: { identity: Identity }) => {
         if (identity) {
             result = {
                 identityType: identity.identityType,
-                namePrefix: identity.namePrefix,
                 firstName: identity.firstName,
                 lastName: identity.lastName,
-                nameSuffix: identity.nameSuffix,
                 birthday: identity.birthday,
                 gender: identity.gender,
                 nationalCode: identity.nationalCode,
@@ -179,10 +173,8 @@ const RealIdentity = ({identity}: { identity: Identity }) => {
         } else {
             result = {
                 identityType: identityTypesEnum.real,
-                namePrefix: undefined,
                 firstName: undefined,
                 lastName: undefined,
-                nameSuffix: undefined,
                 birthday: undefined,
                 gender: undefined,
                 nationalCode: undefined,
@@ -208,10 +200,8 @@ const RealIdentity = ({identity}: { identity: Identity }) => {
     useEffect(() => {
         register("identityType")
 
-        register("namePrefix")
         register("firstName")
         register("lastName")
-        register("nameSuffix")
 
         register("birthday")
         register("gender")
