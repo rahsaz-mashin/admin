@@ -62,7 +62,7 @@ export const MinorChooseLocation = (props: MinorChooseLocationProps) => {
 
     const hasHelper = !!description || isInvalid || fieldState.invalid
 
-    const val = field.value?.split(",")
+    const val = field.value ? (typeof field.value === "string" ? field.value?.split(",") : Object.values(field.value)) : null
     const value = val ? {latitude: +val[0], longitude: +val[1]} : undefined
 
     const onChange = (v: any) => {

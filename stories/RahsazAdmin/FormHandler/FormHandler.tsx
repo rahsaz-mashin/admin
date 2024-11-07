@@ -10,15 +10,11 @@ import React, {
 } from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {Control, FieldValues, FormState, SubmitHandler, useForm, UseFormWatch} from "react-hook-form";
+import {Control, FieldValues, FormState, SubmitHandler, useForm, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
-import {
-    FormFieldFunc,
-    FormFieldsGenerator,
-    FormFieldType
-} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
+import {FormFieldFunc, FormFieldsGenerator, FormFieldType} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
@@ -145,11 +141,15 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
     console.log({formErrors: formState.errors})
 
+    // const _render = Array.isArray(render) ? render : render(watch, setValue)
+
+
+    const _render = typeof render === "function" ? render(watch, setValue) : render
     return (
         <form onSubmit={handleSubmit(onSubmit())} className={"grid gap-5" + (className ? ` ${className}` : "")}>
-            {render
+            {_render
                 ?
-                render.map((r, idx) => {
+                _render.map((r, idx) => {
                     return (
                         <r.render key={idx} {...contentProps}>
                             {r?.sections && (
@@ -157,6 +157,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                                     sections={r.sections}
                                     control={control}
                                     fields={f}
+                                    onSectionChange={r?.onSectionChange}
                                 />
                             )}
                             {r?.fields && (
@@ -186,6 +187,7 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
 
     const {
         sections,
+        onSectionChange,
         control,
         fields,
     } = props
@@ -202,7 +204,10 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
                 size="lg"
                 classNames={{base: "justify-center w-full", panel: "w-full"}}
                 selectedKey={selectedTab}
-                onSelectionChange={setSelectedTab}
+                onSelectionChange={(v) => {
+                    setSelectedTab(v)
+                    if (onSectionChange) onSectionChange(v.toString())
+                }}
                 items={sections}
             >
                 {(tab) => {
@@ -339,6 +344,7 @@ export type FormRenderCommon<T> = {
 
 export type FormRenderWithSection<T> = {
     sections: FormRenderSection<T>[];
+    onSectionChange?: (section: string) => void;
     fields?: undefined;
 }
 
@@ -346,6 +352,9 @@ export type FormRenderSimple<T> = {
     fields: DeepKeys<T>[];
     sections?: undefined;
 }
+
+export type FormRenderFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValue<T>) => FormRender<T>[]
+
 
 export type FormRender<T> = FormRenderCommon<T> & (FormRenderSimple<T> | FormRenderWithSection<T>)
 
@@ -364,7 +373,7 @@ export type FormHandlerProps<T> = {
     fields?: FormFieldFunc<T>;
     editingId?: string | number | null;
     initialValue?: T;
-    render?: FormRender<T>[];
+    render?: FormRender<T>[] | FormRenderFunc<T>;
     upsert?: boolean;
 
     tableRef?: React.MutableRefObject<TableListRefType | undefined>;
@@ -374,5 +383,6 @@ export type FormHandlerProps<T> = {
 export type SectionFormPropsType<T> = {
     control: Control<any, any>;
     sections: FormRenderSection<T>[];
+    onSectionChange?: (section: string) => void;
     fields: FormFieldType<T>[];
 }

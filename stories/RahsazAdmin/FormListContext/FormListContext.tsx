@@ -2,7 +2,7 @@
 
 import React, {useRef} from "react";
 import {ZodType} from "zod";
-import {FormHandler, FormHandlerRefType, FormRender} from "@/stories/RahsazAdmin/FormHandler";
+import {FormHandler, FormHandlerRefType, FormRender, FormRenderFunc} from "@/stories/RahsazAdmin/FormHandler";
 import {ColumnType, TableList, TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc, FormFieldType} from "@/stories/General/FormFieldsGenerator";
 
@@ -112,7 +112,7 @@ type FormListContextFormModePureProps<T> = {
     formFields?: FormFieldFunc<T>;
     formInitialValue?: T;
     formUpsert?: boolean;
-    formRender?: FormRender<T>[];
+    formRender?: FormRender<T>[] | FormRenderFunc<T>;
     formClassName?: string;
 }
 

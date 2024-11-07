@@ -8,13 +8,7 @@ import {Account} from "@/interfaces/Account.interface";
 import {Snippet} from "@nextui-org/snippet";
 import {CardHeader} from "@nextui-org/card";
 import {BoldDuotonePermissionGroupIcon} from "@/stories/RahsazAdmin/Icons";
-import {
-    OutlinedBasketIcon,
-    OutlinedDocumentIcon,
-    OutlinedNotebookBookmarkIcon,
-    OutlinedRulerPenIcon,
-    OutlinedWalletIcon
-} from "@/stories/Icons";
+
 
 
 type T = Account
