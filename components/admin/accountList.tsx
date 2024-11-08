@@ -6,6 +6,8 @@ import {FileStorage} from "@/interfaces/FileStorage.interface";
 import {AccountPhoneNumber} from "@/interfaces/AccountPhoneNumber.interface";
 import {AccountPermissionGroup} from "@/interfaces/AccountPermissionGroup.interface";
 import {AccountEmailAddress} from "@/interfaces/AccountEmailAddress.interface";
+import {Identity, identityTypesEnum} from "@/interfaces/Identity.interface";
+import {Verified} from "@mui/icons-material";
 
 
 type T = Account
@@ -222,6 +224,53 @@ const tableColumns: ColumnType<T>[] = [
                         >
                             غیرفعال
                         </Chip>
+                    )}
+                </div>
+            )
+        },
+    },
+    {
+        key: "identity",
+        title: "هویت",
+        width: 200,
+        minWidth: 200,
+        render: (value: Identity | null, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    {!value && (
+                        <Chip size="md" variant="shadow" color="default">
+                            ثبت نشده
+                        </Chip>
+                    )}
+                    {!!value && (
+                        <div className="flex flex-col gap-3 items-start justify-center">
+                            <div className="flex flex-row gap-2 items-center">
+                                {value.isVerified
+                                    ?
+                                    (<Verified className="text-blue-500 text-base"/>)
+                                    :
+                                    (<Verified className="text-gray-200 text-base"/>)
+                                }
+                                {value.identityType === identityTypesEnum.real && (
+                                    <span className="font-bold text-sm">
+                                        {value.firstName + " " + value.lastName}
+                                    </span>
+                                )}
+                                {value.identityType === identityTypesEnum.legal && (
+                                    <span className="font-bold text-sm">
+                                        {value.legalName}
+                                    </span>
+                                )}
+                                {value.identityType === identityTypesEnum.legal && (
+                                    <span className="font-light text-sm">
+                                        ({value.tradeMark})
+                                    </span>
+                                )}
+                            </div>
+                            <Chip color="default" size="sm" variant="flat">
+                                شناسه: {value.id}
+                            </Chip>
+                        </div>
                     )}
                 </div>
             )

@@ -4,7 +4,7 @@ import React, {
     forwardRef,
     Key,
     ReactNode,
-    useContext,
+    useContext, useEffect,
     useImperativeHandle,
     useState,
 } from "react";
@@ -157,6 +157,7 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
                                     sections={r.sections}
                                     control={control}
                                     fields={f}
+                                    selectedSection={r?.selectedSection}
                                     onSectionChange={r?.onSectionChange}
                                 />
                             )}
@@ -188,13 +189,22 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
     const {
         sections,
         onSectionChange,
+        selectedSection,
         control,
         fields,
     } = props
 
     const [selectedTab, setSelectedTab] = useState<Key>(sections[0].key)
-
     const currentSection = sections.find((v) => (v.key === selectedTab))
+
+    useEffect(() => {
+        if(!!selectedSection && selectedSection !== selectedTab) setSelectedTab(selectedSection)
+    }, [selectedSection])
+
+
+    useEffect(() => {
+        if(!!onSectionChange && selectedSection !== selectedTab) onSectionChange(selectedTab)
+    }, [selectedTab])
 
     return (
         <>
@@ -206,7 +216,6 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
                 selectedKey={selectedTab}
                 onSelectionChange={(v) => {
                     setSelectedTab(v)
-                    if (onSectionChange) onSectionChange(v.toString())
                 }}
                 items={sections}
             >
@@ -344,6 +353,7 @@ export type FormRenderCommon<T> = {
 
 export type FormRenderWithSection<T> = {
     sections: FormRenderSection<T>[];
+    selectedSection?: string;
     onSectionChange?: (section: string) => void;
     fields?: undefined;
 }
@@ -383,6 +393,7 @@ export type FormHandlerProps<T> = {
 export type SectionFormPropsType<T> = {
     control: Control<any, any>;
     sections: FormRenderSection<T>[];
+    selectedSection?: string;
     onSectionChange?: (section: string) => void;
     fields: FormFieldType<T>[];
 }

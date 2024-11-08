@@ -10,7 +10,6 @@ import {CardHeader} from "@nextui-org/card";
 import {BoldDuotonePermissionGroupIcon} from "@/stories/RahsazAdmin/Icons";
 
 
-
 type T = Account
 
 
@@ -125,38 +124,6 @@ const IdentityBox: FormRender<T>['render'] = ({children, formState, watch, isEdi
                 </h3>
             </CardHeader>
             <CardBody className="gap-2 flex-col items-center">
-                {children}
-            </CardBody>
-        </Card>
-    )
-}
-
-
-const CategoriesBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
-    return (
-        <Card
-            className="area-[categories]"
-            classNames={{body: "items-start text-start"}}
-            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
-        >
-            <CardHeader className="font-bold">دسته بندی</CardHeader>
-            <CardBody className="gap-5">
-                {children}
-            </CardBody>
-        </Card>
-    )
-}
-
-
-const GradeBox: FormRender<T>['render'] = ({children, formState, watch, isEditing}) => {
-    return (
-        <Card
-            className="area-[grade]"
-            classNames={{body: "items-start text-start"}}
-            isDisabled={formState?.isLoading || formState?.isValidating || formState?.isSubmitting || formState?.disabled}
-        >
-            <CardHeader className="font-bold">سطح بندی</CardHeader>
-            <CardBody className="gap-5">
                 {children}
             </CardBody>
         </Card>
@@ -279,6 +246,17 @@ const formSchema = z.object({
             .array(),
     ]).transform((ids) => ids?.map((id) => ({id: +id})) || []),
     isActive: z.boolean({message: "وضعیت را مشخص کنید"}),
+    identity: z.union(
+        [
+            z.string({message: "هویت را انتخاب کنید"})
+                .regex(/^\d+$/, "هویت معتبر نیست")
+                .transform((val) => ({id: +val})),
+            z.number({message: "هویت را انتخاب کنید"})
+                .int("هویت معتبر نیست")
+                .positive("هویت معتبر نیست")
+                .transform((val) => ({id: val})),
+        ]
+    ).nullable().optional(),
 });
 
 const formRender: FormRender<T>[] = [
@@ -298,99 +276,10 @@ const formRender: FormRender<T>[] = [
         render: PermissionsBox,
         fields: ["permissions", "isActive"]
     },
-    // {
-    //     render: IdentityBox,
-    //     sections: [
-    //         {
-    //             key: "identity",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedNotebookBookmarkIcon size={20}/>
-    //                     <span>مشخصات هویتی</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "additional",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedDocumentIcon size={20}/>
-    //                     <span>اطلاعات تکمیلی</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "phones",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedRulerPenIcon size={20}/>
-    //                     <span>تماس</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "emails",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedWalletIcon size={20}/>
-    //                     <span>ایمیل</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "addresses",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedBasketIcon size={20}/>
-    //                     <span>آدرس</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "documents",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedBasketIcon size={20}/>
-    //                     <span>مدارک هویتی</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "personnel",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedBasketIcon size={20}/>
-    //                     <span>پرسنل</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //         {
-    //             key: "companies",
-    //             title: (
-    //                 <div className="flex items-center gap-2">
-    //                     <OutlinedBasketIcon size={20}/>
-    //                     <span>شرکت ها</span>
-    //                 </div>
-    //             ),
-    //             fields: [],
-    //         },
-    //     ],
-    // },
-    // {
-    //     render: CategoriesBox,
-    //     fields: []
-    // },
-    // {
-    //     render: GradeBox,
-    //     fields: []
-    // },
+    {
+        render: IdentityBox,
+        fields: ["identity"]
+    },
     {
         render: SubmitBox,
         fields: []
@@ -486,6 +375,16 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: true,
             className: "col-span-full",
         },
+        {
+            name: "identity",
+            type: "select",
+            label: "هویت",
+            dynamic: {
+                route: "admin/identity/sloStyle",
+            },
+            isRequired: true,
+            className: "col-span-full",
+        },
     ])
 }
 
@@ -502,6 +401,6 @@ export const addAccountContext = {
             "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 grid-rows-auto" + " " +
             "grid-areas-[general,phone,email,permissions,identity,grade,categories,submit]" + " " +
             "lg:grid-areas-[general_general,phone_email,permissions_permissions,identity_identity,grade_categories,submit_submit]" + " " +
-            "xl:grid-areas-[general_general_submit,email_phone_permissions,identity_identity_grade,identity_identity_categories]"
+            "xl:grid-areas-[general_general_submit,email_phone_permissions,identity_identity_identity]"
     },
 }

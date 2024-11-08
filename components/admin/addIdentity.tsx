@@ -208,9 +208,8 @@ const formSchema = z.object({
     registrationNumber: z.string({message: "شماره ثبت شرکت را وارد کنید"}).regex(/^\d{3,6}\s{0,3}$/, "شماره ثبت شرکت معتبر نیست").nullable().optional().or(z.string().length(0)),
 
 
-    nationalCode: z.string({message: "شماره ملی را وارد کنید"}).regex(/^\d{10,11}$/, "شماره ملی معتبر نیست").nullable().optional().or(z.string().length(0)),
+    nationalCode: z.string({message: "شماره ملی را وارد کنید"}).regex(/^\d{10}(?=\s)|^\d{11}$/, "شماره ملی معتبر نیست").trim().nullable().optional().or(z.string().length(0)),
     isVerified: z.boolean({message: "احرار شده را مشخص کنید"}).nullable().optional(),
-
 
     // additional data
     website: z.string().url("آدرس وارد شده معتبر نیست").nullable().optional().or(z.string().length(0)),
@@ -218,7 +217,8 @@ const formSchema = z.object({
     introductionMethod: z.string({message: "نحوه آشنایی معتبر نیست"}).regex(/^\d+$/, "نحوه آشنایی معتبر نیست")
         .or(z.number({message: "نحوه آشنایی معتبر نیست"}).int({message: "نحوه آشنایی معتبر نیست"}).positive({message: "نحوه آشنایی معتبر نیست"}))
         .transform((id) => ({id: +id}))
-        .nullable(),
+        .nullable()
+        .optional(),
     color: z.string().regex(/^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$/, "کد رنگ به فرمت HEX وارد شود").nullable().optional().or(z.string().length(0)),
 
     // phones
@@ -354,32 +354,38 @@ const formSchema = z.object({
     ])
         .nullable()
         .optional(),
-
-
-}).superRefine((data, ctx) => {
-    if (data.identityType === identityTypesEnum.real) {
-        if (!data.firstName) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom, path: ['firstName'],
-                message: 'نام را وارد کنید',
-            })
+})
+    .superRefine((data, ctx) => {
+        console.log(data)
+        if (data.identityType === identityTypesEnum.real) {
+            if (!data.firstName) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom, path: ['firstName'],
+                    message: 'نام را وارد کنید',
+                })
+            }
+            if (!data.lastName) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom, path: ['lastName'],
+                    message: 'نام خانوادگی را وارد کنید',
+                })
+            }
         }
-        if (!data.lastName) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom, path: ['lastName'],
-                message: 'نام خانوادگی را وارد کنید',
-            })
+        if (data.identityType === identityTypesEnum.legal) {
+            if (!data.legalName) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom, path: ['legalName'],
+                    message: 'نام شرکت را وارد کنید',
+                })
+            }
+            if (!data.tradeMark) {
+                ctx.addIssue({
+                    code: z.ZodIssueCode.custom, path: ['tradeMark'],
+                    message: 'نام تجاری شرکت را وارد کنید',
+                })
+            }
         }
-    }
-    if (data.identityType === identityTypesEnum.legal) {
-        if (!data.legalName) {
-            ctx.addIssue({
-                code: z.ZodIssueCode.custom, path: ['legalName'],
-                message: 'نام شرکت را وارد کنید',
-            })
-        }
-    }
-});
+    });
 
 
 const formRender: FormRenderFunc<T> = (watch, setValue) => {
@@ -406,6 +412,7 @@ const formRender: FormRenderFunc<T> = (watch, setValue) => {
                     fields: ["isVerified", "legalName", "tradeMark", "registrationNumber", "nationalCode"],
                 },
             ],
+            selectedSection: watch("identityType"),
             onSectionChange: (section: string) => {
                 setValue("identityType", section)
                 if (section === identityTypesEnum.real) {
@@ -560,6 +567,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "input",
             label: "عنوان تجاری شرکت",
             className: "col-span-full xl:col-span-1",
+            isRequired: true,
         },
         {
             name: "registrationNumber",

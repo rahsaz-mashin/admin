@@ -1,14 +1,15 @@
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
-import {Chip, Image} from "@nextui-org/react";
-import NextImage from "next/image";
+import {Chip} from "@nextui-org/react";
+import {Identity, identityTypesEnum} from "@/interfaces/Identity.interface";
+import {Verified} from "@mui/icons-material";
+import {IdentityCategory} from "@/interfaces/IdentityCategory.interface";
+import {IdentityGrade} from "@/interfaces/IdentityGrade.interface";
+import {IdentityPhoneNumber} from "@/interfaces/IdentityPhoneNumber.interface";
+import Link from "next/link";
 import {Account} from "@/interfaces/Account.interface";
-import {FileStorage} from "@/interfaces/FileStorage.interface";
-import {AccountPhoneNumber} from "@/interfaces/AccountPhoneNumber.interface";
-import {AccountPermissionGroup} from "@/interfaces/AccountPermissionGroup.interface";
-import {AccountEmailAddress} from "@/interfaces/AccountEmailAddress.interface";
 
 
-type T = Account
+type T = Identity
 
 
 const tableColumns: ColumnType<T>[] = [
@@ -33,158 +34,92 @@ const tableColumns: ColumnType<T>[] = [
         allowsSorting: true,
     },
     {
-        key: "avatar",
-        title: "پروفایل",
-        minWidth: 100,
-        width: 100,
-        align: "center",
-        render: (value: FileStorage | null, ctx) => {
-            return (
-                <div className="flex flex-row gap-5 items-center justify-center">
-                    <div className="w-24 h-24">
-                        <Image
-                            as={NextImage}
-                            width={100}
-                            height={100}
-                            alt={value?.alt}
-                            title={value?.title}
-                            src={`${value ? (value.system.baseUrl + "/" + value?.path) : ""}`}
-                            radius="full"
-                            loading="eager"
-                            className="object-fill !h-full !w-full"
-                            classNames={{wrapper: "h-full w-full bg-contain bg-center"}}
-                            fallbackSrc="/fallback.png"
-                        />
-                    </div>
-                </div>
-            )
-        },
-    },
-    {
-        key: "phone",
-        title: "موبایل",
-        minWidth: 220,
-        width: 220,
-        align: "center",
-        render: (value: AccountPhoneNumber | null, ctx) => {
-            return (
-                <div className="flex flex-row items-center justify-center gap-2 truncate">
-                    {value && (
-                        <>
-                            <div dir="ltr" className="select-all">
-                                {value?.value}
-                            </div>
-                            {value?.isConfirmed && (
-                                <Chip
-                                    size="sm"
-                                    color="success"
-                                    variant="shadow"
-                                    className="text-white"
-                                >
-                                    تایید شده
-                                </Chip>
-                            )}
-                            {!value?.isConfirmed && (
-                                <Chip
-                                    size="sm"
-                                    color="danger"
-                                    variant="flat"
-                                    className="text-white"
-                                >
-                                    تایید نشده
-                                </Chip>
-                            )}
-                        </>
-                    )}
-                    {!value && (
-                        <Chip
-                            size="md"
-                            color="default"
-                            variant="solid"
-                            className="text-white"
-                        >
-                            ثبت نشده
-                        </Chip>
-                    )}
-                </div>
-            )
-        },
-    },
-    {
-        key: "email",
-        title: "ایمیل",
-        minWidth: 220,
-        width: 220,
-        align: "center",
-        render: (value: AccountEmailAddress | null, ctx) => {
-            return (
-                <div className="flex flex-row items-center justify-center gap-2 truncate">
-                    {value && (
-                        <>
-                            <div dir="ltr" className="select-all">
-                                {value?.value}
-                            </div>
-                            {value?.isConfirmed && (
-                                <Chip
-                                    size="sm"
-                                    color="success"
-                                    variant="shadow"
-                                    className="text-white"
-                                >
-                                    تایید شده
-                                </Chip>
-                            )}
-                            {!value?.isConfirmed && (
-                                <Chip
-                                    size="sm"
-                                    color="danger"
-                                    variant="flat"
-                                    className="text-white"
-                                >
-                                    تایید نشده
-                                </Chip>
-                            )}
-                        </>
-                    )}
-                    {!value && (
-                        <Chip
-                            size="md"
-                            color="default"
-                            variant="solid"
-                            className="text-white"
-                        >
-                            ثبت نشده
-                        </Chip>
-                    )}
-                </div>
-            )
-        },
-    },
-    {
-        key: "permissions",
-        title: "دسترسی ها",
+        key: "title",
+        title: "عنوان",
         minWidth: 200,
-        render: (value: AccountPermissionGroup[] | null, ctx) => {
+        align: "start",
+        render: (value: string | null, ctx) => {
             return (
-                <div className="flex flex-row flex-wrap items-center justify-start gap-2 truncate">
-                    {!value?.length && (
+                <div className="flex flex-col gap-3 items-start justify-center">
+                    <div className="flex flex-row gap-2 items-center">
+                        {ctx.isVerified
+                            ?
+                            (<Verified className="text-blue-500 text-base"/>)
+                            :
+                            (<Verified className="text-gray-200 text-base"/>)
+                        }
+                        {ctx.identityType === identityTypesEnum.real && (
+                            <span className="font-bold text-lg">
+                                {ctx.firstName + " " + ctx.lastName}
+                            </span>
+                        )}
+                        {ctx.identityType === identityTypesEnum.legal && (
+                            <span className="font-bold text-lg">
+                                {ctx.legalName}
+                            </span>
+                        )}
+                        {ctx.identityType === identityTypesEnum.legal && (
+                            <span className="font-light text-sm">
+                                ({ctx.tradeMark})
+                            </span>
+                        )}
+                    </div>
+                    {ctx.identityType === identityTypesEnum.real
+                        ?
+                        (<Chip color="primary" size="sm" variant="flat">حقیقی</Chip>)
+                        :
+                        (<Chip color="secondary" size="sm" variant="flat">حقوقی</Chip>)
+                    }
+                </div>
+            )
+        },
+    },
+    {
+        key: "grade",
+        title: "سطح",
+        width: 200,
+        minWidth: 200,
+        render: (value: IdentityGrade, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    {!value && (
+                        <Chip size="md" variant="shadow" color="default">
+                            نامشخص
+                        </Chip>
+                    )}
+                    {!!value && (
                         <Chip
                             size="md"
-                            color="default"
-                            variant="solid"
-                            className="text-white"
+                            variant="shadow"
+                            color="primary"
                         >
-                            بدون دسترسی
+                            {value?.title}
+                        </Chip>
+                    )}
+                </div>
+            )
+        },
+    },
+    {
+        key: "categories",
+        title: "دسته بندی",
+        width: 200,
+        minWidth: 200,
+        render: (value: IdentityCategory[], ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    {!value?.length && (
+                        <Chip size="md" variant="shadow" color="default">
+                            نامشخص
                         </Chip>
                     )}
                     {value?.map((v, idx) => {
                         return (
                             <Chip
-                                key={idx}
+                                key={v.id}
                                 size="md"
-                                color="primary"
-                                variant="solid"
-                                className="text-white"
+                                variant="shadow"
+                                color="secondary"
                             >
                                 {v?.title}
                             </Chip>
@@ -195,32 +130,86 @@ const tableColumns: ColumnType<T>[] = [
         },
     },
     {
-        key: "isActive",
-        title: "وضعیت",
-        minWidth: 100,
-        width: 100,
-        align: "center",
-        render: (value: boolean, ctx) => {
+        key: "phones",
+        title: "تماس",
+        minWidth: 220,
+        width: 220,
+        align: "start",
+        render: (value: IdentityPhoneNumber[] | null, ctx) => {
+            if (!value?.length) {
+                return (
+                    <Chip size="md" variant="shadow" color="default">
+                        ثبت نشده
+                    </Chip>
+                )
+            }
             return (
-                <div className="flex flex-row items-center justify-center gap-2 truncate">
-                    {value && (
-                        <Chip
-                            size="md"
-                            color="success"
-                            variant="shadow"
-                            className="text-white"
-                        >
-                            فعال
+                <div className="flex flex-col items-start justify-center gap-2">
+                    {value?.map((v, idx) => {
+                        return (
+                            <Link key={v.id} href={`tel:${v.value}`}>
+                                <Chip
+                                    key={v.id}
+                                    size="lg"
+                                    variant="shadow"
+                                    color="primary"
+                                    startContent={(
+                                        <Chip
+                                            size="sm"
+                                            variant="flat"
+                                            color="default"
+                                            className="text-white"
+                                            endContent=":"
+                                        >
+                                            {v.type?.title}
+                                        </Chip>
+                                    )}
+                                    endContent={
+                                        v.internal
+                                            ?
+                                            (
+                                                <Chip
+                                                    key={v.id}
+                                                    size="sm"
+                                                    variant="flat"
+                                                    color="default"
+                                                    className="text-white"
+                                                >
+                                                    داخلی:
+                                                    {v.internal}
+                                                </Chip>
+                                            )
+                                            :
+                                            undefined
+                                    }
+                                >
+                                <span dir="ltr">
+                                    {v.value}
+                                </span>
+                                </Chip>
+                            </Link>
+                        )
+                    })}
+                </div>
+            )
+        },
+    },
+    {
+        key: "account",
+        title: "اکانت متصل",
+        width: 200,
+        minWidth: 200,
+        render: (value: Account | null, ctx) => {
+            return (
+                <div className="flex gap-2 items-center">
+                    {!value && (
+                        <Chip size="md" variant="shadow" color="default">
+                            متصل نیست
                         </Chip>
                     )}
-                    {!value && (
-                        <Chip
-                            size="md"
-                            color="danger"
-                            variant="shadow"
-                            className="text-white"
-                        >
-                            غیرفعال
+                    {!!value && (
+                        <Chip size="md" variant="shadow" color="success">
+                            شناسه: {value?.id}
                         </Chip>
                     )}
                 </div>
