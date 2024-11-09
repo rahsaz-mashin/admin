@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120  # 2 hours
 
+    env:
+      REGISTRY_URL: registry.rahsazmashin.com
+
     steps:
     - uses: actions/checkout@v4
 
@@ -20,7 +23,7 @@ jobs:
 
     - name: Configure Docker daemon for insecure registry
       run: |
-        echo '{"insecure-registries":["registry.rahsazmashin.com"]}' | sudo tee /etc/docker/daemon.json
+        echo '{"insecure-registries":["${{ env.REGISTRY_URL }}"]}' | sudo tee /etc/docker/daemon.json
         sudo systemctl restart docker
 
     - name: Log in to Docker Hub
@@ -28,13 +31,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        registry: registry.rahsazmashin.com
+        registry: ${{ env.REGISTRY_URL }}
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag rahsaz-app:latest
 
     - name: Tag the image
-      run: docker tag rahsaz-app:latest registry.rahsazmashin.com/rahsaz-app:latest
+      run: docker tag rahsaz-app:latest ${{ env.REGISTRY_URL }}/rahsaz-app:latest
 
     - name: Push the image to Docker Hub
       run:  |
@@ -56,4 +59,4 @@ jobs:
           done
           return 0
         }
-        retry 3 docker push registry.rahsazmashin.com/rahsaz-app:latest
+        retry 3 docker push ${{ env.REGISTRY_URL }}/rahsaz-app:latest
