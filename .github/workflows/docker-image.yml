@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 120  # 2 hours
 
     env:
-      REGISTRY_URL: registry.rahsazmashin.com
+      REGISTRY_URL: 188.213.199.119:5000
 
     steps:
     - uses: actions/checkout@v4
