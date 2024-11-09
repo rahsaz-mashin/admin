@@ -242,6 +242,7 @@ const tableColumns: ColumnType<T>[] = [
                             ثبت نشده
                         </Chip>
                     )}
+
                     {!!value && (
                         <div className="flex flex-col gap-3 items-start justify-center">
                             <div className="flex flex-row gap-2 items-center">
