@@ -413,23 +413,23 @@ const formRender: FormRenderFunc<T> = (watch, setValue) => {
                 },
             ],
             selectedSection: watch("identityType"),
-            onSectionChange: (section: string) => {
-                setValue("identityType", section)
-                if (section === identityTypesEnum.real) {
-                    setValue("legalName", "")
-                    setValue("tradeMark", "")
-                    setValue("registrationNumber", "")
-                    setValue("nationalCode", "")
-                    setValue("isVerified", false)
-                } else {
-                    setValue("firstName", "")
-                    setValue("lastName", "")
-                    setValue("birthday", null)
-                    setValue("gender", null)
-                    setValue("nationalCode", "")
-                    setValue("isVerified", false)
-                }
-            }
+            // onSectionChange: (section: string) => {
+            //     setValue("identityType", section)
+            //     if (section === identityTypesEnum.real) {
+            //         setValue("legalName", "")
+            //         setValue("tradeMark", "")
+            //         setValue("registrationNumber", "")
+            //         setValue("nationalCode", "")
+            //         setValue("isVerified", false)
+            //     } else {
+            //         setValue("firstName", "")
+            //         setValue("lastName", "")
+            //         setValue("birthday", null)
+            //         setValue("gender", null)
+            //         setValue("nationalCode", "")
+            //         setValue("isVerified", false)
+            //     }
+            // }
         },
         {
             render: AdditionalBox,
