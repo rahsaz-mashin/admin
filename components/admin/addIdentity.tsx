@@ -173,7 +173,7 @@ const formInitial: T = {
 
     color: null,
 
-    identityDocuments: [],
+    // identityDocuments: [],
     description: null,
 
     firstName: null,

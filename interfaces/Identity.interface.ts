@@ -42,7 +42,7 @@ export interface Identity {
     color: string | null;
 
 
-    identityDocuments: IdentityDocumentData[];
+    // identityDocuments: IdentityDocumentData[];
 
     description: string | null;
 
