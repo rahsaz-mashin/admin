@@ -51,7 +51,7 @@ export interface Identity {
     firstName?: string | null;
     lastName?: string | null;
     birthday?: Date | null;
-    gender?: gendersEnum;
+    gender?: gendersEnum | null;
 
 
     // ===============================================================================> legal identity name
