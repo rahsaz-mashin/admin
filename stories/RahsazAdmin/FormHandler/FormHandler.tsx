@@ -203,7 +203,7 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
 
 
     useEffect(() => {
-        if(!!onSectionChange && selectedSection !== selectedTab) onSectionChange(selectedTab)
+        if(!!onSectionChange && selectedSection !== selectedTab) onSectionChange(selectedTab.toString())
     }, [selectedTab])
 
     return (
@@ -363,7 +363,7 @@ export type FormRenderSimple<T> = {
     sections?: undefined;
 }
 
-export type FormRenderFunc<T> = (watch: UseFormWatch<T>, setValue: UseFormSetValue<T>) => FormRender<T>[]
+export type FormRenderFunc<T> = (watch: UseFormWatch<T & FieldValues>, setValue: UseFormSetValue<T & FieldValues>) => FormRender<T>[]
 
 
 export type FormRender<T> = FormRenderCommon<T> & (FormRenderSimple<T> | FormRenderWithSection<T>)
