@@ -113,6 +113,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "addressCountry/sloStyle",
             },
+            isSearchable: true,
             className: "col-span-full xl:col-span-1",
         },
         {
@@ -123,9 +124,10 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "addressProvince/sloStyle",
                 filter: {
-                    country: watch("country"), // watch dependencies
+                    country: {$eq: watch(`country`)}
                 },
             },
+            isSearchable: true,
             className: "col-span-full xl:col-span-1",
         },
         {
@@ -135,10 +137,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: true,
             dynamic: {
                 route: "addressCity/sloStyle",
-                filter: {
-                    province: watch("province"),
+                filter:  {
+                    province: {$eq: watch(`province`)}
                 },
             },
+            isSearchable: true,
             className: "col-span-full xl:col-span-1",
         },
         {

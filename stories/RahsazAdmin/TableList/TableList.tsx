@@ -24,7 +24,7 @@ import React, {
     forwardRef, Key,
     useContext,
     useEffect,
-    useImperativeHandle,
+    useImperativeHandle, useRef,
     useState
 } from "react";
 import useSWR, {KeyedMutator} from 'swr';
@@ -111,16 +111,106 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         formRef,
     } = props
 
-    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
     const [loadingState, setLoadingState] = useState<LoadingState>("idle");
-    const [showTrashBox, setShowTrashBox] = useState(false);
+    const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
+    const [showTrashBox, setShowTrashBox] = useState(false);
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(defaultPerPage);
-
-    const [filtering, setFiltering] = useState<any>({id: {$btw: "10,18"}});
+    const [filtering, setFiltering] = useState<any>({});
     const [sorting, setSorting] = useState<string>();
+
+
+    // ===================================================================================> page
+
+    useEffect(() => {
+        const pgStorage = localStorage.getItem(`tb_${apiRoute.replace(/\//g, "-")}_pg`);
+        setPage(Number(pgStorage || 1));
+    }, []);
+
+    const isFirstPG = useRef(true)
+    useEffect(() => {
+        if (isFirstPG.current) {
+            isFirstPG.current = false
+            return
+        }
+        localStorage.setItem(`tb_${apiRoute.replace(/\//g, "-")}_pg`, String(page));
+    }, [page]);
+
+
+    // ===================================================================================> perPage
+
+    useEffect(() => {
+        const ppStorage = localStorage.getItem(`tb_${apiRoute.replace(/\//g, "-")}_pp`);
+        setPerPage(Number(ppStorage || defaultPerPage));
+    }, []);
+
+    const isFirstPP = useRef(true)
+    useEffect(() => {
+        if (isFirstPP.current) {
+            isFirstPP.current = false
+            return
+        }
+        localStorage.setItem(`tb_${apiRoute.replace(/\//g, "-")}_pp`, String(perPage));
+    }, [perPage]);
+
+
+    // ===================================================================================> filtering
+
+    useEffect(() => {
+        const ftStorage = localStorage.getItem(`tb_${apiRoute.replace(/\//g, "-")}_ft`);
+        setFiltering(JSON.parse(ftStorage || "{}"));
+    }, []);
+
+    const isFirstFT = useRef(true)
+    useEffect(() => {
+        if (isFirstFT.current) {
+            isFirstFT.current = false
+            return
+        }
+        localStorage.setItem(`tb_${apiRoute.replace(/\//g, "-")}_ft`, JSON.stringify(filtering));
+    }, [filtering]);
+
+
+    // ===================================================================================> sorting
+
+    useEffect(() => {
+        const stStorage = localStorage.getItem(`tb_${apiRoute.replace(/\//g, "-")}_st`);
+        setSorting(JSON.parse(stStorage || "{}"));
+    }, []);
+
+    const isFirstST = useRef(true)
+    useEffect(() => {
+        if (isFirstST.current) {
+            isFirstST.current = false
+            return
+        }
+        localStorage.setItem(`tb_${apiRoute.replace(/\//g, "-")}_st`, JSON.stringify(sorting));
+    }, [sorting]);
+
+
+
+    // ===================================================================================> trashBox
+
+    useEffect(() => {
+        const trStorage = localStorage.getItem(`tb_${apiRoute.replace(/\//g, "-")}_tr`);
+        setShowTrashBox(trStorage === "true" ? true : false);
+    }, []);
+
+
+    const isFirstTR = useRef(true)
+    useEffect(() => {
+        if (isFirstTR.current) {
+            isFirstTR.current = false
+            return
+        }
+        localStorage.setItem(`tb_${apiRoute.replace(/\//g, "-")}_tr`, String(showTrashBox));
+        setPage(1)
+    }, [showTrashBox]);
+
+
+
 
 
     const query = new URLSearchParams()
@@ -128,10 +218,10 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
     query.set('limit', String(perPage))
     query.set('trash', String(showTrashBox))
     if (sorting) query.set('sortBy', sorting)
-    if (filtering) {
-        const ff = convertFilterToQueryString(filtering)
-        // query.set('filter.gg', "")
-    }
+
+    const _filtering = convertFilterToQueryString(filtering)
+
+
 
 
     const {
@@ -140,7 +230,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
         isLoading,
         isValidating,
         mutate
-    } = useSWR<PaginationResponse<T>>(`/${apiRoute}?${query.toString()}`)
+    } = useSWR<PaginationResponse<T>>(`/${apiRoute}?${query.toString()}&${_filtering}`)
 
     const items = (data?.data || [])
     const currentPage = data?.meta?.currentPage || 0
@@ -243,6 +333,7 @@ export const TableList = forwardRef(<T, >(props: TableListProps<T>, ref: any) =>
                                                         size="sm"
                                                         color="primary"
                                                         variant="bordered"
+                                                        className="text-black"
                                                     />
                                                 </TableCell>
                                             )

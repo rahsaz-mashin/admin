@@ -1,11 +1,15 @@
 import {useEffect, useState} from "react";
 import {axiosCoreWithAuth} from "@/lib/axios";
+import useSWR from "swr";
+import {PaginationResponse} from "@/types/PaginationResponse";
+import {convertFilterToQueryString} from "@/lib/convertFilterObjectToQuery";
 
 
 export type UseInfinityListProps = {
     isEnable?: boolean;
     route?: string;
     headers?: { [key: string]: string };
+    search?: string;
     searchKey?: string;
     disablePagination?: boolean;
     withSelected?: boolean;
@@ -15,15 +19,16 @@ export type UseInfinityListProps = {
     selected?: string[]
 };
 
-const useInfinityList = (props: UseInfinityListProps) => {
+const useInfinityList = <T,>(props: UseInfinityListProps) => {
 
     const {
         isEnable = true,
         route,
         filter = {},
-        per = 10,
+        per = 25,
         delay = 1000,
         selected = [],
+        search,
         searchKey,
         disablePagination,
         withSelected = true,
@@ -31,72 +36,51 @@ const useInfinityList = (props: UseInfinityListProps) => {
     } = props
 
     const [list, setList] = useState<any[]>([]);
-    const [hasMore, setHasMore] = useState(false);
-    const [isLoading, setLoading] = useState(false);
-    const [page, setPage] = useState(0);
-    const [error, setError] = useState<string | null>(null);
-
-    const axios = axiosCoreWithAuth()
-
-    const loadData = async () => {
-        try {
-            setLoading(true);
-
-            if (!route) {
-                throw new Error("Route not set");
-            }
-
-            if (page > 0) {
-                await new Promise((resolve) => setTimeout(resolve, delay));
-            }
-
-            let _filter: {[key: string]: string} = {}
-            Object.keys(filter).map((v, i) => {
-                if(filter[v]) _filter[v] = filter[v]
-            })
+    const [page, setPage] = useState(1);
 
 
-            const params: {[key:string]: any} = {..._filter}
-            if(withSelected) {
-                params.selected = selected
-            }
-            if(!!searchKey) {
-                params[searchKey] = params.search
-                delete params.search
-            }
-            if(!disablePagination) {
-                params.page = page
-                params.per = per
-            }
+    const query = new URLSearchParams()
+    const filtering = convertFilterToQueryString(filter)
 
-            const result: any = await axios.get(route, {params, headers})
-            if (!!result?.items) {
-                setHasMore(list.length < result.count);
-                setList((prev) => (page === 0 ? result.items : [...prev, ...result.items]));
-                return
-            }
-        } catch (error: any) {
-            setError("خطا: " + error?.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const onLoadMore = async () => {
-        setPage(Math.floor(list.length / per));
+    query.set((searchKey || 'search'), (search || ''))
+    if (disablePagination) {
+        query.set('page', String(1))
+        query.set('limit', String(1000))
+    } else {
+        query.set('page', String(page))
+        query.set('limit', String(per))
     }
 
-    useEffect(() => {
-        if (isEnable) loadData();
-    }, [page, new URLSearchParams(filter).toString()]);
+    const {
+        data,
+        isLoading,
+        error,
+        isValidating,
+        mutate
+    } = useSWR<PaginationResponse<T>>((isEnable && route) ? `/${route}?${query.toString()}&${filtering}` : null, {
+        keepPreviousData: false,
 
+    });
+
+    useEffect(() => {
+        setPage(1)
+        setList([])
+        // mutate()
+    }, [search, filtering]);
+
+
+    useEffect(() => {
+        setList((prev) => ([...prev, ...(data?.data || [])]))
+    }, [data])
 
 
     return {
-        list,
-        hasMore,
+        list: list,
+        hasMore: data?.meta ? (data.meta.currentPage < data.meta.totalPages) : false,
         isLoading,
-        onLoadMore,
+        onLoadMore: () => {
+            setPage((data?.meta?.currentPage || 0) + 1);
+        },
         error,
     };
 }

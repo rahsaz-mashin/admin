@@ -626,6 +626,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "identity/grade/sloStyle",
             },
+            isSearchable: true,
             isRequired: true,
             className: "col-span-full xl:col-span-1",
         },
@@ -636,6 +637,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "identity/introductionMethod/sloStyle",
             },
+            isSearchable: true,
             isRequired: true,
             className: "col-span-full xl:col-span-1",
         },
@@ -665,6 +667,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     dynamic: {
                         route: "identity/phoneType/sloStyle",
                     },
+                    isSearchable: true,
                     isRequired: true,
                     className: "col-span-full",
                 },
@@ -689,7 +692,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                 },
                 {
-                    name: "zsdfdfz",
+                    name: "description",
                     type: "input",
                     label: "توضیحات",
                     isMultiline: true,
@@ -716,6 +719,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     dynamic: {
                         route: "identity/emailType/sloStyle",
                     },
+                    isSearchable: true,
                     isRequired: true,
                     className: "col-span-full",
                 },
@@ -755,6 +759,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     dynamic: {
                         route: "identity/addressType/sloStyle",
                     },
+                    isSearchable: true,
                     isRequired: true,
                     className: "col-span-full",
                 },
@@ -786,6 +791,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     dynamic: {
                         route: "addressCountry/sloStyle",
                     },
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                 },
                 {
@@ -796,9 +802,10 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     dynamic: {
                         route: "addressProvince/sloStyle",
                         filter: {
-                            country: watch(`addresses.${index}.country`),
+                            country: {$eq: watch(`addresses.${index}.country`)}
                         },
                     },
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                 },
                 {
@@ -808,10 +815,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     isRequired: true,
                     dynamic: {
                         route: "addressCity/sloStyle",
-                        filter: {
-                            province: watch(`addresses.${index}.province`),
+                        filter:  {
+                            province: {$eq: watch(`addresses.${index}.province`)}
                         },
                     },
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                 },
                 {

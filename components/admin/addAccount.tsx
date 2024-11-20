@@ -382,6 +382,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             dynamic: {
                 route: "admin/identity/sloStyle",
             },
+            isSearchable: true,
             isRequired: true,
             className: "col-span-full",
         },

@@ -9,6 +9,32 @@ import {FileStorage} from "@/interfaces/FileStorage.interface";
 import {Currency} from "@/interfaces/Currency.interface";
 
 
+
+
+export interface CalculatePrice {
+    primaryCurrency: Currency,
+    secondaryCurrency: Currency,
+    amount: number,
+
+    chargesPercent: number,
+    chargesAmount: number,
+
+    taxPercent: number,
+    taxAmount: number,
+
+    vatPercent: number,
+    vatAmount: number,
+
+    discountAmount: number,
+
+    totalAmount: number,
+
+    count: number,
+
+    finalAmount: number,
+}
+
+
 export interface ProductFeaturesList {
     id?: number | null;
     category: ProductFeaturesCategory | number | null;
@@ -23,12 +49,7 @@ export interface ProductTechnical {
 export interface ProductPrice {
     priceList: PriceList | number | null;
     amount: number;
-    info?: {
-        primaryCurrency: Currency,
-        secondaryCurrency: Currency,
-        finalPrice: number,
-        finalPriceWithVat: number
-    };
+    info?: CalculatePrice;
 }
 
 export interface ProductInventory {
@@ -67,3 +88,4 @@ export interface Product {
     updatedAt?: Date;
     deletedAt?: Date | null;
 }
+//

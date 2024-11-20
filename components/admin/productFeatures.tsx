@@ -55,6 +55,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 route: "product/featuresCategory/sloStyle",
             },
             isRequired: true,
+            isSearchable: true,
             className: "col-span-full",
         },
         {

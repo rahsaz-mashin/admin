@@ -124,11 +124,13 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
     const axios = axiosCoreWithAuth()
 
     const getPrimaryCurrency = async (id: number) => {
-        const data: Currency = await axios.get(`currency/${id}`)
+        if(!id) setPrimaryCurrency(undefined)
+        const data: Currency = await axios.get(`currency/getInfo/${id}`)
         setPrimaryCurrency(data)
     }
     const getSecondaryCurrency = async (id: number) => {
-        const data: Currency = await axios.get(`currency/${id}`)
+        if(!id) setSecondaryCurrency(undefined)
+        const data: Currency = await axios.get(`currency/getInfo/${id}`)
         setSecondaryCurrency(data)
     }
     useEffect(() => {
@@ -158,6 +160,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
                 route: "currency/sloStyle",
             },
             isRequired: true,
+            isSearchable: true,
             className: "col-span-full xl:col-span-1",
         },
         {
@@ -168,6 +171,7 @@ const FormFields: FormFieldFunc<T> = (watch, setValue) => {
                 route: "currency/sloStyle",
             },
             isRequired: true,
+            isSearchable: true,
             className: "col-span-full xl:col-span-1",
         },
         {

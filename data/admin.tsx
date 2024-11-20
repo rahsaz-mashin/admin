@@ -9,7 +9,7 @@ import {
     BoldDuotoneCategoryListIcon,
     BoldDuotoneComposeMessageIcon,
     BoldDuotoneCountingIcon,
-    BoldDuotoneCurrencyIcon,
+    BoldDuotoneCurrencyIcon, BoldDuotoneDeliveryIcon,
     BoldDuotoneDiscountIcon,
     BoldDuotoneEarthIcon,
     BoldDuotoneEmailAddressIcon,
@@ -119,7 +119,7 @@ const adminRoutes: AdminMenu[] = [
                 ],
             },
             {
-                key: "file_management",
+                key: "fileManagement",
                 title: "مدیریت فایل",
                 icon: <OutlineLibraryIcon/>,
                 isEnable: true,
@@ -524,6 +524,38 @@ const adminRoutes: AdminMenu[] = [
                 title: "مشتریان",
                 icon: <OutlinedUsersGroupIcon/>,
                 isEnable: false,
+                sub: [
+                    {
+                        key: "product",
+                        title: "مدیریت کالا",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "add",
+                                title: "ثبت کالای جدید",
+                                icon: <BoldDuotoneAddIcon size={64}/>,
+                                description: "ثبت کالای جدید",
+                                isEnable: true,
+                            },
+                            {
+                                key: "list",
+                                title: "لیست کالاها",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست کالاها و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "edit",
+                                title: "ویرایش کالا",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "ویرایش کالا",
+                                hidden: true,
+                                isEnable: false,
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 key: "products",
@@ -714,28 +746,6 @@ const adminRoutes: AdminMenu[] = [
                         ],
                     },
                     {
-                        key: "discount",
-                        title: "مدیریت تخفیف ها",
-                        icon: null,
-                        isEnable: false,
-                        sub: [
-                            {
-                                key: "public",
-                                title: "تخفیف های عمومی",
-                                icon: <BoldDuotoneDiscountIcon size={64}/>,
-                                description: "مشاهده لیست تخفیف های عمومی، ایجاد و مدیریت آن ها",
-                                isEnable: true,
-                            },
-                            {
-                                key: "private",
-                                title: "تخفیف های فردی",
-                                icon: <BoldDuotoneDiscountIcon size={64}/>,
-                                description: "مشاهده لیست تخفیف های گروهی و فردی، ایجاد و مدیریت آن ها",
-                                isEnable: true,
-                            },
-                        ],
-                    },
-                    {
                         key: "statistics",
                         title: "آمار و گزارشات",
                         icon: null,
@@ -771,7 +781,39 @@ const adminRoutes: AdminMenu[] = [
                 key: "cart",
                 title: "سبد خرید",
                 icon: <OutlineCartIcon/>,
-                isEnable: false,
+                isEnable: true,
+                sub: [
+                    {
+                        key: "cart",
+                        title: "مدیریت سبدهای خرید",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "add",
+                                title: "ایجاد سبد خرید",
+                                icon: <BoldDuotoneAddIcon size={64}/>,
+                                description: "ثبت سبد خرید جدید",
+                                isEnable: true,
+                            },
+                            {
+                                key: "list",
+                                title: "لیست سبدهای خرید",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "مشاهده لیست سبدهای خرید و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                            {
+                                key: "edit",
+                                title: "ویرایش سبد خرید",
+                                icon: <BoldDuotoneListIcon size={64}/>,
+                                description: "ویرایش سبد خرید",
+                                hidden: true,
+                                isEnable: false,
+                            },
+                        ],
+                    },
+                ]
             },
             {
                 key: "orders",
@@ -806,6 +848,37 @@ const adminRoutes: AdminMenu[] = [
                                 description: "ویرایش سفارش",
                                 hidden: true,
                                 isEnable: false,
+                            },
+                        ],
+                    },
+
+                    {
+                        key: "discount",
+                        title: "مدیریت تخفیف ها",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "discount",
+                                title: "تخفیف ها",
+                                icon: <BoldDuotoneDiscountIcon size={64}/>,
+                                description: "مشاهده لیست تخفیف ها، ایجاد و مدیریت آن ها",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                    {
+                        key: "items",
+                        title: "مدیریت آیتم های مرتبط با سفارش",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "deliveryMethod",
+                                title: "روش های دریافت",
+                                icon: <BoldDuotoneDeliveryIcon size={64}/>,
+                                description: "مشاهده لیست روش های دریافت سفارش، ایجاد و مدیریت آن ها",
+                                isEnable: true,
                             },
                         ],
                     },

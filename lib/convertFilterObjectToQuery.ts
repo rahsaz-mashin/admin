@@ -1,4 +1,5 @@
 export function convertFilterToQueryString(filter: any) {
+    if (!filter) return ""
     const queryString = Object.entries(filter).map(([key, value]) => {
         if (Array.isArray(value)) {
             return value.map((item, idx) => {
@@ -15,14 +16,19 @@ export function convertFilterToQueryString(filter: any) {
 
 
 const midResult = (key: string, value: any) => {
+    if (typeof value === "string") {
+        const result = innerResult(value)
+        return result.map((res) => (`filter.${key}=${res}`)).join("&")
+    }
     return Object.keys(value).map((operator) => {
         const val = value[operator];
         const result = innerResult(val)
-        return result.map((res) => (`filter.${key}=${operator}:${res}`)).join("&")
+        return result.filter((res) => (!!res)).map((res) => (`filter.${key}=${operator}:${res}`)).join("&")
     }).join("&")
 }
 
 const innerResult = (value: any): any[] => {
+    if (!value) return []
     if (Array.isArray(value)) {
         return [value.join(',')];
     }
@@ -30,7 +36,6 @@ const innerResult = (value: any): any[] => {
         let rr = []
         for (const ou of Object.keys(value)) {
             const val = value[ou];
-            console.log(val)
             rr.push(`${ou}:${innerResult(val)}`)
         }
         return rr

@@ -493,6 +493,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isMultiple: true,
             dynamic: {
                 route: "product/category/sloStyle",
+                filter: {"parent": {$not: "$null"}},
+                per: 200,
             },
             withSection: true,
         },
@@ -503,6 +505,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isMultiple: true,
             dynamic: {
                 route: "product/machineModel/sloStyle",
+                per: 200,
             },
             withSection: true,
         },
@@ -557,6 +560,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                         route: "product/featuresCategory/sloStyle",
                     },
                     isRequired: true,
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                 },
                 {
@@ -565,9 +569,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     label: "مقدار ویژگی",
                     dynamic: {
                         route: "product/features/sloStyle",
-                        filter: {category: watch(`features.${index}.category`)}
+                        filter: {
+                            category: {$eq: watch(`features.${index}.category`)}
+                        }
                     },
                     isRequired: true,
+                    isSearchable: true,
+                    withSection: true,
                     className: "col-span-full xl:col-span-1",
                 },
             ],
@@ -609,6 +617,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                         route: "priceList/sloStyle",
                     },
                     isRequired: true,
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
@@ -751,6 +760,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                         route: "warehouse/sloStyle",
                     },
                     isRequired: true,
+                    isSearchable: true,
                     className: "col-span-full xl:col-span-1",
                 },
                 {

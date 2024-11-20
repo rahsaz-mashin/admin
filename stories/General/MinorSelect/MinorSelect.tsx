@@ -122,9 +122,9 @@ export const MinorSelect = (props: MinorSelectProps) => {
         error: loaderError,
     } = useInfinityList({
         ...dynamic,
-        filter: {search, ...dynamic?.filter},
+        search,
         selected: !!field.value ? String(field.value).split(",") : [],
-        isEnable: isDynamic
+        isEnable: isDynamic,
     });
 
 
@@ -156,7 +156,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
 
     const [, scrollerRef] = useInfiniteScroll({
         hasMore,
-        isEnabled: isOpen, // isOpen,
+        isEnabled: isDynamic && isOpen, // isOpen,
         shouldUseLoader: false,
         onLoadMore,
     });
@@ -271,7 +271,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
                     listboxProps={{
                         emptyContent: "موردی پیدا نشد"
                     }}
-                    selectedKey={field.value}
+                    selectedKey={field.value ? String(field.value) : undefined}
                     onSelectionChange={onSelectionChange}
                     inputValue={search}
                     onInputChange={onSearchChange}
@@ -298,7 +298,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
                 }}
                 isMultiline={isMultiline}
                 selectionMode={isMultiple ? "multiple" : "single"}
-                selectedKeys={new Set(String(field.value)?.split(","))}
+                selectedKeys={field.value ? new Set(String(field.value)?.split(",")) : undefined}
                 onSelectionChange={onSelectionChange}
                 className={className}
             >

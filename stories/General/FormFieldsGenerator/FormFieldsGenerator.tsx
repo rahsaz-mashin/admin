@@ -188,6 +188,7 @@ type FieldArrayPropsType<T> = {
     description?: ReactNode;
     errorMessage?: ReactNode;
     className?: string;
+    itemClassName?: string;
 
     fields: (index: number) => FormFieldType<T>[];
 }
@@ -206,6 +207,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
         description,
         errorMessage,
         className = "",
+        itemClassName = ""
 
     } = props
 
@@ -239,7 +241,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                     key={`${name}.${index}`}
                     className="flex flex-col xl:flex-row col-span-full h-full overflow-hidden cursor-pointer items-stretch bg-gray-50 group-data-[invalid]:bg-danger-100 hover:bg-gray-300 min-h-32 transition rounded-2xl"
                 >
-                    <div className="grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center">
+                    <div className={"grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center " + itemClassName}>
                         <FormFieldsGenerator
                             control={control}
                             fields={fields(index).map((v) => ({...v, name: `${name}.${index}.${v.name}` as DeepKeys<T>}))}
@@ -282,7 +284,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                 onPress={() => append({})}
                 color="primary"
                 variant="solid"
-                className="col-span-full"
+                className="col-span-full flex-shrink-0"
                 isDisabled={isDisabled || isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting}
             >
                 افزودن

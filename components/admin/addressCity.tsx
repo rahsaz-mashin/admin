@@ -42,6 +42,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
                 route: "addressProvince/sloStyle",
             },
             isRequired: true,
+            isSearchable: true,
             className: "col-span-full",
         },
         {

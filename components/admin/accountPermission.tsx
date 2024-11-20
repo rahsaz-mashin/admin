@@ -43,6 +43,7 @@ const formFields: FormFieldFunc<T> = (watch) => {
             dynamic: {
                 route: "account/permissionCategory/sloStyle",
             },
+            isSearchable: true,
             isRequired: true,
             className: "col-span-full",
         },

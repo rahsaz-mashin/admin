@@ -38,6 +38,7 @@ const tableColumns: ColumnType<T>[] = [
         key: "title",
         title: "عنوان",
         minWidth: 280,
+        allowsSorting: true,
         render: (value, ctx) => {
             return (
                 <div className="flex flex-row gap-5 items-center">

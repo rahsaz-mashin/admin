@@ -49,8 +49,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "مادر",
             dynamic: {
                 route: "product/category/sloStyle",
+                filter: {"parent": "$null"},
+                per: 100,
             },
             className: "col-span-full",
+            isSearchable: true,
         },
         {
             name: "title",

@@ -30,6 +30,8 @@ import {introductionMethodContext} from "@/components/admin/introductionMethod";
 import {identityDocumentContext} from "@/components/admin/identityDocument";
 import {addIdentityContext} from "@/components/admin/addIdentity";
 import {identityListContext} from "@/components/admin/identityList";
+import {addCartContext} from "@/components/admin/addCart";
+import {addOrderContext} from "@/components/admin/addOrder";
 
 export const adminContextConfig: any = {
     general: {
@@ -43,7 +45,7 @@ export const adminContextConfig: any = {
                 icons: iconContext,
             },
         },
-        file_management: {
+        fileManagement: {
             storage: {
                 systems: storageSystemsContext,
             },
@@ -113,6 +115,23 @@ export const adminContextConfig: any = {
             settings: {
                 product: productSettingsContext,
             }
+        },
+        cart: {
+            cart: {
+                add: addCartContext,
+                edit: addCartContext,
+                list: productListContext,
+            },
+        },
+        orders: {
+            order: {
+                add: addOrderContext,
+                edit: addOrderContext,
+                list: productListContext,
+            },
+            items: {
+                deliveryMethod: branchContext,
+            },
         },
     },
 }
