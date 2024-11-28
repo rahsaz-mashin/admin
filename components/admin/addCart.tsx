@@ -125,9 +125,10 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
 
 
 const formInitial: T = {
+    priceList: null,
     account: null,
     products: [],
-    type: cartTypesEnum.current,
+    type: cartTypesEnum.current
 }
 
 const formSchema = z.object({
@@ -207,15 +208,15 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isSearchable: true,
             className: "col-span-full xl:col-span-1",
             dependency: async (value, name) => {
-                const axios = axiosCoreWithAuth()
-                const priceList = value
-                for (let i = 0; i < watch(`products`).length; i++) {
-                    const amount = (watch(`products.${i}.amount`) || 0).toString().replace(/,/g, "")
-                    const count = (watch(`products.${i}.count`) || 0).toString().replace(/,/g, "")
-                    if (!priceList) return
-                    const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
-                    setValue(`products.${i}.info`, data)
-                }
+                // const axios = axiosCoreWithAuth()
+                // const priceList = value
+                // for (let i = 0; i < watch(`products`).length; i++) {
+                //     const amount = (watch(`products.${i}.amount`) || 0).toString().replace(/,/g, "")
+                //     const count = (watch(`products.${i}.count`) || 0).toString().replace(/,/g, "")
+                //     if (!priceList) return
+                //     const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
+                //     // setValue(`products.${i}.info`, data)
+                // }
             },
         },
         {
@@ -235,14 +236,14 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     isRequired: true,
                     isSearchable: true,
                     className: "col-span-full lg:col-span-2 xl:col-span-1",
-                    dependency: async (value, name) => {
-                        const axios = axiosCoreWithAuth()
-                        const data: any = await axios.get(`admin/product/price/${value}`)
-                        const d = data.price.find((v) => {
-                            return v.priceList.id === +watch('priceList')
-                        })
-                        setValue(`products.${index}.amount`, (d?.amount || 0))
-                    },
+                    // dependency: async (value, name) => {
+                    //     const axios = axiosCoreWithAuth()
+                    //     const data: any = await axios.get(`admin/product/price/${value}`)
+                    //     const d = data.price.find((v) => {
+                    //         return v.priceList.id === +watch('priceList')
+                    //     })
+                    //     setValue(`products.${index}.amount`, (d?.amount || 0))
+                    // },
                 },
                 {
                     name: "count",
@@ -252,13 +253,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     isRequired: true,
                     className: "col-span-full lg:col-span-2 xl:col-span-1",
                     dependency: async (value, name) => {
-                        const axios = axiosCoreWithAuth()
-                        const priceList = watch('priceList')
-                        const amount = (watch(`products.${index}.amount`) || 0).toString().replace(/,/g, "")
-                        const count = (value || 0).toString().replace(/,/g, "")
-                        if (!priceList) return
-                        const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
-                        setValue(`products.${index}.info`, data)
+                        // const axios = axiosCoreWithAuth()
+                        // const priceList = watch('priceList')
+                        // const amount = (watch(`products.${index}.amount`) || 0).toString().replace(/,/g, "")
+                        // const count = (value || 0).toString().replace(/,/g, "")
+                        // if (!priceList) return
+                        // const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
+                        // setValue(`products.${index}.info`, data)
                     },
                 },
                 {
@@ -279,13 +280,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     // ),
                     className: "col-span-full lg:col-span-2 xl:col-span-1",
                     dependency: async (value, name) => {
-                        const axios = axiosCoreWithAuth()
-                        const priceList = watch('priceList')
-                        const amount = (value || 0).toString().replace(/,/g, "")
-                        const count = (watch(`products.${index}.count`) || 0).toString().replace(/,/g, "")
-                        if (!priceList) return
-                        const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
-                        setValue(`products.${index}.info`, data)
+                        // const axios = axiosCoreWithAuth()
+                        // const priceList = watch('priceList')
+                        // const amount = (value || 0).toString().replace(/,/g, "")
+                        // const count = (watch(`products.${index}.count`) || 0).toString().replace(/,/g, "")
+                        // if (!priceList) return
+                        // const data = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount}&count=${count}`)
+                        // setValue(`products.${index}.info`, data)
                     },
                 },
                 {
@@ -342,99 +343,99 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                         // setValue(`products.${index}.info`, data)
                     },
                 },
-                {
-                    name: "calc",
-                    type: "custom",
-                    className: "col-span-full lg:col-span-2 xl:col-span-1",
-                    children: (
-                        <div className="flex flex-col gap-2 truncate text-sm">
-                            <div className="flex gap-2 items-center">
-                                <div className="">
-                                    قیمت نهایی:
-                                </div>
-                                <div className="flex gap-1 font-bold">
-                                    <NumericFormat
-                                        value={watch(`products.${index}.info`)?.finalPrice || 0}
-                                        thousandSeparator=","
-                                        decimalSeparator="."
-                                        allowNegative={false}
-                                        decimalScale={0}
-                                        allowLeadingZeros={false}
-                                        displayType="text"
-                                    />
-                                    <span className="text-xs font-bold text-primary">
-                                        {(
-                                            watch(`products.${index}.info`)?.secondaryCurrency?.icon
-                                                ?
-                                                <span
-                                                    className="text-primary h-6 w-6 flex justify-center items-center"
-                                                    dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
-                                                />
-                                                :
-                                                (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
-                                        )}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <div className="">
-                                    قیمت نهایی (+ ارزش افزوده):
-                                </div>
-                                <div className="flex gap-1 font-bold">
-                                    <NumericFormat
-                                        value={watch(`products.${index}.info`)?.finalPriceWithVat || 0}
-                                        thousandSeparator=","
-                                        decimalSeparator="."
-                                        allowNegative={false}
-                                        decimalScale={0}
-                                        allowLeadingZeros={false}
-                                        displayType="text"
-                                    />
-                                    <span className="text-xs font-bold text-primary">
-                                        {(
-                                            watch(`products.${index}.info`)?.secondaryCurrency?.icon
-                                                ?
-                                                <span
-                                                    className="text-primary h-6 w-6 flex justify-center items-center"
-                                                    dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
-                                                />
-                                                :
-                                                (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
-                                        )}
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <div className="">
-                                    قیمت کل:
-                                </div>
-                                <div className="flex gap-1 font-bold">
-                                    <NumericFormat
-                                        value={(watch(`products.${index}.info`)?.finalAmount || 0)}
-                                        thousandSeparator=","
-                                        decimalSeparator="."
-                                        allowNegative={false}
-                                        decimalScale={0}
-                                        allowLeadingZeros={false}
-                                        displayType="text"
-                                    />
-                                    <span className="text-xs font-bold text-primary">
-                                        {(
-                                            watch(`products.${index}.info`)?.secondaryCurrency?.icon
-                                                ?
-                                                <span
-                                                    className="text-primary h-6 w-6 flex justify-center items-center"
-                                                    dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
-                                                />
-                                                :
-                                                (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
-                                        )}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                },
+                // {
+                //     name: "calc",
+                //     type: "custom",
+                //     className: "col-span-full lg:col-span-2 xl:col-span-1",
+                //     children: (
+                //         <div className="flex flex-col gap-2 truncate text-sm">
+                //             <div className="flex gap-2 items-center">
+                //                 <div className="">
+                //                     قیمت نهایی:
+                //                 </div>
+                //                 <div className="flex gap-1 font-bold">
+                //                     <NumericFormat
+                //                         value={watch(`products.${index}.info`)?.finalPrice || 0}
+                //                         thousandSeparator=","
+                //                         decimalSeparator="."
+                //                         allowNegative={false}
+                //                         decimalScale={0}
+                //                         allowLeadingZeros={false}
+                //                         displayType="text"
+                //                     />
+                //                     <span className="text-xs font-bold text-primary">
+                //                         {(
+                //                             watch(`products.${index}.info`)?.secondaryCurrency?.icon
+                //                                 ?
+                //                                 <span
+                //                                     className="text-primary h-6 w-6 flex justify-center items-center"
+                //                                     dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
+                //                                 />
+                //                                 :
+                //                                 (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
+                //                         )}
+                //                     </span>
+                //                 </div>
+                //             </div>
+                //             <div className="flex gap-2 items-center">
+                //                 <div className="">
+                //                     قیمت نهایی (+ ارزش افزوده):
+                //                 </div>
+                //                 <div className="flex gap-1 font-bold">
+                //                     <NumericFormat
+                //                         value={watch(`products.${index}.info`)?.finalPriceWithVat || 0}
+                //                         thousandSeparator=","
+                //                         decimalSeparator="."
+                //                         allowNegative={false}
+                //                         decimalScale={0}
+                //                         allowLeadingZeros={false}
+                //                         displayType="text"
+                //                     />
+                //                     <span className="text-xs font-bold text-primary">
+                //                         {(
+                //                             watch(`products.${index}.info`)?.secondaryCurrency?.icon
+                //                                 ?
+                //                                 <span
+                //                                     className="text-primary h-6 w-6 flex justify-center items-center"
+                //                                     dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
+                //                                 />
+                //                                 :
+                //                                 (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
+                //                         )}
+                //                     </span>
+                //                 </div>
+                //             </div>
+                //             <div className="flex gap-2 items-center">
+                //                 <div className="">
+                //                     قیمت کل:
+                //                 </div>
+                //                 <div className="flex gap-1 font-bold">
+                //                     <NumericFormat
+                //                         value={(watch(`products.${index}.info`)?.finalAmount || 0)}
+                //                         thousandSeparator=","
+                //                         decimalSeparator="."
+                //                         allowNegative={false}
+                //                         decimalScale={0}
+                //                         allowLeadingZeros={false}
+                //                         displayType="text"
+                //                     />
+                //                     <span className="text-xs font-bold text-primary">
+                //                         {(
+                //                             watch(`products.${index}.info`)?.secondaryCurrency?.icon
+                //                                 ?
+                //                                 <span
+                //                                     className="text-primary h-6 w-6 flex justify-center items-center"
+                //                                     dangerouslySetInnerHTML={{__html: (watch(`products.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
+                //                                 />
+                //                                 :
+                //                                 (watch(`products.${index}.info`)?.secondaryCurrency?.iso || "~")
+                //                         )}
+                //                     </span>
+                //                 </div>
+                //             </div>
+                //         </div>
+                //     )
+                // },
             ],
         },
     ])
