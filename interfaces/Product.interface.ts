@@ -72,6 +72,10 @@ export interface Product {
 
     features?: ProductFeaturesList[],
     technical?: ProductTechnical[];
+
+    hasSameAmount?: boolean;
+    amount?: number;
+
     price?: ProductPrice[],
 
 

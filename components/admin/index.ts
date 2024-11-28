@@ -32,6 +32,7 @@ import {addIdentityContext} from "@/components/admin/addIdentity";
 import {identityListContext} from "@/components/admin/identityList";
 import {addCartContext} from "@/components/admin/addCart";
 import {addOrderContext} from "@/components/admin/addOrder";
+import {deliveryMethodContext} from "@/components/admin/orderDeliveryMethod";
 
 export const adminContextConfig: any = {
     general: {
@@ -130,7 +131,7 @@ export const adminContextConfig: any = {
                 list: productListContext,
             },
             items: {
-                deliveryMethod: branchContext,
+                deliveryMethod: deliveryMethodContext,
             },
         },
     },

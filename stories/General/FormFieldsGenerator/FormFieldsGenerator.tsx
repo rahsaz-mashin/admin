@@ -18,6 +18,7 @@ import {TimeValue} from "@react-types/datepicker";
 import {Button, DateValue} from "@nextui-org/react";
 import {DeleteOutline} from "@mui/icons-material";
 import {DeepKeys} from "@/lib/DeepKeys";
+import {CollectionChildren} from "@react-types/shared";
 
 
 export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
@@ -378,6 +379,10 @@ type FromFieldTypeSelect<T> = {
     dynamic?: DynamicSelectType;
     withSection?: boolean;
     isSearchable?: boolean;
+
+    itemBuilder?: CollectionChildren<any>;
+    sectionBuilder?: CollectionChildren<any>;
+    valueBuilder?: (items: any[]) => ReactNode;
 }
 
 type FromFieldTypeRadioBox<T> = {

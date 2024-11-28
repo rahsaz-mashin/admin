@@ -16,6 +16,7 @@ export function convertFilterToQueryString(filter: any) {
 
 
 const midResult = (key: string, value: any) => {
+    if(!value) return ""
     if (typeof value === "string") {
         const result = innerResult(value)
         return result.map((res) => (`filter.${key}=${res}`)).join("&")

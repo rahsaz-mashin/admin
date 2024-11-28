@@ -59,7 +59,7 @@ const useInfinityList = <T,>(props: UseInfinityListProps) => {
         mutate
     } = useSWR<PaginationResponse<T>>((isEnable && route) ? `/${route}?${query.toString()}&${filtering}` : null, {
         keepPreviousData: false,
-
+        fallbackData: { data: [], meta: {}}
     });
 
     useEffect(() => {
@@ -75,13 +75,13 @@ const useInfinityList = <T,>(props: UseInfinityListProps) => {
 
 
     return {
-        list: list,
-        hasMore: data?.meta ? (data.meta.currentPage < data.meta.totalPages) : false,
+        list,
         isLoading,
+        error,
+        hasMore: data?.meta ? (data.meta.currentPage < data.meta.totalPages) : false,
         onLoadMore: () => {
             setPage((data?.meta?.currentPage || 0) + 1);
         },
-        error,
     };
 }
 

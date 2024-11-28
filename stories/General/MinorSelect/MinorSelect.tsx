@@ -148,7 +148,7 @@ export const MinorSelect = (props: MinorSelectProps) => {
         description: description,
 
         isInvalid: isInvalid || !!loaderError || fieldState.invalid,
-        errorMessage: errorMessage || loaderError || fieldState.error?.message,
+        errorMessage: errorMessage || loaderError?.message || fieldState.error?.message,
 
         name: field.name,
     }

@@ -233,7 +233,7 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
                 fullWidth
                 classNames={{body: "items-start text-start"}}
             >
-                <CardBody className="gap-3 grid grid-cols-2 content-start">
+                <CardBody className="gap-3 grid grid-cols-2 content-start items-center">
                     <FormFieldsGenerator
                         control={control}
                         fields={fields?.filter(({name}: { name: any }) => (currentSection?.fields?.includes(name)))}

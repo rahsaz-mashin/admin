@@ -55,13 +55,16 @@ export interface OrderProduct {
 
 export interface Order {
     readonly id?: number;
-    code: number;
+    code: number | null;
+
 
     account: AssignType<Account> | null;
+    accountInfo?: Account;
     priceList: AssignType<PriceList> | null;
     products: OrderProduct[];
 
     deliveryMethod: AssignType<OrderDeliveryMethod> | null;
+    deliveryMethodInfo?: OrderDeliveryMethod;
 
     discount: AssignType<Discount> | null;
 

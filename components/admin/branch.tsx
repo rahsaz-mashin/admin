@@ -63,7 +63,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "شماره تماس",
             isRequired: true,
             isNumeric: true,
-            pattern: "### #### ####",
+            pattern: "###########",
             className: "col-span-full xl:col-span-1",
         },
         {

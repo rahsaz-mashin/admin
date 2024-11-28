@@ -2,7 +2,7 @@ import React from "react";
 import {z} from "zod";
 import {FormRender} from "@/stories/RahsazAdmin/FormHandler";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {Product} from "@/interfaces/Product.interface";
+import {CalculatePrice, Product} from "@/interfaces/Product.interface";
 import {Card, CardHeader} from "@nextui-org/card";
 import {Button, CardBody} from "@nextui-org/react";
 import slugify from "slugify-persian";
@@ -197,6 +197,10 @@ const formInitial: T = {
     intro: "",
     features: [],
     technical: [],
+
+    hasSameAmount: true,
+    amount: 0,
+
     price: [],
     inventory: [],
 
@@ -288,6 +292,15 @@ const formSchema = z.object({
             return cat.length === unique.size;
         },
         "دسته های قیمتی نباید تکراری باشند"
+    ),
+    hasSameAmount: z.boolean({message: "وضعیت نوع قیمت گذاری را مشخص کنید"}),
+    amount: z.union(
+        [
+            z.string({message: "اعلان موجودی را وارد کنید"})
+                .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اعلان موجودی معتبر نیست"})
+                .transform((val) => +(val.replace(/,/g, ""))),
+            z.number({message: "اعلان موجودی معتبر نیست"}).nonnegative({message: "اعلان موجودی معتبر نیست"}),
+        ]
     ),
 
     inventory: z.array(
@@ -409,7 +422,7 @@ const formRender: FormRender<T>[] = [
                         <span>قیمت گذاری</span>
                     </div>
                 ),
-                fields: ["price"],
+                fields: ["hasSameAmount", "amount", "price"],
             },
             {
                 key: "inventory",
@@ -604,6 +617,41 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             ]
         },
         {
+            name: "hasSameAmount",
+            type: "switch",
+            label: "قیمت های یکسان در دسته های قیمتی",
+            className: "col-span-full xl:col-span-1",
+            dependency: (value, name) => {
+                const hasSameAmount = value
+                const amount = Number((watch("amount") || 0).toString().replace(/,/g, ""))
+                const price = watch("price")
+                if (price && hasSameAmount) {
+                    for (let i = 0; i < price.length; i++) {
+                        setValue(`price.${i}.amount`, amount)
+                    }
+                }
+            }
+        },
+        {
+            name: "amount",
+            type: "input",
+            label: "قیمت",
+            isNumeric: true,
+            isRequired: true,
+            className: "col-span-full xl:col-span-1",
+            isDisabled: !watch("hasSameAmount"),
+            dependency: (value, name) => {
+                const hasSameAmount = watch("hasSameAmount")
+                const amount = (value || 0).toString().replace(/,/g, "")
+                const price = watch("price")
+                if (price && hasSameAmount) {
+                    for (let i = 0; i < price.length; i++) {
+                        setValue(`price.${i}.amount`, amount)
+                    }
+                }
+            }
+        },
+        {
             name: "price",
             type: "array",
             description: "برای مشخص کردن قیمت، دکمه افزودن را کلیک کنید",
@@ -621,15 +669,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const amount = (watch(`price.${index}.amount`) || 0)?.toString()
+
                         const priceList = value
-                        if (!priceList) return
-                        const data: {
-                            primaryCurrency: Currency,
-                            secondaryCurrency: Currency,
-                            finalPrice: number,
-                            finalPriceWithVat: number
-                        } = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
+                        const amount = (watch(`price.${index}.amount`) || 0).toString().replace(/,/g, "")
+                        const count = (1).toString()
+                        const discount = (0).toString()
+
+                        const data: CalculatePrice = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&amount=${amount}&count=${count}&discount=${discount}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -649,18 +695,17 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             :
                             (watch(`price.${index}.info`)?.primaryCurrency?.iso || "~")
                     ),
+                    isDisabled: !!watch("hasSameAmount"),
                     className: "col-span-full xl:col-span-1",
                     dependency: async (value, name) => {
                         const axios = axiosCoreWithAuth()
-                        const amount = (value || 0).toString()
+
                         const priceList = watch(`price.${index}.priceList`)
-                        if (!priceList) return
-                        const data: {
-                            primaryCurrency: Currency,
-                            secondaryCurrency: Currency,
-                            finalPrice: number,
-                            finalPriceWithVat: number,
-                        } = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&price=${amount?.replace(/,/g, "") || 0}`)
+                        const amount = (value || 0).toString().replace(/,/g, "")
+                        const count = (1).toString()
+                        const discount = (0).toString()
+
+                        const data: CalculatePrice = await axios.get(`admin/product/calculatePrice?priceList=${priceList}&amount=${amount}&count=${count}&discount=${discount}`)
                         setValue(`price.${index}.info`, data)
                     },
                 },
@@ -669,14 +714,14 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     type: "custom",
                     className: "col-span-full",
                     children: (
-                        <div className="flex flex-col gap-2 truncate text-sm">
+                        <div className="flex flex-row flex-wrap gap-x-8 gap-y-2 truncate text-sm">
                             <div className="flex gap-2 items-center">
                                 <div className="">
-                                    قیمت نهایی:
+                                    قیمت خالص:
                                 </div>
                                 <div className="flex gap-1 font-bold">
                                     <NumericFormat
-                                        value={watch(`price.${index}.info`)?.finalPrice || 0}
+                                        value={watch(`price.${index}.info`)?.amount || 0}
                                         thousandSeparator=","
                                         decimalSeparator="."
                                         allowNegative={false}
@@ -700,11 +745,39 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                             </div>
                             <div className="flex gap-2 items-center">
                                 <div className="">
-                                    قیمت نهایی (با احتساب ارزش افزوده):
+                                    ارزش افزوده ({watch(`price.${index}.info`)?.vatPercent}%) (عوارض + مالیات):
                                 </div>
                                 <div className="flex gap-1 font-bold">
                                     <NumericFormat
-                                        value={watch(`price.${index}.info`)?.finalPriceWithVat || 0}
+                                        value={watch(`price.${index}.info`)?.vatAmount || 0}
+                                        thousandSeparator=","
+                                        decimalSeparator="."
+                                        allowNegative={false}
+                                        decimalScale={0}
+                                        allowLeadingZeros={false}
+                                        displayType="text"
+                                    />
+                                    <span className="text-xs font-bold text-primary">
+                                        {(
+                                            watch(`price.${index}.info`)?.secondaryCurrency?.icon
+                                                ?
+                                                <span
+                                                    className="text-primary h-6 w-6 flex justify-center items-center"
+                                                    dangerouslySetInnerHTML={{__html: (watch(`price.${index}.info`)?.secondaryCurrency?.icon?.content || "")}}
+                                                />
+                                                :
+                                                (watch(`price.${index}.info`)?.secondaryCurrency?.iso || "~")
+                                        )}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 items-center">
+                                <div className="">
+                                    قیمت نهایی:
+                                </div>
+                                <div className="flex gap-1 font-bold">
+                                    <NumericFormat
+                                        value={watch(`price.${index}.info`)?.finalAmount || 0}
                                         thousandSeparator=","
                                         decimalSeparator="."
                                         allowNegative={false}
@@ -730,6 +803,15 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     )
                 },
             ],
+            dependency: (value, name) => {
+                const hasSameAmount = watch("hasSameAmount")
+                const amount = Number((watch("amount") || 0).toString().replace(/,/g, ""))
+                if (hasSameAmount) {
+                    for (let i = 0; i < value?.length; i++) {
+                        setValue(`price.${i}.amount`, amount)
+                    }
+                }
+            }
         },
         {
             name: "isActiveInventoryManagement",

@@ -208,7 +208,7 @@ const formSchema = z.object({
     registrationNumber: z.string({message: "شماره ثبت شرکت را وارد کنید"}).regex(/^\d{3,6}\s{0,3}$/, "شماره ثبت شرکت معتبر نیست").nullable().optional().or(z.string().length(0)),
 
 
-    nationalCode: z.string({message: "شماره ملی را وارد کنید"}).regex(/^\d{10}(?=\s)|^\d{11}$/, "شماره ملی معتبر نیست").trim().nullable().optional().or(z.string().length(0)),
+    nationalCode: z.string({message: "شماره ملی را وارد کنید"}).regex(/^\d{10,11}|^\d{10}(?=\s)$/, "شماره ملی معتبر نیست").trim().nullable().optional().or(z.string().length(0)),
     isVerified: z.boolean({message: "احرار شده را مشخص کنید"}).nullable().optional(),
 
     // additional data
@@ -280,6 +280,7 @@ const formSchema = z.object({
     // addresses
     addresses: z.array(
         z.object({
+                title: z.string({message: "عنوان آدرس را وارد کنید"}).min(3, "عنوان آدرس معتبر نیست"),
                 type: z.union([
                     z.string({message: "نوع آدرس را انتخاب کنید"})
                         .regex(/^\d+$/, "نوع آدرس معتبر نیست")
@@ -677,8 +678,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     label: "شماره",
                     isRequired: true,
                     isNumeric: true,
-                    pattern: "+## ## #### ####",
-                    description: "به این صورت وارد شود: 9851133445566+",
+                    pattern: "###########",
+                    description: "به این صورت وارد شود: 051133445566",
                     allowEmptyFormatting: true,
                     className: "col-span-full xl:col-span-1",
                 },
@@ -753,6 +754,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 //     className: "col-span-full xl:col-span-1",
                 // },
                 {
+                    name: "title",
+                    type: "input",
+                    label: "عنوان",
+                    isRequired: true,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
                     name: "type",
                     type: "select",
                     label: "نوع",
@@ -761,7 +769,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     },
                     isSearchable: true,
                     isRequired: true,
-                    className: "col-span-full",
+                    className: "col-span-full xl:col-span-1",
                 },
                 {
                     name: "location",
