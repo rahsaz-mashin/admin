@@ -69,7 +69,7 @@ export interface Order {
     discount: AssignType<Discount> | null;
 
     overallStatus: orderOverallStatusesEnum;
-    processStatus: orderProcessStatusesEnum;
+    processStatus: orderProcessStatusesEnum | null;
 
     address: IdentityAddress | null;
 

@@ -59,7 +59,9 @@ const useInfinityList = <T,>(props: UseInfinityListProps) => {
         mutate
     } = useSWR<PaginationResponse<T>>((isEnable && route) ? `/${route}?${query.toString()}&${filtering}` : null, {
         keepPreviousData: false,
-        fallbackData: { data: [], meta: {}}
+        fallbackData: {
+            data: [],
+        }
     });
 
     useEffect(() => {

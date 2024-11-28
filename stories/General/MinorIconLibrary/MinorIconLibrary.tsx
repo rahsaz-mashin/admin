@@ -82,8 +82,8 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
     } = useSWR<PaginationResponse<Icon>>(`icon/library?${query.toString()}`)
 
 
-    const currentPage = data?.meta.currentPage || 0
-    const totalPages = data?.meta.totalPages || 0
+    const currentPage = data?.meta?.currentPage || 1
+    const totalPages = data?.meta?.totalPages || 0
 
 
     const _props = {
@@ -117,7 +117,7 @@ export const MinorIconLibrary = (props: MinorIconLibraryProps) => {
                 <div className="flex justify-between items-center gap-3 overflow-y-hidden w-full pb-2">
                     <div className="flex justify-center items-center gap-2">
                         <h1>{props.label}</h1>
-                        {!!data?.meta.totalItems && (<span>({data.meta.totalItems})</span>)}
+                        {!!data?.meta?.totalItems && (<span>({data.meta.totalItems})</span>)}
                     </div>
                     {!isLoading && (
                         <div className="flex justify-center items-center gap-2">

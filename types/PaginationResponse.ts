@@ -10,6 +10,6 @@ export type PaginationResponseMeta<T> = {
 
 export type PaginationResponse<T> = {
     data: T[];
-    links: {};
-    meta: PaginationResponseMeta<T>;
+    links?: {};
+    meta?: PaginationResponseMeta<T>;
 }

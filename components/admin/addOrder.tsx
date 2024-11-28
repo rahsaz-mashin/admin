@@ -311,6 +311,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 for (let i = 0; i < watch(`products`).length; i++) {
                     const product = Number(watch(`products.${i}.product`))
                     if (!product) {
+                        // @ts-ignore
                         setValue(`products.${i}.amount`, 0)
                         return
                     }
