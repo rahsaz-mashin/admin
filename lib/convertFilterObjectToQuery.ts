@@ -10,7 +10,6 @@ export function convertFilterToQueryString(filter: any) {
             return midResult(key, value)
         }
     }).join('&');
-    console.log(queryString);
     return queryString;
 }
 

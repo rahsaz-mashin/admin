@@ -49,13 +49,15 @@ export const Drawer = (props: DrawerProps) => {
 
 
     let accountName = "[هویت ثبت نشده]"
-    const accountAvatar = session.account.avatar+""
+    const accountAvatar = session.account.avatar?.system ? (session.account.avatar?.system?.baseUrl + "/" + session.account.avatar?.path) : ""
     if (session.account.identity?.identityType === identityTypesEnum.real) {
         accountName = session.account.identity?.firstName! + " " + session.account.identity?.lastName!
     }
     if (session.account.identity?.identityType === identityTypesEnum.legal) {
         accountName = session.account.identity?.legalName!
     }
+
+    console.log({session})
 
 
     return (
@@ -270,8 +272,10 @@ export const Drawer = (props: DrawerProps) => {
                 className="px-8 z-20 flex justify-between text-white items-center absolute bottom-0 start-[76px] cursor-pointer w-[calc(100%-76px)] h-[76px]"
             >
                 <AccountName name={accountName}/>
-                <DrawerUserMenu />
+                <DrawerUserMenu/>
             </div>
         </nav>
     );
-};
+};//
+//
+//

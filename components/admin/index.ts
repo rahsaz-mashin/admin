@@ -33,6 +33,7 @@ import {identityListContext} from "@/components/admin/identityList";
 import {addCartContext} from "@/components/admin/addCart";
 import {addOrderContext} from "@/components/admin/addOrder";
 import {deliveryMethodContext} from "@/components/admin/orderDeliveryMethod";
+import {priceListAssignContext} from "@/components/admin/priceListAssign";
 
 export const adminContextConfig: any = {
     general: {
@@ -112,6 +113,7 @@ export const adminContextConfig: any = {
             price: {
                 currency: currencyContext,
                 price_list: priceListContext,
+                price_list_assign: priceListAssignContext,
             },
             settings: {
                 product: productSettingsContext,

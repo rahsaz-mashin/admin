@@ -45,6 +45,12 @@ export {Component as BoldDuotonePermissionGroupIcon} from "./BoldDuotonePermissi
 export {Component as BoldDuotonePermissionCategoryIcon} from "./BoldDuotonePermissionCategory.stories";
 export {Component as BoldDuotonePermissionIcon} from "./BoldDuotonePermission.stories";
 export {Component as BoldDuotoneDeliveryIcon} from "./BoldDuotoneDelivery.stories";
+export {Component as BoldDuotoneStoryIcon} from "./BoldDuotoneStory.stories";
+export {Component as BoldDuotoneSliderIcon} from "./BoldDuotoneSlider.stories";
+export {Component as BoldDuotoneShortcutIcon} from "./BoldDuotoneShortcut.stories";
+export {Component as BoldDuotoneOnlineCallIcon} from "./BoldDuotoneOnlineCall.stories";
+export {Component as BoldDuotoneMenuIcon} from "./BoldDuotoneMenu.stories";
+export {Component as BoldDuotoneHeaderIcon} from "./BoldDuotoneHeader.stories";
 
 
 

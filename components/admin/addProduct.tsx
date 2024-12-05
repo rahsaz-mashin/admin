@@ -226,6 +226,7 @@ const formSchema = z.object({
 
     intro: z.string({message: "معرفی کالا را وارد کنید"}).optional().nullable(),
     technical: z.object({
+        id: z.number().positive().optional(),
         title: z.string({message: "عنوان مشخصه را وارد کنید"}).min(3, "عنوان مشخصه معتبر نیست"),
         value: z.string({message: "مقدار مشخصه را وارد کنید"}).min(3, "مقدار مشخصه معتبر نیست"),
     }, {message: "مشخصات فنی معتبر نیست"}).array(),
@@ -233,6 +234,7 @@ const formSchema = z.object({
 
     features: z.array(
         z.object({
+                id: z.number().positive().optional(),
                 category: z.union([
                     z.string({message: "نوع ویژگی را انتخاب کنید"})
                         .regex(/^\d+$/, "نوع ویژگی معتبر نیست")
@@ -266,6 +268,7 @@ const formSchema = z.object({
 
     price: z.array(
         z.object({
+                id: z.number().positive().optional(),
                 priceList: z.union([
                     z.string({message: "دسته قیمتی را انتخاب کنید"})
                         .regex(/^\d+$/, "دسته قیمتی معتبر نیست")
@@ -305,6 +308,7 @@ const formSchema = z.object({
 
     inventory: z.array(
         z.object({
+                id: z.number().positive().optional(),
                 warehouse: z.union([
                     z.string({message: "انبار را انتخاب کنید"})
                         .regex(/^\d+$/, "انبار معتبر نیست")
@@ -621,14 +625,20 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "switch",
             label: "قیمت های یکسان در دسته های قیمتی",
             className: "col-span-full xl:col-span-1",
+            withoutCheckDependency: true,
             dependency: (value, name) => {
                 const hasSameAmount = value
                 const amount = Number((watch("amount") || 0).toString().replace(/,/g, ""))
                 const price = watch("price")
-                if (price && hasSameAmount) {
-                    for (let i = 0; i < price.length; i++) {
-                        setValue(`price.${i}.amount`, amount)
+                if (hasSameAmount) {
+                    if (price?.length) {
+                        for (let i = 0; i < price.length; i++) {
+                            setValue(`price.${i}.amount`, amount)
+                        }
                     }
+                } else {
+                    // setValue("amount", 0)
+                    // setValue("price", [])
                 }
             }
         },
@@ -818,6 +828,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "switch",
             label: "مدیریت موجودی محصول",
             className: "col-span-full",
+            withoutCheckDependency: true,
+            dependency: (value, name) => {
+                if (!value) {
+                    setValue("inventory", [])
+                    setValue("minimumInventoryWarn", 0)
+                }
+            }
         },
         {
             name: "minimumInventoryWarn",
@@ -827,12 +844,14 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: false,
             className: "col-span-full",
             description: "در صورتی که موجودی کل محصول از این عدد کمتر شود، در محصول لیبلی با این عنوان نمایش داده خواهد شد",
+            isDisabled: !watch("isActiveInventoryManagement"),
         },
         {
             name: "inventory",
             type: "array",
             description: "برای مشخص کردن موجودی، دکمه افزودن را کلیک کنید",
             className: "col-span-full",
+            isDisabled: !watch("isActiveInventoryManagement"),
             fields: (index) => [
                 {
                     name: "warehouse",

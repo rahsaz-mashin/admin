@@ -9,6 +9,8 @@ import {IdentityAddressType} from "@/interfaces/IdentityAddressType.interface";
 export interface IdentityAddress {
     id?: number;
 
+    title: string | null;
+
     country: AddressCountry | null;
     province: AddressProvince | null;
     city: AddressCity | null;

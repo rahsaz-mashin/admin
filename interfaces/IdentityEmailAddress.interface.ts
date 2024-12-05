@@ -4,6 +4,8 @@ import {IdentityEmailAddressType} from "@/interfaces/IdentityEmailAddressType.in
 
 export interface IdentityEmailAddress {
     id?: number;
+    title: string | null;
+
     value: string;
     description: string | null;
     identity?: Identity;

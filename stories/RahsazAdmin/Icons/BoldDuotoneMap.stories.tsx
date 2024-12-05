@@ -1,5 +1,4 @@
 import React from "react";
-import {BoldDuotoneAddIcon} from "@/stories/RahsazAdmin/Icons/index";
 
 
 export const Component = ({size = 20}: { size?: number }) => {

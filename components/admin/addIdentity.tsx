@@ -171,24 +171,24 @@ const formInitial: T = {
     identityType: identityTypesEnum.real,
     introductionMethod: null,
 
-    color: null,
+    color: "",
 
     // identityDocuments: [],
-    description: null,
+    description: "",
 
-    firstName: null,
-    lastName: null,
+    firstName: "",
+    lastName: "",
     birthday: null,
-    gender: undefined,
+    gender: null,
 
-    legalName: null,
-    tradeMark: null,
-    registrationNumber: null,
+    legalName: "",
+    tradeMark: "",
+    registrationNumber: "",
 
 
-    nationalCode: null,
+    nationalCode: "",
     website: null,
-    economicCode: null,
+    economicCode: "",
 }
 
 
@@ -224,6 +224,8 @@ const formSchema = z.object({
     // phones
     phones: z.array(
         z.object({
+                id: z.number().positive().optional(),
+                title: z.string({message: "عنوان شماره را وارد کنید"}).optional().nullable().or(z.string().length(0)),
                 type: z.union([
                     z.string({message: "نوع شماره را انتخاب کنید"})
                         .regex(/^\d+$/, "نوع شماره معتبر نیست")
@@ -233,7 +235,7 @@ const formSchema = z.object({
                         .positive("نوع شماره معتبر نیست")
                         .transform((val) => ({id: val})),
                 ]),
-                value: z.string({message: "شماره را وارد کنید"}).regex(/\+98 [1-9]{1}[0-9]{1} [0-9]{4} [0-9]{4}|\+98[0-9]{10}/, "شماره وارد شده معتبر نیست")
+                value: z.string({message: "شماره را وارد کنید"}).regex(/\+98 [1-9]{1}[0-9]{1} [0-9]{4} [0-9]{4}|\+98[0-9]{10}|0[0-9]{10}/, "شماره وارد شده معتبر نیست")
                     .transform((v) => (v.replaceAll(" ", ""))),
                 internal: z.string().regex(/^\d{1,3}$/, "داخلی معتبر نیست").nullable().optional().or(z.string().length(0)),
                 description: z.string({message: "توضیحات را وارد کنید"}).min(10, "توضیحات حداقل باید 10 کاراکتر باشد").nullable().optional().or(z.string().length(0)),
@@ -253,6 +255,8 @@ const formSchema = z.object({
     // emails
     emails: z.array(
         z.object({
+                id: z.number().positive().optional(),
+                title: z.string({message: "عنوان ایمیل را وارد کنید"}).optional().nullable().or(z.string().length(0)),
                 type: z.union([
                     z.string({message: "نوع ایمیل را انتخاب کنید"})
                         .regex(/^\d+$/, "نوع ایمیل معتبر نیست")
@@ -280,7 +284,8 @@ const formSchema = z.object({
     // addresses
     addresses: z.array(
         z.object({
-                title: z.string({message: "عنوان آدرس را وارد کنید"}).min(3, "عنوان آدرس معتبر نیست"),
+                id: z.number().positive().optional(),
+                title: z.string({message: "عنوان آدرس را وارد کنید"}).optional().nullable().or(z.string().length(0)),
                 type: z.union([
                     z.string({message: "نوع آدرس را انتخاب کنید"})
                         .regex(/^\d+$/, "نوع آدرس معتبر نیست")
@@ -357,7 +362,6 @@ const formSchema = z.object({
         .optional(),
 })
     .superRefine((data, ctx) => {
-        console.log(data)
         if (data.identityType === identityTypesEnum.real) {
             if (!data.firstName) {
                 ctx.addIssue({
@@ -554,8 +558,6 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             withPicker: true,
             granularity: "day"
         },
-
-
         {
             name: "legalName",
             type: "input",
@@ -662,6 +664,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 //     className: "col-span-full xl:col-span-1",
                 // },
                 {
+                    name: "title",
+                    type: "input",
+                    label: "عنوان",
+                    isRequired: false,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
                     name: "type",
                     type: "select",
                     label: "نوع",
@@ -670,7 +679,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     },
                     isSearchable: true,
                     isRequired: true,
-                    className: "col-span-full",
+                    className: "col-span-full xl:col-span-1",
                 },
                 {
                     name: "value",
@@ -714,6 +723,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                 //     className: "col-span-full xl:col-span-1",
                 // },
                 {
+                    name: "title",
+                    type: "input",
+                    label: "عنوان",
+                    isRequired: false,
+                    className: "col-span-full xl:col-span-1",
+                },
+                {
                     name: "type",
                     type: "select",
                     label: "نوع",
@@ -722,7 +738,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     },
                     isSearchable: true,
                     isRequired: true,
-                    className: "col-span-full",
+                    className: "col-span-full xl:col-span-1",
                 },
                 {
                     name: "value",
@@ -823,7 +839,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
                     isRequired: true,
                     dynamic: {
                         route: "addressCity/sloStyle",
-                        filter:  {
+                        filter: {
                             province: {$eq: watch(`addresses.${index}.province`)}
                         },
                     },

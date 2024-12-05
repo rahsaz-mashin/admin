@@ -227,12 +227,14 @@ const formSchema = z.object({
     avatar: z.object({id: z.number()}, {message: "تصویر را وارد کنید"})
         .nullable().optional(),
     phone: z.object({
+        id: z.number().positive().optional(),
         value: z.string().regex(/\+98 9[0-9]{2} [0-9]{3} [0-9]{4}|\+989\d{2}\d{3}\d{4}/, "شماره وارد شده معتبر نیست")
             .transform((val) => val.replaceAll(" ", ""))
             .nullable().optional().or(z.string().length(0)),
         isConfirmed: z.boolean().nullable().optional(),
     }).transform((v) => (!v.value ? null : v)),
     email: z.object({
+        id: z.number().positive().optional(),
         value: z.string().email("ایمیل وارد شده معتبر نیست").nullable().optional().or(z.string().length(0)),
         isConfirmed: z.boolean().nullable().optional(),
     }).transform((v) => (!v.value ? null : v)),

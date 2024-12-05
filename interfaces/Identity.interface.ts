@@ -50,7 +50,7 @@ export interface Identity {
     // ===============================================================================> real identity name
     firstName?: string | null;
     lastName?: string | null;
-    birthday?: Date | null;
+    birthday?: Date | string | null;
     gender?: gendersEnum | null;
 
 

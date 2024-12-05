@@ -4,6 +4,8 @@ import {Account} from "@/interfaces/Account.interface";
 
 export interface IdentityPhoneNumber {
     id?: number;
+    title: string | null;
+
     value: string;
     internal: string | null;
     description: string | null;

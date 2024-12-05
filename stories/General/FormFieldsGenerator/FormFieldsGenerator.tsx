@@ -34,6 +34,7 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
     return <>
         {fields.map((field) => {
             let Field: ReactNode
+            if(field.isHidden) return null
             switch (field.type) {
                 case "input":
                     Field = (
@@ -166,7 +167,9 @@ export const FormFieldsGenerator: FormFieldsGeneratorType = (props) => {
                     key={field.name}
                     name={field.name}
                     dependency={field.dependency}
+                    withoutCheckDependency={field.withoutCheckDependency}
                     control={control}
+
                 >
                     {Field}
                 </FormGroup>
@@ -236,7 +239,8 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
             data-has-helper={hasHelper}
             data-invalid={fieldState.invalid || undefined}
         >
-            {label && (<label className="block text-black font-medium ps-2 z-10 subpixel-antialiased pointer-events-none cursor-pointer will-change-auto origin-top-left rtl:origin-top-right max-w-full text-ellipsis overflow-hidden">{label}</label>)}
+            {label && (<label
+                className="block text-black font-medium ps-2 z-10 subpixel-antialiased pointer-events-none cursor-pointer will-change-auto origin-top-left rtl:origin-top-right max-w-full text-ellipsis overflow-hidden">{label}</label>)}
             {_fields.map((field, index) => (
                 <div
                     key={`${name}.${index}`}
@@ -245,7 +249,11 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                     <div className={"grid grid-cols-2 gap-3 flex-1 p-3 items-center justify-center " + itemClassName}>
                         <FormFieldsGenerator
                             control={control}
-                            fields={fields(index).map((v) => ({...v, name: `${name}.${index}.${v.name}` as DeepKeys<T>}))}
+                            fields={fields(index).map((v) => ({
+                                ...v,
+                                isDisabled: isDisabled,
+                                name: `${name}.${index}.${v.name}` as DeepKeys<T>
+                            }))}
                         />
                     </div>
                     <div
@@ -263,6 +271,7 @@ const FieldArray = <T, >(props: FieldArrayPropsType<T>) => {
                             color="danger"
                             radius="full"
                             isIconOnly
+                            isDisabled={isDisabled || isReadOnly || formState.isValidating || formState.isLoading || formState.isSubmitting}
                         >
                             <DeleteOutline/>
                         </Button>
@@ -300,6 +309,7 @@ type FormGroupProps = {
     name: string;
     dependency?: (value: any, name: string) => void;
     control: Control<any, any>;
+    withoutCheckDependency?: boolean;
 }
 
 const FormGroup = (props: FormGroupProps) => {
@@ -309,6 +319,7 @@ const FormGroup = (props: FormGroupProps) => {
         name,
         dependency,
         control,
+        withoutCheckDependency,
     } = props
 
     const {
@@ -319,8 +330,12 @@ const FormGroup = (props: FormGroupProps) => {
 
 
     useEffect(() => {
-        if (dependency && field.value !== undefined && formState.defaultValues?.[field.name] !== field.value) {
-            dependency(field.value, name)
+        if (dependency && field.value !== undefined) {
+            if (withoutCheckDependency) {
+                dependency(field.value, name)
+            } else if (formState.defaultValues?.[field.name] !== field.value) {
+                dependency(field.value, name)
+            }
         }
     }, [field.value]);
 
@@ -338,8 +353,10 @@ type FromFieldTypeCommon<T> = {
     description?: ReactNode;
     isDisabled?: boolean;
     isReadOnly?: boolean;
+    isHidden?: boolean;
     className?: string;
     dependency?: (value: any, name: string) => void;
+    withoutCheckDependency?: boolean;
 }
 
 

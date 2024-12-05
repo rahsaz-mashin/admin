@@ -232,7 +232,6 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "identity",
         title: "هویت",
-        width: 200,
         minWidth: 200,
         render: (value: Identity | null, ctx) => {
             return (
@@ -244,7 +243,7 @@ const tableColumns: ColumnType<T>[] = [
                     )}
                     {!!value && (
                         <div className="flex flex-col gap-3 items-start justify-center">
-                            <div className="flex flex-row gap-2 items-center">
+                            <div className="flex flex-row gap-2 items-center truncate">
                                 {value.isVerified
                                     ?
                                     (<Verified className="text-blue-500 text-base"/>)
