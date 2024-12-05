@@ -831,7 +831,8 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             withoutCheckDependency: true,
             dependency: (value, name) => {
                 if (!value) {
-                    setValue("inventory", [])
+                    // @ts-ignore
+                    setValue("inventory", [], {shouldValidate: true})
                     setValue("minimumInventoryWarn", 0)
                 }
             }

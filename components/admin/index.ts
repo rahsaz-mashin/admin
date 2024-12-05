@@ -34,6 +34,7 @@ import {addCartContext} from "@/components/admin/addCart";
 import {addOrderContext} from "@/components/admin/addOrder";
 import {deliveryMethodContext} from "@/components/admin/orderDeliveryMethod";
 import {priceListAssignContext} from "@/components/admin/priceListAssign";
+import {storyContext} from "@/components/admin/story";
 
 export const adminContextConfig: any = {
     general: {
@@ -134,6 +135,16 @@ export const adminContextConfig: any = {
             },
             items: {
                 deliveryMethod: deliveryMethodContext,
+            },
+        },
+        settings: {
+            widgets: {
+                story: storyContext,
+                slider: storyContext,
+                shortcuts: storyContext,
+                online_call: storyContext,
+                header: storyContext,
+                menu: storyContext,
             },
         },
     },
