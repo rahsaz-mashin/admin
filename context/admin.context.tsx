@@ -108,7 +108,7 @@ export const AdminProvider = ({children, initial}: ProviderPropsType) => {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        setTimeout(() => setLoading(false), 2500)
+        setTimeout(() => setLoading(false), 1500)
     }, [])
 
     const activeWorkspace = m[2]

@@ -51,6 +51,7 @@ export {Component as BoldDuotoneShortcutIcon} from "./BoldDuotoneShortcut.storie
 export {Component as BoldDuotoneOnlineCallIcon} from "./BoldDuotoneOnlineCall.stories";
 export {Component as BoldDuotoneMenuIcon} from "./BoldDuotoneMenu.stories";
 export {Component as BoldDuotoneHeaderIcon} from "./BoldDuotoneHeader.stories";
+export {Component as BoldDuotoneFooterIcon} from "./BoldDuotoneFooter.stories";
 
 
 
