@@ -26,7 +26,7 @@ export type RealIdentityInfoFormType = {
 
     firstName?: string | null;
     lastName?: string | null;
-    birthday?: Date | null;
+    birthday?: string | Date | null;
     gender?: gendersEnum | null;
 
     nationalCode?: string | null;

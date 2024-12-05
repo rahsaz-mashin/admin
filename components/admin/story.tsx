@@ -229,7 +229,7 @@ export const storyContext = {
         fields: formFields,
         initial: formInitial,
     },
-    table: {
-        columns: tableColumns,
-    },
+    // table: {
+    //     columns: tableColumns,
+    // },
 }
