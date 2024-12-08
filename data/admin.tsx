@@ -892,7 +892,7 @@ const adminRoutes: AdminMenu[] = [
                                 isEnable: true,
                             },
                             {
-                                key: "shortcuts",
+                                key:  "shortcuts",
                                 title: "شورتکات های صفحه اصلی",
                                 icon: <BoldDuotoneShortcutIcon size={64}/>,
                                 description: "مشاهده لیست شورت کات های صفحه اصلی، ایجاد و مدیریت آن ها",
