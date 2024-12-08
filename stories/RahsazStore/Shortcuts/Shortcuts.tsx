@@ -213,7 +213,7 @@ export const Shortcuts = () => {
     return (
         <>
             <div
-                className="w-full flex justify-center items-center self-center max-w-6xl px-4"
+                className="w-full flex justify-center items-center self-center max-w-6xl px-4 select-none"
             >
                 <div
                     className="w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">

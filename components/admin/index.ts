@@ -35,6 +35,10 @@ import {addOrderContext} from "@/components/admin/addOrder";
 import {deliveryMethodContext} from "@/components/admin/orderDeliveryMethod";
 import {priceListAssignContext} from "@/components/admin/priceListAssign";
 import {storyContext} from "@/components/admin/story";
+import {homeShortcutsContext} from "@/components/admin/homeShortcuts";
+import {footerShortcutsContext} from "@/components/admin/footerShortcuts";
+import {headerShortcutsContext} from "@/components/admin/headerShortcuts";
+import {menuContext} from "@/components/admin/menu";
 
 export const adminContextConfig: any = {
     general: {
@@ -141,10 +145,11 @@ export const adminContextConfig: any = {
             widgets: {
                 story: storyContext,
                 slider: storyContext,
-                shortcuts: storyContext,
+                shortcuts: homeShortcutsContext,
+                header: headerShortcutsContext,
+                footer: footerShortcutsContext,
                 online_call: storyContext,
-                header: storyContext,
-                menu: storyContext,
+                menu: menuContext,
             },
         },
     },

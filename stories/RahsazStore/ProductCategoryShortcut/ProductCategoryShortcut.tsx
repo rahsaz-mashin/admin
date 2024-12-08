@@ -202,7 +202,7 @@ export const ProductCategoryShortcut = () => {
 
                 </div>
                 <div
-                    className="w-full flex flex-col justify-center items-center self-center max-w-6xl px-4"
+                    className="w-full flex flex-col justify-center items-center self-center max-w-6xl px-4 select-none"
                 >
                     <h3 className="text-primary font-bold text-xl md:text-2xl text-center w-full py-1">
                         چی لازم داری؟
