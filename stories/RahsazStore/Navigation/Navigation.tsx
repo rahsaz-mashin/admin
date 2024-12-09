@@ -33,7 +33,7 @@ export const Navigation = ({menu}: NavigationProps) => {
                             >
                                 <div className="w-6 h-6">
                                     <i
-                                        dangerouslySetInnerHTML={{__html: v.icon || ""}}
+                                        dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}
                                         className="w-full h-full"
                                     />
                                 </div>
