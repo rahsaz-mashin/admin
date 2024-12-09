@@ -115,7 +115,7 @@ export const AllShortcutsModal = (props: AllShortcutsModalProps) => {
 
     const {state} = props
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState<HomeShortcut[]>([])
     const [isLoading, setLoading] = useState(false)
 
     const axios = axiosCoreWithAuth()
