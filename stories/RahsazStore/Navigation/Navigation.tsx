@@ -1,27 +1,22 @@
 import React from "react";
 import {LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
+import {Menu} from "@/interfaces/Menu.interface";
 
 
-export type NavigationMenuItemsProps = {
-    id: string;
-    label: string;
-    url: string;
-    icon: React.ElementType;
-}
 
 
 export type NavigationProps = {
-    menuItems: NavigationMenuItemsProps[]
+    menu: Menu[]
 }
 
-export const Navigation = ({menuItems}: NavigationProps) => {
+export const Navigation = ({menu}: NavigationProps) => {
 
 
     return (
         <div className="flex-1 select-none w-full relative py-4">
             <div className="flex justify-between items-center h-full flex-col">
                 <ul className="flex flex-[1_1_0] w-full ps-4 flex-col overflow-x-hidden">
-                    {menuItems?.map((v, i) => {
+                    {menu?.map((v, i) => {
                         const isActive = i === 1
                         return (
                             <li
@@ -37,10 +32,13 @@ export const Navigation = ({menuItems}: NavigationProps) => {
                                 }
                             >
                                 <div className="w-6 h-6">
-                                    <v.icon/>
+                                    <i
+                                        dangerouslySetInnerHTML={{__html: v.icon || ""}}
+                                        className="w-full h-full"
+                                    />
                                 </div>
                                 <span>
-                                    {v.label}
+                                    {v.title}
                                 </span>
                             </li>
                         )

@@ -14,11 +14,14 @@ export const MyCartButton = () => {
                     <CardBody className="flex flex-row gap-4 px-4 items-center justify-center overflow-y-hidden">
                         <MyCartIcon size={36} />
                         <div className="xl:flex flex-col items-start hidden">
-                            <span className="font-bold flex items-center text-black">
-                                800,000
-                                {" "}
-                                <div className="text-primary text-xs">تومانءء</div>
+                            <span className="font-bold text-sm flex items-center text-black gap-1">
+                                خالی است!
                             </span>
+                            {/*<span className="font-bold flex items-center text-black gap-1">*/}
+                            {/*    0*/}
+                            {/*    {" "}*/}
+                            {/*    <div className="text-primary text-xs">تومانءء</div>*/}
+                            {/*</span>*/}
                             <h4 className="text-gray-500 text-xs">سبد خرید من</h4>
                         </div>
                     </CardBody>

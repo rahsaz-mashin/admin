@@ -21,8 +21,8 @@ export const MyWalletButton = () => {
                     <CardBody className="flex flex-row gap-4 px-4 items-center justify-center overflow-y-hidden">
                         <MyWalletIcon size={36}/>
                         <div className="xl:flex flex-col items-start hidden">
-                            <span className="font-bold flex items-center text-black">
-                                2,000,000
+                            <span className="font-bold flex items-center text-black gap-1">
+                                0
                                 {" "}
                                 <div className="text-primary text-xs">تومانءء</div>
                             </span>

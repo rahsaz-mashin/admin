@@ -2,10 +2,12 @@ import React, {useState} from "react";
 import {
     ScrollShadow,
     Card,
-    CardBody, Button,
+    CardBody, Button, CardFooter,
 } from "@nextui-org/react";
 import {ArrowRight, KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {useKeenSlider} from "keen-slider/react"
+import {HeaderShortcut} from "@/interfaces/HeaderShortcut.interface";
+import Link from "next/link";
 
 const WheelControls = (slider: any) => {
     let touchTimeout: string | number | NodeJS.Timeout | undefined
@@ -61,7 +63,20 @@ const WheelControls = (slider: any) => {
         })
     })
 }
-export const HeaderBox = () => {
+
+
+
+export type HeaderBoxProps = {
+    items: HeaderShortcut[];
+}
+
+
+
+export const HeaderBox = (props: HeaderBoxProps) => {
+
+    const {items} = props
+
+
     const [currentSlide, setCurrentSlide] = useState(0)
     const [loaded, setLoaded] = useState(false)
     const [sliderRef, instanceRef] = useKeenSlider({
@@ -89,71 +104,22 @@ export const HeaderBox = () => {
                 classNames={{base: "md:rounded-large"}}
             >
                 <CardBody className="relative flex flex-row items-center justify-center overflow-hidden">
-                    <div ref={sliderRef} className="keen-slider mx-0 lg:mx-9 ">
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            در راهساز ماشین
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            نحوه خرید
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            دریافت نمایندگی
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            سوالات متداول
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            نقشه های فنی
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            درج آگهی
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            پیش فروش
-                        </Button>
-                        <Button
-                            color="primary"
-                            variant="light"
-                            size="md"
-                            className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
-                        >
-                            کمپین های فروش
-                        </Button>
+                    <div ref={sliderRef} className="keen-slider mx-0 lg:mx-9">
+                        {items.map((v, i) => {
+                            return (
+                                <Button
+                                    key={v.id}
+                                    as={Link}
+                                    href={v.url}
+                                    color="primary"
+                                    variant="light"
+                                    size="md"
+                                    className="keen-slider__slide flex-shrink-0 !w-fit bg-transparent h-8 rounded-none text-white active:opacity-80 font-light md:rounded-medium md:h-10 md:bg-transparent md:text-black md:hover:text-primary md:font-medium"
+                                >
+                                    {v.title}
+                                </Button>
+                            )
+                        })}
                     </div>
                     <Button
                         color="primary"

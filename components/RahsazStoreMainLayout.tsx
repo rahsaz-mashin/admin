@@ -1,8 +1,6 @@
 "use client"
 
 import React, {useContext, useEffect, useRef, useState} from "react";
-import Scrollbar from "react-scrollbars-custom";
-import {ScrollState} from "react-scrollbars-custom/dist/types/types";
 import {Progress} from "@nextui-org/progress";
 import {Logo} from "@/stories/General";
 import Link from "next/link";
@@ -20,56 +18,25 @@ import {useRouter, usePathname, useSearchParams} from "next/navigation";
 import {BottomNavigation} from "@/stories/RahsazStore/BottomNavigation";
 import {Footer} from "@/stories/RahsazStore/Footer";
 import {useContainerDimensions} from "@/hooks/useContainerDimentions";
-import {ContainerDimensionsContext, ContainerDimensionsProvider} from "@/context/containerDimensions.context";
+import {ContainerDimensionsContext} from "@/context/containerDimensions.context";
 import {ScrollShadow} from "@nextui-org/react";
+import {HeaderShortcut} from "@/interfaces/HeaderShortcut.interface";
+import {FooterShortcut} from "@/interfaces/FooterShortcut.interface";
+import {Menu} from "@/interfaces/Menu.interface";
 
 
-const menuItems = [
-    {
-        id: "home-page",
-        label: "صفحه اصلی",
-        url: "/",
-        icon: HomeIcon,
-    },
-    {
-        id: "search",
-        label: "جستجو",
-        url: "/",
-        icon: HomeIcon,
-    },
-    {
-        id: "category",
-        label: "دسته بندی",
-        url: "/",
-        icon: HomeIcon,
-    },
-    {
-        id: "my-orders",
-        label: "سفارشات من",
-        url: "/",
-        icon: HomeIcon,
-    },
-    {
-        id: "admin",
-        label: "پنل مدیریت",
-        url: "/admin",
-        icon: HomeIcon,
-    },
-    // {
-    //     id: "admin",
-    //     label: "پنل مدیریت",
-    //     url: "/admin",
-    //     icon: HomeIcon,
-    // },
-    // {
-    //     id: "admin",
-    //     label: "پنل مدیریت",
-    //     url: "/admin",
-    //     icon: HomeIcon,
-    // },
-]
 
-const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
+
+export type RahsazStoreMainLayoutProps = {
+    children: React.ReactNode;
+    headerShortcuts: HeaderShortcut[];
+    footerShortcuts: FooterShortcut[];
+    mobileMenu: Menu[];
+    desktopMenu: Menu[];
+}
+
+
+const RahsazStoreMainLayout = ({children, headerShortcuts, footerShortcuts, mobileMenu, desktopMenu }: RahsazStoreMainLayoutProps) => {
 
     const [scroll, setScroll] = useState(0)
     const onScroll: any = (v: any) => {
@@ -112,6 +79,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
             <Drawer
                 isOpen={isDrawerOpen}
                 setClose={onCloseDrawer}
+                menu={mobileMenu}
             >
                 <div className="absolute top-0 w-full z-50 hidden md:block">
                     <Progress
@@ -129,14 +97,14 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             <Logo size={60}/>
                         </Link>
                         <Navigation
-                            menuItems={menuItems}
+                            menu={desktopMenu}
                         />
                     </nav>
                     <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
                         <header className="w-full z-10 md:py-4 flex flex-col md:flex-row items-center">
                             <div className="flex gap-4 w-full">
                                 <CallWidget className="hidden md:flex"/>
-                                <HeaderBox/>
+                                <HeaderBox items={headerShortcuts}/>
                                 <MyWalletButton/>
                                 <MyCartButton/>
                                 <NotificationsButton/>
@@ -164,7 +132,7 @@ const RahsazStoreMainLayout = ({children}: { children: React.ReactNode }) => {
                             </ScrollShadow>
                             <BottomNavigation/>
                         </section>
-                        <Footer/>
+                        <Footer items={footerShortcuts}/>
                     </aside>
                 </main>
             </Drawer>

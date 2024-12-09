@@ -16,26 +16,8 @@ const config = {
 }
 
 
-// Core without auth
-const axiosServerCore = () => {
-    const a = axios.create(config)
-    a.interceptors.request.use((config: any) => {
-        return config
-    })
-    a.interceptors.response.use(
-        (response: any) => {
-            return response.data;
-        },
-        (error: any) => {
-            return Promise.reject(error)
-        },
-    )
-    return a
-}
 
-
-// Core with auth
-const axiosServerCoreWithAuth = (accessToken?: string) => {
+const axiosServerCore = (accessToken?: string) => {
     const a = axios.create(config)
     a.interceptors.request.use((config: any) => {
         if(accessToken) config.headers.Authorization = `Bearer ${accessToken}`
@@ -53,4 +35,6 @@ const axiosServerCoreWithAuth = (accessToken?: string) => {
 }
 
 
-export {axiosServerCore, axiosServerCoreWithAuth}
+
+
+export {axiosServerCore}

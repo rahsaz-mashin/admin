@@ -7,7 +7,7 @@ import {ProductRahsazOnlinePostsBox} from "@/stories/RahsazStore/Product/RahsazO
 import {ProductCommentsBox} from "@/stories/RahsazStore/Product/CommentsBox";
 import {ProductQABox} from "@/stories/RahsazStore/Product/QABox";
 import {ProductInfoBox} from "@/stories/RahsazStore/Product/InfoBox";
-import {axiosServerCoreWithAuth} from "@/lib/axiosServerCore";
+import {axiosServerCore} from "@/lib/axiosServerCore";
 import {Product} from "@/interfaces/Product.interface";
 import {auth} from "@/auth";
 import {ProductTechnicalBox} from "@/stories/RahsazStore/Product/TechnicalBox";
@@ -21,7 +21,7 @@ import {ProductPriceBox} from "@/stories/RahsazStore/Product/PriceBox";
 
 const getProduct = async (slug: string) => {
     const session = await auth()
-    const axiosServer = axiosServerCoreWithAuth(session?.accessToken)
+    const axiosServer = axiosServerCore(session?.accessToken)
     return await axiosServer.get(`/product/${slug}`) as Product
 }
 

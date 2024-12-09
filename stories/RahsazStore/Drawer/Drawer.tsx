@@ -1,16 +1,20 @@
 import React, {ReactNode} from "react";
 import {CallWidget, LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
 import {Button} from "@nextui-org/react";
-import {Close, Home, HomeOutlined} from "@mui/icons-material";
+import {Close} from "@mui/icons-material";
 import {DrawerMenuItem} from "@/stories/RahsazStore/Drawer/DrawerMenuItem";
-import {HomeIcon} from "@/stories/Icons";
+import {Menu} from "@/interfaces/Menu.interface";
+
+
 
 export type DrawerProps = {
     isOpen: boolean;
     setClose: () => void;
+    menu: Menu[];
     children: ReactNode;
 }
-export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
+export const Drawer = ({isOpen, setClose, children, menu}: DrawerProps) => {
+
 
     return (
         <div className="z-10 fixed bg-primary w-full h-full">
@@ -31,79 +35,17 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
                             </Button>
                             <div className="w-56 flex-1 overflow-x-hidden">
                                 <ul className="flex gap-1.5 flex-col">
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                        isActive
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
-                                    <DrawerMenuItem
-                                        id=""
-                                        label="صفحه اصلی"
-                                        icon={HomeIcon}
-                                        url=""
-                                    />
+                                    {menu.map((v, i) => {
+                                        return (
+                                            <DrawerMenuItem
+                                                key={i}
+                                                id={v.id!.toString()}
+                                                label={v.title}
+                                                icon={v.icon?.content}
+                                                url={v.url}
+                                            />
+                                        )
+                                    })}
                                 </ul>
                             </div>
                             <div className="flex flex-col justify-center items-center gap-3">
@@ -128,4 +70,5 @@ export const Drawer = ({isOpen, setClose, children}: DrawerProps) => {
             </div>
         </div>
     );
-};
+}//
+//
