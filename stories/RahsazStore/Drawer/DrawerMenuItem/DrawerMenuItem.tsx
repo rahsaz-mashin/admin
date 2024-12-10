@@ -43,7 +43,7 @@ export const DrawerMenuItem = (props: DrawerMenuItemProps) => {
                     className="w-full h-full"
                 />
             </div>
-            <span className="z-10">{label}</span>
+            <span className="z-10 truncate w-full">{label}</span>
         </motion.li>
     );
 }//

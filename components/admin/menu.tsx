@@ -89,12 +89,22 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "switch",
             label: "فقط دسکتاپ",
             className: "col-span-full xl:col-span-1",
+            withoutCheckDependency: true,
+            dependency: (value, name) => {
+                console.log({ddd: value})
+                if (value) setValue("onlyMobile", false)
+            },
         },
         {
             name: "onlyMobile",
             type: "switch",
             label: "فقط موبایل",
             className: "col-span-full xl:col-span-1",
+            withoutCheckDependency: true,
+            dependency: (value, name) => {
+                console.log({mmm: value})
+                if (value) setValue("onlyDesktop", false)
+            },
         },
     ])
 }
@@ -122,7 +132,7 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "title",
         title: "عنوان",
-        minWidth: 160,
+        minWidth: 240,
         render: (value, ctx) => {
             return (
                 <div className="flex gap-2 flex-col">
@@ -131,9 +141,65 @@ const tableColumns: ColumnType<T>[] = [
                         className="text-primary h-6 w-6 flex justify-center items-center"
                         dangerouslySetInnerHTML={{__html: ctx.icon?.content || ""}}
                     />
-                    <span>{value}</span>
+                        <span>{value}</span>
                     </div>
                     <Chip size="sm" variant="faded" color="default" dir="ltr">{ctx?.url}</Chip>
+                </div>
+            )
+        },
+    },
+    {
+        key: "onlyDesktop",
+        title: "محل نمایش",
+        minWidth: 100,
+        width: 100,
+        align: "center",
+        render: (value: boolean, ctx) => {
+            const onlyDesktop = ctx?.onlyDesktop
+            const onlyMobile = ctx?.onlyMobile
+
+            return (
+                <div className="flex flex-row items-center justify-center gap-2 truncate">
+                    {(!onlyDesktop && !onlyMobile) && (
+                        <Chip
+                            size="sm"
+                            color="success"
+                            variant="shadow"
+                            className="text-white"
+                        >
+                            هر دو
+                        </Chip>
+                    )}
+                    {(!onlyDesktop && onlyMobile) && (
+                        <Chip
+                            size="sm"
+                            color="primary"
+                            variant="shadow"
+                            className="text-white"
+                        >
+                            فقط موبایل
+                        </Chip>
+                    )}
+                    {(onlyDesktop && !onlyMobile) && (
+                        <Chip
+                            size="sm"
+                            color="secondary"
+                            variant="shadow"
+                            className="text-white"
+                        >
+                            فقط دسکتاپ
+                        </Chip>
+                    )}
+                    {(onlyDesktop && onlyMobile) && (
+                        <Chip
+                            size="sm"
+                            color="default"
+                            variant="shadow"
+                            className="text-white"
+                        >
+                            هیچکدام
+                        </Chip>
+                    )}
                 </div>
             )
         },

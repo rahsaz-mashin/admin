@@ -37,7 +37,7 @@ export const Navigation = ({menu}: NavigationProps) => {
                                         className="w-full h-full"
                                     />
                                 </div>
-                                <span>
+                                <span className="truncate w-full px-2 text-center">
                                     {v.title}
                                 </span>
                             </li>

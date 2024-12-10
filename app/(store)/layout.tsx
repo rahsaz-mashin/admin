@@ -46,7 +46,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
     const headerShortcuts = await getHeaderShortcuts()
     const footerShortcuts = await getFooterShortcuts()
     const mobileMenu = await getMobileMenu()
-    const desktopMenu = await getMobileMenu()
+    const desktopMenu = await getDesktopMenu()
 
     return (
         <Providers>
