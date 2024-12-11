@@ -35,7 +35,7 @@ const useInfinityList = <T,>(props: UseInfinityListProps) => {
         headers,
     } = props
 
-    const [list, setList] = useState<any[]>([]);
+    const [list, setList] = useState<T[]>([]);
     const [page, setPage] = useState(1);
 
 
@@ -72,7 +72,6 @@ const useInfinityList = <T,>(props: UseInfinityListProps) => {
 
 
     useEffect(() => {
-        console.log({data})
         setList((prev) => ([...prev, ...(data?.data || [])]))
     }, [data])
 

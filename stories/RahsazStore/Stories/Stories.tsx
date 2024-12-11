@@ -1,128 +1,296 @@
 "use client"
 
-import React, {useState} from "react";
-import {StoryItem, StoryItemProps} from "@/stories/RahsazStore/Stories/StoryItem";
-import {AnimatePresence, motion} from "framer-motion";
-import {Image} from "@nextui-org/react";
+import React, {ReactNode, useEffect, useRef, useState} from "react";
+import {StoryItem,} from "@/stories/RahsazStore/Stories/StoryItem";
+import {Button, Image, Modal, ModalBody, ModalContent,} from "@nextui-org/react";
+import {axiosCoreWithAuth} from "@/lib/axios";
+import {
+    KeyboardArrowLeft,
+    KeyboardArrowRight
+} from "@mui/icons-material";
+import {useInfinityList} from "@/hooks/useInfinityList";
+import {Story} from "@/interfaces/Story.interface";
+import {Spinner} from "@nextui-org/spinner";
 import NextImage from "next/image";
+import {MimetypeAudioIcon, MimetypeImageIcon} from "@/stories/General/MinorUploader/Icons";
+import ReactPlayer from "react-player";
 
-
-export type StoriesProps = {}
-
-
-const items: StoryItemProps[] = [
-    {
-        id: "1",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/2fbff525e29363c4e05743df82c9ec7acba99599_1715614714.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "پیش",
-        subtitle: "موتوری و برقی",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "2",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/680fc0ca21e1cd21cf4fb5472ff5e581785d1f15_1716559108.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "کمپین فروش",
-        subtitle: "موتوری و برقی",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "3",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/347b9a7c62cb474b2b3f02503b721e4845164d23_1716228426.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "راهساز آنلاین",
-        subtitle: "آگهی رایگان بذارید",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "4",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/2fbff525e29363c4e05743df82c9ec7acba99599_1715614714.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "پیش",
-        subtitle: "موتوری و برقی",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "5",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/680fc0ca21e1cd21cf4fb5472ff5e581785d1f15_1716559108.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "کمپین فروش",
-        subtitle: "موتوری و برقی",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "6",
-        cover: "https://dkstatics-public.digikala.com/digikala-content-x-profile/347b9a7c62cb474b2b3f02503b721e4845164d23_1716228426.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80",
-        type: "image",
-        title: "راهساز آنلاین",
-        subtitle: "آگهی رایگان بذارید",
-        file: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-]
 
 export const Stories = () => {
-    const [openStory, setOpenStory] = useState<null | string>(null)
-    const selected = items.find((v) => v.id === openStory)
-    const handleOpenStory = (id: string) => () => {
+    const [openStory, setOpenStory] = useState<number | null>(null)
+    const handleOpenStory = (id: number) => () => {
         setOpenStory(id)
-
     }
     const handleCloseStory = () => {
         setOpenStory(null)
     }
 
 
+    const scrollRef = useRef<HTMLDivElement | null>(null);
+
+    const scrollLeft = () => {
+        if (scrollRef.current) {
+            const element = scrollRef.current;
+            element.scrollLeft = element.scrollLeft - 100;
+        }
+    };
+
+    const scrollRight = () => {
+        if (scrollRef.current) {
+            const element = scrollRef.current;
+            element.scrollLeft = element.scrollLeft + 100;
+        }
+    };
+
+    const [prevHidden, setPrevHidden] = useState(true)
+    const [nextHidden, setNextHidden] = useState(true)
+
+    const handleScroll = (e?: React.UIEvent<HTMLDivElement>) => {
+        const scrollLeft = e?.target?.scrollLeft || 0
+        const clientWidth = scrollRef.current?.clientWidth || 0
+        const scrollWidth = scrollRef.current?.scrollWidth || 0
+
+        if (scrollLeft === 0 && scrollLeft === (clientWidth - scrollWidth)) {
+            setPrevHidden(true)
+            setNextHidden(true)
+        } else if (scrollLeft === 0) {
+            setPrevHidden(true)
+            setNextHidden(false)
+        } else if (scrollLeft === (clientWidth - scrollWidth)) {
+            setPrevHidden(false)
+            setNextHidden(true)
+        } else {
+            setPrevHidden(false)
+            setNextHidden(false)
+        }
+    }
+
+    useEffect(() => {
+        handleScroll()
+    }, [])
+
+    const {
+        list,
+        hasMore,
+        isLoading,
+        onLoadMore,
+        error: loaderError,
+    } = useInfinityList<Story>({
+        route: "store/story/list",
+        search: "",
+        isEnable: true,
+    });
+
+
+    const items = list.length > 0 ? list : new Array(20).fill({})
 
 
     return (
-        <>
-            <div className="px-4 gap-4 w-full flex items-center overflow-y-hidden hide-scrollbar">
-                {items.map((v, i) => {
-                    return (
-                        <StoryItem
-                            key={v.id}
-                            {...v}
-                            handleOpenStory={handleOpenStory(v.id)}
-                        />
-                    )
-                })}
-            </div>
-            <AnimatePresence>
-                {selected && (
-                    <motion.div
-                        layoutId={selected.id}
-                        onClick={handleCloseStory}
-                        className="z-20 h-full fixed w-full top-0 start-0 bg-black cursor-pointer flex justify-center items-center"
-                    >
-                        <motion.div className="w-full md:w-[420px] h-full bg-blue-50 flex flex-col justify-between">
-                            <div className="bg-red-600 w-full relative h-full">
-                                <Image
-                                    as={NextImage}
-                                    width={420}
-                                    height={500}
-                                    radius="none"
-                                    alt={selected.title}
-                                    src={selected.file}
-                                    loading="eager"
-                                />
-                            </div>
-                            <div className="flex flex-col w-full items-start p-4">
-                                <span
-                                    className="font-black truncate text-lg w-full text-primary"
-                                >
-                                    {selected.title}
-                                </span>
-                                <span
-                                    className="font-bold truncate text-sm w-full text-gray-500"
-                                >
-                                    {selected.subtitle}
-                                </span>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </>
-    );
+        <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="px-4 gap-6 w-full flex items-center overflow-y-hidden scroll-smooth hide-scrollbar"
+        >
+            <Button
+                color="primary"
+                variant="faded"
+                size="md"
+                radius="full"
+                isIconOnly
+                className="absolute start-3 z-10 hidden lg:block data-[disabled]:hidden"
+                onPress={() => {
+                    scrollRight()
+                }}
+                isDisabled={prevHidden}
+            >
+                <KeyboardArrowRight fontSize="large"/>
+            </Button>
+            {items.map((v, i) => {
+                return (
+                    <StoryItem
+                        key={i}
+                        {...v}
+                        handleOpenStory={handleOpenStory(v.id)}
+                    />
+                )
+            })}
+            <Button
+                color="primary"
+                variant="faded"
+                size="md"
+                radius="full"
+                isIconOnly
+                className="absolute end-3 z-10 hidden lg:block data-[disabled]:hidden"
+                onPress={() => {
+                    scrollLeft()
+                }}
+                isDisabled={nextHidden}
+            >
+                <KeyboardArrowLeft fontSize="large"/>
+            </Button>
+            <ViewStory
+                id={openStory}
+                handleCloseStory={handleCloseStory}
+            />
+        </div>
+    )
+
+
 };
+
+
+const ViewStory = (props: { id: number; handleCloseStory: () => void; }) => {
+
+    const {
+        id,
+        handleCloseStory
+    } = props
+
+
+    const axios = axiosCoreWithAuth()
+    const [story, setStory] = useState<Story | null>(null)
+    const getStory = async () => {
+        if (!id) return
+        const ss = await axios.get(`store/story/${id}`)
+        setStory(ss)
+    }
+
+    useEffect(() => {
+        getStory()
+    }, [id]);
+
+    const closeStory = () => {
+        handleCloseStory()
+        setStory(null)
+    }
+
+    const file = story?.file
+
+
+    const imageMimetype = ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 'image/webp', 'image/svg+xml']
+    const videoMimetype = ['video/x-msvideo', 'video/mpeg', 'video/mp4', 'video/ogg', 'video/webm']
+    let preview: ReactNode = null
+
+    if (file) {
+        if (imageMimetype.includes(file.mimetype)) {
+            preview = (
+                <Image
+                    as={NextImage}
+                    width={1024}
+                    height={1024}
+                    alt={file.alt}
+                    title={file.title}
+                    src={`${file.system.baseUrl}/${file.path}`}
+                    radius="none"
+                    loading="eager"
+                    className="object-contain !h-fit !w-fit"
+                    fallbackSrc={(
+                        <div className="size-24 flex justify-center items-center text-white bg-[#FFA500] rounded-xl">
+                            <MimetypeImageIcon size={54}/>
+                        </div>
+                    )}
+                />
+            )
+        }
+        if (videoMimetype.includes(file.mimetype)) {
+            preview = (
+                <ReactPlayer
+                    url={`${file.system.baseUrl}/${file.path}`}
+                    title={file.title}
+                    height={360}
+                    width={640}
+                    controls
+                    fallback={(
+                        <div className="size-24 flex justify-center items-center text-white bg-[#008080] rounded-xl">
+                            <MimetypeAudioIcon size={54}/>
+                        </div>
+                    )}
+                />
+            )
+        }
+    }
+
+    return (
+        <Modal
+            //
+            backdrop="blur"
+            isOpen={!!id}
+            onClose={closeStory}
+            scrollBehavior="inside"
+            placement="center"
+            hideCloseButton
+            isDismissable
+            className="max-w-fit"
+        >
+            <ModalContent className="bg-transparent shadow-none">
+                {/*{file && (*/}
+                {/*    <ModalHeader className="justify-center">*/}
+                {/*        <Tooltip*/}
+                {/*            color="foreground"*/}
+                {/*            placement="top"*/}
+                {/*            showArrow*/}
+                {/*            content="حذف"*/}
+                {/*            className="select-none"*/}
+                {/*            radius="sm"*/}
+                {/*        >*/}
+                {/*            <Button*/}
+                {/*                isIconOnly*/}
+                {/*                radius="full"*/}
+                {/*                variant="light"*/}
+                {/*                color="danger"*/}
+                {/*                onPress={() => {*/}
+                {/*                    if (file.id) removeFile(file.id)*/}
+                {/*                }}*/}
+                {/*            >*/}
+                {/*                <DeleteOutlined/>*/}
+                {/*            </Button>*/}
+                {/*        </Tooltip>*/}
+                {/*        <Tooltip*/}
+                {/*            color="foreground"*/}
+                {/*            placement="top"*/}
+                {/*            showArrow*/}
+                {/*            content="دانلود"*/}
+                {/*            className="select-none"*/}
+                {/*            radius="sm"*/}
+                {/*        >*/}
+                {/*            <Button*/}
+                {/*                isIconOnly*/}
+                {/*                radius="full"*/}
+                {/*                variant="light"*/}
+                {/*                color="success"*/}
+                {/*                onPress={() => {*/}
+                {/*                    if (file.id) downloadFile(file.id)*/}
+                {/*                }}*/}
+                {/*            >*/}
+                {/*                <FileDownloadOutlined/>*/}
+                {/*            </Button>*/}
+                {/*        </Tooltip>*/}
+                {/*        <Tooltip*/}
+                {/*            color="foreground"*/}
+                {/*            placement="top"*/}
+                {/*            showArrow*/}
+                {/*            content="ویرایش"*/}
+                {/*            className="select-none"*/}
+                {/*            radius="sm"*/}
+                {/*        >*/}
+                {/*            <Button*/}
+                {/*                isIconOnly*/}
+                {/*                radius="full"*/}
+                {/*                variant="light"*/}
+                {/*                color="secondary"*/}
+                {/*            >*/}
+                {/*                <EditOutlined/>*/}
+                {/*            </Button>*/}
+                {/*        </Tooltip>*/}
+                {/*    </ModalHeader>*/}
+                {/*)}*/}
+                <ModalBody>
+                    <div className="flex justify-center items-center">
+                        {!story && <Spinner/>}
+                        {!!story && preview}
+                    </div>
+                </ModalBody>
+            </ModalContent>
+        </Modal>
+    )
+}

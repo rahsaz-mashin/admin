@@ -3,47 +3,45 @@ import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {Warehouse} from "@/interfaces/Warehouse.interface";
+import {Story} from "@/interfaces/Story.interface";
+import {Chip, Image} from "@nextui-org/react";
+import NextImage from "next/image";
+import moment from "jalali-moment";
 
 
-type T = Warehouse
+type T = Story
 
 
 const formInitial: T = {
     id: undefined,
     title: "",
     description: "",
-    phone: "",
-    country: undefined,
-    province: undefined,
-    city: undefined,
-    address: "",
-    zipCode: "",
-    postBox: "",
-    location: undefined,
-    pictures: []
+
+    file: null,
+    thumbnail: null,
+    product: null,
+
+    expiredAt: undefined
 }
 
 
 const formSchema = z.object({
-    title: z.string({message: "نام را وارد کنید"}).min(3, "نام معتبر نیست"),
-    phone: z.string({message: "شماره را وارد کنید"}).regex(/0[0-9]{2} [0-9]{4} [0-9]{4}|0[0-9]{10}/, "شماره وارد شده معتبر نیست")
-        .transform((v) => (v.replaceAll(" ", ""))),
-    country: z.string({message: "کشور معتبر نیست"}).regex(/^\d+$/, "کشور معتبر نیست")
-        .or(z.number({message: "کشور معتبر نیست"}).int({message: "کشور معتبر نیست"}).positive({message: "کشور معتبر نیست"}))
-        .transform((id) => ({id: +id})),
-    province: z.string({message: "استان معتبر نیست"}).regex(/^\d+$/, "استان معتبر نیست")
-        .or(z.number({message: "استان معتبر نیست"}).int({message: "استان معتبر نیست"}).positive({message: "استان معتبر نیست"}))
-        .transform((id) => ({id: +id})),
-    city: z.string({message: "شهر معتبر نیست"}).regex(/^\d+$/, "شهر معتبر نیست")
-        .or(z.number({message: "شهر معتبر نیست"}).int({message: "شهر معتبر نیست"}).positive({message: "شهر معتبر نیست"}))
-        .transform((id) => ({id: +id})),
-    address: z.string({message: "آدرس را وارد کنید"}).min(5, "آدرس معتبر نیست"),
-    location: z.string({message: "موقعیت مکانی را انتخاب کنید"}).regex(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/, {message: "موقعیت مکانی نامعتبر می باشد"}),
-    zipCode: z.string({message: "کد پستی را وارد کنید"}).regex(/[0-9]{10}/, "کد پستی وارد شده معتبر نیست").or(z.string().length(0)),
-    postBox: z.string({message: "صندوق پستی را وارد کنید"}).regex(/[0-9]{10}/, "صندوق پستی وارد شده معتبر نیست").or(z.string().length(0)),
-    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد"),
-    pictures: z.object({id: z.number()}).array().optional(),
+    title: z.string({message: "عنوان را وارد کنید"}).min(3, "عنوان معتبر نیست"),
+    expiredAt: z.date({message: "تاریخ منقضی شدن معتبر نیست"}).nullable().optional(),
+    product: z.union([
+        z.string({message: "محصول مرتبط را انتخاب کنید"})
+            .regex(/^\d+$/, "محصول مرتبط معتبر نیست")
+            .transform((val) => ({id: +val})),
+        z.number({message: "محصول مرتبط را انتخاب کنید"})
+            .int("محصول مرتبط معتبر نیست")
+            .positive("محصول مرتبط معتبر نیست")
+            .transform((val) => ({id: val})),
+    ])
+        .nullable()
+        .optional(),
+    description: z.string({message: "توضیحات را وارد کنید"}).min(20, "توضیحات حداقل باید 20 کاراکتر باشد").optional().nullable().or(z.string().length(0)),
+    thumbnail: z.object({id: z.number()}, {message: "تصویر را وارد کنید"}),
+    file: z.object({id: z.number()}, {message: "فایل را وارد کنید"}),
 });
 
 
@@ -57,121 +55,66 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
         },
         {
-            name: "phone",
+            name: "expiredAt",
             type: "input",
-            label: "شماره تماس",
-            isRequired: true,
-            isNumeric: true,
-            pattern: "###########",
+            label: "تاریخ منقضی شدن",
             className: "col-span-full xl:col-span-1",
+            isDateInput: true,
+            withPicker: true,
+            granularity: "day"
         },
         {
-            name: "pictures",
+            name: "file",
             type: "uploader",
-            label: "آپلود تصاویر",
+            label: "آپلود فایل",
             isRequired: true,
             className: "col-span-full xl:col-span-1",
-            description: "تا حجم 2 مگابایت",
+            description: "فایل تصویر یا ویدئو (تا حجم 20 مگابایت)",
             isDisabled: false,
 
             // accept: {
             //     'image/png': ['.png'],
             // },
             minSize: 1000,
-            maxFiles: 0,
-            isMultiple: true,
-
+            maxFiles: 20971520,
+            isMultiple: false,
 
             withPreview: true
         },
         {
-            name: "location",
-            type: "location",
-            label: "موقعیت مکانی",
+            name: "thumbnail",
+            type: "uploader",
+            label: "آپلود تصویر بند انگشتی",
+            isRequired: true,
             className: "col-span-full xl:col-span-1",
-            dependency: async () => {
-                const axios = axiosCoreWithAuth()
+            description: "تصویر بند انگشتی (تا حجم 2 مگابایت)",
+            isDisabled: false,
 
-                const location = watch("location")
+            // accept: {
+            //     'image/png': ['.png'],
+            // },
+            minSize: 1000,
+            maxFiles: 2097152,
+            isMultiple: false,
 
-                if (!location) return
-
-                const params = {location}
-                const data: any = await axios.get("neshan/getAddress", {params})
-
-                setValue("address", data.address, {shouldValidate: true})
-                setValue("country", data.countryId || "", {shouldValidate: true})
-                setValue("province", data.provinceId || "", {shouldValidate: true})
-                setValue("city", data.cityId || "", {shouldValidate: true})
-            }
+            withPreview: true
         },
         {
-            name: "country",
+            name: "product",
             type: "select",
-            label: "کشور",
-            isRequired: true,
+            label: "محصول مرتبط",
+            isRequired: false,
             dynamic: {
-                route: "addressCountry/sloStyle",
+                route: "admin/product/sloStyle",
             },
             isSearchable: true,
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "province",
-            type: "select",
-            label: "استان",
-            isRequired: true,
-            dynamic: {
-                route: "addressProvince/sloStyle",
-                filter: {
-                    country: {$eq: watch(`country`)}
-                },
-            },
-            isSearchable: true,
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "city",
-            type: "select",
-            label: "شهر",
-            isRequired: true,
-            dynamic: {
-                route: "addressCity/sloStyle",
-                filter:  {
-                    province: {$eq: watch(`province`)}
-                },
-            },
-            isSearchable: true,
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "address",
-            type: "input",
-            label: "آدرس کامل",
-            isRequired: true,
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "zipCode",
-            type: "input",
-            label: "کد پستی",
-            isNumeric: true,
-            pattern: "##########",
-            className: "col-span-full xl:col-span-1",
-        },
-        {
-            name: "postBox",
-            type: "input",
-            label: "صندوق پستی",
-            isNumeric: true,
-            pattern: "##########",
-            className: "col-span-full xl:col-span-1",
+            className: "col-span-full",
         },
         {
             name: "description",
             type: "input",
             label: "توضیحات",
-            isRequired: true,
+            isRequired: false,
             isMultiline: true,
             className: "col-span-full",
         },
@@ -186,7 +129,6 @@ const tableColumns: ColumnType<T>[] = [
         width: 120,
         minWidth: 120,
         toolsCell: {
-            editable: true,
             removable: true,
         },
     },
@@ -201,16 +143,43 @@ const tableColumns: ColumnType<T>[] = [
     {
         key: "title",
         title: "عنوان",
-        width: 160,
-        minWidth: 160,
+        minWidth: 240,
+        render: (value, ctx) => {
+            return (
+                <div className="flex flex-row gap-3 items-center">
+                    <div className="w-24 h-24">
+                        <Image
+                            as={NextImage}
+                            width={100}
+                            height={100}
+                            alt={ctx.thumbnail?.alt}
+                            title={ctx.thumbnail?.title}
+                            src={`${ctx.thumbnail ? (ctx.thumbnail.system.baseUrl + "/" + ctx.thumbnail?.path) : ""}`}
+                            radius="full"
+                            loading="eager"
+                            className="object-fill !h-full !w-full"
+                            classNames={{wrapper: "h-full w-full bg-contain bg-center"}}
+                            fallbackSrc="/fallback.png"
+                        />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <span className="truncate">{value}</span>
+                    </div>
+                </div>
+            )
+        },
     },
     {
-        key: "phone",
-        title: "شماره تماس",
-        width: 120,
-        minWidth: 120,
+        key: "expiredAt",
+        title: "تاریخ منقضی شدن",
+        width: 240,
+        minWidth: 240,
         render: (value, ctx, id) => {
-            return <div dir="ltr">{value}</div>
+            return (
+                <span dir="ltr">
+                    {moment(value?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}
+                </span>
+            )
         }
     },
     {
@@ -229,7 +198,7 @@ export const storyContext = {
         fields: formFields,
         initial: formInitial,
     },
-    // table: {
-    //     columns: tableColumns,
-    // },
+    table: {
+        columns: tableColumns,
+    },
 }
