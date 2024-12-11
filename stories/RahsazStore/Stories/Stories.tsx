@@ -139,7 +139,7 @@ export const Stories = () => {
 };
 
 
-const ViewStory = (props: { id: number; handleCloseStory: () => void; }) => {
+const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) => {
 
     const {
         id,
