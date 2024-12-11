@@ -184,11 +184,6 @@ const ViewStory = (props: { id: number; handleCloseStory: () => void; }) => {
                     radius="none"
                     loading="eager"
                     className="object-contain !h-fit !w-fit"
-                    fallbackSrc={(
-                        <div className="size-24 flex justify-center items-center text-white bg-[#FFA500] rounded-xl">
-                            <MimetypeImageIcon size={54}/>
-                        </div>
-                    )}
                 />
             )
         }
@@ -197,14 +192,12 @@ const ViewStory = (props: { id: number; handleCloseStory: () => void; }) => {
                 <ReactPlayer
                     url={`${file.system.baseUrl}/${file.path}`}
                     title={file.title}
-                    height={360}
-                    width={640}
-                    controls
-                    fallback={(
-                        <div className="size-24 flex justify-center items-center text-white bg-[#008080] rounded-xl">
-                            <MimetypeAudioIcon size={54}/>
-                        </div>
-                    )}
+                    // width="100%"
+                    height="100%"
+                    controls={false}
+                    playing
+                    loop
+                    style={{ objectFit: 'cover' }}
                 />
             )
         }
@@ -223,67 +216,6 @@ const ViewStory = (props: { id: number; handleCloseStory: () => void; }) => {
             className="max-w-fit"
         >
             <ModalContent className="bg-transparent shadow-none">
-                {/*{file && (*/}
-                {/*    <ModalHeader className="justify-center">*/}
-                {/*        <Tooltip*/}
-                {/*            color="foreground"*/}
-                {/*            placement="top"*/}
-                {/*            showArrow*/}
-                {/*            content="حذف"*/}
-                {/*            className="select-none"*/}
-                {/*            radius="sm"*/}
-                {/*        >*/}
-                {/*            <Button*/}
-                {/*                isIconOnly*/}
-                {/*                radius="full"*/}
-                {/*                variant="light"*/}
-                {/*                color="danger"*/}
-                {/*                onPress={() => {*/}
-                {/*                    if (file.id) removeFile(file.id)*/}
-                {/*                }}*/}
-                {/*            >*/}
-                {/*                <DeleteOutlined/>*/}
-                {/*            </Button>*/}
-                {/*        </Tooltip>*/}
-                {/*        <Tooltip*/}
-                {/*            color="foreground"*/}
-                {/*            placement="top"*/}
-                {/*            showArrow*/}
-                {/*            content="دانلود"*/}
-                {/*            className="select-none"*/}
-                {/*            radius="sm"*/}
-                {/*        >*/}
-                {/*            <Button*/}
-                {/*                isIconOnly*/}
-                {/*                radius="full"*/}
-                {/*                variant="light"*/}
-                {/*                color="success"*/}
-                {/*                onPress={() => {*/}
-                {/*                    if (file.id) downloadFile(file.id)*/}
-                {/*                }}*/}
-                {/*            >*/}
-                {/*                <FileDownloadOutlined/>*/}
-                {/*            </Button>*/}
-                {/*        </Tooltip>*/}
-                {/*        <Tooltip*/}
-                {/*            color="foreground"*/}
-                {/*            placement="top"*/}
-                {/*            showArrow*/}
-                {/*            content="ویرایش"*/}
-                {/*            className="select-none"*/}
-                {/*            radius="sm"*/}
-                {/*        >*/}
-                {/*            <Button*/}
-                {/*                isIconOnly*/}
-                {/*                radius="full"*/}
-                {/*                variant="light"*/}
-                {/*                color="secondary"*/}
-                {/*            >*/}
-                {/*                <EditOutlined/>*/}
-                {/*            </Button>*/}
-                {/*        </Tooltip>*/}
-                {/*    </ModalHeader>*/}
-                {/*)}*/}
                 <ModalBody>
                     <div className="flex justify-center items-center">
                         {!story && <Spinner/>}
