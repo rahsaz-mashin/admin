@@ -151,7 +151,7 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
     const [story, setStory] = useState<Story | null>(null)
     const getStory = async () => {
         if (!id) return
-        const ss = await axios.get(`store/story/${id}`)
+        const ss: Story = await axios.get(`store/story/${id}`)
         setStory(ss)
     }
 
