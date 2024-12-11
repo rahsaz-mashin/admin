@@ -46,7 +46,7 @@ export const Stories = () => {
     const [nextHidden, setNextHidden] = useState(true)
 
     const handleScroll = (e?: React.UIEvent<HTMLDivElement>) => {
-        const scrollLeft = e?.target?.scrollLeft || 0
+        const scrollLeft = (e?.target as HTMLDivElement)?.scrollLeft || 0
         const clientWidth = scrollRef.current?.clientWidth || 0
         const scrollWidth = scrollRef.current?.scrollWidth || 0
 
