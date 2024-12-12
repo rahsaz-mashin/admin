@@ -146,11 +146,13 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
         handleCloseStory
     } = props
 
+    const isOpen = !!id
+
 
     const axios = axiosCoreWithAuth()
     const [story, setStory] = useState<Story | null>(null)
     const getStory = async () => {
-        if (!id) return
+        if (!isOpen) return
         const ss: Story = await axios.get(`store/story/${id}`)
         setStory(ss)
     }
@@ -195,9 +197,9 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                     width="400px"
                     height="100%"
                     controls={false}
-                    playing
+                    playing={isOpen}
                     loop
-                    style={{ objectFit: 'cover' }}
+                    style={{objectFit: 'contain'}}
                 />
             )
         }
@@ -207,17 +209,22 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
         <Modal
             //
             backdrop="blur"
-            isOpen={!!id}
+            isOpen={isOpen}
             onClose={closeStory}
             scrollBehavior="inside"
-            placement="center"
-            hideCloseButton
+            placement="top-center"
+            // hideCloseButton
             isDismissable
-            className="max-w-fit"
+            className="max-w-none bg-black"
+
+            classNames={{
+                closeButton: "z-10 p-1.5 text-white hover:bg-white/10 active:bg-white/20"
+            }}
+            size="full"
         >
-            <ModalContent className="bg-transparent shadow-none">
-                <ModalBody>
-                    <div className="flex justify-center items-center">
+            <ModalContent className="shadow-none backdrop-blur-lg rounded-lg overflow-hidden p-0 max-h-none">
+                <ModalBody className="p-0 justify-center items-center">
+                    <div className="flex justify-center items-center max-w-full max-h-full">
                         {!story && <Spinner/>}
                         {!!story && preview}
                     </div>
