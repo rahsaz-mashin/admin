@@ -449,7 +449,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                             className="object-contain z-[3] !h-full !w-fit"
                                             classNames={{wrapper: "h-full"}}
                                         />
-                                        <div className="absolute top-0 h-full w-full z-[2]">
+                                        <div className="absolute top-0 h-full w-full z-[2] blur-xl">
                                             <Image
                                                 as={NextImage}
                                                 width={1024}
@@ -460,7 +460,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                                 radius="none"
                                                 loading="eager"
                                                 className="object-cover !h-full !w-full"
-                                                classNames={{wrapper: "h-full"}}
+                                                classNames={{wrapper: "h-full !max-w-none"}}
                                             />
                                         </div>
                                         <div className="absolute top-0 h-full w-full z-[4]">
