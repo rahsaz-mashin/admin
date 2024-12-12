@@ -265,7 +265,10 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                                             </div>
                                             <div className="flex flex-col gap-3 flex-1 justify-center items-start">
                                                 <span
-                                                    className="font-bold text-base text-black">{story?.product?.title}</span>
+                                                    className="font-bold text-base text-black"
+                                                >
+                                                    {story?.product?.title}
+                                                </span>
                                             </div>
                                         </CardBody>
                                     </Card>

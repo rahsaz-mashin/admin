@@ -1,7 +1,7 @@
 "use client"
 
 import React, {useState} from "react";
-import {Button,} from "@nextui-org/react";
+import {Button, Image,} from "@nextui-org/react";
 import {useKeenSlider} from "keen-slider/react";
 import {CircularProgress, Progress} from "@nextui-org/progress";
 import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
@@ -9,66 +9,70 @@ import {AnimatePresence, motion} from "framer-motion";
 import {AlarmIcon} from "@/stories/Icons";
 import moment from "moment";
 import jMoment from "jalali-moment";
+import {Slider} from "@/interfaces/Slider.interface";
+import NextImage from "next/image";
 
-export type HomeSliderItems = {
-    id: string;
-    title: string;
-    subtitle: string;
-    description?: string;
-    startAt?: string;
-    endAt?: string;
+// export type HomeSliderItems = {
+//     id: string;
+//     title: string;
+//     subtitle: string;
+//     description?: string;
+//     startAt?: string;
+//     endAt?: string;
+//
+//     type: "image";
+//     image: string;
+// }
+//
+// const sliders: HomeSliderItems[] = [
+//     {
+//         id: "1",
+//         title: "داستان راهساز ماشین",
+//         subtitle: "داستان به وجود آمدن راهساز ماشین را در اینجا بخوانید ...",
+//         type: "image",
+//         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
+//     },
+//     {
+//         id: "2",
+//         title: "پیش فروش لوازم برقی",
+//         subtitle: "آغاز اولین پیش فروش راهساز ماشین به مدت محدود",
+//         description: `<div style="color: gold;"><b><u>فقط</u></b> ویژه مشتریان طلایی</div>`,
+//         startAt: moment().add(4, "days").toISOString(),
+//         endAt: moment().add(16, "days").toISOString(),
+//         type: "image",
+//         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
+//     },
+//     {
+//         id: "3",
+//         title: "کمپین فروش قطعات موتور",
+//         subtitle: "قطعات و لوازم موتور به مدت محدود",
+//         startAt: moment().subtract(2, "days").toISOString(),
+//         endAt: moment().add(16, "days").toISOString(),
+//         type: "image",
+//         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
+//     },
+//     {
+//         id: "4",
+//         title: "واگذاری نماینده فروش راهساز ماشین",
+//         subtitle: "نمایندگی فروش راهساز ماشین به مدت محدود واگذار می شود",
+//         description: `<div style="color: dodgerblue;">اطلاع از شرایط نماینده فروش</div>`,
+//         type: "image",
+//         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
+//     },
+//     {
+//         id: "5",
+//         title: "راهساز آنلاین، سرویس جدید راهساز ماشین",
+//         subtitle: "سرویس تولید محتوا و درج آگهی راهساز ماشین رونمایی شد",
+//         type: "image",
+//         image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
+//     },
+//
+// ]
 
-    type: "image";
-    image: string;
+
+export type HomeSliderProps = {
+    items: Slider[];
 }
-
-const sliders: HomeSliderItems[] = [
-    {
-        id: "1",
-        title: "داستان راهساز ماشین",
-        subtitle: "داستان به وجود آمدن راهساز ماشین را در اینجا بخوانید ...",
-        type: "image",
-        image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "2",
-        title: "پیش فروش لوازم برقی",
-        subtitle: "آغاز اولین پیش فروش راهساز ماشین به مدت محدود",
-        description: `<div style="color: gold;"><b><u>فقط</u></b> ویژه مشتریان طلایی</div>`,
-        startAt: moment().add(4, "days").toISOString(),
-        endAt: moment().add(16, "days").toISOString(),
-        type: "image",
-        image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "3",
-        title: "کمپین فروش قطعات موتور",
-        subtitle: "قطعات و لوازم موتور به مدت محدود",
-        startAt: moment().subtract(2, "days").toISOString(),
-        endAt: moment().add(16, "days").toISOString(),
-        type: "image",
-        image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "4",
-        title: "واگذاری نماینده فروش راهساز ماشین",
-        subtitle: "نمایندگی فروش راهساز ماشین به مدت محدود واگذار می شود",
-        description: `<div style="color: dodgerblue;">اطلاع از شرایط نماینده فروش</div>`,
-        type: "image",
-        image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-    {
-        id: "5",
-        title: "راهساز آنلاین، سرویس جدید راهساز ماشین",
-        subtitle: "سرویس تولید محتوا و درج آگهی راهساز ماشین رونمایی شد",
-        type: "image",
-        image: "https://api.zl50.ir/storage/images/1697958170 engine-piston-cross-section.jpg",
-    },
-
-]
-
-
-export type HomeSliderProps = {}
 
 
 const duration = 5000
@@ -117,7 +121,11 @@ const AutoSwitch = (setProgress: React.Dispatch<React.SetStateAction<number>>) =
 }
 
 
-export const HomeSlider = () => {
+export const HomeSlider = (props: HomeSliderProps) => {
+
+    const {
+        items,
+    } = props
 
     const [progress, setProgress] = useState(0)
     const [currentSlide, setCurrentSlide] = useState(0)
@@ -139,24 +147,24 @@ export const HomeSlider = () => {
     }, [AutoSwitch(setProgress)])
 
 
-    const current = sliders[currentSlide]
+    const current = items[currentSlide]
 
     let haveTimer = false
     let isStarted = false
     let isEnded = false
-    if (!!current.startAt || !!current.endAt) {
-        haveTimer = true
-        if (moment(current.startAt).diff(moment()) > 0) {
-            isStarted = false
-            isEnded = false
-        } else if (moment(current.endAt).diff(moment()) > 0) {
-            isStarted = true
-            isEnded = false
-        } else {
-            isStarted = true
-            isEnded = true
-        }
-    }
+    // if (!!current.startAt || !!current.endAt) {
+    //     haveTimer = true
+    //     if (moment(current.startAt).diff(moment()) > 0) {
+    //         isStarted = false
+    //         isEnded = false
+    //     } else if (moment(current.endAt).diff(moment()) > 0) {
+    //         isStarted = true
+    //         isEnded = false
+    //     } else {
+    //         isStarted = true
+    //         isEnded = true
+    //     }
+    // }
 
 
     return (
@@ -168,10 +176,10 @@ export const HomeSlider = () => {
                             className="bg-primary transition-width truncate flex flex-col px-2.5 py-1.5 flex-[1_1_0] flex-shrink-0 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]"
                         >
                             <h6 className="font-bold text-lg md:text-xl text-white truncate">
-                                {current.title}
+                                {current?.title}
                             </h6>
                             <span className="font-light text-xs md:text-sm text-white truncate">
-                                {current.subtitle}
+                                {current?.subtitle || ""}
                             </span>
                         </div>
                         <svg
@@ -215,18 +223,18 @@ export const HomeSlider = () => {
                             />
                         </svg>
                     </div>
-                    <div className="relative bg-blue-600 h-full w-full overflow-hidden z-10">
+                    <div className="relative h-full w-full overflow-hidden z-10">
                         <AnimatePresence>
-                            {!!current.description && (
+                            {!!current?.description && (
                                 <motion.div
                                     initial={{bottom: "-60px"}}
                                     animate={{bottom: 0}}
                                     exit={{bottom: "-60px"}}
-                                    className="absolute end-0 bg-gradient-to-b px-24 from-transparent to-black/50 text-center h-16 w-full flex justify-center items-center"
+                                    className="absolute end-0 z-[1] bg-gradient-to-b px-24 from-transparent to-black/50 text-center h-16 w-full flex justify-center items-center text-primary"
                                 >
                                     <p
                                         className="truncate"
-                                        dangerouslySetInnerHTML={{__html: current.description || ""}}
+                                        dangerouslySetInnerHTML={{__html: current?.description || ""}}
                                     />
                                 </motion.div>
                             )}
@@ -317,7 +325,7 @@ export const HomeSlider = () => {
                         </AnimatePresence>
                         <div className="absolute z-10 bottom-0 end-2 flex gap-1.5 justify-center items-end">
                             <div className="text-white font-bold text-xl">
-                                {sliders.length}
+                                {items.length}
                             </div>
                             <div className="text-white font-bold text-xl">
                                 /
@@ -326,7 +334,7 @@ export const HomeSlider = () => {
                                 {currentSlide + 1}
                             </div>
                         </div>
-                        {loaded && instanceRef.current && (
+                        {(loaded && instanceRef.current) && (
                             <div
                                 className="absolute z-10 top-0 end-0 p-2 h-full w-12 flex flex-col gap-1.5 justify-center items-center"
                             >
@@ -334,34 +342,40 @@ export const HomeSlider = () => {
                                     // @ts-ignore
                                     [...new Array(instanceRef.current.track.details.slides.length).keys()].map((idx) => {
                                         if (currentSlide === idx) {
-                                            return <span
-                                                key={idx}
-                                                onClick={() => {
-                                                    instanceRef.current?.moveToIdx(idx)
-                                                }}
-                                                className="rounded-full cursor-pointer transition-all duration-500 bg-primary aspect-square w-3"
-                                            />
+                                            return (
+                                                <span
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        instanceRef.current?.moveToIdx(idx)
+                                                    }}
+                                                    className="rounded-full cursor-pointer transition-all duration-500 bg-primary aspect-square w-3"
+                                                />
+                                            )
                                         } else if (Math.abs(currentSlide - idx) <= 1) {
-                                            return <span
+                                            return (
+                                                <span
+                                                    key={idx}
+                                                    onClick={() => {
+                                                        instanceRef.current?.moveToIdx(idx)
+                                                    }}
+                                                    className="rounded-full cursor-pointer transition-all duration-500 bg-white/70 aspect-square w-2"
+                                                />
+                                            )
+                                        }
+                                        return (
+                                            <span
                                                 key={idx}
                                                 onClick={() => {
                                                     instanceRef.current?.moveToIdx(idx)
                                                 }}
-                                                className="rounded-full cursor-pointer transition-all duration-500 bg-white/70 aspect-square w-2"
+                                                className="rounded-full cursor-pointer transition-all duration-500 bg-white/40 aspect-square w-1.5"
                                             />
-                                        }
-                                        return <span
-                                            key={idx}
-                                            onClick={() => {
-                                                instanceRef.current?.moveToIdx(idx)
-                                            }}
-                                            className="rounded-full cursor-pointer transition-all duration-500 bg-white/40 aspect-square w-1.5"
-                                        />
+                                        )
                                     })
                                 }
                             </div>
                         )}
-                        {loaded && instanceRef.current && (
+                        {(loaded && instanceRef.current) && (
                             <div
                                 className="absolute z-10 bottom-0 start-0 flex gap-1.5 justify-center items-center text-white"
                             >
@@ -415,14 +429,43 @@ export const HomeSlider = () => {
                             </div>
                         )}
                         <div ref={sliderRef} className="keen-slider w-full h-96">
-                            {sliders.map((v, i) => {
-                                const {id, title, subtitle, type, image} = v
+                            {items.map((v, i) => {
+                                const {id, layoutMode, title, file1, file2, file3, file4 } = v
                                 return (
                                     <div
                                         key={id}
-                                        className="keen-slider__slide w-full h-full flex justify-center items-center"
+                                        className="keen-slider__slide w-full h-full flex justify-center items-center relative"
                                     >
-                                        {id}
+
+                                        <Image
+                                            as={NextImage}
+                                            width={1024}
+                                            height={1024}
+                                            alt={title}
+                                            title={title}
+                                            src={`${file1.system.baseUrl}/${file1.path}`}
+                                            radius="none"
+                                            loading="eager"
+                                            className="object-contain z-[3] !h-full !w-fit"
+                                            classNames={{wrapper: "h-full"}}
+                                        />
+                                        <div className="absolute top-0 h-full w-full z-[2]">
+                                            <Image
+                                                as={NextImage}
+                                                width={1024}
+                                                height={1024}
+                                                alt={title}
+                                                title={title}
+                                                src={`${file1.system.baseUrl}/${file1.path}`}
+                                                radius="none"
+                                                loading="eager"
+                                                className="object-cover !h-full !w-full"
+                                                classNames={{wrapper: "h-full"}}
+                                            />
+                                        </div>
+                                        <div className="absolute top-0 h-full w-full z-[4]">
+
+                                        </div>
                                     </div>
                                 )
                             })}

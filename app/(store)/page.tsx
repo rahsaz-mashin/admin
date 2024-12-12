@@ -8,6 +8,7 @@ import {axiosServerCore} from "@/lib/axiosServerCore";
 import {auth} from "@/auth";
 import {PaginationResponse} from "@/types/PaginationResponse";
 import {HomeShortcut} from "@/interfaces/HomeShortcut.interface";
+import {Slider} from "@/interfaces/Slider.interface";
 
 
 export const metadata: Metadata = {
@@ -20,18 +21,25 @@ const getHomeShortcuts = async () => {
     return await axiosServer.get(`/store/homeShortcuts/pins`) as PaginationResponse<HomeShortcut>
 }
 
+const getHomeSliders = async () => {
+    const session = await auth()
+    const axiosServer = axiosServerCore(session?.accessToken)
+    return await axiosServer.get(`/store/slider/list`) as PaginationResponse<Slider>
+}
+
 
 export default async function Page() {
 
 
     const homeShortcuts = await getHomeShortcuts()
+    const homeSliders = await getHomeSliders()
     return (
         <>
             <section
                 className="font-normal text-black flex flex-col gap-4 py-4 bg-white overflow-hidden drop-shadow-2xl"
             >
                 <Stories/>
-                <HomeSlider/>
+                <HomeSlider items={homeSliders.data}/>
                 <Shortcuts items={homeShortcuts.data}/>
             </section>
             <section
