@@ -41,7 +41,7 @@ export const StoryItem = (props: StoryItemProps) => {
                 classNames={{content: "w-full"}}
                 isLoaded={isLoaded}
             >
-                <motion.div className="rounded-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F] p-0.5">
+                <div className="relative rounded-full bg-gradient-to-b from-[#FFD4A5] to-[#FF921F] p-0.5">
                     <Image
                         as={NextImage}
                         width={96}
@@ -52,7 +52,8 @@ export const StoryItem = (props: StoryItemProps) => {
                         loading="eager"
                         className="border-4 border-background"
                     />
-                </motion.div>
+                    <div className="absolute top-0 h-full w-full z-10"/>
+                </div>
             </Skeleton>
             <Skeleton
                 className="flex rounded-md w-full h-9"
@@ -65,17 +66,6 @@ export const StoryItem = (props: StoryItemProps) => {
                     {title}
                 </span>
             </Skeleton>
-            {/*<Skeleton*/}
-            {/*    className="flex rounded-md w-full h-4"*/}
-            {/*    classNames={{content: "w-full"}}*/}
-            {/*    isLoaded={isLoaded}*/}
-            {/*>*/}
-            {/*    <span*/}
-            {/*        className="font-light truncate text-xs text-center w-full h-full flex justify-start items-center"*/}
-            {/*    >*/}
-            {/*        {description}*/}
-            {/*    </span>*/}
-            {/*</Skeleton>*/}
         </motion.div>
     );
 };

@@ -2,7 +2,7 @@
 
 import React, {ReactNode, useEffect, useRef, useState} from "react";
 import {StoryItem,} from "@/stories/RahsazStore/Stories/StoryItem";
-import {Button, Image, Modal, ModalBody, ModalContent,} from "@nextui-org/react";
+import {Button, CardBody, Image, Modal, ModalBody, ModalContent, ModalFooter,} from "@nextui-org/react";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {
     KeyboardArrowLeft,
@@ -12,8 +12,9 @@ import {useInfinityList} from "@/hooks/useInfinityList";
 import {Story} from "@/interfaces/Story.interface";
 import {Spinner} from "@nextui-org/spinner";
 import NextImage from "next/image";
-import {MimetypeAudioIcon, MimetypeImageIcon} from "@/stories/General/MinorUploader/Icons";
 import ReactPlayer from "react-player";
+import {Card} from "@nextui-org/card";
+import {useRouter} from "next/navigation";
 
 
 export const Stories = () => {
@@ -185,7 +186,8 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                     src={`${file.system.baseUrl}/${file.path}`}
                     radius="none"
                     loading="eager"
-                    className="object-contain !h-fit !w-fit"
+                    className="object-contain !h-full !w-fit"
+                    classNames={{wrapper: "h-full"}}
                 />
             )
         }
@@ -205,6 +207,8 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
         }
     }
 
+    const router = useRouter()
+
     return (
         <Modal
             //
@@ -215,20 +219,74 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
             placement="top-center"
             // hideCloseButton
             isDismissable
-            className="max-w-none bg-black"
+            className="bg-black/50 backdrop-blur-lg max-w-none"
 
             classNames={{
                 closeButton: "z-10 p-1.5 text-white hover:bg-white/10 active:bg-white/20"
             }}
             size="full"
+            onClick={() => {
+                closeStory()
+            }}
         >
-            <ModalContent className="shadow-none backdrop-blur-lg rounded-lg overflow-hidden p-0 max-h-none">
+            <ModalContent className="shadow-none rounded-lg overflow-hidden p-0 max-h-none">
                 <ModalBody className="p-0 justify-center items-center">
-                    <div className="flex justify-center items-center max-w-full max-h-full">
+                    <div className="relative flex justify-center items-center max-w-full h-full max-h-full">
                         {!story && <Spinner/>}
                         {!!story && preview}
+                        {!!story && (
+                            <div
+                                className="absolute bottom-0 z-20 text-white w-full py-4 px-3 bg-gradient-to-b from-transparent to-black flex flex-col gap-3"
+                            >
+                                {!!story?.product && (
+                                    <Card
+                                        isHoverable
+                                        isPressable
+                                        onPress={() => {
+                                            router.push(`/product/${story?.product?.slug}`)
+                                        }}
+                                    >
+                                        <CardBody className="flex-row gap-4">
+                                            <div className="w-16 h-16">
+                                                <Image
+                                                    as={NextImage}
+                                                    width={100}
+                                                    height={100}
+                                                    alt={story?.product?.thumbnail?.alt}
+                                                    title={story?.product?.thumbnail?.title}
+                                                    src={`${story?.product?.thumbnail ? (story?.product?.thumbnail.system.baseUrl + "/" + story?.product?.thumbnail?.path) : ""}`}
+                                                    radius="md"
+                                                    loading="eager"
+                                                    className="object-fill !h-full !w-full"
+                                                    classNames={{wrapper: "h-full w-full bg-contain bg-center"}}
+                                                    fallbackSrc="/fallback.png"
+                                                />
+                                            </div>
+                                            <div className="flex flex-col gap-3 flex-1 justify-center items-start">
+                                                <span
+                                                    className="font-bold text-base text-black">{story?.product?.title}</span>
+                                            </div>
+                                        </CardBody>
+                                    </Card>
+                                )}
+                                <div
+                                    className="flex flex-col gap-1"
+                                >
+                                    <h4 className="font-bold text-lg">
+                                        {story?.title}
+                                    </h4>
+                                    <h6 className="font-light text-sm">
+                                        {story?.description}
+                                    </h6>
+                                </div>
+                            </div>
+                        )}
+                        {!!story && (
+                            <div className="absolute top-0 h-full w-full z-10"/>
+                        )}
                     </div>
                 </ModalBody>
+
             </ModalContent>
         </Modal>
     )
