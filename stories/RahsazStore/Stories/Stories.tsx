@@ -192,7 +192,7 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                 <ReactPlayer
                     url={`${file.system.baseUrl}/${file.path}`}
                     title={file.title}
-                    // width="100%"
+                    width="400px"
                     height="100%"
                     controls={false}
                     playing
