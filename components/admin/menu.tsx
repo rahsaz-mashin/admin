@@ -35,6 +35,10 @@ const formSchema = z.object({
     isExternal: z.boolean({message: "وضعیت آدرس را مشخص کنید"}),
     onlyDesktop: z.boolean({message: "مود فقط دسکتاپ را مشخص کنید"}).optional(),
     onlyMobile: z.boolean({message: "مود فقط گوشی را مشخص کنید"}).optional(),
+    priority: z.string({message: "اولویت را وارد کنید"})
+        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اولویت معتبر نیست"})
+        .transform((val) => (+(val.replaceAll(",", ""))))
+        .or(z.number({message: "اولویت معتبر نیست"}).positive({message: "اولویت معتبر نیست"})),
 });
 
 

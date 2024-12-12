@@ -39,6 +39,7 @@ import {homeShortcutsContext} from "@/components/admin/homeShortcuts";
 import {footerShortcutsContext} from "@/components/admin/footerShortcuts";
 import {headerShortcutsContext} from "@/components/admin/headerShortcuts";
 import {menuContext} from "@/components/admin/menu";
+import {sliderContext} from "@/components/admin/slider";
 
 export const adminContextConfig: any = {
     general: {
@@ -144,7 +145,7 @@ export const adminContextConfig: any = {
         settings: {
             widgets: {
                 story: storyContext,
-                slider: storyContext,
+                slider: sliderContext,
                 shortcuts: homeShortcutsContext,
                 header: headerShortcutsContext,
                 footer: footerShortcutsContext,

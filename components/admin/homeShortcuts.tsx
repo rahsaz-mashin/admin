@@ -31,6 +31,10 @@ const formSchema = z.object({
         .transform(value => value ? value : null),
     isActive: z.boolean({message: "وضعیت را مشخص کنید"}),
     isExternal: z.boolean({message: "وضعیت آدرس را مشخص کنید"}),
+    priority: z.string({message: "اولویت را وارد کنید"})
+        .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اولویت معتبر نیست"})
+        .transform((val) => (+(val.replaceAll(",", ""))))
+        .or(z.number({message: "اولویت معتبر نیست"}).positive({message: "اولویت معتبر نیست"})),
 });
 
 

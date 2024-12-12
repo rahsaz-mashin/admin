@@ -2,7 +2,6 @@ import React from "react";
 import {z} from "zod";
 import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
-import {axiosCoreWithAuth} from "@/lib/axios";
 import {Story} from "@/interfaces/Story.interface";
 import {Chip, Image} from "@nextui-org/react";
 import NextImage from "next/image";
@@ -71,10 +70,13 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             description: "فایل تصویر یا ویدئو (تا حجم 20 مگابایت)",
             isDisabled: false,
-
-            // accept: {
-            //     'image/png': ['.png'],
-            // },
+            accept: {
+                'image/png': ['.png', '.PNG'],
+                'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
+                "video/mp4": [".mp4"],
+                "video/mpeg": [".mpeg"],
+                "video/webm": [".webm"],
+            },
             minSize: 1000,
             maxFiles: 20971520,
             isMultiple: false,
@@ -89,10 +91,10 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             description: "تصویر بند انگشتی (تا حجم 2 مگابایت)",
             isDisabled: false,
-
-            // accept: {
-            //     'image/png': ['.png'],
-            // },
+            accept: {
+                'image/png': ['.png', '.PNG'],
+                'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
+            },
             minSize: 1000,
             maxFiles: 2097152,
             isMultiple: false,
@@ -202,3 +204,4 @@ export const storyContext = {
         columns: tableColumns,
     },
 }
+//
