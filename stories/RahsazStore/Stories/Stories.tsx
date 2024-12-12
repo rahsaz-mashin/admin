@@ -199,7 +199,9 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                     width="400px"
                     height="100%"
                     controls={false}
-                    playing={isOpen}
+                    playing={!!story?.id}
+                    pip={false}
+                    stopOnUnmount={true}
                     loop
                     style={{objectFit: 'contain'}}
                 />
@@ -208,7 +210,6 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
     }
 
     const router = useRouter()
-
     return (
         <Modal
             //
