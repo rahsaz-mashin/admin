@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 import {Button, Image,} from "@nextui-org/react";
 import {useKeenSlider} from "keen-slider/react";
 import {CircularProgress, Progress} from "@nextui-org/progress";
@@ -11,6 +11,8 @@ import moment from "moment";
 import jMoment from "jalali-moment";
 import {Slider} from "@/interfaces/Slider.interface";
 import NextImage from "next/image";
+import {FileStorage} from "@/interfaces/FileStorage.interface";
+import ReactPlayer from "react-player";
 
 // export type HomeSliderItems = {
 //     id: string;
@@ -75,7 +77,7 @@ export type HomeSliderProps = {
 }
 
 
-const duration = 5000
+const duration = 10000
 const durationPart = 50
 
 const AutoSwitch = (setProgress: React.Dispatch<React.SetStateAction<number>>) => (slider: any) => {
@@ -430,42 +432,29 @@ export const HomeSlider = (props: HomeSliderProps) => {
                         )}
                         <div ref={sliderRef} className="keen-slider w-full h-96">
                             {items.map((v, i) => {
-                                const {id, layoutMode, title, file1, file2, file3, file4 } = v
+                                const {id, layoutMode, thumbnail, title, file1, file2, file3, file4} = v
                                 return (
                                     <div
                                         key={id}
-                                        className="keen-slider__slide w-full h-full flex justify-center items-center relative"
+                                        className="keen-slider__slide w-full h-full flex gap-4 justify-center items-center relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-[4] after:contents-['']"
                                     >
-
-                                        <Image
-                                            as={NextImage}
-                                            width={1024}
-                                            height={1024}
-                                            alt={title}
-                                            title={title}
-                                            src={`${file1.system.baseUrl}/${file1.path}`}
-                                            radius="none"
-                                            loading="eager"
-                                            className="object-contain z-[3] !h-full !w-fit"
-                                            classNames={{wrapper: "h-full"}}
-                                        />
-                                        <div className="absolute top-0 h-full w-full z-[2] blur-xl">
-                                            <Image
-                                                as={NextImage}
-                                                width={1024}
-                                                height={1024}
-                                                alt={title}
-                                                title={title}
-                                                src={`${file1.system.baseUrl}/${file1.path}`}
-                                                radius="none"
-                                                loading="eager"
-                                                className="object-cover !h-full !w-full"
-                                                classNames={{wrapper: "h-full !max-w-none"}}
-                                            />
-                                        </div>
-                                        <div className="absolute top-0 h-full w-full z-[4]">
-
-                                        </div>
+                                        {file1 && (<ShowSlide file={file1}/>)}
+                                        {thumbnail && (
+                                            <div className="absolute top-0 h-full w-full z-[2] blur-xl">
+                                                <Image
+                                                    as={NextImage}
+                                                    width={1024}
+                                                    height={1024}
+                                                    alt={title}
+                                                    title={title}
+                                                    src={`${thumbnail.system.baseUrl}/${thumbnail.path}`}
+                                                    radius="none"
+                                                    loading="eager"
+                                                    className="object-cover !h-full !w-full"
+                                                    classNames={{wrapper: "h-full !max-w-none"}}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 )
                             })}
@@ -476,3 +465,59 @@ export const HomeSlider = (props: HomeSliderProps) => {
         </>
     );
 };
+
+
+const ShowSlide = ({file}: { file: FileStorage }) => {
+
+    const imageMimetype = ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp', 'image/webp', 'image/svg+xml']
+    const videoMimetype = ['video/x-msvideo', 'video/mpeg', 'video/mp4', 'video/ogg', 'video/webm']
+    let preview: ReactNode = null
+
+
+    if (file) {
+        if (imageMimetype.includes(file.mimetype)) {
+            preview = (
+                <Image
+                    as={NextImage}
+                    width={1024}
+                    height={1024}
+                    alt={file.alt}
+                    title={file.title + " " + file.mimetype}
+                    src={`${file.system.baseUrl}/${file.path}`}
+                    radius="none"
+                    loading="eager"
+                    className="object-contain !h-full !w-fit"
+                    classNames={{wrapper: "h-full"}}
+                />
+            )
+        }
+        if (videoMimetype.includes(file.mimetype)) {
+            preview = (
+                <ReactPlayer
+                    url={`${file.system.baseUrl}/${file.path}`}
+                    title={file.title + " " + file.mimetype}
+                    width="400px"
+                    height="100%"
+                    controls={false}
+                    playing
+                    pip={false}
+                    volume={0}
+                    muted
+                    stopOnUnmount={true}
+                    loop
+                    style={{objectFit: 'contain'}}
+                />
+            )
+        }
+    }
+
+    return (
+        <div className="z-[3] h-full w-full flex justify-center items-center">
+            {preview}
+        </div>
+    )
+
+}
+
+
+
