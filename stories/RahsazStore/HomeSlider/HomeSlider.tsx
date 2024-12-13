@@ -251,6 +251,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                             />
                         </div>
                         <AnimatePresence>
+{/*
                             {haveTimer && (
                                 <motion.div
                                     initial={{opacity: 0}}
@@ -259,7 +260,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                     className="absolute p-2 z-10"
                                 >
                                     <div className="relative -rotate-90 h-10 origin-top-right start-10">
-                                        {/* not started yet */}
+                                         
                                         {!isStarted && !isEnded && (
                                             <div className="flex flex-row items-center gap-1">
                                                 <Button
@@ -283,7 +284,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                                 </div>
                                             </div>
                                         )}
-                                        {/* started but not ended yet */}
+                                        
                                         {isStarted && !isEnded && (
                                             <div className="flex flex-col w-60 items-start gap-1">
                                                 <div className="flex justify-center font-medium gap-1 px-1 text-white">
@@ -305,7 +306,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                                 />
                                             </div>
                                         )}
-                                        {/* not started but ended */}
+                                        
                                         {!isStarted && isEnded && (
                                             <div className="flex flex-row items-end h-full gap-1">
                                                 <div className="flex justify-center font-medium gap-1 px-1 text-white">
@@ -313,7 +314,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                                 </div>
                                             </div>
                                         )}
-                                        {/* started and ended */}
+                                      
                                         {isStarted && isEnded && (
                                             <div className="flex flex-row items-end h-full gap-1">
                                                 <div className="flex justify-center font-medium gap-1 px-1 text-white">
@@ -324,6 +325,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                     </div>
                                 </motion.div>
                             )}
+*/}
                         </AnimatePresence>
                         <div className="absolute z-10 bottom-0 end-2 flex gap-1.5 justify-center items-end">
                             <div className="text-white font-bold text-xl">
