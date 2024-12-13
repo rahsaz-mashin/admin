@@ -90,10 +90,10 @@ export const Stories = () => {
     const haveNext = !!(items?.[idx + 1])
     const havePrev = !!(items?.[idx - 1])
 
-    const next = (id: number) => {
+    const next = () => {
         setOpenStory(items?.[idx + 1]?.id)
     }
-    const prev = (id: number) => {
+    const prev = () => {
         setOpenStory(items?.[idx - 1]?.id)
     }
 
