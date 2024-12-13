@@ -142,9 +142,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             accept: {
                 'image/png': ['.png', '.PNG'],
                 'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
-                'video/mp4': ['.mp4'],
-                'video/mpeg': ['.mpeg'],
-                'video/webm': ['.webm'],
+                'video/mp4': ['.mp4', '.MP4'],
             },
             minSize: 1000,
             maxFiles: 20971520,
@@ -164,9 +162,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             accept: {
                 'image/png': ['.png', '.PNG'],
                 'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
-                'video/mp4': ['.mp4'],
-                'video/mpeg': ['.mpeg'],
-                'video/webm': ['.webm'],
+                'video/mp4': ['.mp4', '.MP4'],
             },
             minSize: 1000,
             maxFiles: 20971520,
@@ -186,9 +182,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             accept: {
                 'image/png': ['.png', '.PNG'],
                 'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
-                'video/mp4': ['.mp4'],
-                'video/mpeg': ['.mpeg'],
-                'video/webm': ['.webm'],
+                'video/mp4': ['.mp4', '.MP4'],
             },
             minSize: 1000,
             maxFiles: 20971520,
@@ -208,9 +202,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             accept: {
                 'image/png': ['.png', '.PNG'],
                 'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
-                'video/mp4': ['.mp4'],
-                'video/mpeg': ['.mpeg'],
-                'video/webm': ['.webm'],
+                'video/mp4': ['.mp4', '.MP4'],
             },
             minSize: 1000,
             maxFiles: 20971520,
