@@ -70,11 +70,11 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             className: "col-span-full xl:col-span-1",
             description: "فایل تصویر یا ویدئو (تا حجم 20 مگابایت)",
             isDisabled: false,
-            accept: {
-                'image/png': ['.png', '.PNG'],
-                'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
-                'video/mp4': ['.mp4', '.MP4'],
-            },
+            // accept: {
+            //     'image/png': ['.png', '.PNG'],
+            //     'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
+            //     'video/mp4': ['.mp4', '.MP4'],
+            // },
             minSize: 1000,
             maxFiles: 20971520,
             isMultiple: false,

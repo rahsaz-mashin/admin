@@ -86,6 +86,18 @@ export const Stories = () => {
     const items = list.length > 0 ? list : new Array(20).fill({})
 
 
+    const idx = items.findIndex((v) => (v.id === openStory))
+    const haveNext = !!(items?.[idx + 1])
+    const havePrev = !!(items?.[idx - 1])
+
+    const next = (id: number) => {
+        setOpenStory(items?.[idx + 1]?.id)
+    }
+    const prev = (id: number) => {
+        setOpenStory(items?.[idx - 1]?.id)
+    }
+
+
     return (
         <div
             ref={scrollRef}
@@ -131,6 +143,10 @@ export const Stories = () => {
             </Button>
             <ViewStory
                 id={openStory}
+                haveNext={haveNext}
+                next={next}
+                havePrev={havePrev}
+                prev={prev}
                 handleCloseStory={handleCloseStory}
             />
         </div>
@@ -140,11 +156,25 @@ export const Stories = () => {
 };
 
 
-const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) => {
+type ViewStoryProps = {
+    id: number | null;
+    handleCloseStory: () => void;
+    haveNext: boolean;
+    next: () => void;
+    havePrev: boolean;
+    prev: () => void;
+}
+
+
+const ViewStory = (props: ViewStoryProps) => {
 
     const {
         id,
-        handleCloseStory
+        handleCloseStory,
+        haveNext,
+        next,
+        havePrev,
+        prev,
     } = props
 
     const isOpen = !!id
@@ -289,8 +319,35 @@ const ViewStory = (props: { id: number | null; handleCloseStory: () => void; }) 
                             <div className="absolute top-0 h-full w-full z-10"/>
                         )}
                     </div>
+                    {!!story && (
+                        <div className="absolute h-full w-full z-[11] flex justify-center items-center">
+                            {havePrev && (
+                                <div
+                                    className="w-28 h-full absolute start-0 text-primary flex justify-center items-center cursor-pointer transition hover:bg-white/25 active:bg-white/40"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        prev()
+                                    }}
+                                >
+                                    <KeyboardArrowRight fontSize="large"/>
+                                </div>
+                            )}
+                            {haveNext && (
+                                <div
+                                    className="w-28 h-full absolute end-0 text-primary flex justify-center items-center cursor-pointer transition hover:bg-white/25 active:bg-white/40"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        e.stopPropagation()
+                                        next()
+                                    }}
+                                >
+                                    <KeyboardArrowLeft fontSize="large"/>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </ModalBody>
-
             </ModalContent>
         </Modal>
     )
