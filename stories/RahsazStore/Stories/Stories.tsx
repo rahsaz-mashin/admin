@@ -17,6 +17,7 @@ import {Card} from "@nextui-org/card";
 import {useRouter} from "next/navigation";
 
 
+
 export const Stories = () => {
     const [openStory, setOpenStory] = useState<number | null>(null)
     const handleOpenStory = (id: number) => () => {
@@ -86,6 +87,7 @@ export const Stories = () => {
     const items = list.length > 0 ? list : new Array(20).fill({})
 
 
+
     const idx = items.findIndex((v) => (v.id === openStory))
     const haveNext = !!(items?.[idx + 1])
     const havePrev = !!(items?.[idx - 1])
@@ -96,6 +98,8 @@ export const Stories = () => {
     const prev = () => {
         setOpenStory(items?.[idx - 1]?.id)
     }
+
+
 
 
     return (
@@ -165,7 +169,8 @@ type ViewStoryProps = {
     prev: () => void;
 }
 
-
+const duration = 10000
+const durationPart = 50
 const ViewStory = (props: ViewStoryProps) => {
 
     const {
@@ -177,8 +182,31 @@ const ViewStory = (props: ViewStoryProps) => {
         prev,
     } = props
 
-    const isOpen = !!id
 
+    let timeout: NodeJS.Timeout
+
+    let mouseOver = false
+    function clearNextTimeout() {
+        clearTimeout(timeout)
+    }
+
+    function nextTimeout() {
+        clearTimeout(timeout)
+        if (mouseOver) return
+        timeout = setInterval(() => {
+            setProgress((o: number) => {
+                // const v = o + (durationPart / duration)
+                // if (v > 1) {
+                //     if (slider.slides.length === slider.track.details.rel + 1) slider.moveToIdx(0)
+                //     else slider.next()
+                // }
+                return v
+            })
+        }, durationPart)
+    }
+
+
+    const isOpen = !!id
 
     const axios = axiosCoreWithAuth()
     const [story, setStory] = useState<Story | null>(null)
@@ -321,10 +349,10 @@ const ViewStory = (props: ViewStoryProps) => {
                         )}
                     </div>
                     {!!story && (
-                        <div className="absolute h-full w-full z-[11] flex justify-center items-center">
+                        <div className="absolute h-[calc(100%-6rem)] w-full z-[11] flex justify-center items-center">
                             {havePrev && (
                                 <div
-                                    className="w-28 h-full absolute start-0 text-primary flex justify-center items-center cursor-pointer transition hover:bg-white/25 active:bg-white/40"
+                                    className="w-28 h-full absolute rounded-e-full start-0 text-primary flex justify-center items-center cursor-pointer transition active:bg-white/40"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
@@ -336,7 +364,7 @@ const ViewStory = (props: ViewStoryProps) => {
                             )}
                             {haveNext && (
                                 <div
-                                    className="w-28 h-full absolute end-0 text-primary flex justify-center items-center cursor-pointer transition hover:bg-white/25 active:bg-white/40"
+                                    className="w-28 h-full absolute rounded-s-full end-0 text-primary flex justify-center items-center cursor-pointer transition active:bg-white/40"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()

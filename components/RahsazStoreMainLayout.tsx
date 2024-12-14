@@ -25,8 +25,6 @@ import {FooterShortcut} from "@/interfaces/FooterShortcut.interface";
 import {Menu} from "@/interfaces/Menu.interface";
 
 
-
-
 export type RahsazStoreMainLayoutProps = {
     children: React.ReactNode;
     headerShortcuts: HeaderShortcut[];
@@ -36,7 +34,13 @@ export type RahsazStoreMainLayoutProps = {
 }
 
 
-const RahsazStoreMainLayout = ({children, headerShortcuts, footerShortcuts, mobileMenu, desktopMenu }: RahsazStoreMainLayoutProps) => {
+const RahsazStoreMainLayout = ({
+                                   children,
+                                   headerShortcuts,
+                                   footerShortcuts,
+                                   mobileMenu,
+                                   desktopMenu
+                               }: RahsazStoreMainLayoutProps) => {
 
     const [scroll, setScroll] = useState(0)
     const onScroll: any = (v: any) => {
@@ -75,68 +79,67 @@ const RahsazStoreMainLayout = ({children, headerShortcuts, footerShortcuts, mobi
     }, [dimensions, containerDimensionsContext]);
 
     return (
-        <>
-            <Drawer
-                isOpen={isDrawerOpen}
-                setClose={onCloseDrawer}
-                menu={mobileMenu}
+        <Drawer
+            isOpen={isDrawerOpen}
+            setClose={onCloseDrawer}
+            menu={mobileMenu}
+        >
+            <div className="absolute top-0 w-full z-50 hidden md:block">
+                <Progress
+                    aria-label="Loading..."
+                    value={scroll}
+                    size="sm"
+                    color="primary"
+                    className="h-[3px]"
+                />
+            </div>
+            <main
+                className="relative flex w-full h-full min-h-full min-w-full flex-col bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]"
             >
-                <div className="absolute top-0 w-full z-50 hidden md:block">
-                    <Progress
-                        aria-label="Loading..."
-                        value={scroll}
-                        size="sm"
-                        color="primary"
-                        className="h-[3px]"
+                <nav className="hidden w-32 fixed md:flex flex-col h-full">
+                    <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
+                        <Logo size={60}/>
+                    </Link>
+                    <Navigation
+                        menu={desktopMenu}
                     />
-                </div>
-                <main
-                    className="flex w-full h-full min-h-full min-w-full flex-col bg-gradient-to-b from-[#FFD4A5] to-[#FF921F]">
-                    <nav className="hidden w-32 fixed md:flex flex-col h-full">
-                        <Link href="/" className="w-full cursor-pointer aspect-square flex justify-center items-center">
-                            <Logo size={60}/>
-                        </Link>
-                        <Navigation
-                            menu={desktopMenu}
+                </nav>
+                <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
+                    <header className="w-full z-10 md:py-4 flex flex-col md:flex-row items-center">
+                        <div className="flex gap-4 w-full">
+                            <CallWidget className="hidden md:flex"/>
+                            <HeaderBox items={headerShortcuts}/>
+                            <MyWalletButton/>
+                            <MyCartButton/>
+                            <NotificationsButton/>
+                            <ToolsButton/>
+                        </div>
+                        <NavBar
+                            setDrawerOpen={onOpenDrawer}
                         />
-                    </nav>
-                    <aside className="flex-1 flex flex-col gap-0 md:pr-32 m-0 md:me-3 h-full">
-                        <header className="w-full z-10 md:py-4 flex flex-col md:flex-row items-center">
-                            <div className="flex gap-4 w-full">
-                                <CallWidget className="hidden md:flex"/>
-                                <HeaderBox items={headerShortcuts}/>
-                                <MyWalletButton/>
-                                <MyCartButton/>
-                                <NotificationsButton/>
-                                <ToolsButton/>
-                            </div>
-                            <NavBar
-                                setDrawerOpen={onOpenDrawer}
-                            />
-                        </header>
-                        <section
-                            className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
+                    </header>
+                    <section
+                        className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
+                    >
+                        <ScrollShadow
+                            className="h-full w-full scroll-smooth"
+                            onScroll={onScroll}
+                            size={0}
+                            hideScrollBar
                         >
-                            <ScrollShadow
-                                className="h-full w-full scroll-smooth"
-                                onScroll={onScroll}
-                                size={0}
-                                hideScrollBar
+                            <div
+                                ref={containerRef}
+                                className="select-text mb-20 md:mb-0 h-full w-full"
                             >
-                                <div
-                                    ref={containerRef}
-                                    className="select-text mb-20 md:mb-0 h-full w-full"
-                                >
-                                    {children}
-                                </div>
-                            </ScrollShadow>
-                            <BottomNavigation/>
-                        </section>
-                        <Footer items={footerShortcuts}/>
-                    </aside>
-                </main>
-            </Drawer>
-        </>
+                                {children}
+                            </div>
+                        </ScrollShadow>
+                        <BottomNavigation/>
+                    </section>
+                    <Footer items={footerShortcuts}/>
+                </aside>
+            </main>
+        </Drawer>
     )
 }
 

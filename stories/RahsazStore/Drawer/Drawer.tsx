@@ -17,7 +17,7 @@ export const Drawer = ({isOpen, setClose, children, menu}: DrawerProps) => {
 
 
     return (
-        <div className="z-10 fixed bg-primary w-full h-full">
+        <div className="z-10 fixed bg-primary w-full h-full group" data-isopen={isOpen || undefined}>
             <div className="w-full h-full absolute inset-0">
                 <div className="w-full h-full relative flex items-center">
                     <div className="start-0 top-0 w-full h-full p-3">
@@ -57,14 +57,14 @@ export const Drawer = ({isOpen, setClose, children, menu}: DrawerProps) => {
                             </div>
                         </div>
                     </div>
-                    {/*<div className="bg-yellow-500 h-full w-full">*/}
-
-                    {/*</div>*/}
                     <div
                         onClick={isOpen ? setClose : undefined}
                         className={`absolute bg-white overflow-hidden shadow-[4px_4px_8px_rgba(0,0,0,0.28)] z-10 w-full transition-all duration-700 md:h-full md:start-0 md:top-0 md:rounded-s-none ${isOpen ? "h-[calc(100%-250px)] start-3/4 top-14 rounded-s-3xl" : "h-full start-0 top-0 rounded-s-none"}`}
                     >
                         {children}
+                        <div
+                            className="bg-black/25 backdrop-blur-sm absolute top-0 left-0 h-full w-full z-30 hidden group-data-[isopen]:block cursor-pointer"
+                        />
                     </div>
                 </div>
             </div>
