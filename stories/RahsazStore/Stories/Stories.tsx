@@ -233,6 +233,7 @@ const ViewStory = (props: ViewStoryProps) => {
                     pip={false}
                     stopOnUnmount={true}
                     loop
+                    playsinline
                     style={{objectFit: 'contain'}}
                 />
             )

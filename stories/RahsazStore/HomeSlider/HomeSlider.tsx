@@ -507,6 +507,7 @@ const ShowSlide = ({file}: { file: FileStorage }) => {
                     muted
                     stopOnUnmount={true}
                     loop
+                    playsinline
                     style={{objectFit: 'contain'}}
                 />
             )
