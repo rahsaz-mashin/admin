@@ -18,6 +18,7 @@ export interface Slider {
 
     layoutMode: sliderLayoutModeEnum;
 
+    background: FileStorage | null;
     thumbnail: FileStorage | null;
     file1: FileStorage | null;
     file2: FileStorage | null;
@@ -26,6 +27,8 @@ export interface Slider {
 
     isVisible: boolean;
     priority: number;
+
+    blurBackground: boolean;
 
     createdBy?: Account;
     createdAt?: Date;

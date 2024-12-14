@@ -180,9 +180,11 @@ export const HomeSlider = (props: HomeSliderProps) => {
                             <h6 className="font-bold text-lg md:text-xl text-white truncate">
                                 {current?.title}
                             </h6>
-                            <span className="font-light text-xs md:text-sm text-white truncate">
-                                {current?.subtitle || ""}
-                            </span>
+                            {current?.subtitle && (
+                                <span className="font-light text-xs md:text-sm text-white truncate">
+                                    {current?.subtitle || ""}
+                                </span>
+                            )}
                         </div>
                         <svg
                             viewBox="0 0 36 36"
@@ -251,7 +253,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                             />
                         </div>
                         <AnimatePresence>
-{/*
+                            {/*
                             {haveTimer && (
                                 <motion.div
                                     initial={{opacity: 0}}
@@ -434,22 +436,36 @@ export const HomeSlider = (props: HomeSliderProps) => {
                         )}
                         <div ref={sliderRef} className="keen-slider w-full h-96">
                             {items.map((v, i) => {
-                                const {id, layoutMode, thumbnail, title, file1, file2, file3, file4} = v
+                                const {
+                                    id,
+                                    layoutMode,
+                                    blurBackground,
+                                    background,
+                                    thumbnail,
+                                    title,
+                                    file1,
+                                    file2,
+                                    file3,
+                                    file4
+                                } = v
                                 return (
                                     <div
                                         key={id}
                                         className="keen-slider__slide w-full h-full flex gap-4 justify-center items-center relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-[4] after:contents-['']"
                                     >
                                         {file1 && (<ShowSlide file={file1}/>)}
-                                        {thumbnail && (
-                                            <div className="absolute top-0 h-full w-full z-[2] blur-xl">
+                                        {background && (
+                                            <div
+                                                data-blur={blurBackground || undefined}
+                                                className="absolute top-0 h-full w-full z-[2] data-[blur]:blur-xl"
+                                            >
                                                 <Image
                                                     as={NextImage}
                                                     width={1024}
                                                     height={1024}
                                                     alt={title}
                                                     title={title}
-                                                    src={`${thumbnail.system.baseUrl}/${thumbnail.path}`}
+                                                    src={`${background.system.baseUrl}/${background.path}`}
                                                     radius="none"
                                                     loading="eager"
                                                     className="object-cover !h-full !w-full"

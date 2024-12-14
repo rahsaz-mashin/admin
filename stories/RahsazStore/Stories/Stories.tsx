@@ -352,7 +352,7 @@ const ViewStory = (props: ViewStoryProps) => {
                         <div className="absolute h-[calc(100%-6rem)] w-full z-[11] flex justify-center items-center">
                             {havePrev && (
                                 <div
-                                    className="w-28 h-full absolute rounded-e-full start-0 text-primary flex justify-center items-center cursor-pointer transition active:bg-white/40"
+                                    className="w-28 h-full absolute start-0 text-primary flex justify-center items-center cursor-pointer transition"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()
@@ -364,7 +364,7 @@ const ViewStory = (props: ViewStoryProps) => {
                             )}
                             {haveNext && (
                                 <div
-                                    className="w-28 h-full absolute rounded-s-full end-0 text-primary flex justify-center items-center cursor-pointer transition active:bg-white/40"
+                                    className="w-28 h-full absolute end-0 text-primary flex justify-center items-center cursor-pointer transition"
                                     onClick={(e) => {
                                         e.preventDefault()
                                         e.stopPropagation()

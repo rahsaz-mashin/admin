@@ -30,6 +30,8 @@ const formInitial: T = {
     isVisible: true,
     layoutMode: sliderLayoutModeEnum.oneLayout,
     priority: 1,
+
+    blurBackground: true,
 }
 
 
@@ -41,17 +43,20 @@ const formSchema = z.object({
 
     layoutMode: z.nativeEnum(sliderLayoutModeEnum, {message: "نوع چینش نامعتبر است"}),
 
+    background: z.object({id: z.number()}, {message: "تصویر بکگراند را وارد کنید"}),
     thumbnail: z.object({id: z.number()}, {message: "تصویر را وارد کنید"}),
     file1: z.object({id: z.number()}, {message: "فایل را وارد کنید"}),
     file2: z.object({id: z.number()}, {message: "فایل را وارد کنید"}).optional().nullable(),
     file3: z.object({id: z.number()}, {message: "فایل را وارد کنید"}).optional().nullable(),
     file4: z.object({id: z.number()}, {message: "فایل را وارد کنید"}).optional().nullable(),
 
+
     priority: z.string({message: "اولویت را وارد کنید"})
         .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "اولویت معتبر نیست"})
         .transform((val) => (+(val.replaceAll(",", ""))))
         .or(z.number({message: "اولویت معتبر نیست"}).positive({message: "اولویت معتبر نیست"})),
     isVisible: z.boolean({message: "وضعیت نمایش را مشخص کنید"}),
+    blurBackground: z.boolean({message: "وضعیت بلور بودن بکگراند را مشخص کنید"}),
 });
 
 const layoutModeItems = [
@@ -109,7 +114,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             type: "uploader",
             label: "آپلود تصویر بند انگشتی",
             isRequired: true,
-            className: "col-span-full",
+            className: "col-span-full xl:col-span-1",
             description: "تصویر بند انگشتی (تا حجم 2 مگابایت)",
             isDisabled: false,
             accept: {
@@ -119,8 +124,30 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             minSize: 1000,
             maxFiles: 2097152,
             isMultiple: false,
-
-            withPreview: true
+            withPreview: true,
+        },
+        {
+            name: "background",
+            type: "uploader",
+            label: "آپلود تصویر بکگراند",
+            isRequired: true,
+            className: "col-span-full xl:col-span-1",
+            description: "تصویر بکگراند (تا حجم 2 مگابایت)",
+            isDisabled: false,
+            accept: {
+                'image/png': ['.png', '.PNG'],
+                'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
+            },
+            minSize: 1000,
+            maxFiles: 2097152,
+            isMultiple: false,
+            withPreview: true,
+        },
+        {
+            name: "blurBackground",
+            type: "switch",
+            label: "بکگراند بلور شود؟",
+            className: "col-span-full",
         },
         {
             name: "layoutMode",
