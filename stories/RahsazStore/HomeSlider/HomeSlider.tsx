@@ -175,7 +175,7 @@ export const HomeSlider = (props: HomeSliderProps) => {
                 <div className="w-full h-full relative">
                     <div className="flex h-[56px] md:h-[60px]">
                         <div
-                            className="bg-primary transition-width truncate flex flex-col px-2.5 py-1.5 flex-[1_1_0] flex-shrink-0 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]"
+                            className="bg-primary transition-width truncate flex justify-center flex-col px-2.5 py-1.5 flex-[1_1_0] flex-shrink-0 max-w-96 lg:max-w-[560px] xl:max-w-[720px] 3xl:max-w-[820px]"
                         >
                             <h6 className="font-bold text-lg md:text-xl text-white truncate">
                                 {current?.title}
