@@ -451,9 +451,12 @@ export const HomeSlider = (props: HomeSliderProps) => {
                                 return (
                                     <div
                                         key={id}
-                                        className="keen-slider__slide w-full h-full flex gap-4 justify-center items-center relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-[4] after:contents-['']"
+                                        className="keen-slider__slide bg-primary-100 w-full h-full flex gap-4 justify-center items-center relative after:absolute after:top-0 after:left-0 after:w-full after:h-full after:z-[4] after:contents-['']"
                                     >
                                         {file1 && (<ShowSlide file={file1}/>)}
+                                        {file2 && (<ShowSlide file={file2}/>)}
+                                        {file3 && (<ShowSlide file={file3}/>)}
+                                        {file4 && (<ShowSlide file={file4}/>)}
                                         {background && (
                                             <div
                                                 data-blur={blurBackground || undefined}
