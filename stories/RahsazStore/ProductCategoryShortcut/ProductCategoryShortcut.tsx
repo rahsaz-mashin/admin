@@ -7,7 +7,7 @@ import {ProductMachineBrand} from "@/interfaces/ProductMachineBrand.interface";
 import Link from "next/link";
 
 
-export type ProductCategoryShortcut = {
+export type ProductCategoryShortcutProps = {
     categories: ProductCategory[];
     machineBrands: ProductMachineBrand[];
 }
