@@ -4,10 +4,7 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {Chip, Image} from "@nextui-org/react";
 import NextImage from "next/image";
-import moment from "jalali-moment";
 import {Slider, sliderLayoutModeEnum} from "@/interfaces/Slider.interface";
-import {assignTypeEnum} from "@/interfaces/PriceListAssign.interface";
-import {identityTypesEnum} from "@/interfaces/Identity.interface";
 
 
 type T = Slider
@@ -32,6 +29,7 @@ const formInitial: T = {
     priority: 1,
 
     blurBackground: true,
+    background: null,
 }
 
 
