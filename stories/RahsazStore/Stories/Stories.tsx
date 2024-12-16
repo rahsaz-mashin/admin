@@ -193,16 +193,16 @@ const ViewStory = (props: ViewStoryProps) => {
     function nextTimeout() {
         clearTimeout(timeout)
         if (mouseOver) return
-        timeout = setInterval(() => {
-            setProgress((o: number) => {
+        //timeout = setInterval(() => {
+            //setProgress((o: number) => {
                 // const v = o + (durationPart / duration)
                 // if (v > 1) {
                 //     if (slider.slides.length === slider.track.details.rel + 1) slider.moveToIdx(0)
                 //     else slider.next()
                 // }
-                return v
-            })
-        }, durationPart)
+           //     return v
+         //   })
+      //  }, durationPart)
     }
 
 
