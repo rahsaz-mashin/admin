@@ -1,6 +1,7 @@
 import React from "react";
 import {LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
 import {Menu} from "@/interfaces/Menu.interface";
+import Link from "next/link";
 
 
 
@@ -17,9 +18,9 @@ export const Navigation = ({menu}: NavigationProps) => {
             <div className="flex justify-between items-center h-full flex-col">
                 <ul className="flex flex-[1_1_0] w-full ps-4 flex-col overflow-x-hidden">
                     {menu?.map((v, i) => {
-                        const isActive = i === 1
+                        const isActive = i === 0
                         return (
-                            <li
+                            <Link
                                 key={v.id}
                                 className={
                                     [
@@ -30,6 +31,7 @@ export const Navigation = ({menu}: NavigationProps) => {
                                         "before:absolute before:top-[-30px] before:end-0 before:h-[30px] before:w-[0px] before:bg-store-navigation-up before:transition-all before:duration-500"
                                     ].join(" ")
                                 }
+                                href={v.url}
                             >
                                 <div className="w-6 h-6">
                                     <i
@@ -40,7 +42,7 @@ export const Navigation = ({menu}: NavigationProps) => {
                                 <span className="truncate w-full px-2 text-center">
                                     {v.title}
                                 </span>
-                            </li>
+                            </Link>
                         )
                     })}
                 </ul>

@@ -18,6 +18,7 @@ import {CategorySortingModalProps} from "@/stories/RahsazStore/Category/Tools";
 import {axiosCoreWithAuth} from "@/lib/axios";
 import {PaginationResponse} from "@/types/PaginationResponse";
 import {Spinner} from "@nextui-org/spinner";
+import Link from "next/link";
 
 
 export type ShortcutsProps = {
@@ -45,7 +46,14 @@ export const Shortcuts = (props: ShortcutsProps) => {
                     className="w-full gap-4 grid grid-cols-1 us:grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
                     {items.map((v, i) => {
                         return (
-                            <Card key={v.id} isPressable isHoverable shadow="lg">
+                            <Card
+                                key={v.id}
+                                isPressable
+                                isHoverable
+                                shadow="lg"
+                                as={Link}
+                                href={v.url}
+                            >
                                 <CardBody className="flex items-center justify-center">
                                     <i className="w-12 h-12" dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}/>
                                 </CardBody>
@@ -152,9 +160,17 @@ export const AllShortcutsModal = (props: AllShortcutsModalProps) => {
                     >
                         {data.map((v, i) => {
                             return (
-                                <Card key={v.id} isPressable isHoverable shadow="lg">
+                                <Card
+                                    key={v.id}
+                                    isPressable
+                                    isHoverable
+                                    shadow="lg"
+                                    as={Link}
+                                    href={v.url}
+                                >
                                     <CardBody className="flex items-center justify-center">
-                                        <i className="w-12 h-12" dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}/>
+                                        <i className="w-12 h-12"
+                                           dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}/>
                                     </CardBody>
                                     <CardFooter
                                         className="font-bold text-center truncate bg-primary text-white flex items-center justify-center p-1.5"
