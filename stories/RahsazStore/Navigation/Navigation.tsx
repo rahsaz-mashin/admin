@@ -2,6 +2,7 @@ import React from "react";
 import {LanguageSwitcher, ThemeSwitcher} from "@/stories/RahsazStore";
 import {Menu} from "@/interfaces/Menu.interface";
 import Link from "next/link";
+import {usePathname} from "next/navigation";
 
 
 
@@ -12,13 +13,14 @@ export type NavigationProps = {
 
 export const Navigation = ({menu}: NavigationProps) => {
 
+    const pathname = usePathname()
 
     return (
         <div className="flex-1 select-none w-full relative py-4">
             <div className="flex justify-between items-center h-full flex-col">
                 <ul className="flex flex-[1_1_0] w-full ps-4 flex-col overflow-x-hidden">
                     {menu?.map((v, i) => {
-                        const isActive = i === 0
+                        const isActive = pathname === v.url
                         return (
                             <Link
                                 key={v.id}

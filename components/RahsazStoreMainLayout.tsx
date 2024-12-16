@@ -34,13 +34,15 @@ export type RahsazStoreMainLayoutProps = {
 }
 
 
-const RahsazStoreMainLayout = ({
-                                   children,
-                                   headerShortcuts,
-                                   footerShortcuts,
-                                   mobileMenu,
-                                   desktopMenu
-                               }: RahsazStoreMainLayoutProps) => {
+const RahsazStoreMainLayout = (props: RahsazStoreMainLayoutProps) => {
+
+    const {
+        children,
+        headerShortcuts,
+        footerShortcuts,
+        mobileMenu,
+        desktopMenu
+    } = props
 
     const [scroll, setScroll] = useState(0)
     const onScroll: any = (v: any) => {

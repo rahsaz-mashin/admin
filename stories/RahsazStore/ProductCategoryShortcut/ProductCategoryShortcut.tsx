@@ -108,11 +108,13 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                     as={Link}
                                     href={`/category/${v.slug}`}
                                 >
-                                    <CardBody className="flex items-center justify-center overflow-hidden">
-                                        <i
-                                            className="w-12 h-12"
-                                            dangerouslySetInnerHTML={{__html: v.icon?.content}}
-                                        />
+                                    <CardBody className="flex items-center justify-center overflow-hidden w-14 h-14">
+                                        {v.icon && (
+                                            <i
+                                                className="w-12 h-12"
+                                                dangerouslySetInnerHTML={{__html: v.icon?.content}}
+                                            />
+                                        )}
                                     </CardBody>
                                     <CardFooter
                                         className="font-bold text-center truncate bg-primary text-white w-fit flex items-center justify-center py-1 px-1.5"
@@ -144,11 +146,13 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                     as={Link}
                                     href={`/machine/${v.slug}`}
                                 >
-                                    <CardBody className="flex items-center justify-center overflow-hidden">
-                                        <i
-                                            className="w-12 h-12"
-                                            dangerouslySetInnerHTML={{__html: v.icon?.content}}
-                                        />
+                                    <CardBody className="flex items-center justify-center overflow-hidden w-12 h-12">
+                                        {v.icon && (
+                                            <i
+                                                className="w-12 h-12"
+                                                dangerouslySetInnerHTML={{__html: v.icon?.content}}
+                                            />
+                                        )}
                                     </CardBody>
                                     <CardFooter
                                         className="font-bold text-center truncate bg-secondary text-white w-fit flex items-center justify-center py-1 px-1.5"

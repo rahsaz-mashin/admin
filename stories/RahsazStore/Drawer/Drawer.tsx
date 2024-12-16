@@ -4,6 +4,7 @@ import {Button} from "@nextui-org/react";
 import {Close} from "@mui/icons-material";
 import {DrawerMenuItem} from "@/stories/RahsazStore/Drawer/DrawerMenuItem";
 import {Menu} from "@/interfaces/Menu.interface";
+import {usePathname} from "next/navigation";
 
 
 
@@ -15,7 +16,7 @@ export type DrawerProps = {
 }
 export const Drawer = ({isOpen, setClose, children, menu}: DrawerProps) => {
 
-
+    const pathname = usePathname()
     return (
         <div className="z-10 fixed bg-primary w-full h-full group" data-isopen={isOpen || undefined}>
             <div className="w-full h-full absolute inset-0">
@@ -43,6 +44,7 @@ export const Drawer = ({isOpen, setClose, children, menu}: DrawerProps) => {
                                                 label={v.title}
                                                 icon={v.icon?.content}
                                                 url={v.url}
+                                                isActive={pathname === v.url}
                                             />
                                         )
                                     })}
