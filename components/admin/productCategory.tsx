@@ -145,7 +145,7 @@ const tableColumns: ColumnType<T>[] = [
 
 
 export const productCategoryContext = {
-    apiRoute: "product/category",
+    apiRoute: "admin/product/category",
     form: {
         title: "دسته بندی موضوعی",
         schema: formSchema,

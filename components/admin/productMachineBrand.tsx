@@ -131,7 +131,7 @@ const tableColumns: ColumnType<T>[] = [
 
 
 export const productMachineBrandContext = {
-    apiRoute: "product/machineBrand",
+    apiRoute: "admin/product/machineBrand",
     form: {
         title: "برند ماشین",
         schema: formSchema,
