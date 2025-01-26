@@ -35,33 +35,6 @@ export interface WalletTransaction {
     payment: Payment | null;
 
 
-
-
-
-    // common
-    picture: FileStorage | null;
-    dueDate: Date | null;
-    bankName: string | null;
-    bankAccountNumber: string | null;
-
-
-    // =====> bank
-    receiptNumber: string | null;
-    trackingNumber: string | null;
-
-
-    // =====> cheque
-    chequeNumber: string | null;
-    sayadiNumber: string | null;
-
-
-    // =====> online
-    traceNumber: string | null;
-    referenceNumber: string | null;
-    transactionReferenceID: string | null;
-    shaparakRefNumber: string | null;
-
-
     createdBy?: Account;
     createdAt?: Date;
     updatedAt?: Date;

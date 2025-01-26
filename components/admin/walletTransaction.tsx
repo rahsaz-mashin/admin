@@ -48,6 +48,7 @@ const formInitial: T = {
 
     orderbox: null,
     order: null,
+
     paymentbox: null,
     payment: {
         // payment
