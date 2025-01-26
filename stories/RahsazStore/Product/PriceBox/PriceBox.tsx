@@ -99,10 +99,10 @@ export const ProductPriceBox = (props: ProductPriceBoxProps) => {
                     {/*        )*/}
                     {/*    })}*/}
                     {/*</div>*/}
-                    <ProductCounter
-                        mode="slider"
-                        size="md"
-                    />
+                    {/*<ProductCounter*/}
+                    {/*    mode="slider"*/}
+                    {/*    size="md"*/}
+                    {/*/>*/}
                 </CardBody>
             </Card>
         </div>
