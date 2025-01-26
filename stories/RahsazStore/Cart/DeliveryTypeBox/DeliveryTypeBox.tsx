@@ -51,7 +51,7 @@ export const CartDeliveryTypeBox = (props: CartDeliveryTypeBoxProps) => {
     }, []);
 
 
-    const getDetail = async (id: number) => {
+    const getDetail = async (id: AssignType<OrderDeliveryMethod> | null) => {
         if (!id) return
         setLoading(true)
         const _data: OrderDeliveryMethod = await axios.get(`/store/order/deliveryMethod/detail/${id}`)
