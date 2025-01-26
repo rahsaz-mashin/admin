@@ -121,7 +121,7 @@ export const CartDeliveryTypeBox = (props: CartDeliveryTypeBoxProps) => {
 
 export type CartDeliveryTypeItemProps = {
     title: string;
-    icon: string;
+    icon?: string;
     isSelected: boolean;
     handleSwitch: () => void
 }
