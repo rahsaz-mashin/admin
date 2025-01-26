@@ -27,6 +27,7 @@ import {DeleteRounded, EditRounded, MoreVert} from "@mui/icons-material";
 import useSWR from "swr";
 import {Control, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import {Cart} from "@/interfaces/Cart.interface";
+import {AssignType} from "@/types/AssignType";
 
 
 export type CartAddressBoxProps = {
@@ -97,7 +98,7 @@ export const CartAddressBox = (props: CartAddressBoxProps) => {
         setAddress(watch("address"))
     }, [watch("address")]);
 
-    const setAddress = async (id: number | null) => {
+    const setAddress = async (id: AssignType<IdentityAddress> | null) => {
         await axios.patch(`/store/cart/address`, {address: id})
     }
 
@@ -149,8 +150,8 @@ export const CartAddressBox = (props: CartAddressBoxProps) => {
                                                 <CartAddressItem
                                                     key={id}
                                                     {...v}
-                                                    editHandler={() => editHandler(id)}
-                                                    deleteHandler={() => deleteHandler(id)}
+                                                    editHandler={() => editHandler(id!)}
+                                                    deleteHandler={() => deleteHandler(id!)}
                                                     isSelected={id === field.value}
                                                     handleSwitch={() => field.onChange(id)}
                                                 />
@@ -184,9 +185,9 @@ export const CartAddressBox = (props: CartAddressBoxProps) => {
 export type CartAddressItemProps = {
     title: string | null;
 
-    country: AddressCountry;
-    province: AddressProvince;
-    city: AddressCity;
+    country: AddressCountry | null;
+    province: AddressProvince | null;
+    city: AddressCity | null;
 
     type: IdentityAddressType | null;
 

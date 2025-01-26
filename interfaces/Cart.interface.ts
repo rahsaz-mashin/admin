@@ -45,7 +45,7 @@ export interface Cart {
     deliveryMethod: AssignType<OrderDeliveryMethod> | null;
     deliveryMethodInfo?: OrderDeliveryMethod;
 
-    address: IdentityAddress | null;
+    address: AssignType<IdentityAddress> | null;
 
     isSelfRecipient : boolean;
     recipientName: string | null;
