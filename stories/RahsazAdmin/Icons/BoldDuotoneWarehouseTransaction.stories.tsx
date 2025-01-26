@@ -33,7 +33,7 @@ export const Component = ({size = 20}: { size?: number }) => {
 }
 
 export default {
-    title: "RahsazAdmin/Icons/BoldDuotoneWarehouseTransaction",
+    title: "RahsazAdmin/Icons/BoldDuotoneWalletTransactions",
     component: Component,
 }
 

@@ -1,11 +1,10 @@
 import React, {ReactNode, useEffect, useState} from "react";
 import {Control, useController} from "react-hook-form";
-import {Switch} from "@nextui-org/switch";
-import {Radio, RadioGroup} from "@nextui-org/radio";
+import {Radio, RadioGroup} from "@nextui-org/react";
 import {cn} from "@nextui-org/theme";
 import {Icon} from "@/interfaces/Icon.interface";
-import {Spinner} from "@nextui-org/spinner";
-import {Tooltip} from "@nextui-org/tooltip";
+import {Spinner} from "@nextui-org/react";
+import {Tooltip} from "@nextui-org/react";
 import {PaginationResponse} from "@/types/PaginationResponse";
 import useSWR from "swr";
 import {RefreshOutlined} from "@mui/icons-material";

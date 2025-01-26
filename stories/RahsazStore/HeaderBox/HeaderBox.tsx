@@ -97,7 +97,7 @@ export const HeaderBox = (props: HeaderBoxProps) => {
 
 
     return (
-        <div className="flex flex-[1_1_0] relative h-10 md:h-20 items-center justify-center overflow-hidden">
+        <div className="flex flex-[1_1_0] relative h-10 md:h-20 items-center justify-center overflow-hidden transition-width duration-500">
             <Card
                 shadow="none"
                 className="w-full h-full bg-primary md:bg-content1" radius="none"

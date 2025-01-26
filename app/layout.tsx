@@ -45,6 +45,7 @@ export const metadata: Metadata = {
         },
         description: rootConfig.description,
     },
+
 };
 
 export const viewport: Viewport = {

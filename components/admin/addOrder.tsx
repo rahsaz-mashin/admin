@@ -195,7 +195,7 @@ const formInitial: T = {
     priceList: null,
     products: [],
 
-    discount: null,
+    coupon: null,
 
     overallStatus: orderOverallStatusesEnum.inProgress,
     processStatus: orderProcessStatusesEnum.pendingForPayment,
@@ -328,12 +328,12 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             isRequired: true,
             className: "col-span-full lg:col-span-3",
             dynamic: {
-                route: "order/deliveryMethod/sloStyle",
+                route: "admin/order/deliveryMethod/sloStyle",
             },
             dependency: async (value, name) => {
                 if (!value) return
                 const axios = axiosCoreWithAuth()
-                const data: any = await axios.get(`order/deliveryMethod/${value}`)
+                const data: any = await axios.get(`admin/order/deliveryMethod/${value}`)
                 setValue("address", null, {shouldValidate: true})
                 setValue("deliveryMethodInfo", data)
             }

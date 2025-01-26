@@ -33,6 +33,7 @@ export const Navigation = ({menu}: NavigationProps) => {
                                         "before:absolute before:top-[-30px] before:end-0 before:h-[30px] before:w-[0px] before:bg-store-navigation-up before:transition-all before:duration-500"
                                     ].join(" ")
                                 }
+
                                 href={v.url}
                             >
                                 <div className="w-6 h-6">

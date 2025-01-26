@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 import {Control, useController} from "react-hook-form";
-import {Radio, RadioGroup} from "@nextui-org/radio";
+import {Radio, RadioGroup} from "@nextui-org/react";
 
 
 export type MinorRadioBoxProps = {

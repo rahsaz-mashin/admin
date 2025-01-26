@@ -11,93 +11,153 @@ import {
     ModalHeader
 } from "@nextui-org/react";
 import {CardHeader} from "@nextui-org/card";
-import {Input} from "@nextui-org/input";
 import {BoldDuotoneWalletIcon} from "@/stories/Icons";
-
-
-
-
+import {z} from "zod";
+import {axiosCoreWithAuth} from "@/lib/axios";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {WalletChargeBank, WalletTransaction} from "@/interfaces/WalletTransaction.interface";
+import {MinorUploader} from "@/stories/General/MinorUploader";
+import {MinorInput} from "@/stories/General/MinorInput";
+import {MinorCheckBox} from "@/stories/General/MinorCheckBox";
+import {parseDateTime} from "@internationalized/date";
+import moment from "moment";
+import {CalendarDateTimeSchema} from "@/schemas/CalendarDateTime.schema";
 
 
 export type WalletChargeByBankProps = {
     onBackToMain: () => void;
     onClose: () => void;
-    result?: any;
+    result?: WalletTransaction;
 }
+
+
+type T = WalletChargeBank
 
 
 export const WalletChargeByBank = (props: WalletChargeByBankProps) => {
     const {onBackToMain, onClose, result} = props
     const [step, setStep] = useState(1)
+    const [data, setData] = useState<any>({})
 
-    if (!!result && result.success) {
-        return (
-            <WalletChargeByBankSuccess
-                done={() => onClose()}
-                result={result}
-            />
-        )
-    }
-    if (!!result && !result.success) {
-        return (
-            <WalletChargeByBankFailure
-                done={() => onClose()}
-                result={result}
-            />
-        )
-    }
+
+    // if (!!result && result.success) {
+    //     return (
+    //         <WalletChargeByBankSuccess
+    //             done={() => onClose()}
+    //             result={result}
+    //         />
+    //     )
+    // }
+    // if (!!result && !result.success) {
+    //     return (
+    //         <WalletChargeByBankFailure
+    //             done={() => onClose()}
+    //             result={result}
+    //         />
+    //     )
+    // }
 
     if (step === 1) return (
         <WalletChargeByBankStep1
             prev={onBackToMain}
-            next={() => setStep(2)}
+            next={(d) => {
+                setStep(2)
+                setData(d)
+            }}
             done={() => onClose()}
+            data={data}
         />
     )
     if (step === 2) return (
         <WalletChargeByBankStep2
-            prev={() => setStep(1)}
-            next={() => setStep(3)}
+            prev={(d) => {
+                setStep(1)
+                setData(d)
+            }}
+            next={(d) => {
+                setStep(3)
+                setData(d)
+            }}
             done={() => onClose()}
+            data={data}
         />
     )
     if (step === 3) return (
         <WalletChargeByBankStep3
-            prev={() => setStep(2)}
-            next={() => setStep(4)}
+            prev={(d) => {
+                setStep(2)
+                setData(d)
+            }}
+            next={(d) => {
+                setStep(4)
+                setData(d)
+            }}
             done={() => onClose()}
+            data={data}
         />
     )
     return null
 };
 
 
-
-
-
-
-
-
-
-
 export type WalletChargeByBankStepsProps = {
-    prev: () => void;
-    next: () => void;
-    done: () => void;
+    prev: (data?: T) => void;
+    next: (data?: T) => void;
+    done: (data?: T) => void;
+    data?: T;
 }
 
 
 export const WalletChargeByBankStep1 = (props: WalletChargeByBankStepsProps) => {
-    const {prev, next, done} = props
+    const {prev, next, done, data} = props
+
+    const schema = z.object({
+        picture: z.object({id: z.number()}, {message: "تصویر را وارد کنید"}),
+    })
+
+    const initialData: T = {
+        amount: "",
+
+        picture: null,
+        dueDate: null,
+        bankName: "",
+        bankAccountNumber: "",
+
+        receiptNumber: "",
+        trackingNumber: "",
+
+        confirm: false,
+    }
+
+
+    const axios = axiosCoreWithAuth()
+    const onSubmit = async (data: T) => {
+        next(data)
+    }
+
+    const {
+        handleSubmit,
+        control,
+        reset,
+        formState,
+        watch,
+        setValue,
+        setFocus,
+    } = useForm<T>({
+        resolver: zodResolver(schema),
+        defaultValues: initialData,
+    });
 
     return (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <ModalHeader>
                 شارژ کیف پول - واریز بانکی
             </ModalHeader>
             <ModalBody className="flex flex-col gap-2">
                 <p className="text-gray-500 text-sm text-justify font-light">
-                    لطفا ابتدا مبلغ مورد نظر خود جهت شارژ کیف پول خود را به حساب بانکی شرکت با مشخصات زیر واریز کنید و پس از آن با کلیک بر روی
+                    لطفا ابتدا مبلغ مورد نظر خود جهت شارژ کیف پول خود را به حساب بانکی شرکت با مشخصات زیر واریز کنید و
+                    پس از آن با کلیک بر روی
                     <b className="text-primary font-bold"> ثبت تصویر </b>
                     تصویر فیش آن را برای ما ارسال کنید.
                 </p>
@@ -118,19 +178,29 @@ export const WalletChargeByBankStep1 = (props: WalletChargeByBankStepsProps) => 
                         </p>
                     </CardBody>
                 </Card>
-                <Button
-                    variant="bordered"
-                    color="primary"
-                >
-                    ثبت تصویر
-                </Button>
+                <MinorUploader
+                    control={control}
+                    name="picture"
+                    label="آپلود تصویر واریزی"
+                    description="ثبت تصویر"
+                    accept={{
+                        'image/png': ['.png', '.PNG'],
+                        'image/jpg': ['.jpg', '.jpeg', '.JPG', '.JPEG'],
+                    }}
+                    minSize={1000}
+                    maxFiles={2097152}
+                    className="min-h-0"
+                    withPreview
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
+                />
             </ModalBody>
             <ModalFooter>
                 <Button
                     className="flex-1 md:flex-none"
                     variant="flat"
                     color="default"
-                    onPress={prev}
+                    onPress={() => prev()}
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 >
                     برگشت
                 </Button>
@@ -138,68 +208,163 @@ export const WalletChargeByBankStep1 = (props: WalletChargeByBankStepsProps) => 
                     className="flex-1 md:flex-none"
                     variant="shadow"
                     color="primary"
-                    // isDisabled={!type}
-                    onPress={next}
+                    type="submit"
+                    isLoading={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 >
                     تایید و ادامه
                 </Button>
             </ModalFooter>
-        </>
+        </form>
     );
 };
 
 export const WalletChargeByBankStep2 = (props: WalletChargeByBankStepsProps) => {
-    const {prev, next, done} = props
+    const {prev, next, done, data} = props
+
+    const schema = z.object({
+        picture: z.object({id: z.number()}, {message: "تصویر را وارد کنید"}),
+
+        amount: z.union([
+            z.string({message: "مبلغ را وارد کنید"})
+                .regex(/^\d+(,\d{3})*(\.\d{1,2})?$/g, {message: "مبلغ معتبر نیست"})
+                .transform((val) => (val.replace(/,/g, "")))
+                .transform(Number),
+            z.number({message: "مبلغ معتبر نیست"}),
+        ]),
+        dueDate: CalendarDateTimeSchema(
+            moment().subtract(1, 'month').startOf('day').toDate(),
+            moment().add(1, 'month').startOf('day').toDate(),
+        ),
+        bankName: z.string({message: "نام بانک را وارد کنید"}).min(2, "نام بانک معتبر نیست"),
+        bankAccountNumber: z.string({message: "شماره حساب یا کارت مبداء را وارد کنید"}).regex(/^\d+$/, "شماره حساب یا کارت مبداء معتبر نیست"),
+        receiptNumber: z.string({message: "شماره فیش را وارد کنید"}).regex(/^\d+$/, "شماره فیش معتبر نیست"),
+        trackingNumber: z.string({message: "شماره پیگیری را وارد کنید"}).regex(/^\d+$/, "شماره پیگیری معتبر نیست"),
+        confirm: z.boolean({message: "اطلاعات را تایید کنید"}).refine(v => v, {message: "می بایست اطلاعات را تایید کنید"}),
+    })
+
+
+    const initialData: T = {
+        amount: "",
+
+        picture: data?.picture || null,
+        dueDate: parseDateTime(moment().format("YYYY-MM-DD\THH:mm")),
+        bankName: "",
+        bankAccountNumber: "",
+
+        receiptNumber: "",
+        trackingNumber: "",
+
+        confirm: false,
+    }
+
+
+    const axios = axiosCoreWithAuth()
+    const onSubmit = async (data: T) => {
+        try {
+            await axios.post("/store/wallet/charge/bank", data)
+            next(data)
+        } catch (e) {
+
+        }
+    }
+
+    const {
+        handleSubmit,
+        control,
+        reset,
+        formState,
+        watch,
+        setValue,
+        setFocus,
+    } = useForm<T>({
+        resolver: zodResolver(schema),
+        defaultValues: initialData,
+    });
+
+    console.log({formErrors: formState.errors})
 
     return (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <ModalHeader>
                 شارژ کیف پول - واریز بانکی
             </ModalHeader>
             <ModalBody className="flex flex-col gap-2">
                 <p className="text-gray-500 text-sm text-justify font-light">
-                    حال اطلاعات چک را وارد کنید:
+                    حال اطلاعات واریزی را وارد کنید:
                 </p>
-                <Input
-                    variant="bordered"
-                    color="primary"
+                <MinorInput
+                    name="amount"
+                    control={control}
                     label="مبلغ واریزی"
+                    isRequired
+                    isNumeric
+                    allowNegative={false}
+                    allowLeadingZeros={false}
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 />
-                <Input
-                    variant="bordered"
-                    color="primary"
+                <MinorInput
+                    name="dueDate"
+                    control={control}
                     label="زمان واریز"
+                    isRequired
+                    isDateInput
+                    granularity="minute"
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 />
-                <Input
-                    variant="bordered"
-                    color="primary"
+                <MinorInput
+                    name="bankName"
+                    control={control}
                     label="نام بانک"
+                    isRequired
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="شماره فیش"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
-                    label="شماره پیگیری"
-                />
-                <Input
-                    variant="bordered"
-                    color="primary"
+                <MinorInput
+                    name="bankAccountNumber"
+                    control={control}
                     label="شماره حساب / کارت مبداء"
+                    isRequired
+                    isNumeric
+                    allowNegative={false}
+                    allowLeadingZeros={false}
+                    thousandsGroupDisabled
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 />
-                <Checkbox>
-                    اطلاعات فوق تایید می شود.
-                </Checkbox>
+                <MinorInput
+                    name="receiptNumber"
+                    control={control}
+                    label="شماره فیش"
+                    isRequired
+                    isNumeric
+                    allowNegative={false}
+                    allowLeadingZeros={false}
+                    thousandsGroupDisabled
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
+                />
+                <MinorInput
+                    name="trackingNumber"
+                    control={control}
+                    label="شماره پیگیری"
+                    isRequired
+                    isNumeric
+                    allowNegative={false}
+                    allowLeadingZeros={false}
+                    thousandsGroupDisabled
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
+                />
+                <MinorCheckBox
+                    name="confirm"
+                    control={control}
+                    label="اطلاعات فوق تایید می شود."
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
+                />
             </ModalBody>
             <ModalFooter>
                 <Button
                     className="flex-1 md:flex-none"
                     variant="flat"
                     color="default"
-                    onPress={prev}
+                    onPress={() => prev()}
+                    isDisabled={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 >
                     برگشت
                 </Button>
@@ -207,13 +372,13 @@ export const WalletChargeByBankStep2 = (props: WalletChargeByBankStepsProps) => 
                     className="flex-1 md:flex-none"
                     variant="shadow"
                     color="primary"
-                    // isDisabled={!type}
-                    onPress={next}
+                    type="submit"
+                    isLoading={formState.isLoading || formState.isValidating || formState.isSubmitting}
                 >
                     ثبت و ارسال
                 </Button>
             </ModalFooter>
-        </>
+        </form>
     );
 };
 
@@ -240,7 +405,7 @@ export const WalletChargeByBankStep3 = (props: WalletChargeByBankStepsProps) => 
                     className="flex-1 md:flex-none"
                     variant="flat"
                     color="default"
-                    onPress={done}
+                    onPress={() => done()}
                 >
                     باشه
                 </Button>
@@ -250,21 +415,14 @@ export const WalletChargeByBankStep3 = (props: WalletChargeByBankStepsProps) => 
 };
 
 
-
-
-
-
-
-
-
-
-
-
+// ======================================================================================================
+// ======================================================================================================
+// ======================================================================================================
 
 
 export type WalletChargeByBankResultProps = {
     done: () => void;
-    result?: any;
+    result?: WalletTransaction;
 }
 
 export const WalletChargeByBankSuccess = (props: WalletChargeByBankResultProps) => {

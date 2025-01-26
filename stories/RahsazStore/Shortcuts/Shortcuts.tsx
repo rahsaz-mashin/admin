@@ -53,6 +53,7 @@ export const Shortcuts = (props: ShortcutsProps) => {
                                 shadow="lg"
                                 as={Link}
                                 href={v.url}
+                                className="h-full"
                             >
                                 <CardBody className="flex items-center justify-center">
                                     <i className="w-12 h-12" dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}/>
@@ -167,10 +168,13 @@ export const AllShortcutsModal = (props: AllShortcutsModalProps) => {
                                     shadow="lg"
                                     as={Link}
                                     href={v.url}
+                                    className="h-full"
                                 >
                                     <CardBody className="flex items-center justify-center">
-                                        <i className="w-12 h-12"
-                                           dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}/>
+                                        <i
+                                            className="w-12 h-12"
+                                           dangerouslySetInnerHTML={{__html: v.icon?.content || ""}}
+                                        />
                                     </CardBody>
                                     <CardFooter
                                         className="font-bold text-center truncate bg-primary text-white flex items-center justify-center p-1.5"

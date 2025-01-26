@@ -13,20 +13,14 @@ import {
 import clsx from "clsx";
 
 export type OrderDetailProps = {
-    // status: "current" | "delivered" | "return" | "canceled";
-    // current: waitingForPayment reserved waitingForConfirm processing readyForDelivery sent
-    // delivered: completed
-    // return: waitingForConfirm processing completed
-    // canceled: completed
-    // step: "waitingForPayment" | "reserved" | "waitingForConfirm" | "processing" | "readyForDelivery" | "sent" | "completed"
-    // deliveryType: "freight" | "bus" | "warehouse";
+    id?: number;
 }
 
-const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
 export const OrderDetail = (props: OrderDetailProps) => {
-    // const {status, step} = props
+    const {id} = props
+
+
     const status: string = "current"
     const step: string = "waitingForPayment"
     const result: any = {

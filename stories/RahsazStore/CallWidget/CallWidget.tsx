@@ -67,7 +67,7 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
     const [callDuration, setCallDuration] = useState(0);
     return (
         <>
-            <div className={className + " relative w-full max-w-96 items-center justify-center h-20 flex"}>
+            <div className={className + " relative w-full max-w-96 items-center justify-center h-20 flex transition-width duration-500"}>
                 <Card shadow="none" className="mr-6 w-full h-full" radius="lg">
                     {status === "default" && (
                         <MotionCardBody
@@ -80,22 +80,27 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                             <div className="flex flex-col flex-[1_1_0] truncate text-sm px-1.5">
                                 <a
                                     href="tel:+9851 3344 5566"
+                                    target="_blank"
                                     className="hover:text-primary transition"
                                 >
                                     <b>05133445566</b>
                                 </a>
                                 <span className="hover:text-primary transition">
                     ساعت کار:                 <b>8</b> الی <b>18</b>
-                                    </span>
+                                </span>
                                 <a
                                     href="https://maps.app.goo.gl/RwzjMTQQn2Vdnfkk9"
+                                    target="_blank"
                                     className="hover:text-primary transition overflow-y-hidden hide-scrollbar"
                                 >
                                     مشهد - کوشش 27 - خبیری 15 - پلاک 117
                                 </a>
                             </div>
                             <div className="flex flex-col p-3 min-w-8 justify-between">
-                                <a href="https://t.me/">
+                                <a
+                                    target="_blank"
+                                    href="https://t.me/"
+                                >
                                     <svg
                                         className="w-5 h-5 transition text-black hover:text-telegram hover:scale-110 active:scale-90"
                                         viewBox="0 0 18 18"
@@ -109,7 +114,10 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                                         />
                                     </svg>
                                 </a>
-                                <a href="https://instagram.com/">
+                                <a
+                                    target="_blank"
+                                    href="https://instagram.com/"
+                                >
                                     <svg
                                         className="w-5 h-5 transition text-black hover:text-instagram hover:scale-110 active:scale-90"
                                         viewBox="0 0 18 18"
@@ -130,7 +138,10 @@ export const CallWidget = ({className = ""}: CallWidgetProps) => {
                                         />
                                     </svg>
                                 </a>
-                                <a href="https://whatsapp.com/">
+                                <a
+                                    target="_blank"
+                                    href="https://whatsapp.com/"
+                                >
                                     <svg
                                         className="w-5 h-5 transition text-black hover:text-whatsapp hover:scale-110 active:scale-90"
                                         viewBox="0 0 18 18"

@@ -7,17 +7,19 @@ import {WalletChargeType} from "@/stories/RahsazStore/Wallet/ChargeModal/ChargeT
 import {WalletChargeByCheque} from "@/stories/RahsazStore/Wallet/ChargeModal/ChargeByCheque";
 import {WalletChargeByBank} from "@/stories/RahsazStore/Wallet/ChargeModal/ChargeByBank";
 import {WalletChargeByOnline} from "@/stories/RahsazStore/Wallet/ChargeModal/ChargeByOnline";
+import {usePathname, useRouter, useSearchParams} from "next/navigation";
 
 export type WalletChargeModalProps = {
     state: UseDisclosureReturn;
-    // chargeWay: "cheque" | "bank" | "online" | null;
-    // setChargeWay: React.Dispatch<React.SetStateAction<"cheque" | "bank" | "online" | null>>;
-    // result?: any
 }
 
 
 export const WalletChargeModal = (props: WalletChargeModalProps) => {
     const {state} = props
+
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
 
     const [chargeWay, setChargeWay] = useState<"online" | "bank" | "cheque" | null>(null)
     const [result, setResult] = useState<any>()
@@ -25,6 +27,7 @@ export const WalletChargeModal = (props: WalletChargeModalProps) => {
     const onClose = () => {
         onBackToMain()
         state.onClose()
+        router.replace(pathname)
     }
 
     const onBackToMain = () => {
@@ -33,10 +36,15 @@ export const WalletChargeModal = (props: WalletChargeModalProps) => {
     }
 
     useEffect(() => {
-        setChargeWay("cheque")
-        setResult({success: true, time: new Date().toISOString(), reference: "4789562", trackingCode: "4789562"})
-        state.onOpen()
-    }, []);
+        const way = searchParams.get("way")
+        if(!!way && ["online", "bank", "cheque"].includes(way)) state.onOpen()
+        if (way === "online") setChargeWay("online")
+        else if (way === "bank") setChargeWay("bank")
+        else if (way === "cheque") setChargeWay("cheque")
+        // setResult({success: true, time: new Date().toISOString(), reference: "4789562", trackingCode: "4789562"})
+    }, [searchParams]);
+
+
 
     return (
         <Modal
@@ -49,21 +57,21 @@ export const WalletChargeModal = (props: WalletChargeModalProps) => {
         >
             <ModalContent>
                 {!chargeWay && <WalletChargeType onClose={onClose} setChargeWay={setChargeWay}/>}
-                {chargeWay === "cheque" && (
+                {(chargeWay === "cheque") && (
                     <WalletChargeByCheque
                         onClose={onClose}
                         onBackToMain={onBackToMain}
                         result={result}
                     />
                 )}
-                {chargeWay === "bank" && (
+                {(chargeWay === "bank") && (
                     <WalletChargeByBank
                         onClose={onClose}
                         onBackToMain={onBackToMain}
                         result={result}
                     />
                 )}
-                {chargeWay === "online" && (
+                {(chargeWay === "online") && (
                     <WalletChargeByOnline
                         onClose={onClose}
                         onBackToMain={onBackToMain}

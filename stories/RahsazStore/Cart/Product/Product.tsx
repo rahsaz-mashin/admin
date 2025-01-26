@@ -2,74 +2,255 @@
 
 import React from "react";
 import {Card, CardHeader, CardBody} from "@nextui-org/card";
-import {Button, CardFooter, Divider, Image} from "@nextui-org/react";
+import {Button, CardFooter, Chip, Divider, Image} from "@nextui-org/react";
 import NextImage from "next/image";
 import {ArrowLeftIcon} from "@storybook/icons";
 import {ProductCounter} from "@/stories/RahsazStore/Product/Counter";
+import {Product} from "@/interfaces/Product.interface";
+import {NumericFormat} from "react-number-format";
+import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
+import {ProductFeaturesCategory} from "@/interfaces/ProductFeaturesCategory.interface";
+import {toast} from "@/lib/toast";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
-export type CartProductProps = {}
+export type CartProductItemProductProps = {
+    readonly id?: number;
+    product: Product;
+    count: number;
+    amount: number;
+    isNextList?: false;
+}
+
+export type CartProductItemNextListProps = {
+    readonly id?: number;
+    product: Product;
+    isNextList: true;
+}
+
+export type CartProductItemProps = CartProductItemProductProps | CartProductItemNextListProps
+
+export const CartProductItem = (props: CartProductItemProps) => {
+
+    const {
+        id: cartProductId,
+        product,
+        isNextList,
+    } = props
+
+    const {
+        id,
+        title,
+        slug,
+        names,
+        intro,
+        thumbnail,
+        machinery,
+        categories,
+        features,
+    } = product
 
 
-export const CartProduct = (
-    {}
-        :
-        CartProductProps
-) => {
+    const axios = axiosCoreWithAuth()
 
+    const onCountChange = async (count: number) => {
+        try {
+            await axios.patch(`/store/cart/product/countChange/${cartProductId}`, {count})
+        } catch (e) {
+            toast.error("برای تغییر تعداد کالا، خطایی رخ داد")
+        }
+    }
+
+    const onRemove = async () => {
+        try {
+            await axios.delete(`/store/cart/product/remove/${cartProductId}`)
+        } catch (e) {
+            if (isNextList) toast.error("برای حذف کالا از لیست خرید بعدی، خطایی رخ داد")
+            else toast.error("برای حذف کالا از سبد، خطایی رخ داد")
+        }
+    }
+
+    const onMoveToNext = async () => {
+        try {
+            await axios.patch(`/store/cart/product/moveToNext/${cartProductId}`)
+        } catch (e) {
+            toast.error("برای انتقال کالا از سبد، خطایی رخ داد")
+        }
+    }
+
+    const onMoveToCart = async () => {
+        try {
+            await axios.patch(`/store/cart/product/moveToCart/${cartProductId}`)
+        } catch (e) {
+            toast.error("برای انتقال کالا از لیست خرید بعدی، خطایی رخ داد")
+        }
+    }
 
     return (
         <li>
-            <Card shadow="none" radius="none">
+            <Card className="w-full" shadow="none">
                 <CardBody className="flex flex-row gap-2 text-start">
-                    <div className="flex-0 flex flex-col flex-shrink-0 items-center gap-2 w-32 relative">
-                        <Image
-                            as={NextImage}
-                            // fill
-                            src="https://dkstatics-public.digikala.com/digikala-content-x-profile/2fbff525e29363c4e05743df82c9ec7acba99599_1715614714.jpg?x-oss-process=image/resize,m_lfit,h_150,w_150/quality,q_80"
-                            alt="NextUI hero Image"
-                            width={200}
-                            height={200}
-                            // classNames={{wrapper: "h-40 w-40"}}
-                            // classNames={{s}}
-                        />
-                        <div className="flex flex-col">
-                            <div className="text-red-500 font-light">
-                                <span className="">10,000تومانءء</span>
-                                {" "}
-                                <span>تخفیف</span>
-                            </div>
-                            <div className="font-semibold">
-                                <span className="text-xl">70,000,000</span>
-                                <span className="text-sm text-primary">تومانءء</span>
-                            </div>
+                    <div className="flex-0 flex flex-col flex-shrink-0 items-center gap-2 w-36 relative">
+                        {/* image */}
+                        <div className="w-36 h-36">
+                            <Image
+                                as={NextImage}
+                                width={300}
+                                height={300}
+                                alt={thumbnail?.alt}
+                                title={thumbnail?.title}
+                                src={`${thumbnail ? (thumbnail.system.baseUrl + "/" + thumbnail?.path) : ""}`}
+                                radius="md"
+                                loading="eager"
+                                className="object-fill !h-full !w-full"
+                                classNames={{wrapper: "h-full w-full bg-contain bg-center"}}
+                                fallbackSrc="/fallback.png"
+                            />
                         </div>
+                        {/* price */}
+
+                        {!isNextList && (
+                            <div className="flex flex-col">
+                                <div className="font-semibold flex gap-0.5 items-end">
+                                <span className="text-xl">
+                                    <NumericFormat
+                                        value={props.amount}
+                                        thousandSeparator=","
+                                        decimalSeparator="."
+                                        allowNegative={false}
+                                        decimalScale={0}
+                                        allowLeadingZeros={false}
+                                        displayType="text"
+                                    />
+                                </span>
+                                    <span className="text-sm text-primary">
+                                    تومانءء
+                                </span>
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                     <div className="flex flex-col flex-1 gap-2">
                         <h3 className="font-bold text-justify text-lg">
-                            کولر روغن موتور شانگهای دیزل هزار سوراخ دو سربوش
+                            {title}
                         </h3>
-                        <ul className="flex flex-col text-gray-500 text-sm font-bold">
-                            <li className="flex gap-1">
-                                <span>ساخت:</span>
-                                <span>ژاپن</span>
-                            </li>
-                            <li className="flex gap-1">
-                                <span>مدل:</span>
-                                <span>اصل</span>
-                            </li>
-                        </ul>
+                        {names && (
+                            <div className="flex gap-1 text-sm text-gray-500 truncate">
+                                <span className="font-bold">نام های دیگر:</span>
+                                <div className="flex gap-1.5">
+                                    {names.map((name, key) => (
+                                        <>
+                                            <span key={key} className="hover:text-blue-500">{name}</span>
+                                            {(key === (names.length - 1) ? "" : "،")}
+                                        </>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        {features && (
+                            <div className="flex gap-2 items-center flex-wrap">
+                                {features?.map((v, idx) => {
+                                    const {id, category, value} = v
+                                    return (
+                                        <Chip
+                                            key={v.id}
+                                            size="md"
+                                            variant="flat"
+                                            color="primary"
+                                            startContent={(
+                                                <Chip
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="default"
+                                                    className="font-bold after:content-[':']"
+                                                >
+                                                    {(category as ProductFeaturesCategory)?.title}
+                                                </Chip>
+                                            )}
+                                        >
+                                            {(value as ProductFeatures)?.title}
+                                        </Chip>
+                                    )
+                                })}
+                            </div>
+                        )}
+                        {machinery && (
+                            <div className="flex gap-2 items-center flex-wrap">
+                                {machinery?.map((v, idx) => {
+                                    return (
+                                        <Chip
+                                            key={v.id}
+                                            size="md"
+                                            variant="flat"
+                                            color="secondary"
+                                            startContent={(
+                                                <Chip
+                                                    size="sm"
+                                                    variant="light"
+                                                    color="default"
+                                                    className="font-bold after:content-[':']"
+                                                >
+                                                    {v.brand?.title}
+                                                </Chip>
+                                            )}
+                                        >
+                                            {v?.title}
+                                        </Chip>
+                                    )
+                                })}
+                            </div>
+                        )}
                     </div>
                 </CardBody>
                 <CardFooter className="flex items-center justify-between">
-                    <ProductCounter/>
-                    <Button
-                        color="secondary"
-                        variant="light"
-                        size="sm"
-                        endContent={<ArrowLeftIcon/>}
-                    >
-                        انتقال به خرید بعدی
-                    </Button>
+                    {isNextList && (
+                        <ProductCounter
+                            mode="normal"
+                            size="md"
+                            // minimum={0}
+                            // maximum={10}
+                            count={0}
+                            // notAvailable
+                            // withoutPrice
+
+                            onRemove={onRemove}
+                        />
+                    )}
+                    {!isNextList && (
+                        <ProductCounter
+                            mode="normal"
+                            size="md"
+                            // minimum={0}
+                            // maximum={10}
+                            count={props.count}
+                            // notAvailable
+                            // withoutPrice
+                            onCountChange={onCountChange}
+                            onRemove={onRemove}
+                        />
+                    )}
+                    {isNextList && (
+                        <Button
+                            color="secondary"
+                            variant="light"
+                            size="sm"
+                            endContent={<ArrowLeftIcon/>}
+                            onPress={onMoveToCart}
+                        >
+                            انتقال به سبد خرید
+                        </Button>
+                    )}
+                    {!isNextList && (
+                        <Button
+                            color="secondary"
+                            variant="light"
+                            size="sm"
+                            endContent={<ArrowLeftIcon/>}
+                            onPress={onMoveToNext}
+                        >
+                            انتقال به خرید بعدی
+                        </Button>
+                    )}
                 </CardFooter>
             </Card>
         </li>

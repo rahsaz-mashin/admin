@@ -2,10 +2,9 @@ import {AssignType} from "@/types/AssignType";
 import {CalculatePrice, Product} from "@/interfaces/Product.interface";
 import {Account} from "@/interfaces/Account.interface";
 import {PriceList} from "@/interfaces/PriceList.interface";
-import {Currency} from "@/interfaces/Currency.interface";
 import {OrderDeliveryMethod} from "@/interfaces/OrderDeliveryMethod.interface";
 import {IdentityAddress} from "@/interfaces/IdentityAddess.interface";
-import {Discount} from "@/interfaces/Discount.interface";
+import {Coupon} from "@/interfaces/Coupon.interface";
 
 
 
@@ -66,7 +65,7 @@ export interface Order {
     deliveryMethod: AssignType<OrderDeliveryMethod> | null;
     deliveryMethodInfo?: OrderDeliveryMethod;
 
-    discount: AssignType<Discount> | null;
+    coupon: AssignType<Coupon> | null;
 
     overallStatus: orderOverallStatusesEnum;
     processStatus: orderProcessStatusesEnum | null;

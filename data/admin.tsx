@@ -32,7 +32,7 @@ import {
     BoldDuotoneSystemIcon,
     BoldDuotoneTemplateIcon,
     BoldDuotoneUsersIcon,
-    BoldDuotoneVideoLibraryIcon,
+    BoldDuotoneVideoLibraryIcon, BoldDuotoneWalletBalanceIcon, BoldDuotoneWalletTransactionsIcon,
     BoldDuotoneWarehouseIcon,
     BoldDuotoneWarehouseTransactionIcon,
     OutlineBoxIcon,
@@ -821,13 +821,13 @@ const adminRoutes: AdminMenu[] = [
                         ],
                     },
                     {
-                        key: "discount",
+                        key: "coupon",
                         title: "مدیریت تخفیف ها",
                         icon: null,
                         isEnable: true,
                         sub: [
                             {
-                                key: "discount",
+                                key: "coupon",
                                 title: "تخفیف ها",
                                 icon: <BoldDuotoneDiscountIcon size={64}/>,
                                 description: "مشاهده لیست تخفیف ها، ایجاد و مدیریت آن ها",
@@ -857,6 +857,23 @@ const adminRoutes: AdminMenu[] = [
                 title: "کیف پول",
                 icon: <OutlineWalletIcon/>,
                 isEnable: true,
+                sub: [
+                    {
+                        key: "wallet",
+                        title: "مدیریت کیف پول",
+                        icon: null,
+                        isEnable: true,
+                        sub: [
+                            {
+                                key: "transaction",
+                                title: "تراکنش ها",
+                                icon: <BoldDuotoneWalletTransactionsIcon size={64}/>,
+                                description: "مشاهده لیست تراکنش های کاربران، ایجاد و تایید یا رد آن ها",
+                                isEnable: true,
+                            },
+                        ],
+                    },
+                ],
             },
             {
                 key: "settings",
@@ -892,7 +909,7 @@ const adminRoutes: AdminMenu[] = [
                                 isEnable: true,
                             },
                             {
-                                key:  "shortcuts",
+                                key: "shortcuts",
                                 title: "شورتکات های صفحه اصلی",
                                 icon: <BoldDuotoneShortcutIcon size={64}/>,
                                 description: "مشاهده لیست شورت کات های صفحه اصلی، ایجاد و مدیریت آن ها",

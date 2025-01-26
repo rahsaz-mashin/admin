@@ -1,154 +1,339 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Card, CardHeader, CardBody} from "@nextui-org/card";
-import {Button, CardFooter, Divider, useDisclosure} from "@nextui-org/react";
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
+    ScrollShadow,
+    Spinner,
+    useDisclosure
+} from "@nextui-org/react";
 import clsx from "clsx";
-import {EditIcon} from "@storybook/icons";
-import {CartAddAddress} from "@/stories/RahsazStore/Cart/AddressBox/AddAddress";
-
-export type CartAddressBoxProps = {}
-
-
-export const CartAddressBox = (
-    {}
-        :
-        CartAddressBoxProps
-) => {
-
-    const addresses = [
-        {
-            id: "4454",
-            title: "مغازه تهران",
-            country: "ایران",
-            province: "تهران",
-            city: "تهران",
-            address: "بلوار انقلاب، خیابان 16 آذر، کوچه لاله 5، پلاک 12",
-            zipCode: "9696969696"
-        },
-        {
-            id: "2222",
-            title: "دفتر اصفهان",
-            country: "ایران",
-            province: "اصفهان",
-            city: "اصفهان",
-            address: "بلوار انقلاب، خیابان 16 آذر، کوچه لاله 5، پلاک 12",
-            zipCode: "4495549496"
-        },
-    ]
+import {CartAddAddressModal} from "@/stories/RahsazStore/Cart/AddressBox/AddAddress";
+import {PaginationResponse} from "@/types/PaginationResponse";
+import {axiosCoreWithAuth} from "@/lib/axios";
+import {AddressCity} from "@/interfaces/AddressCity.interface";
+import {AddressProvince} from "@/interfaces/AddressProvince.interface";
+import {AddressCountry} from "@/interfaces/AddressCountry.interface";
+import {IdentityAddressType} from "@/interfaces/IdentityAddressType.interface";
+import {IdentityAddress} from "@/interfaces/IdentityAddess.interface";
+import {OutlinedMapIcon} from "@/stories/Icons";
+import {BoldDuotoneEarthIcon, BoldDuotoneMapIcon, BoldDuotoneStreetMapIcon} from "@/stories/RahsazAdmin/Icons";
+import {DeleteRounded, EditRounded, MoreVert} from "@mui/icons-material";
+import useSWR from "swr";
+import {Control, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
+import {Cart} from "@/interfaces/Cart.interface";
 
 
-    const [selected, setSelected] = useState<string | null>(null)
-    const handleSwitch = (key: string | null) => {
-        setSelected(key)
-    }
+export type CartAddressBoxProps = {
+    control: Control<Cart>;
+    setValue: UseFormSetValue<Cart>;
+    watch: UseFormWatch<Cart>;
+}
 
-    // const [isOpenAddAddress, setOpenAddAddress] = useState<boolean>(false)
-    // const handleOpenAddAddress = () => {
-    //     setOpenAddAddress(true)
-    // }
-    // const handleCloseAddAddress = () => {
-    //     setOpenAddAddress(false)
-    // }
+
+export const CartAddressBox = (props: CartAddressBoxProps) => {
+
+    const {
+        control,
+        setValue,
+        watch,
+    } = props
+
+
+    const {
+        field,
+        fieldState,
+        formState,
+    } = useController({
+        name: "address",
+        control,
+    })
+
+
+    const [editingId, setEditingId] = useState<number>()
+
+
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate,
+    } = useSWR<PaginationResponse<IdentityAddress>>(`/store/identity/address`)
+
+
     const {
         isOpen: isOpenAddAddressModal,
         onOpen: onOpenAddAddressModal,
         onOpenChange: onOpenChangeAddAddressModal,
     } = useDisclosure();
 
+
+    const editHandler = async (id: number) => {
+        setEditingId(id)
+        onOpenAddAddressModal()
+    }
+
+    const axios = axiosCoreWithAuth()
+    const deleteHandler = async (id: number) => {
+        await axios.delete(`store/identity/address/${id}`)
+        mutate()
+    }
+
+    const acceptAddress = watch("deliveryMethodInfo")?.acceptAddress !== false
+
+    useEffect(() => {
+        if (!acceptAddress) field.onChange(null)
+    }, [acceptAddress]);
+
+
+
+    useEffect(() => {
+        setAddress(watch("address"))
+    }, [watch("address")]);
+
+    const setAddress = async (id: number | null) => {
+        await axios.patch(`/store/cart/address`, {address: id})
+    }
+
+    console.log([isLoading, formState.isValidating, formState.isLoading, formState.isSubmitting])
+
+
     return (
-        <Card shadow="none" radius="none">
-            <CardHeader
-                className="text-white bg-primary py-2 w-fit font-light text-base rounded-tr-2xl relative after:absolute after:bg-primary after:-end-12 after:h-full after:w-12 after:rounded-tl-[10rem]"
+        <div id="address" className="flex-shrink-0 p-4">
+            <Card
+                shadow="none"
+                radius="none"
             >
-                آدرس تحویل
-            </CardHeader>
-            <CardBody className="border border-primary rounded-2xl rounded-tr-none gap-2 text-start">
-                <span className="text-gray-500 text-sm font-light">
-                    آدرس تحویل خود را وارد یا انتخاب کنید!
-                </span>
-                <ul className="flex flex-wrap flex-col gap-3">
-                    <CartAddAddressBox
-                        openAddAddress={onOpenAddAddressModal}
-                    />
-                    <CartAddAddress
-                        isOpen={isOpenAddAddressModal}
-                        onOpenChange={onOpenChangeAddAddressModal}
-                    />
-                    {addresses.map(({id, title, country, province, city, address, zipCode}) => {
-                        return (
-                            <CartAddressItem
-                                key={id}
-                                title={title}
-                                country={country}
-                                province={province}
-                                city={city}
-                                address={address}
-                                zipCode={zipCode}
-                                // isSelected={id === selected}
-                                // handleSwitch={() => handleSwitch(id)}
-                            />
+                <CardHeader
+                    className="text-white bg-primary py-2 w-fit font-light text-base rounded-tr-2xl relative after:absolute after:bg-primary after:-end-12 after:h-full after:w-12 after:rounded-tl-[10rem]"
+                >
+                    آدرس تحویل
+                </CardHeader>
+                <CardBody
+                    className="relative border min-h-20 border-primary rounded-2xl rounded-tr-none gap-2 text-start">
+                    <div
+                        data-loading={isLoading || formState.isValidating || formState.isLoading || formState.isSubmitting}
+                        className="absolute rounded-3xl z-10 p-3 top-0 left-0 w-full h-full bg-white/20 backdrop-blur-sm justify-center items-center hidden data-[loading=true]:flex"
+                    >
+                        <Spinner/>
+                    </div>
+                    {acceptAddress
+                        ?
+
+                        (
+                            <>
+                                <span className="text-gray-500 text-sm font-light">
+                                    آدرس تحویل خود را وارد یا انتخاب کنید!
+                                </span>
+                                <ul className="flex flex-wrap flex-col gap-3">
+                                    <CartAddAddressBox
+                                        openAddAddress={onOpenAddAddressModal}
+                                    />
+                                    {isOpenAddAddressModal && (
+                                        <CartAddAddressModal
+                                            addressId={editingId}
+                                            isOpen={isOpenAddAddressModal}
+                                            onOpenChange={onOpenChangeAddAddressModal}
+                                            update={mutate}
+                                        />
+                                    )}
+                                    <ScrollShadow className="max-h-96 flex flex-col gap-3" hideScrollBar>
+                                        {(data?.data || []).map(({id, ...v}) => {
+                                            return (
+                                                <CartAddressItem
+                                                    key={id}
+                                                    {...v}
+                                                    editHandler={() => editHandler(id)}
+                                                    deleteHandler={() => deleteHandler(id)}
+                                                    isSelected={id === field.value}
+                                                    handleSwitch={() => field.onChange(id)}
+                                                />
+                                            )
+                                        })}
+                                    </ScrollShadow>
+                                </ul>
+                            </>
                         )
-                    })}
-                </ul>
-            </CardBody>
-        </Card>
+                        :
+                        (
+                            <>
+                                <span className="text-gray-500 text-sm font-light">
+                                    کالا را درب انبار به آدرس زیر تحویل بگیرید:
+                                </span>
+                                <div
+                                    className="flex flex-wrap flex-col gap-3 p-3 rounded-xl bg-primary/20 border border-primary">
+                                    مشهد، امام رضا، امام رضا 68، فارابی جنوبی، بین فارابی 13 و فارابی 15
+                                </div>
+                            </>
+                        )
+
+                    }
+                </CardBody>
+            </Card>
+        </div>
     );
 };
 
 
 export type CartAddressItemProps = {
-    title: string;
-    country: string;
-    province: string;
-    city: string;
-    address: string;
-    zipCode: string;
-    // isSelected: boolean;
-    // handleSwitch: () => void
+    title: string | null;
+
+    country: AddressCountry;
+    province: AddressProvince;
+    city: AddressCity;
+
+    type: IdentityAddressType | null;
+
+    address: string | null;
+    zipCode: string | null;
+    postBox: string | null;
+    location: string | null;
+    description: string | null;
+
+    isSelected: boolean;
+    handleSwitch: () => void
+
+    editHandler: () => void;
+    deleteHandler: () => void;
 }
 
 
 export const CartAddressItem = (props: CartAddressItemProps) => {
-    const {title, country, province, city, address, zipCode,} = props
+    const {
+        title, description, type,
+        country, province, city,
+        address, zipCode, postBox, location,
+        editHandler, deleteHandler,
+        handleSwitch,
+        isSelected,
+    } = props
+
+
     return (
         <Card
-            // onClick={() => }
             shadow="sm"
             isHoverable
             isPressable
-            // onPress={() => handleSwitch()}
-            className={clsx("flex flex-shrink-0 flex-col justify-start items-start p-4 group gap-1 text-sm bg-white hover:bg-primary/20 transition rounded-xl cursor-pointer text-gray-500 text-center", /*isSelected ? "bg-primary/20 isSelected" : ""*/)}
+            onPress={() => handleSwitch()}
+            className={clsx("flex flex-shrink-0 transition-all flex-col justify-start items-start p-4 group/item gap-1 text-sm bg-white hover:bg-primary/20 transition rounded-xl cursor-pointer text-gray-500 text-center", isSelected ? "bg-primary/20 isSelected" : "")}
+            classNames={{header: "p-0", body: "p-0", footer: "p-0"}}
         >
-            <span
-                className="font-bold transition group-[.isSelected]:text-primary group-hover:text-primary"
-            >
-                {title}
-            </span>
-            <span className="font-light">
-                {country} - {province}
-            </span>
-            <span className="font-light">
-                {city} - {address}
-            </span>
-            <span className="flex gap-1">
-                <b>کد پستی:</b>
-                <span className="font-light">{zipCode}</span>
-            </span>
-            <span className="flex gap-1">
-                <b>تحویل گیرنده:</b>
-                <span className="font-light">{zipCode}</span>
-            </span>
-            <div className="flex justify-end w-full">
-                {/*<Button*/}
-                {/*    color="secondary"*/}
-                {/*    variant="light"*/}
-                {/*    size="sm"*/}
-                {/*    startContent={<EditIcon/>}*/}
-                {/*>*/}
-                {/*    ویرایش*/}
-                {/*</Button>*/}
-            </div>
+            <CardHeader>
+                <div className="flex justify-between w-full">
+                    <div
+                        className="font-bold transition group-[.isSelected]/item:text-primary group-hover/item:text-primary flex items-center gap-1"
+                    >
+                        {title}
+                        <div className="font-light flex gap-1 items-center">
+                        <span
+                            className="w-5 h-5"
+                            dangerouslySetInnerHTML={{__html: type?.icon?.content || "◄"}}
+                        />
+                            <b>{type?.title || "-"}</b>
+                        </div>
+                    </div>
+                    {!isSelected && (
+                        <Dropdown backdrop="blur">
+                            <DropdownTrigger>
+                                <Button
+                                    as="div"
+                                    size="sm"
+                                    variant="light"
+                                    radius="full"
+                                    color="primary"
+                                    isIconOnly
+                                    className="text-gray-500"
+                                >
+                                    <MoreVert/>
+                                </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="address-menu">
+                                <DropdownItem
+                                    key="edit"
+                                    color="secondary"
+                                    startContent={<EditRounded/>}
+                                    onPress={editHandler}
+                                >
+                                    ویرایش آدرس
+                                </DropdownItem>
+                                <DropdownItem
+                                    key="remove"
+                                    color="danger"
+                                    startContent={<DeleteRounded/>}
+                                    onPress={deleteHandler}
+                                >
+                                    حذف آدرس
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    )}
+                </div>
+            </CardHeader>
+            <CardBody>
+                {isSelected && (
+                    <div className="font-light flex gap-1 items-center text-start">
+                        <span
+                            className="w-5 h-5"
+                            dangerouslySetInnerHTML={country?.icon?.content ? {__html: country.icon.content} : undefined}
+                        >
+                            {country?.icon?.content ? undefined : <BoldDuotoneEarthIcon/>}
+                        </span>
+                        <b>{country?.title || "-"}</b>
+                    </div>
+                )}
+                {isSelected && (
+                    <div className="font-light flex gap-1 items-center text-start">
+                        <span
+                            className="w-5 h-5"
+                            dangerouslySetInnerHTML={province?.icon?.content ? {__html: province.icon.content} : undefined}
+                        >
+                            {province?.icon?.content ? undefined : <BoldDuotoneMapIcon/>}
+                        </span>
+                        <b>{province?.title || "-"}</b>
+                    </div>
+                )}
+                <div className="font-light flex gap-1 items-center text-start">
+                    <span
+                        className="w-5 h-5"
+                        dangerouslySetInnerHTML={city?.icon?.content ? {__html: city.icon.content} : undefined}
+                    >
+                        {city?.icon?.content ? undefined : <BoldDuotoneStreetMapIcon/>}
+                    </span>
+                    <b>{city?.title || "-"}</b>
+                </div>
+                <div className="font-light flex gap-1 items-center text-start">
+                    <span
+                        className="w-5 h-5"
+                    >
+                        <OutlinedMapIcon/>
+                    </span>
+                    <span>{address || "-"}</span>
+                </div>
+                {isSelected && (
+                    <div className="grid grid-cols-2 items-center w-full">
+                        <div className="flex gap-1 items-center text-start">
+                            <b>کد پستی:</b>
+                            <span className="font-light">{zipCode || "-"}</span>
+                        </div>
+                        <div className="flex gap-1 items-center text-start">
+                            <b>صندوق پستی:</b>
+                            <span className="font-light">{postBox || "-"}</span>
+                        </div>
+                    </div>
+                )}
+                <div className="flex gap-1 items-center">
+                    <b>تحویل گیرنده:</b>
+                    <span className="font-light">
+                        -
+                    </span>
+                </div>
+            </CardBody>
         </Card>
     )
 }

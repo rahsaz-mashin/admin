@@ -14,7 +14,11 @@ import {Control, FieldValues, FormState, SubmitHandler, useForm, UseFormSetValue
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ZodType} from "zod";
 import {Button} from "@nextui-org/react";
-import {FormFieldFunc, FormFieldsGenerator, FormFieldType} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
+import {
+    FormFieldFunc,
+    FormFieldsGenerator,
+    FormFieldType
+} from "@/stories/General/FormFieldsGenerator/FormFieldsGenerator";
 import {AdminContext} from "@/context/admin.context";
 import {TableListRefType} from "@/stories/RahsazAdmin/TableList";
 import {Spinner} from "@nextui-org/spinner";
@@ -40,6 +44,8 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
 
         upsert,
         className,
+
+        serializer,
     } = props
 
     const isEditing = editingId !== undefined && editingId !== null
@@ -53,10 +59,12 @@ export const FormHandler = forwardRef(<T extends FieldValues, >(props: FormHandl
     const initialData: () => Promise<T> = async () => {
         if (upsert) {
             const d: T = await axios.get(`${apiRoute}`)
-            return !!d ? d : initialValue as T
+            const c = !!d ? d : initialValue as T
+            return c
         }
         if (!isEditing) return initialValue as T
-        return await axios.get(`${apiRoute}/${editingId}`)
+        const res: T = await axios.get(`${apiRoute}/${editingId}`)
+        return serializer ? serializer(res) : res
     }
 
     const {
@@ -198,12 +206,12 @@ const SectionForm = <T, >(props: SectionFormPropsType<T>) => {
     const currentSection = sections.find((v) => (v.key === selectedTab))
 
     useEffect(() => {
-        if(!!selectedSection && selectedSection !== selectedTab) setSelectedTab(selectedSection)
+        if (!!selectedSection && selectedSection !== selectedTab) setSelectedTab(selectedSection)
     }, [selectedSection])
 
 
     useEffect(() => {
-        if(!!onSectionChange && selectedSection !== selectedTab) onSectionChange(selectedTab.toString())
+        if (!!onSectionChange && selectedSection !== selectedTab) onSectionChange(selectedTab.toString())
     }, [selectedTab])
 
     return (
@@ -385,6 +393,9 @@ export type FormHandlerProps<T> = {
     initialValue?: T;
     render?: FormRender<T>[] | FormRenderFunc<T>;
     upsert?: boolean;
+
+    serializer?: (v: T) => T;
+
 
     tableRef?: React.MutableRefObject<TableListRefType | undefined>;
 }

@@ -1,9 +1,9 @@
-import {CartProduct} from "./Product";
+import {CartProductItem} from "./Product";
 
 
 export default {
-    title: "RahsazStore/Cart/Product",
-    component: CartProduct,
+    title: "RahsazStore/Cart/ProductItem",
+    component: CartProductItem,
 };
 
 export const Default = {

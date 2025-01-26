@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Card, CardBody} from "@nextui-org/card";
 import {
     AreaChart,
@@ -21,50 +21,37 @@ import {
     Pie,
     Cell
 } from "recharts";
+import {axiosCoreWithAuth} from "@/lib/axios";
 
 export type WalletChartProps = {}
 
+type ChartData = {
+    name: string;
+    price: number;
+}
 
 export const WalletChart = (props: WalletChartProps) => {
+
+    const [data, setData] = useState<ChartData[]>([{name: "", price: 0}])
+
+    const axios = axiosCoreWithAuth()
+    const getChart = async () => {
+        const data: ChartData[] = await axios.get(`store/wallet/chart`)
+        setData(data)
+    }
+    useEffect(() => {
+        getChart()
+    }, []);
 
     return (
         <Card
             shadow="none"
             radius="md"
-            className="w-full cursor-pointer"
+            className="w-full cursor-pointer shrink-0"
         >
             <CardBody className="flex flex-col gap-3 p-3">
                 <AreaChartMode
-                    data={[
-                        {
-                            name: 'فروردین 1403',
-                            price: 25,
-                        },
-                        {
-                            name: 'اردیبهشت 1403',
-                            price: 40,
-                        },
-                        {
-                            name: 'خرداد 1403',
-                            price: 12,
-                        },
-                        {
-                            name: 'تیر 1403',
-                            price: 36,
-                        },
-                        {
-                            name: 'مرداد 1403',
-                            price: 39,
-                        },
-                        {
-                            name: 'شهریور 1403',
-                            price: 75,
-                        },
-                        {
-                            name: 'مهر 1403',
-                            price: 42,
-                        },
-                    ]}
+                    data={data}
                 />
                 {/*Chart*/}
                 {/*<LineChart*/}
@@ -134,7 +121,7 @@ const AreaChartMode = ({data, items}: { data: any[]; items?: any[] }) => {
                     {/*{items.map(({ key, name, fill, stroke }) => (*/}
                     {/*    <Area type="linear" key={key} dataKey={key} name={name} fill={fill} stroke={stroke} activeDot={{ r: 6 }} />*/}
                     {/*))}*/}
-                    <Area dataKey="price" fill="#FF921F" stroke="#FF921F" />
+                    <Area dataKey="price" fill="#FF921F" stroke="#FF921F"/>
                 </AreaChart>
             </ResponsiveContainer>
         </div>

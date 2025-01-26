@@ -1,6 +1,6 @@
 import React, {ReactNode} from "react";
 import {Control, useController} from "react-hook-form";
-import {Select, SelectItem, SelectSection} from "@nextui-org/select";
+import {Select, SelectItem, SelectSection} from "@nextui-org/react";
 import {useInfinityList} from "@/hooks/useInfinityList";
 import {useInfiniteScroll} from "@nextui-org/use-infinite-scroll";
 import {CollectionChildren} from "@react-types/shared";

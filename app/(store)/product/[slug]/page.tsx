@@ -108,7 +108,6 @@ export default async function Page({params: {slug}}: { params: { slug: string } 
                         <div className="pb-24 md:pb-0"/>
                     </div>
                 </div>
-
             </section>
             <section className="hidden lg:col-span-3 xl:col-span-4 bg-red-600 lg:flex flex-col">
                 <div className="pt-0 px-4 bg-primary sticky top-0 z-30">

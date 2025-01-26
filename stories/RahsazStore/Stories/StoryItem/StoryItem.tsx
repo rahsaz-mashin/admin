@@ -2,10 +2,9 @@ import React from "react";
 import {Image} from "@nextui-org/react";
 import NextImage from "next/image";
 import {motion} from "framer-motion";
-import {Skeleton} from "@nextui-org/skeleton";
+import {Skeleton} from "@nextui-org/react";
 import {Story} from "@/interfaces/Story.interface";
-import {FileStorage} from "@/interfaces/FileStorage.interface";
-import {Product} from "@/interfaces/Product.interface";
+
 
 
 export type StoryItemProps = Story & {

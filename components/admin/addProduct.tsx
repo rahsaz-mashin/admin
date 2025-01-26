@@ -3,7 +3,7 @@ import {z} from "zod";
 import {FormRender} from "@/stories/RahsazAdmin/FormHandler";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import {CalculatePrice, Product} from "@/interfaces/Product.interface";
-import {Card, CardHeader} from "@nextui-org/card";
+import {Card, CardHeader} from "@nextui-org/react";
 import {Button, CardBody} from "@nextui-org/react";
 import slugify from "slugify-persian";
 import {
@@ -49,15 +49,17 @@ const SubmitBox: FormRender<T>['render'] = ({children, formState, watch, isEditi
                     {watch("createdAt") && (
                         <div className="flex flex-row gap-1 items-center">
                             <b>زمان ایجاد:</b>
-                            <span
-                                dir="ltr">{moment(watch("createdAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}</span>
+                            <span dir="ltr">
+                                {moment(watch("createdAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}
+                            </span>
                         </div>
                     )}
                     {watch("updatedAt") && (
                         <div className="flex flex-row gap-1 items-center">
                             <b>آخرین ویرایش:</b>
-                            <span
-                                dir="ltr">{moment(watch("updatedAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}</span>
+                            <span dir="ltr">
+                                {moment(watch("updatedAt")?.toString()).format("jYYYY/jM/jDD HH:mm:ss") || "-"}
+                            </span>
                         </div>
                     )}
                     {/*<div className="flex flex-row gap-1 items-center">*/}

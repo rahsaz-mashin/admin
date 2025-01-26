@@ -65,7 +65,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             label: "روش هزینه ارسال",
             isRequired: true,
             dynamic: {
-                route: "order/deliveryMethod/costMethodSloStyle",
+                route: "admin/order/deliveryMethod/costMethodSloStyle",
             },
             isSearchable: true,
             className: "col-span-full xl:col-span-1",
@@ -223,7 +223,7 @@ const tableColumns: ColumnType<T>[] = [
 
 
 export const deliveryMethodContext = {
-    apiRoute: "order/deliveryMethod",
+    apiRoute: "admin/order/deliveryMethod",
     form: {
         title: "روش دریافت",
         schema: formSchema,

@@ -41,14 +41,14 @@ import {
     RefreshOutlined, StarBorderOutlined, StarOutlined, ViewColumn, ViewColumnRounded, VisibilityOutlined,
 } from "@mui/icons-material";
 import {AdminContext} from "@/context/admin.context";
-import {Tooltip} from "@nextui-org/tooltip";
+import {Tooltip} from "@nextui-org/react";
 import {FormHandlerRefType} from "@/stories/RahsazAdmin/FormHandler";
 import {UseDisclosureReturn} from "@nextui-org/use-disclosure";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {CardHeader} from "@nextui-org/card";
+import {CardHeader} from "@nextui-org/react";
 import {Property} from "csstype";
 import {PaginationResponse} from "@/types/PaginationResponse";
-import {Input} from "@nextui-org/input";
+import {Input} from "@nextui-org/react";
 import {convertFilterToQueryString} from "@/lib/convertFilterObjectToQuery";
 import Link from "next/link";
 

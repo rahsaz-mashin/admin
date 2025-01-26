@@ -1,7 +1,18 @@
 import {nextui} from '@nextui-org/theme'
-const plugin = require('tailwindcss/plugin')
-import { gridAreas } from "tailwindcss-grid-areas";
 
+const plugin = require('tailwindcss/plugin')
+import {gridAreas} from "tailwindcss-grid-areas";
+
+
+const fieldSizing = () => {
+    return plugin(({addUtilities}) => {
+        addUtilities({
+            ".field-sizing-content": {
+                "field-sizing": "content",
+            },
+        });
+    })
+}
 
 
 /** @type {import('tailwindcss').Config} */
@@ -103,5 +114,6 @@ module.exports = {
         require('tailwind-scrollbar')({nocompatible: true, preferredStrategy: 'pseudoelements'}),
         require("@xpd/tailwind-3dtransforms"),
         gridAreas(),
+        fieldSizing(),
     ],
 }

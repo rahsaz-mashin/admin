@@ -10,7 +10,7 @@ export const WalletEmptyList = (props: WalletEmptyListProps) => {
 
     return (
         <Card>
-            <CardBody className="flex flex-col items-center justify-center text-center gap-3 min-h-60">
+            <CardBody className="flex flex-col items-center justify-center text-center gap-3 min-h-60 select-none">
                 <EmptyWalletListIcon/>
                 <b className="text-black font-black">
                     تراکنشی پیدا نشد!

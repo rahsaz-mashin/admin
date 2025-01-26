@@ -6,57 +6,78 @@ import {Button} from "@nextui-org/react";
 import {ArrowLeftIcon} from "@storybook/icons";
 import {DuotoneCheckSquareIcon, DuotoneDangerSquareIcon, DuotoneProcessSquareIcon} from "@/stories/Icons";
 import clsx from "clsx";
+import {NumericFormat} from "react-number-format";
+import jMoment from "jalali-moment";
+import Link from "next/link";
+import {walletTransactionMethodsEnum, walletTransactionStatusesEnum} from "@/interfaces/WalletTransaction.interface";
 
 export type WalletItemProps = {
-    isConfirmed?: boolean;
-    isRejected?: boolean;
-    type: "cheque" | "bank" | "online" | "order";
+    id: number;
+    status: walletTransactionStatusesEnum;
+    method: walletTransactionMethodsEnum;
+    amount: number;
+    issueDate?: Date;
     detail?: {}
 }
 
 
 export const WalletItem = (props: WalletItemProps) => {
-    const {isConfirmed, isRejected, type, detail} = props
+    const {
+        id,
+        status,
+        method,
+        amount,
+        issueDate,
+    } = props
+
+
     const result: any = {
         color: "text-warning-500",
         status: "نامشخص",
         icon: DuotoneDangerSquareIcon,
         label: "نامشخص",
         type: "none"
-
-    }
-
-    if(isConfirmed) {
-        result.color = "text-green-500"
-        result.status = "موفق"
-        result.icon = DuotoneCheckSquareIcon
-    }
-    else if(isRejected) {
-        result.color = "text-red-500"
-        result.status = "ناموفق"
-        result.icon = DuotoneDangerSquareIcon
-    }
-    else {
-        result.color = "text-blue-500"
-        result.status = "در حال پردازش"
-        result.icon = DuotoneProcessSquareIcon
     }
 
 
-    switch (type) {
-        case "cheque":
+    switch (status) {
+        case walletTransactionStatusesEnum.checking:
+            result.color = "text-blue-500"
+            result.status = "در حال بررسی"
+            result.icon = DuotoneProcessSquareIcon
+            break;
+        case walletTransactionStatusesEnum.pending:
+            result.color = "text-yellow-500"
+            result.status = "در انتظار اقدام"
+            result.icon = DuotoneProcessSquareIcon
+            break;
+        case walletTransactionStatusesEnum.confirmed:
+            result.color = "text-green-500"
+            result.status = "تایید شده"
+            result.icon = DuotoneCheckSquareIcon
+            break;
+        case walletTransactionStatusesEnum.rejected:
+            result.color = "text-red-500"
+            result.status = "رد شده"
+            result.icon = DuotoneDangerSquareIcon
+            break;
+    }
+
+
+    switch (method) {
+        case walletTransactionMethodsEnum.cheque:
             result.label = "چک فیزیکی"
             result.type = "increase"
             break;
-        case "bank":
+        case walletTransactionMethodsEnum.bank:
             result.label = "واریز بانکی"
             result.type = "increase"
             break;
-        case "online":
+        case walletTransactionMethodsEnum.online:
             result.label = "درگاه آنلاین"
             result.type = "increase"
             break;
-        case "order":
+        case walletTransactionMethodsEnum.order:
             result.label = "ثبت سفارش"
             result.type = "decrease"
             break;
@@ -70,6 +91,8 @@ export const WalletItem = (props: WalletItemProps) => {
                 radius="md"
                 isHoverable
                 className="w-full cursor-pointer"
+                as={Link}
+                href={`/dashboard/wallet/${id}`}
             >
                 <CardBody className="flex flex-col gap-3 p-3">
                     <div className="flex justify-between items-center">
@@ -80,10 +103,25 @@ export const WalletItem = (props: WalletItemProps) => {
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="flex items-center gap-1 text-gray-500 text-sm font-light">
-                            <span>10 خرداد 1403</span>
+                            <span>
+                                {jMoment(issueDate).format("jYYYY/jMM/jDD")}
+                            </span>
                         </span>
                         <span className="flex items-center gap-1 text-gray-500 text-base font-semibold">
-                            <span className={result.type === "increase" ? "text-green-600" : result.type === "decrease" ? "text-red-600" : "text-gray-600"}>10,000,000تومانءء</span>
+                            <span
+                                className={result.type === "increase" ? "text-green-600" : result.type === "decrease" ? "text-red-600" : "text-gray-600"}
+                            >
+                                <NumericFormat
+                                    value={amount}
+                                    thousandSeparator=","
+                                    decimalSeparator="."
+                                    allowNegative={false}
+                                    decimalScale={0}
+                                    allowLeadingZeros={false}
+                                    displayType="text"
+                                />
+                                تومانءء
+                            </span>
                         </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -113,3 +151,4 @@ export const WalletItem = (props: WalletItemProps) => {
 };
 
 
+//

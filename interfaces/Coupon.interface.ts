@@ -1,15 +1,10 @@
 import {AssignType} from "@/types/AssignType";
-import {Product} from "@/interfaces/Product.interface";
 import {Account} from "@/interfaces/Account.interface";
-import {PriceList} from "@/interfaces/PriceList.interface";
-import {Currency} from "@/interfaces/Currency.interface";
-import {OrderDeliveryMethod} from "@/interfaces/OrderDeliveryMethod.interface";
-import {IdentityAddress} from "@/interfaces/IdentityAddess.interface";
 
 
 
 
-export enum discountPolicyEnum {
+export enum couponPolicyEnum {
     percent = 'percent',
     amount = 'amount',
 }
@@ -17,7 +12,7 @@ export enum discountPolicyEnum {
 
 
 
-export interface Discount {
+export interface Coupon {
     readonly id?: number;
 
     title: string;
@@ -30,7 +25,7 @@ export interface Discount {
     minAmount: number | null;
     maxAmount: number | null;
 
-    discountPolicy: discountPolicyEnum;
+    couponPolicy: couponPolicyEnum;
 
     value: number;
     maxDiscountAmount: number | null;

@@ -23,6 +23,7 @@ import {ScrollShadow} from "@nextui-org/react";
 import {HeaderShortcut} from "@/interfaces/HeaderShortcut.interface";
 import {FooterShortcut} from "@/interfaces/FooterShortcut.interface";
 import {Menu} from "@/interfaces/Menu.interface";
+import {Session} from "next-auth";
 
 
 export type RahsazStoreMainLayoutProps = {
@@ -31,6 +32,7 @@ export type RahsazStoreMainLayoutProps = {
     footerShortcuts: FooterShortcut[];
     mobileMenu: Menu[];
     desktopMenu: Menu[];
+    session: Session | null;
 }
 
 
@@ -41,7 +43,8 @@ const RahsazStoreMainLayout = (props: RahsazStoreMainLayoutProps) => {
         headerShortcuts,
         footerShortcuts,
         mobileMenu,
-        desktopMenu
+        desktopMenu,
+        session,
     } = props
 
     const [scroll, setScroll] = useState(0)
@@ -111,8 +114,12 @@ const RahsazStoreMainLayout = (props: RahsazStoreMainLayoutProps) => {
                         <div className="flex gap-4 w-full">
                             <CallWidget className="hidden md:flex"/>
                             <HeaderBox items={headerShortcuts}/>
-                            <MyWalletButton/>
-                            <MyCartButton/>
+                            <MyWalletButton
+                                session={session}
+                            />
+                            <MyCartButton
+                                session={session}
+                            />
                             <NotificationsButton/>
                             <ToolsButton/>
                         </div>
@@ -121,7 +128,7 @@ const RahsazStoreMainLayout = (props: RahsazStoreMainLayoutProps) => {
                         />
                     </header>
                     <section
-                        className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl shadow-2xl relative"
+                        className="flex-[1_1_0] bg-white transition-all overflow-hidden h-full rounded-none md:rounded-3xl  relative"
                     >
                         <ScrollShadow
                             className="h-full w-full scroll-smooth"
@@ -129,9 +136,10 @@ const RahsazStoreMainLayout = (props: RahsazStoreMainLayoutProps) => {
                             size={0}
                             hideScrollBar
                         >
+                            {/*TODO:: mb-20 md:mb-0*/}
                             <div
                                 ref={containerRef}
-                                className="select-text mb-20 md:mb-0 h-full w-full"
+                                className="select-text h-full w-full"
                             >
                                 {children}
                             </div>

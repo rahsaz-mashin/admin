@@ -2,6 +2,8 @@
 
 import * as React from "react";
 import {ContainerDimensionsProvider} from "@/context/containerDimensions.context";
+import {CartProvider} from "@/context/cart.context";
+import {WalletProvider} from "@/context/wallet.context";
 
 
 type ProvidersProps = {
@@ -12,7 +14,11 @@ export function Providers({children}: ProvidersProps) {
 
     return (
         <ContainerDimensionsProvider>
-            {children}
+            <CartProvider>
+                <WalletProvider initial={{balance: 0}}>
+                    {children}
+                </WalletProvider>
+            </CartProvider>
         </ContainerDimensionsProvider>
     );
 }

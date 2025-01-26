@@ -57,9 +57,6 @@ export const Drawer = (props: DrawerProps) => {
         accountName = session.account.identity?.legalName!
     }
 
-    console.log({session})
-
-
     return (
         <nav
             className={

@@ -48,6 +48,8 @@ export default async function Layout({children}: { children: React.ReactNode }) 
     const mobileMenu = await getMobileMenu()
     const desktopMenu = await getDesktopMenu()
 
+    const session = await auth()
+
     return (
         <Providers>
             <RahsazStoreMainLayout
@@ -55,6 +57,7 @@ export default async function Layout({children}: { children: React.ReactNode }) 
                 footerShortcuts={footerShortcuts.data}
                 mobileMenu={mobileMenu.data}
                 desktopMenu={desktopMenu.data}
+                session={session}
             >
                 {children}
             </RahsazStoreMainLayout>

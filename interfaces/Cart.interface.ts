@@ -1,8 +1,10 @@
 import {Account} from "@/interfaces/Account.interface";
 import {CalculatePrice, Product} from "@/interfaces/Product.interface";
 import {AssignType} from "@/types/AssignType";
-import {Currency} from "@/interfaces/Currency.interface";
 import {PriceList} from "@/interfaces/PriceList.interface";
+import {OrderDeliveryMethod} from "@/interfaces/OrderDeliveryMethod.interface";
+import {IdentityAddress} from "@/interfaces/IdentityAddess.interface";
+import {Coupon} from "@/interfaces/Coupon.interface";
 
 
 export enum cartTypesEnum {
@@ -12,11 +14,19 @@ export enum cartTypesEnum {
 
 
 export interface CartProduct {
+    readonly id?: number;
+
     product: AssignType<Product>;
     count: number;
     amount: number;
 
     info?: CalculatePrice;
+}
+
+
+export interface CartNextProduct {
+    readonly id?: number;
+    product: AssignType<Product>;
 }
 
 
@@ -26,11 +36,21 @@ export interface Cart {
     priceList: AssignType<PriceList> | null;
 
     account: AssignType<Account> | null;
-    type: cartTypesEnum;
+
     products: CartProduct[];
 
-    readonly createdBy?: AssignType<Account>;
-    readonly createdAt?: Date;
-    readonly updatedAt?: Date;
-    readonly deletedAt?: Date | null;
+    nextList: CartNextProduct[];
+
+
+    deliveryMethod: AssignType<OrderDeliveryMethod> | null;
+    deliveryMethodInfo?: OrderDeliveryMethod;
+
+    address: IdentityAddress | null;
+
+    isSelfRecipient : boolean;
+    recipientName: string | null;
+    recipientPhone: string | null;
+
+    coupon: AssignType<Coupon> | null;
+
 }

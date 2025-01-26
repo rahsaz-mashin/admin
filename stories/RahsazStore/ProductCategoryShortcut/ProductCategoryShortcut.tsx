@@ -104,11 +104,11 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                     isHoverable
                                     shadow="none"
                                     radius="none"
-                                    className="bg-transparent items-center hover:bg-transparent"
+                                    className="bg-transparent hover:bg-transparent"
                                     as={Link}
                                     href={`/category/${v.slug}`}
                                 >
-                                    <CardBody className="flex items-center justify-center overflow-hidden w-14 h-14">
+                                    <CardBody className="w-full flex items-center justify-center overflow-hidden">
                                         {v.icon && (
                                             <i
                                                 className="w-12 h-12"
@@ -117,7 +117,7 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                         )}
                                     </CardBody>
                                     <CardFooter
-                                        className="font-bold text-center truncate bg-primary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                                        className="w-full font-bold text-center truncate bg-primary text-white flex items-center py-1 px-1.5"
                                     >
                                         {v.title}
                                     </CardFooter>
@@ -142,11 +142,11 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                     isHoverable
                                     shadow="none"
                                     radius="none"
-                                    className="bg-transparent items-center hover:bg-transparent"
+                                    className="bg-transparent hover:bg-transparent"
                                     as={Link}
                                     href={`/machine/${v.slug}`}
                                 >
-                                    <CardBody className="flex items-center justify-center overflow-hidden w-12 h-12">
+                                    <CardBody className="w-full flex items-center justify-center overflow-hidden">
                                         {v.icon && (
                                             <i
                                                 className="w-12 h-12"
@@ -155,7 +155,7 @@ export const ProductCategoryShortcut = (props: ProductCategoryShortcutProps) => 
                                         )}
                                     </CardBody>
                                     <CardFooter
-                                        className="font-bold text-center truncate bg-secondary text-white w-fit flex items-center justify-center py-1 px-1.5"
+                                        className="w-full font-bold text-center truncate bg-secondary text-white flex items-center py-1 px-1.5"
                                     >
                                         {v.title}
                                     </CardFooter>

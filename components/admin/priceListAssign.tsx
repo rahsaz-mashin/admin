@@ -3,7 +3,7 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import React from "react";
 import {assignTypeEnum, PriceListAssign} from "@/interfaces/PriceListAssign.interface";
-import {Chip} from "@nextui-org/chip";
+import {Chip} from "@nextui-org/react";
 import {PriceList} from "@/interfaces/PriceList.interface";
 import {identityTypesEnum} from "@/interfaces/Identity.interface";
 
@@ -92,13 +92,15 @@ const formSchema = z.object({
                 code: z.ZodIssueCode.custom,
                 message: 'هویت معتبر نیست'
             });
-        } else if (data.assignType === assignTypeEnum.identityCategory && !data.identityCategory) {
+        }
+        if (data.assignType === assignTypeEnum.identityCategory && !data.identityCategory) {
             ctx.addIssue({
                 path: ["identityCategory"],
                 code: z.ZodIssueCode.custom,
                 message: 'دسته هویت معتبر نیست'
             });
-        } else if (data.assignType === assignTypeEnum.identityGrade && !data.identityGrade) {
+        }
+        if (data.assignType === assignTypeEnum.identityGrade && !data.identityGrade) {
             ctx.addIssue({
                 path: ["identityGrade"],
                 code: z.ZodIssueCode.custom,

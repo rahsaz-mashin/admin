@@ -13,7 +13,7 @@ export const CartEmptyNextList = (
 
     return (
         <Card>
-            <CardBody className="flex flex-col items-center justify-center text-center gap-3 min-h-60">
+            <CardBody className="flex flex-col items-center justify-center text-center gap-3 min-h-72">
                 <EmptyCartIcon/>
                 <b className="text-black font-black">لیست خرید بعدی شما خالی است!</b>
                 <span className="text-gray-500 font-light">

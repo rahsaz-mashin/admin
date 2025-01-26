@@ -5,16 +5,16 @@ import {Card, CardHeader, CardBody} from "@nextui-org/card";
 import {Button, CardFooter, Divider, useDisclosure} from "@nextui-org/react";
 import clsx from "clsx";
 import {EditIcon} from "@storybook/icons";
-import {CartAddAddress} from "@/stories/RahsazStore/Cart/AddressBox/AddAddress";
+import {CartAddAddressModal} from "@/stories/RahsazStore/Cart/AddressBox/AddAddress";
+import {Control} from "react-hook-form";
+import {Cart} from "@/interfaces/Cart.interface";
 
-export type CartPaymentWayBoxProps = {}
+export type CartPaymentWayBoxProps = {
+    control: Control<Cart>;
+}
 
 
-export const CartPaymentWayBox = (
-    {}
-        :
-        CartPaymentWayBoxProps
-) => {
+export const CartPaymentWayBox = (props: CartPaymentWayBoxProps) => {
 
     const paymentWays = [
         {
@@ -580,32 +580,34 @@ export const CartPaymentWayBox = (
     }
 
     return (
-        <Card shadow="none" radius="none">
-            <CardHeader
-                className="text-white bg-primary py-2 w-fit font-light text-base rounded-tr-2xl relative after:absolute after:bg-primary after:-end-12 after:h-full after:w-12 after:rounded-tl-[10rem]"
-            >
-                روش پرداخت
-            </CardHeader>
-            <CardBody className="border border-primary rounded-2xl rounded-tr-none gap-2 text-start">
+        <div className="flex-shrink-0 p-4">
+            <Card shadow="none" radius="none">
+                <CardHeader
+                    className="text-white bg-primary py-2 w-fit font-light text-base rounded-tr-2xl relative after:absolute after:bg-primary after:-end-12 after:h-full after:w-12 after:rounded-tl-[10rem]"
+                >
+                    روش پرداخت
+                </CardHeader>
+                <CardBody className="border border-primary rounded-2xl rounded-tr-none gap-2 text-start">
                 <span className="text-gray-500 text-sm font-light">
                     روش پرداخت خود را انتخاب کنید!
                 </span>
-                <ul className="flex flex-wrap flex-col gap-3">
-                    {paymentWays.map(({id, key, title, description, icon}) => {
-                        return (
-                            <CartPaymentWayItem
-                                key={id}
-                                title={title}
-                                description={description}
-                                icon={icon}
-                                isSelected={key === selected}
-                                handleSwitch={() => handleSwitch(key)}
-                            />
-                        )
-                    })}
-                </ul>
-            </CardBody>
-        </Card>
+                    <ul className="flex flex-wrap flex-col gap-3">
+                        {paymentWays.map(({id, key, title, description, icon}) => {
+                            return (
+                                <CartPaymentWayItem
+                                    key={id}
+                                    title={title}
+                                    description={description}
+                                    icon={icon}
+                                    isSelected={key === selected}
+                                    handleSwitch={() => handleSwitch(key)}
+                                />
+                            )
+                        })}
+                    </ul>
+                </CardBody>
+            </Card>
+        </div>
     );
 };
 
@@ -634,8 +636,8 @@ export const CartPaymentWayItem = (props: CartPaymentWayItemProps) => {
                 <span
                     className="font-bold transition group-[.isSelected]:text-primary group-hover:text-primary"
                 >
-                {title}
-            </span>
+                    {title}
+                </span>
                 <span className="font-light">
                     {description}
                 </span>

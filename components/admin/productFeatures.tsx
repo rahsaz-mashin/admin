@@ -3,7 +3,7 @@ import {ColumnType} from "@/stories/RahsazAdmin/TableList";
 import {FormFieldFunc} from "@/stories/General/FormFieldsGenerator";
 import slugify from "slugify-persian";
 import {ProductFeatures} from "@/interfaces/ProductFeatures.interface";
-import {Chip} from "@nextui-org/chip";
+import {Chip} from "@nextui-org/react";
 
 
 

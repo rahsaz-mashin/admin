@@ -1,8 +1,8 @@
 import React, {ReactNode} from "react";
-import {Input, Textarea} from "@nextui-org/input";
+import {Input, Textarea} from "@nextui-org/react";
 import {NumericFormat, PatternFormat} from "react-number-format";
 import {Control, useController} from "react-hook-form";
-import {DateInput, TimeInput} from "@nextui-org/date-input";
+import {DateInput, TimeInput} from "@nextui-org/react";
 import {TimeValue} from "@react-types/datepicker";
 import {Button, DatePicker, DateRangePicker, DateValue} from "@nextui-org/react";
 import {I18nProvider} from "@react-aria/i18n";
@@ -36,6 +36,7 @@ export type MinorInputProps = {
     isRequired?: boolean;
 
     isNumeric?: boolean;
+    thousandsGroupDisabled?: boolean;
     pattern?: string;
     allowNegative?: boolean;
     allowLeadingZeros?: boolean;
@@ -98,6 +99,7 @@ export const MinorInput = (props: MinorInputProps) => {
 
 
         isNumeric,
+        thousandsGroupDisabled = false,
         pattern,
         allowNegative,
         decimalScale,
@@ -187,12 +189,12 @@ export const MinorInput = (props: MinorInputProps) => {
     }
 
 
+
     if (isTimeInput) {
         return (
             <TimeInput
                 {..._props}
 
-                dir="ltr"
                 className={className}
                 classNames={{innerWrapper: "ltr"}}
 
@@ -213,8 +215,6 @@ export const MinorInput = (props: MinorInputProps) => {
                         {..._props}
 
                         className={className}
-                        // dir="ltr"
-                        // classNames={{innerWrapper: "ltr"}}
 
                         hideTimeZone
                         minValue={minValue as DateValue}
@@ -230,11 +230,30 @@ export const MinorInput = (props: MinorInputProps) => {
         }
         if (withRangePicker) {
             return (
-                <DateRangePicker
+                <I18nProvider locale="fa-IR-persian">
+                    <DateRangePicker
+                        {..._props}
+
+
+                        hideTimeZone
+                        minValue={minValue as DateValue}
+                        maxValue={maxValue as DateValue}
+                        hourCycle={hourCycle}
+                        granularity={granularity}
+                        placeholderValue={placeholderValue as DateValue}
+                        visibleMonths={visibleMonths}
+                        showMonthAndYearPickers={showMonthAndYearPickers}
+                    />
+                </I18nProvider>
+            )
+        }
+        return (
+            <I18nProvider locale="fa-IR-persian">
+                <DateInput
                     {..._props}
 
-                    // dir="ltr"
-                    // classNames={{innerWrapper: "ltr"}}
+                    className={className}
+                    classNames={{innerWrapper: "ltr"}}
 
                     hideTimeZone
                     minValue={minValue as DateValue}
@@ -242,26 +261,8 @@ export const MinorInput = (props: MinorInputProps) => {
                     hourCycle={hourCycle}
                     granularity={granularity}
                     placeholderValue={placeholderValue as DateValue}
-                    visibleMonths={visibleMonths}
-                    showMonthAndYearPickers={showMonthAndYearPickers}
                 />
-            )
-        }
-        return (
-            <DateInput
-                {..._props}
-
-                className={className}
-                // dir="ltr"
-                // classNames={{innerWrapper: "ltr"}}
-
-                hideTimeZone
-                minValue={minValue as DateValue}
-                maxValue={maxValue as DateValue}
-                hourCycle={hourCycle}
-                granularity={granularity}
-                placeholderValue={placeholderValue as DateValue}
-            />
+            </I18nProvider>
         )
     }
 
@@ -287,6 +288,9 @@ export const MinorInput = (props: MinorInputProps) => {
             <PatternFormat
                 {..._props}
 
+                min={minValue as number}
+                max={maxValue as number}
+
                 dir="ltr"
                 format={pattern}
                 mask=" "
@@ -301,14 +305,14 @@ export const MinorInput = (props: MinorInputProps) => {
         )
     }
 
-    if (isNumeric ) {
+    if (isNumeric) {
         return (
             // @ts-ignore
             <NumericFormat
                 {..._props}
 
                 dir="ltr"
-                thousandSeparator=","
+                thousandSeparator={thousandsGroupDisabled ? false : ","}
                 decimalSeparator="."
                 allowNegative={allowNegative}
                 decimalScale={decimalScale}

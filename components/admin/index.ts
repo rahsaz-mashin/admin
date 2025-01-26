@@ -40,6 +40,7 @@ import {footerShortcutsContext} from "@/components/admin/footerShortcuts";
 import {headerShortcutsContext} from "@/components/admin/headerShortcuts";
 import {menuContext} from "@/components/admin/menu";
 import {sliderContext} from "@/components/admin/slider";
+import {walletTransactionContext} from "@/components/admin/walletTransaction";
 
 export const adminContextConfig: any = {
     general: {
@@ -140,6 +141,11 @@ export const adminContextConfig: any = {
             },
             items: {
                 deliveryMethod: deliveryMethodContext,
+            },
+        },
+        wallet: {
+            wallet: {
+                transaction: walletTransactionContext,
             },
         },
         settings: {

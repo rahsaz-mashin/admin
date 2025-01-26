@@ -51,6 +51,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                     render={props.formRender}
                     upsert={props.formUpsert}
                     className={props.formClassName}
+                    serializer={props.formSerializer}
                 />
             </div>
         );
@@ -72,6 +73,7 @@ export function FormListContext<T>(props: FormListContextProps<T>) {
                 render={props.formRender}
                 upsert={props.formUpsert}
                 className={props.formClassName}
+                serializer={props.formSerializer}
 
                 tableRef={tableRef}
             />
@@ -114,6 +116,7 @@ type FormListContextFormModePureProps<T> = {
     formUpsert?: boolean;
     formRender?: FormRender<T>[] | FormRenderFunc<T>;
     formClassName?: string;
+    formSerializer?: (v: T) => T;
 }
 
 type FormListContextFormModeProps<T> = { mode: "form" } & FormListContextFormModePureProps<T>

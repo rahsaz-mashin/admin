@@ -28,6 +28,7 @@ export function RahsazAdminContext(props: PropsType) {
             formRender={context.form?.render}
             formUpsert={context.form?.upsert}
             formClassName={context.form?.className}
+            formSerializer={context.form?.serializer}
         />
     )
 }

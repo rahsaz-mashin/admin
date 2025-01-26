@@ -59,6 +59,11 @@ import BoldDuotoneTicket from "@/stories/Icons/BoldDuotoneTicket.stories";
 import BoldDuotoneWallet from "@/stories/Icons/BoldDuotoneWallet.stories";
 
 
+import SolidAddToCart from "@/stories/Icons/SolidAddToCart.stories";
+import SolidCall from "@/stories/Icons/SolidCall.stories";
+import SolidNotifyMe from "@/stories/Icons/SolidNotifyMe.stories";
+
+
 export const OutlinedCustomizationIcon = OutlinedCustomization.component;
 export const OutlinedArrowDownIcon = OutlinedArrowDown.component;
 export const OutlinedMoreIcon = OutlinedMore.component;
@@ -125,3 +130,11 @@ export const BoldDuotoneCreditCardIcon = BoldDuotoneCreditCard.component;
 export const BoldDuotoneReceiptIcon = BoldDuotoneReceipt.component;
 export const BoldDuotoneTicketIcon = BoldDuotoneTicket.component;
 export const BoldDuotoneWalletIcon = BoldDuotoneWallet.component;
+
+
+
+
+
+export const SolidAddToCartIcon = SolidAddToCart.component;
+export const SolidCallIcon = SolidCall.component;
+export const SolidNotifyMeIcon = SolidNotifyMe.component;
