@@ -9,6 +9,7 @@ import {OrderDeliveryMethod} from "@/interfaces/OrderDeliveryMethod.interface";
 import {Spinner} from "@nextui-org/react";
 import {Control, useController, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import {Cart} from "@/interfaces/Cart.interface";
+import {AssignType} from "@/types/AssignType";
 
 
 export type CartDeliveryTypeBoxProps = {
@@ -62,7 +63,7 @@ export const CartDeliveryTypeBox = (props: CartDeliveryTypeBoxProps) => {
         setDeliveryMethod(watch("deliveryMethod"))
     }, [watch("deliveryMethod")]);
 
-    const setDeliveryMethod = async (id: number | null) => {
+    const setDeliveryMethod = async (id: AssignType<OrderDeliveryMethod> | null) => {
         setLoading(true)
         await axios.patch(`/store/cart/deliveryMethod`, {deliveryMethod: id})
         await getDetail(id)
