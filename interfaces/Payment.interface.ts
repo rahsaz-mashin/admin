@@ -19,7 +19,7 @@ export interface Payment {
 
     // common
     picture: FileStorage | null;
-    dueDate: Date | null;
+    dueDate: CalendarDateTime | Date | null;
     bankName: string | null;
     bankAccountNumber: string | null;
 
