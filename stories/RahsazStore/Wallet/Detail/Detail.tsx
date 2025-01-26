@@ -213,11 +213,7 @@ const ConfirmRejectStatus = ({data}: { data: Payment }) => {
                 color="success"
                 variant="solid"
                 classNames={{base: "text-white text-start"}}
-                title={(
-                    <div className="flex flex-col gap-1 items-start">
-                        <div className="flex items-center h-9 font-bold">تایید شده</div>
-                    </div>
-                )}
+                title="تایید شده"
                 description={(
                     <div className="flex flex-col gap-1 items-start">
                         <div className="font-light">
@@ -238,11 +234,7 @@ const ConfirmRejectStatus = ({data}: { data: Payment }) => {
                 variant="solid"
                 classNames={{base: "text-white text-start"}}
 
-                title={(
-                    <div className="flex flex-col gap-1 items-start">
-                        <div className="flex items-center h-9 font-bold">رد شده</div>
-                    </div>
-                )}
+                title="رد شده"
                 description={(
                     <div className="flex flex-col gap-1 items-start">
                         <div className="font-light">
@@ -271,14 +263,13 @@ const ConfirmRejectStatus = ({data}: { data: Payment }) => {
                 color="secondary"
                 variant="solid"
                 classNames={{base: "text-white text-start"}}
-                title={(
-                    <div className="flex flex-col gap-1 items-start">
-                        <div className="flex items-center h-9 font-bold">در حال بررسی</div>
-                    </div>
-                )}
+                title="در حال بررسی"
+                description="در حال بررسی تراکنش هستیم!"
             />
         )
     }
+
+    return null
 
 }
 
@@ -332,7 +323,7 @@ const BankPayment = ({data}: { data: Payment }) => {
             </span>
             <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold truncate">
                 <span className="truncate">زمان واریز:</span>
-                <span className="text-primary">{jMoment(data.dueDate).format("jYYYY/jMM/jDD ساعت HH:mm")}</span>
+                <span className="text-primary">{data.dueDate ? jMoment(data.dueDate).format("jYYYY/jMM/jDD ساعت HH:mm") : "-"}</span>
             </span>
             <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold truncate">
                 <span className="truncate">نام بانک:</span>
@@ -381,7 +372,7 @@ const ChequePayment = ({data}: { data: Payment }) => {
             </span>
             <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold truncate">
                 <span className="truncate">زمان واریز:</span>
-                <span className="text-primary">{jMoment(data.dueDate).format("jYYYY/jMM/jDD ساعت HH:mm")}</span>
+                <span className="text-primary">{data.dueDate ? jMoment(data.dueDate).format("jYYYY/jMM/jDD ساعت HH:mm") : "-"}</span>
             </span>
             <span className="flex items-center gap-1 text-gray-500 text-sm font-semibold truncate">
                 <span className="truncate">نام بانک:</span>
