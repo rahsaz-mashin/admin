@@ -50,8 +50,6 @@ export interface Payment {
     rejectedAt: Date | null;
     rejectedBy: Account | null;
     rejectionText: string | null;
-
-    seen: boolean;
 }
 
 
