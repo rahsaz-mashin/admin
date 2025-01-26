@@ -3,7 +3,7 @@
 import React from "react";
 import {Card, CardHeader, CardBody} from "@nextui-org/card";
 import clsx from "clsx";
-import {Alert, Button, Spinner} from "@nextui-org/react";
+import {Alert, Button} from "@nextui-org/react";
 import {Control, useController, useForm, UseFormSetValue, UseFormWatch} from "react-hook-form";
 import {Cart} from "@/interfaces/Cart.interface";
 import {z} from "zod";
@@ -102,7 +102,8 @@ export const CartCouponBox = (props: CartCouponBoxProps) => {
                                 color="success"
                                 variant="solid"
                                 classNames={{base: "text-start text-white"}}
-                                title="کد تخفیف اعمال شد"
+                                title="کد تخفیف"
+                                description="کد تخفیف اعمال شد"
                                 endContent={
                                     <Button
                                         color="success"
