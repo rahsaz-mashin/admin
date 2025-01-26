@@ -70,6 +70,15 @@ const formInitial: T = {
         referenceNumber: "",
         transactionReferenceID: "",
         shaparakRefNumber: "",
+
+        isConfirmed: false,
+        confirmedAt: null,
+        confirmedBy: null,
+
+        isRejected: false,
+        rejectedAt: null,
+        rejectedBy: null,
+        rejectionText: null,
     },
 }
 
