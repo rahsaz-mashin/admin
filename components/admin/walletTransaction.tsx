@@ -83,6 +83,7 @@ const formInitial: T = {
     },
 }
 
+// @ts-ignore
 const formSerializer: (v: T) => T = (data) => {
     return {
         ...data,
@@ -355,6 +356,7 @@ const paymentMethodItems = [
     },
 ]
 
+// @ts-ignore
 const formFields: FormFieldFunc<T> = (watch, setValue) => {
     return ([
         {
@@ -377,12 +379,16 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
             items: transactionsMethodItems,
             dependency: (value, name) => {
                 if (value === walletTransactionMethodsEnum.cheque) {
+                    // @ts-ignore
                     setValue("payment.method", paymentMethodsEnum.cheque)
                 } else if (value === walletTransactionMethodsEnum.bank) {
+                    // @ts-ignore
                     setValue("payment.method", paymentMethodsEnum.bank)
                 } else if (value === walletTransactionMethodsEnum.online) {
+                    // @ts-ignore
                     setValue("payment.method", paymentMethodsEnum.online)
                 } else {
+                    // @ts-ignore
                     setValue("payment.method", null)
                 }
             },
@@ -701,7 +707,7 @@ const formFields: FormFieldFunc<T> = (watch, setValue) => {
 
 
 type AcceptRejectModalPropsType = {
-    id: string | number;
+    id: number;
 
 }
 
@@ -728,13 +734,14 @@ const AcceptRejectModal = (props: AcceptRejectModalPropsType) => {
         rejectionText: z.string({message: "دلیل رد را وارد کنید"}).optional().nullable(),
     })
 
-    const initialData: T = {
+
+    const initialData: any = {
         rejectionText: "",
     }
 
 
     const axios = axiosCoreWithAuth()
-    const onSubmit = async (data: T) => {
+    const onSubmit = async (data: any) => {
         await axios.patch(`/admin/wallet/transaction/${id}/${mode}`, data)
         onCancel()
     }
@@ -878,7 +885,7 @@ const tableColumns: ColumnType<T>[] = [
             extra: (value, ctx) => {
                 return (
                     <AcceptRejectModal
-                        id={ctx.id}
+                        id={ctx.id ? +ctx.id : 0}
                     />
                 )
             }
