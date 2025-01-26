@@ -23,7 +23,7 @@ export enum walletTransactionMethodsEnum {
 export interface WalletTransaction {
     id?: number;
 
-    account: Account;
+    account: Account | null;
     amount: number | string;
     status: walletTransactionStatusesEnum;
     method: walletTransactionMethodsEnum;
