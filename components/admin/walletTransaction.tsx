@@ -78,7 +78,7 @@ const formSerializer: (v: T) => T = (data) => {
         ...data,
         payment: {
             ...data.payment,
-            dueDate: parseDateTime(jMoment(data.payment.dueDate).format("YYYY-MM-DD\THH:mm")),
+            dueDate: !data?.payment?.dueDate ? null : parseDateTime(jMoment(data.payment.dueDate).format("YYYY-MM-DD\THH:mm")),
         }
     }
 }
