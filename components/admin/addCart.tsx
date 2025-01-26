@@ -128,7 +128,15 @@ const formInitial: T = {
     priceList: null,
     account: null,
     products: [],
-    type: cartTypesEnum.current
+    nextList: [],
+    deliveryMethod: null,
+    address: null,
+
+    isSelfRecipient: true,
+    recipientName: null,
+    recipientPhone: null,
+
+    coupon: null,
 }
 
 const formSchema = z.object({
