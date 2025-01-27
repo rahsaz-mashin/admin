@@ -27,7 +27,7 @@ export const WalletList = (props: WalletListProps) => {
                                 id={v.id || 0}
                                 status={v.status}
                                 method={v.method}
-                                amount={v.amount}
+                                amount={+v.amount}
                                 issueDate={v.createdAt}
                             />
                         )
