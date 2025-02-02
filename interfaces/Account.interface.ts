@@ -1,5 +1,4 @@
 import {Identity} from "@/interfaces/Identity.interface";
-import {AccountAvatar} from "@/interfaces/AccountAvatar.interface";
 import {AccountPhoneNumber} from "@/interfaces/AccountPhoneNumber.interface";
 import {AccountEmailAddress} from "@/interfaces/AccountEmailAddress.interface";
 import {AccountPermissionGroup} from "@/interfaces/AccountPermissionGroup.interface";
