@@ -1,13 +1,13 @@
 {
-  "name": "rahsaz-app",
-  "version": "1.0.1",
+  "name": "rahsaz-admin",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "NODE_OPTIONS='--max-old-space-size=4096' next build",
+    "dev": "NODE_OPTIONS='--inspect' next dev",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "storybook": "storybook dev -p 6006",
+    "sb": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "dependencies": {

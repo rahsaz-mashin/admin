@@ -1,7 +1,0 @@
-{
-  "app": "rahsaz-app",
-  "platform": "next",
-  "build": {
-    "location": "germany"
-  }
-}
