@@ -16,7 +16,7 @@ const {auth} = NextAuth(authConfig)
 // @ts-ignore
 export default auth(async function middleware(req) {
     const isLoggedIn = !!req.auth
-    const haveIdentity = !!req.auth && !!req.auth.account.identity
+    const haveIdentity = isLoggedIn && !!req.auth?.account?.identity
 
 
 
