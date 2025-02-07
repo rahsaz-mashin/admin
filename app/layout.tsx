@@ -15,37 +15,6 @@ export const metadata: Metadata = {
         template: `${rootConfig.name} | %s`,
     },
     description: rootConfig.description,
-    icons: {
-        icon: "/favicon.ico",
-    },
-    manifest: "/manifest.json",
-    appleWebApp: {
-        capable: true,
-        statusBarStyle: "default",
-        title: rootConfig.name,
-        // startUpImage: [],
-    },
-    formatDetection: {
-        telephone: false,
-    },
-    openGraph: {
-        type: "website",
-        siteName: rootConfig.name,
-        title: {
-            default: rootConfig.name,
-            template: `${rootConfig.name} | %s`,
-        },
-        description: rootConfig.description,
-    },
-    twitter: {
-        card: "summary",
-        title: {
-            default: rootConfig.name,
-            template: `${rootConfig.name} | %s`,
-        },
-        description: rootConfig.description,
-    },
-
 };
 
 export const viewport: Viewport = {
