@@ -28,7 +28,7 @@ import {parseDateTime} from "@internationalized/date";
 import {CalendarDateTimeSchema} from "@/schemas/CalendarDateTime.schema";
 import {paymentMethodsEnum} from "@/interfaces/Payment.interface";
 import {axiosCoreWithAuth} from "@/lib/axios";
-import {WalletTransactionDetail} from "@/stories/RahsazStore/Wallet/Detail";
+import {WalletTransactionDetail} from "@/stories/RahsazAdmin/Wallet/Detail";
 import {AccountDisplay} from "@/stories/RahsazAdmin/AccountDisplay/AccountDisplay";
 import {MinorInput} from "@/stories/General/MinorInput";
 import {useForm} from "react-hook-form";

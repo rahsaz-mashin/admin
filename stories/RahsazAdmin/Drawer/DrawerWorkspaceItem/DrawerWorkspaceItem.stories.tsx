@@ -1,5 +1,5 @@
 import { DrawerWorkspaceItem } from "./DrawerWorkspaceItem";
-import {Logo} from "@/stories/RahsazStore";
+import {Logo} from "@/stories/RahsazAdmin";
 
 export default {
   title: "RahsazAdmin/Drawer/DrawerWorkspaceItem",

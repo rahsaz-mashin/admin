@@ -10,6 +10,18 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Pass build-time environment variables
+ARG NEXT_PUBLIC_CORE_BASE_URL
+ENV NEXT_PUBLIC_CORE_BASE_URL=$NEXT_PUBLIC_CORE_BASE_URL
+
+ARG AUTH_SECRET
+ENV AUTH_SECRET=$AUTH_SECRET
+
+ARG NEXT_PUBLIC_BASE_PATH
+ENV NEXT_PUBLIC_BASE_PATH=$NEXT_PUBLIC_BASE_PATH
+
+
+
 # Build the application
 RUN npm run build
 

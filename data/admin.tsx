@@ -1,5 +1,5 @@
 import React, {ReactNode} from "react";
-import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
+import {Logo as RahsazStoreLogo} from "@/stories/RahsazAdmin";
 import {
     BoldDuotoneAddIcon,
     BoldDuotoneAddUserIcon,

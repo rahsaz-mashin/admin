@@ -1,6 +1,6 @@
 import React, {ReactNode, useContext} from "react";
 import {Tooltip} from "@nextui-org/tooltip";
-import {Logo as RahsazStoreLogo} from "@/stories/RahsazStore";
+import {Logo as RahsazStoreLogo} from "@/stories/RahsazAdmin";
 import {AdminContext} from "@/context/admin.context";
 
 export type DrawerWorkspaceItemProps = {
