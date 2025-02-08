@@ -19,9 +19,9 @@ export default auth(async function middleware(req) {
 
     const {nextUrl} = req
 
-    if(!isLoggedIn) {
-        return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl))
-    }
+    // if(!isLoggedIn) {
+    //     return Response.redirect(new URL(DEFAULT_LOGIN_ROUTE, nextUrl))
+    // }
 
     return null
 })

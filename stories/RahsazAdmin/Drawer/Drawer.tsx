@@ -49,13 +49,19 @@ export const Drawer = (props: DrawerProps) => {
 
 
     let accountName = "[هویت ثبت نشده]"
-    const accountAvatar = session.account.avatar?.system ? (session.account.avatar?.system?.baseUrl + "/" + session.account.avatar?.path) : ""
-    if (session.account.identity?.identityType === identityTypesEnum.real) {
-        accountName = session.account.identity?.firstName! + " " + session.account.identity?.lastName!
+    let accountAvatar = ""
+    if (session?.account) {
+        accountAvatar = session.account?.avatar?.system ? (session.account.avatar?.system?.baseUrl + "/" + session.account.avatar?.path) : ""
+        if (session.account?.identity) {
+            if (session.account.identity?.identityType === identityTypesEnum.real) {
+                accountName = session.account.identity?.firstName! + " " + session.account.identity?.lastName!
+            }
+            if (session.account.identity?.identityType === identityTypesEnum.legal) {
+                accountName = session.account.identity?.legalName!
+            }
+        }
     }
-    if (session.account.identity?.identityType === identityTypesEnum.legal) {
-        accountName = session.account.identity?.legalName!
-    }
+
 
     return (
         <nav
