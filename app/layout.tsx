@@ -5,7 +5,6 @@ import {IRANSansX} from "@/lib/font";
 import {Metadata, Viewport} from "next";
 import {rootConfig} from "@/config/root";
 import {Providers} from "./providers";
-import {InstallAppModal} from "@/stories/General/InstallAppModal/InstallAppModal";
 import {Logo} from "@/stories/General";
 
 
@@ -57,7 +56,6 @@ export default function RootLayout({children, params: {locale}}: {
                     <Logo size={250}/>
                 </div>
             </div>
-            <InstallAppModal/>
         </Providers>
         </body>
         </html>

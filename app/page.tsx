@@ -6,9 +6,9 @@ export default async function Page() {
 
     return (
         <div
-            className="flex justify-center items-center h-screen text-lg"
+            className="flex flex-col justify-center items-center h-screen text-lg"
         >
-            Rahsaz Info
+            Rahsaz Admin
             <br/>
             <pre>
                 {JSON.stringify(session)}
