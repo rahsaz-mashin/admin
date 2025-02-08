@@ -15,7 +15,7 @@ export const Container = (props: ContainerProps) => {
 
 
     return (
-        <aside className="h-full z-0 pr-0 md:pr-80 flex-1 px-0">
+        <aside className="h-[1000px] overflow-auto z-0 pr-0 md:pr-80 flex-1 px-0">
             <Header />
             <div className="p-4">{children}</div>
         </aside>

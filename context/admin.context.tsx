@@ -111,36 +111,70 @@ export const AdminProvider = ({children, initial}: ProviderPropsType) => {
         setTimeout(() => setLoading(false), 1500)
     }, [])
 
-    const activeWorkspace = m[2]
-    const activeSection = m[3]
-    const activeCategory = m[4]
-    const activeMenu = m[5]
+    let startAt = 0
+    if (process.env.NEXT_PUBLIC_BASE_PATH) {
+        startAt = 1
+    }
+
+    const activeWorkspace = m[startAt + 1]
+    const activeSection = m[startAt + 2]
+    const activeCategory = m[startAt + 3]
+    const activeMenu = m[startAt + 4]
 
     const setActiveWorkspace = (workspace: string) => {
-        router.push(["", "admin", workspace].join("/"));
+        let r: string[] = []
+        if (process.env.NEXT_PUBLIC_BASE_PATH) {
+            const adm = process.env.NEXT_PUBLIC_BASE_PATH.toString().replace("/", "")
+            r = ["", adm, workspace];
+        } else {
+            r = ["", workspace];
+        }
+        router.push(r.join("/"));
     }
 
     const setActiveSection = (section: string, workspace: string = activeWorkspace) => {
-        router.push(["", "admin", workspace, section].join("/"));
+        let r: string[] = []
+        if (process.env.NEXT_PUBLIC_BASE_PATH) {
+            const adm = process.env.NEXT_PUBLIC_BASE_PATH.toString().replace("/", "")
+            r = ["", adm, workspace, section];
+        } else {
+            r = ["", workspace, section];
+        }
+        router.push(r.join("/"));
         setOpenDrawer(false)
     }
 
     const goToMenu = (menu: string, category: string, section: string = activeSection, workspace: string = activeWorkspace) => {
-        router.push(["", "admin", workspace, section, category, menu].join("/"));
+        let r: string[] = []
+        if (process.env.NEXT_PUBLIC_BASE_PATH) {
+            const adm = process.env.NEXT_PUBLIC_BASE_PATH.toString().replace("/", "")
+            r = ["", adm, workspace, section, category, menu];
+        } else {
+            r = ["", workspace, section, category, menu];
+        }
+        router.push(r.join("/"));
     }
 
     const editItem = (id: string | number, route: string = activeMenu) => {
-        const a = [
-            "", "admin", activeWorkspace, activeSection, activeCategory, route, id
-        ]
-        router.push(a.join("/"));
+        let r: string[] = []
+        if (process.env.NEXT_PUBLIC_BASE_PATH) {
+            const adm = process.env.NEXT_PUBLIC_BASE_PATH.toString().replace("/", "")
+            r = ["", adm, activeWorkspace, activeSection, activeCategory, route, id.toString()];
+        } else {
+            r = ["", activeWorkspace, activeSection, activeCategory, route, id.toString()];
+        }
+        router.push(r.join("/"));
     }
 
     const backToList = (route: string = activeMenu) => {
-        const a = [
-            "", "admin", activeWorkspace, activeSection, activeCategory, route
-        ]
-        router.push(a.join("/"));
+        let r: string[] = []
+        if (process.env.NEXT_PUBLIC_BASE_PATH) {
+            const adm = process.env.NEXT_PUBLIC_BASE_PATH.toString().replace("/", "")
+            r = ["", adm, activeWorkspace, activeSection, activeCategory, route];
+        } else {
+            r = ["", activeWorkspace, activeSection, activeCategory, route];
+        }
+        router.push(r.join("/"));
     }
 
 

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 
-export default async function Layout({children}: { children: React.ReactNode }) {
+export default async function Layout({children, params}: { children: React.ReactNode; params: any }) {
 
     const session = await auth()
 
