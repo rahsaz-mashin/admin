@@ -1,0 +1,1 @@
+export { MinorInput } from "./MinorInput";

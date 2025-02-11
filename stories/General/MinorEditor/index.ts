@@ -1,0 +1,1 @@
+export { MinorEditor } from "./MinorEditor";

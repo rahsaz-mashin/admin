@@ -1,0 +1,1 @@
+export { MinorTag } from "./MinorTag";
